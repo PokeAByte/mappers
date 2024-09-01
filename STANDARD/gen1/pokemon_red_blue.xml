@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="e1396b30-2dc2-11ee-be56-0242ac120002" name="Pokemon Red and Blue" platform="GB" version="1.1.1"
+<mapper id="e1396b30-2dc2-11ee-be56-0242ac120002" name="Pokemon Red and Blue" platform="GB" version="1.1.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -1193,7 +1193,7 @@
             </column_1>
         </screen>
         <options>
-            <property name="text_speed"        type="int" address="0xD355"  bits="0-2" reference="text_speeds"  />
+            <property name="text_speed"        type="int"  address="0xD355"  bits="0-2" reference="text_speeds"  />
             <property name="sound_1"           type="bool" address="0xD355" bits="4" />
             <property name="sound_2"           type="bool" address="0xD355" bits="5" />
             <property name="battle_style"      type="bool" address="0xD355" bits="6" />
@@ -1206,14 +1206,14 @@
             <property name="frames"  type="int" address="0xDA45" />
         </game_time>
         <input>
-            <property name="a" type="bool" address="0xffb1" bits="0"/>
-            <property name="b" type="bool" address="0xffb1" bits="1"/>
+            <property name="a"      type="bool" address="0xffb1" bits="0"/>
+            <property name="b"      type="bool" address="0xffb1" bits="1"/>
             <property name="select" type="bool" address="0xffb1" bits="2"/>
-            <property name="start" type="bool" address="0xffb1" bits="3"/>
-            <property name="right" type="bool" address="0xffb1" bits="4"/>
-            <property name="left" type="bool" address="0xffb1" bits="5"/>
-            <property name="up" type="bool" address="0xffb1" bits="6"/>
-            <property name="down" type="bool" address="0xffb1" bits="7"/>
+            <property name="start"  type="bool" address="0xffb1" bits="3"/>
+            <property name="right"  type="bool" address="0xffb1" bits="4"/>
+            <property name="left"   type="bool" address="0xffb1" bits="5"/>
+            <property name="up"     type="bool" address="0xffb1" bits="6"/>
+            <property name="down"   type="bool" address="0xffb1" bits="7"/>
         </input>
         <meta>
 			<property name="generation" type="int" value="1" />
