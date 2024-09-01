@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_gold_silver.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Gold and Silver - Deprecated Mapper" platform="GBC" version="1.1.0"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Gold and Silver - Deprecated Mapper" platform="GBC" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -30,10 +30,10 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <property name="specialAttack"  address="{address} + 44" type="int" length="2" />
       <property name="specialDefense" address="{address} + 46" type="int" length="2" />
       <property name="speed"          address="{address} + 42" type="int" length="2" />
-      <property name="dvAttack"  address="{address} + 21" type="int" after-read-value-expression="(x - (x % 16))/16" />
-      <property name="dvDefense" address="{address} + 21" type="int" after-read-value-expression="x % 16" />
-      <property name="dvSpeed"   address="{address} + 22" type="int" after-read-value-expression="(x - (x % 16))/16" />
-      <property name="dvSpecial" address="{address} + 22" type="int" after-read-value-expression="x % 16" />
+      <property name="dvAttack"  address="{address} + 21" type="int" bits="4-7" />
+      <property name="dvDefense" address="{address} + 21" type="int" bits="0-3" />
+      <property name="dvSpeed"   address="{address} + 22" type="int" bits="4-7" />
+      <property name="dvSpecial" address="{address} + 22" type="int" bits="0-3" />
       <property name="move1" address="{address} + 2" type="int" reference="moves" />
       <property name="move2" address="{address} + 3" type="int" reference="moves" />
       <property name="move3" address="{address} + 4" type="int" reference="moves" />
@@ -274,10 +274,10 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
         <property name="speed"          type="int" address="0xD107" length="2" />
         <property name="specialAttack"  type="int" address="0xD109" length="2" />
         <property name="specialDefense" type="int" address="0xD10B" length="2" />
-        <property name="dvAttack"  type="int" address="0xD0F5" after-read-value-expression="(x - (x % 16))/16" />
-        <property name="dvDefense" type="int" address="0xD0F5" after-read-value-expression="x % 16" />
-        <property name="dvSpeed"   type="int" address="0xD0F6" after-read-value-expression="(x - (x % 16))/16" />
-        <property name="dvSpecial" type="int" address="0xD0F6" after-read-value-expression="x % 16" />
+        <property name="dvAttack"  type="int" address="0xD0F5" bits="4-7" />
+        <property name="dvDefense" type="int" address="0xD0F5" bits="0-3" />
+        <property name="dvSpeed"   type="int" address="0xD0F6" bits="4-7" />
+        <property name="dvSpecial" type="int" address="0xD0F6" bits="0-3" />
       </enemyPokemon>
       <info>
         <property name="miss" type="int" address="0xcb45" length="1" />
@@ -289,7 +289,7 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
         <playerScreens>
           <property name="statusSafeguard"   type="bool" address="0xCBDD" bits="2" />
           <property name="statusReflect"     type="bool" address="0xCBDD" bits="4" />
-          <property name="statusLightScreen" type="int" address="0xCBDD" bits="3" />
+          <property name="statusLightScreen" type="int" address="0xCBDD"  bits="3" />
           <property name="safeguardCount"    type="int" address="0xCBDF" />
           <property name="lightScreenCount"  type="int" address="0xCBE0" />
           <property name="reflectCount"      type="int" address="0xCBE1" />
@@ -297,7 +297,7 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
         <enemyScreens>
           <property name="statusSafeguard"   type="bool" address="0xCBDE" bits="2" />
           <property name="statusReflect"     type="bool" address="0xCBDE" bits="4" />
-          <property name="statusLightScreen" type="int" address="0xCBDE" bits="3" />
+          <property name="statusLightScreen" type="int" address="0xCBDE"  bits="3" />
           <property name="safeguardCount"    type="int" address="0xCBE3" />
           <property name="lightScreenCount"  type="int" address="0xCBE4" />
           <property name="reflectCount"      type="int" address="0xCBE5" />
@@ -477,9 +477,8 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0x01" value="Biking" />
     </bikeStatus>
     <gender>
-      <entry key="0x00" />
-      <entry key="0x01" value="Male" />
-      <entry key="0x02" value="Female" />
+      <entry key="0x00" value="Male" />
+      <entry key="0x01" value="Female" />
     </gender>
     <walkingTypes>
       <entry key="0x0" value="Walking" />
@@ -513,6 +512,9 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0x19" value="Ice" />
       <entry key="0x1A" value="Dragon" />
       <entry key="0x1B" value="Dark" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0x0A" value="Arrow" /> -->
+      <!-- <entry key="0x1C" value="Fairy" /> -->
     </types>
     <statusConditions>
       <entry key="0x00" />
@@ -903,6 +905,10 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0xF9" value="Rock Smash" />
       <entry key="0xFA" value="Whirlpool" />
       <entry key="0xFB" value="Beat Up" />
+      <!-- TODO_BACKPORT -->
+      <!-- <entry key="0xFC" value="NewMove1" />  -->
+      <!-- <entry key="0xFD" value="NewMove2" />  -->
+      <!-- <entry key="0xFE" value="NewMove3" />  -->
     </moves>
     <items>
       <entry key="0x00" />
@@ -1160,7 +1166,7 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0xFC" value="HM10"/>
       <entry key="0xFD" value="HM11"/>
       <entry key="0xFE" value="HM12"/>
-      <entry key="0xFF" value="Berry"/>
+      <entry key="0xFF"/>
     </items>
     <pokemon>
       <entry key="0x00" />
@@ -1413,8 +1419,10 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0xF7" value="{ pokedexNumber: 247, name: Pupitar }" />
       <entry key="0xF8" value="{ pokedexNumber: 248, name: Tyranitar }" />
       <entry key="0xF9" value="{ pokedexNumber: 249, name: Lugia }" />
-      <entry key="0xFA" value="{ pokedexNumber: 250, name: Ho-oh " />}
+      <entry key="0xFA" value="{ pokedexNumber: 250, name: Ho-oh " />
       <entry key="0xFB" value="{ pokedexNumber: 251, name: Celebi }" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0xFB" value="{ pokedexNumber: Backport_Dex, name: Backport }" /> -->
     </pokemon>
     <pokemonSpecies>
       <entry key="0x00" />
@@ -1669,6 +1677,8 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0xF9" value="Lugia" />
       <entry key="0xFA" value="Ho-oh" />
       <entry key="0xFB" value="Celebi" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0xFC" value="Backport" /> -->
     </pokemonSpecies>
     <pokemonPokedexNumbers>
       <entry key="0x00" />
@@ -1923,6 +1933,8 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0xF9" value="249" />
       <entry key="0xFA" value="250" />
       <entry key="0xFB" value="251" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0xFC" value="718" /> -->
     </pokemonPokedexNumbers>
     <mapGroups>
       <entry key="0x01" value="OLIVINE" />

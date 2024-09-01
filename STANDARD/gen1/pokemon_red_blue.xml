@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="e1396b30-2dc2-11ee-be56-0242ac120002" name="Pokemon Red and Blue" platform="GB" version="1.1.0"
+<mapper id="e1396b30-2dc2-11ee-be56-0242ac120002" name="Pokemon Red and Blue" platform="GB" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -37,7 +37,7 @@
                 <property name="special" type="int" address="{address} + 42" length="2" description="The Attack stat as it appears in the Pokemon's summary page in game" />
             </stats>
             <ivs>
-                <property name="hp"      type="int"    description="Calculated from the IVs; not actually stored in memory" />
+                <property name="hp"      type="int" description="Calculated from the IVs; not actually stored in memory" />
                 <property name="attack"  type="int" address="{address} + 27" bits="4-7" />
                 <property name="defense" type="int" address="{address} + 27" bits="0-3" />
                 <property name="speed"   type="int" address="{address} + 28" bits="4-7" />
@@ -866,7 +866,7 @@
                         <property name="attack"  type="int" address="0xD025" length="2" />
                         <property name="defense" type="int" address="0xD027" length="2" />
                         <property name="speed"   type="int" address="0xD029" length="2" />
-                        <property name="special" type="int" address="0xD029" length="2" />
+                        <property name="special" type="int" address="0xD02B" length="2" />
                     </stats>
                     <modifiers>
                         <property name="attack"   type="int" address="0xCD1A" reference="stage_modifiers" /> <!--same memory location across all Gen1 games-->

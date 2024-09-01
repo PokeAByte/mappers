@@ -8,14 +8,14 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_crystal.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.1.0"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
     <classes>
         <pokemonInParty>
-            <property name="nickname"      address="{nicknameAddress}" type="string" reference="defaultCharacterMap" />
+            <property name="nickname"      address="{nicknameAddress}" type="string" reference="defaultCharacterMap" length="11" />
             <property name="species"       address="{address} + 0" type="int" reference="pokemonSpecies" />
             <property name="pokedexNumber" address="{address} + 0" type="int" reference="pokemonPokedexNumbers" />
             <property name="level"           address="{address} + 31" type="int" />
@@ -101,7 +101,6 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
             <!-- <property name="dvSpecial" address="{address} + 6" type="int" bits="0-3" /> -->
         </roamer>
     </classes>
-
   <properties>
     <player>
       <property name="playerId"  type="int" address="0xD47B" length="2" description="The active player ID" />
@@ -285,9 +284,9 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <!-- <property name="repelStepsLeft" type="int" address="0xXXXX" /> -->
       <!-- <property name="bikeStatus"     type="int" address="0xXXXX" reference="bikeStatus" /> -->
     </player>
-
     <overworld>
       <property name="mapGroup"  type="int" address="0xDCB5" reference="mapGroups" />
+      <property name="mapGroupIndex"  type="int" address="0xDCB5" />
       <property name="mapNumber" type="int" address="0xDCB6" />
       <property name="mapName"   type="int" address="0xDCB5" length="2" reference="maps" />
       <property name="y" type="int" address="0xDCB7" />
@@ -304,6 +303,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     </roamers>
 
     <encounterRate>
+      <property name="disable_encounters" type="bool" address="0xD84C" bits="5" />
       <property name="morning" type="int" address="0xD25A" />
       <property name="day"     type="int" address="0xD25B" />
       <property name="night"   type="int" address="0xD25C" />
@@ -444,10 +444,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
         <property name="modStageAccuracy"       type="int" address="0xc6d9" reference="stageModifiers" />
         <property name="modStageEvasion"        type="int" address="0xc6da" reference="stageModifiers" />
         <property name="enemyMonEnd" type="int" address="0xd22d" />
-        <!-- <property name="dvAttack"  type="int" address="0xD0F5", after-read-value-expression="(x - (x % 16))/16" /> -->
-        <!-- <property name="dvDefense" type="int" address="0xD0F5", after-read-value-expression="x % 16" /> -->
-        <!-- <property name="dvSpeed"   type="int" address="0xD0F6", after-read-value-expression="(x - (x % 16))/16" /> -->
-        <!-- <property name="dvSpecial" type="int" address="0xD0F6", after-read-value-expression="x % 16" /> -->
+        <!-- <property name="dvAttack"  type="int" address="0xD0F5" bits="4-7" /> -->
+        <!-- <property name="dvDefense" type="int" address="0xD0F5" bits="0-3" /> -->
+        <!-- <property name="dvSpeed"   type="int" address="0xD0F6" bits="4-7" /> -->
+        <!-- <property name="dvSpecial" type="int" address="0xD0F6" bits="0-3" /> -->
         <counters>
           <property name="rollout"    type="int" address="0xc67a" />
           <property name="confuse"    type="int" address="0xc67b" />
@@ -529,11 +529,12 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     <options>
       <!-- <property name="clockDay"         type="string" address="0xXXXX" length="5" /> -->
       <!-- <property name="clockTime"        type="string" address="0xXXXX" length="5" /> -->
-      <property name="textSpeed2"       type="bool" address="0xCFCC" bits="1" description="False+False = Fast, True+False = Mid, True+True = Slow" />
-      <property name="textSpeed3"       type="bool" address="0xCFCC" bits="2" description="False+False = Fast, True+False = Mid, True+True = Slow" />
-      <property name="sound"            type="bool" address="0xCFCC" bits="5" description="Mono = False, Stereo = True" />
-      <property name="battleStyle"      type="bool" address="0xCFCC" bits="6" description="Shift = False, Set = True" />
-      <property name="battleAnimations" type="bool" address="0xCFCC" bits="7" description="On = False, Off = True" />
+      <property name="textSpeep"        type="int"  address="0xCFCC" bits="0-2" description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="textSpeed2"       type="bool" address="0xCFCC" bits="1"   description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="textSpeed3"       type="bool" address="0xCFCC" bits="2"   description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="sound"            type="bool" address="0xCFCC" bits="5"   description="Mono = False, Stereo = True" />
+      <property name="battleStyle"      type="bool" address="0xCFCC" bits="6"   description="Shift = False, Set = True" />
+      <property name="battleAnimations" type="bool" address="0xCFCC" bits="7"   description="On = False, Off = True" />
     </options>
 
     <gameTime>
@@ -629,44 +630,44 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     <!-- Squidgy Custom Properties -->
     <squidgyExtras> 
       <property name="repelStepsRemaining" type="int" address="0xDCA1" />
-      <property name="walkingType" type="int" address="0xD95D" reference="walkingTypes" />
-      <property name="warpLocation" type="int" address="0xDCB2" length="2" reference="mapLocations" />
-      <property name="mapLocation"  type="int" address="0xDCB5" length="2" reference="mapLocations" />
-      <property name="bikeCall"  type="int" address="0xDCA2" length="2" />  
-      <property name="poisonSteps"  type="int" address="0xDC74" length="1" />  
+      <property name="walkingType"         type="int" address="0xD95D" reference="walkingTypes" />
+      <property name="warpLocation"        type="int" address="0xDCB2" length="2" reference="mapLocations" />
+      <property name="mapLocation"         type="int" address="0xDCB5" length="2" reference="mapLocations" />
+      <property name="bikeCall"            type="int" address="0xDCA2" length="2" />  
+      <property name="poisonSteps"         type="int" address="0xDC74" length="1" />  
       <property name="battleFriendship"    type="int" address="0xc638" />
       <battleDVs>
-          <property name="battleDVAttack"  type="int" address="0xC632" after-read-value-expression="(x - (x % 16))/16" />
-          <property name="battleDVDefense" type="int" address="0xC632" after-read-value-expression="x % 16" />
-          <property name="battleDVSpeed"   type="int" address="0xC633" after-read-value-expression="(x - (x % 16))/16" />
-          <property name="battleDVSpecial" type="int" address="0xC633" after-read-value-expression="x % 16" />    
+          <property name="battleDVAttack"  type="int" address="0xC632" bits="4-7" />
+          <property name="battleDVDefense" type="int" address="0xC632" bits="0-3" />
+          <property name="battleDVSpeed"   type="int" address="0xC633" bits="4-7" />
+          <property name="battleDVSpecial" type="int" address="0xC633" bits="0-3" />    
       </battleDVs>
       <enemyDVs>
-          <property name="enemyDVAttack"  type="int" address="0xD20C" after-read-value-expression="(x - (x % 16))/16" />
-          <property name="enemyDVDefense" type="int" address="0xD20C" after-read-value-expression="x % 16" />
-          <property name="enemyDVSpeed"   type="int" address="0xD20D" after-read-value-expression="(x - (x % 16))/16" />
-          <property name="enemyDVSpecial" type="int" address="0xD20D" after-read-value-expression="x % 16" />
+          <property name="enemyDVAttack"  type="int" address="0xD20C" bits="4-7" />
+          <property name="enemyDVDefense" type="int" address="0xD20C" bits="0-3" />
+          <property name="enemyDVSpeed"   type="int" address="0xD20D" bits="4-7" />
+          <property name="enemyDVSpecial" type="int" address="0xD20D" bits="0-3" />
       </enemyDVs>
-      <property name="inBattleHeldItem"    type="int" address="0xC62D" reference="items" />
-      <property name="playerMinimized" type="int" address="0xC6FE"/>
-      <property name="enemyMinimized"    type="int" address="0xC6FA"/>
-      <property name="hallOfFame" type="bool" address="0xD84C" bits="6" />
-      <property name="isFlash" type="bool" address="0xD84C" bits="2" />
-      <property name="wildEncounters" type="bool" address="0xD84C" bits="5" />
-      <property name="battleFlag64"    type="int" address="0xC664" />
-      <property name="playerMoveUsed1"    type="int" address="0xc712" reference="moves" />
-      <property name="playerMoveUsed2"    type="int" address="0xc713" reference="moves" />
-      <property name="playerMoveUsed3"    type="int" address="0xc714" reference="moves" />
-      <property name="playerMoveUsed4"    type="int" address="0xc715" reference="moves" />
+      <property name="inBattleHeldItem" type="int" address="0xC62D" reference="items" />
+      <property name="playerMinimized"  type="int" address="0xC6FE"/>
+      <property name="enemyMinimized"   type="int" address="0xC6FA"/>
+      <property name="hallOfFame"       type="bool" address="0xD84C" bits="6" />
+      <property name="isFlash"          type="bool" address="0xD84C" bits="2" />
+      <property name="wildEncounters"   type="bool" address="0xD84C" bits="5" />
+      <property name="battleFlag64"     type="int" address="0xC664" />
+      <property name="playerMoveUsed1"  type="int" address="0xc712" reference="moves" />
+      <property name="playerMoveUsed2"  type="int" address="0xc713" reference="moves" />
+      <property name="playerMoveUsed3"  type="int" address="0xc714" reference="moves" />
+      <property name="playerMoveUsed4"  type="int" address="0xc715" reference="moves" />
       <eliteFourRooms>
-          <property name="willRoomID" type="int" address="0xD97F" />
-          <property name="kogaRoomID" type="int" address="0xD980" />
+          <property name="willRoomID"  type="int" address="0xD97F" />
+          <property name="kogaRoomID"  type="int" address="0xD980" />
           <property name="brunoRoomID" type="int" address="0xD981" />
           <property name="karenRoomID" type="int" address="0xD982" />
           <property name="lanceRoomID" type="int" address="0xD983" />
       </eliteFourRooms>
       <enemyBaseStats>
-          <property name="enemyBaseHP" type="int" address="0xD237" />
+          <property name="enemyBaseHP"  type="int" address="0xD237" />
           <property name="enemyBaseAtk" type="int" address="0xD238" />
           <property name="enemyBaseDef" type="int" address="0xD239" />
           <property name="enemyBaseSpA" type="int" address="0xD23B" />
@@ -679,6 +680,28 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     <!-- These will not work without a ROM patch -->
     <patch>
       <!-- <property name="patchPresent" type="int" length="1" address="0x3fb5" after-read-value-expression="x != 0" />  -->
+      <battle_statuses>
+      <yourPokemon>
+          <property name="phantomforce" type="bool" address="0xc66b" bits="3" />
+      </yourPokemon>
+      <enemyPokemon>
+          <property name="phantomforce" type="bool" address="0xc670" bits="3" />
+      </enemyPokemon>
+      </battle_statuses>
+      <encounter_flags>
+        <property name="EVENT_ENCOUNTER_ROUTE29_TEST"          type="bool" address="0xDA92" bits="5" />
+        <property name="EVENT_ENCOUNTER_ROUTE31_BELLSPROUT"    type="bool" address="0xDA92" bits="6" />
+        <property name="EVENT_ENCOUNTER_ROUTE32_BELLSPROUT"    type="bool" address="0xDA92" bits="7" />
+        <property name="EVENT_ENCOUNTER_UNION_CAVE_SANDSHREW"  type="bool" address="0xDA93" bits="0" />
+        <property name="EVENT_ENCOUNTER_ILEX_FOREST_PSYDUCK"   type="bool" address="0xDA93" bits="1" />
+        <property name="EVENT_ENCOUNTER_ILEX_FOREST_ODDISH"    type="bool" address="0xDA93" bits="2" />
+        <property name="EVENT_ENCOUNTER_ROUTE34_ABRA"          type="bool" address="0xDA93" bits="3" />
+        <property name="EVENT_ENCOUNTER_NATIONAL_PARK_PSYDUCK" type="bool" address="0xDA93" bits="4" />
+        <property name="EVENT_ENCOUNTER_OLIVINE_CITY_KRABBY"   type="bool" address="0xDA93" bits="5" />
+        <property name="EVENT_ENCOUNTER_VIOLET_CITY_POLIWAG"   type="bool" address="0xDA93" bits="6" />
+        <property name="route_32_hidden_great_ball"     type="bool" address="0xDA86" bits="5" />
+        <property name="lake_of_rage_hidden_rare_candy" type="bool" address="0xDA88" bits="6" />
+      </encounter_flags>
       <property name="turnCounter"  type="int" length="2" address="0xcfd8" />
       <time>
         <property name="frameCount"       type="int" length="4" address="0x10191" />
@@ -950,6 +973,9 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0x19" value="Ice" />
       <entry key="0x1A" value="Dragon" />
       <entry key="0x1B" value="Dark" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0x0A" value="Arrow" /> -->
+      <!-- <entry key="0x1C" value="Fairy" /> -->
     </types>
     <statusConditions>
       <entry key="0x00" />
@@ -1340,6 +1366,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="Rock Smash" />
       <entry key="0xFA" value="Whirlpool" />
       <entry key="0xFB" value="Beat Up" />
+      <!-- TODO_BACKPORT -->
+      <!-- <entry key="0xFC" value="NewMove1" />  -->
+      <!-- <entry key="0xFD" value="NewMove2" />  -->
+      <!-- <entry key="0xFE" value="NewMove3" />  -->
     </moves>
     <items>
       <entry key="0x00" />
@@ -1850,8 +1880,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF7" value="{ pokedexNumber: 247, name: Pupitar }" />
       <entry key="0xF8" value="{ pokedexNumber: 248, name: Tyranitar }" />
       <entry key="0xF9" value="{ pokedexNumber: 249, name: Lugia }" />
-      <entry key="0xFA" value="{ pokedexNumber: 250, name: Ho-oh " />}
+      <entry key="0xFA" value="{ pokedexNumber: 250, name: Ho-oh " />
       <entry key="0xFB" value="{ pokedexNumber: 251, name: Celebi }" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0xFB" value="{ pokedexNumber: Backport_Dex, name: Backport }" /> -->
     </pokemon>
     <pokemonSpecies>
       <entry key="0x00" />
@@ -2106,6 +2138,8 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="Lugia" />
       <entry key="0xFA" value="Ho-oh" />
       <entry key="0xFB" value="Celebi" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0xFC" value="Backport" /> -->
     </pokemonSpecies>
     <pokemonPokedexNumbers>
       <entry key="0x00" />
@@ -2360,6 +2394,8 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="249" />
       <entry key="0xFA" value="250" />
       <entry key="0xFB" value="251" />
+      <!-- TODO: Backport -->
+      <!-- <entry key="0xFC" value="718" /> -->
     </pokemonPokedexNumbers>
     <mapGroups>
       <entry key="0x01" value="OLIVINE" />

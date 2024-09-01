@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_yellow.xml'
 -->
 
-<mapper id="8a1aac87-79ee-4309-a056-483a59675f38" name="Pokemon Yellow Legacy - Deprecated Mapper" platform="GB" version="1.1.0"
+<mapper id="8a1aac87-79ee-4309-a056-483a59675f38" name="Pokemon Yellow Legacy - Deprecated Mapper" platform="GB" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -27,10 +27,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="defense" address="{address} + 38" type="int" length="2" description="The Defense stat as it appears in the Pokemon's summary page in game" />
 			<property name="speed"   address="{address} + 40" type="int" length="2" description="The Speed stat as it appears in the Pokemon's summary page in game" />
 			<property name="special" address="{address} + 42" type="int" length="2" description="The Special stat as it appears in the Pokemon's summary page in game" />
-			<property name="dvAttack"  address="{address} + 27" type="int" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvDefense" address="{address} + 27" type="int" after-read-value-expression="x % 16" />
-			<property name="dvSpeed"   address="{address} + 28" type="int" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvSpecial" address="{address} + 28" type="int" after-read-value-expression="x % 16" />
+			<property name="dvAttack"  address="{address} + 27" type="int" bits="4-7" />
+			<property name="dvDefense" address="{address} + 27" type="int" bits="0-3" />
+			<property name="dvSpeed"   address="{address} + 28" type="int" bits="4-7" />
+			<property name="dvSpecial" address="{address} + 28" type="int" bits="0-3" />
 			<property name="move1" address="{address} + 8"  type="int" reference="moves" description="Top moveslot" />
 			<property name="move2" address="{address} + 9"  type="int" reference="moves" />
 			<property name="move3" address="{address} + 10" type="int" reference="moves" />
@@ -69,10 +69,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="expPoints"       type="int" address="{address} + 14" length="3" />
 			<property name="statusCondition" type="int" address="{address} + 4"  reference="statusConditions" />
 			<property name="hp"              type="int" address="{address} + 1"  length="2" />
-			<property name="dvAttack"        type="int" address="{address} + 27" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvDefense"       type="int" address="{address} + 27" after-read-value-expression="x % 16" />
-			<property name="dvSpeed"         type="int" address="{address} + 28" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvSpecial"       type="int" address="{address} + 28" after-read-value-expression="x % 16" />
+			<property name="dvAttack"        type="int" address="{address} + 27" bits="4-7" />
+			<property name="dvDefense"       type="int" address="{address} + 27" bits="0-3" />
+			<property name="dvSpeed"         type="int" address="{address} + 28" bits="4-7" />
+			<property name="dvSpecial"       type="int" address="{address} + 28" bits="0-3" />
 			<property name="statExpHp"       type="int" address="{address} + 17" length="2" description="HP EV (stat experience)" />
 			<property name="statExpAttack"   type="int" address="{address} + 19" length="2" description="Attack EV (stat experience)" />
 			<property name="statExpDefense"  type="int" address="{address} + 21" length="2" description="Defense EV (stat experience)" />
@@ -328,10 +328,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<property name="move2" type="int" address="0xCFED" reference="moves" />
 				<property name="move3" type="int" address="0xCFEE" reference="moves" />
 				<property name="move4" type="int" address="0xCFEF" reference="moves" />
-				<property name="dvAttack"  type="int" address="0xCFF0" after-read-value-expression="(x - (x % 16))/16" />
-				<property name="dvDefense" type="int" address="0xCFF0" after-read-value-expression="x % 16" />
-				<property name="dvSpeed"   type="int" address="0xCFF1" after-read-value-expression="(x - (x % 16))/16" />
-				<property name="dvSpecial" type="int" address="0xCFF1" after-read-value-expression="x % 16" />
+				<property name="dvAttack"  type="int" address="0xCFF0" bits="4-7" />
+				<property name="dvDefense" type="int" address="0xCFF0" bits="0-3" />
+				<property name="dvSpeed"   type="int" address="0xCFF1" bits="4-7" />
+				<property name="dvSpecial" type="int" address="0xCFF1" bits="0-3" />
 				<property name="baseHp"      type="int" address="0xD001" after-read-value-expression="x % 16" />
 				<property name="baseAttack"  type="int" address="0xD002" after-read-value-expression="x % 16" />
 				<property name="baseDefense" type="int" address="0xD003" after-read-value-expression="x % 16" />

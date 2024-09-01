@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="9f46da7e-5087-439d-bcc8-7fe81e54e988" name="Pokemon Crystal" platform="GBC" version="1.1.0"
+<mapper id="9f46da7e-5087-439d-bcc8-7fe81e54e988" name="Pokemon Crystal" platform="GBC" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -2114,14 +2114,14 @@
             </game_clock>
         </time>
         <input>
-            <property name="a" type="bool" address="0xffa4" bits="0"/>
-            <property name="b" type="bool" address="0xffa4" bits="1"/>
+            <property name="a"      type="bool" address="0xffa4" bits="0"/>
+            <property name="b"      type="bool" address="0xffa4" bits="1"/>
             <property name="select" type="bool" address="0xffa4" bits="2"/>
-            <property name="start" type="bool" address="0xffa4" bits="3"/>
-            <property name="right" type="bool" address="0xffa4" bits="4"/>
-            <property name="left" type="bool" address="0xffa4" bits="5"/>
-            <property name="up" type="bool" address="0xffa4" bits="6"/>
-            <property name="down" type="bool" address="0xffa4" bits="7"/>
+            <property name="start"  type="bool" address="0xffa4" bits="3"/>
+            <property name="right"  type="bool" address="0xffa4" bits="4"/>
+            <property name="left"   type="bool" address="0xffa4" bits="5"/>
+            <property name="up"     type="bool" address="0xffa4" bits="6"/>
+            <property name="down"   type="bool" address="0xffa4" bits="7"/>
         </input>
         <meta>
             <property name="generation" type="int" value="2" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="161a9132-9f4d-4679-9cc1-11f794253cf1" name="Pokemon Gold and Silver" platform="GBC" version="1.1.0"
+<mapper id="161a9132-9f4d-4679-9cc1-11f794253cf1" name="Pokemon Gold and Silver" platform="GBC" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -2010,14 +2010,14 @@
             </game_clock>
         </time>
         <input>
-            <property name="a" type="bool" address="0xFFA6" bits="0"/>
-            <property name="b" type="bool" address="0xFFA6" bits="1"/>
+            <property name="a"      type="bool" address="0xFFA6" bits="0"/>
+            <property name="b"      type="bool" address="0xFFA6" bits="1"/>
             <property name="select" type="bool" address="0xFFA6" bits="2"/>
-            <property name="start" type="bool" address="0xFFA6" bits="3"/>
-            <property name="right" type="bool" address="0xFFA6" bits="4"/>
-            <property name="left" type="bool" address="0xFFA6" bits="5"/>
-            <property name="up" type="bool" address="0xFFA6" bits="6"/>
-            <property name="down" type="bool" address="0xFFA6" bits="7"/>
+            <property name="start"  type="bool" address="0xFFA6" bits="3"/>
+            <property name="right"  type="bool" address="0xFFA6" bits="4"/>
+            <property name="left"   type="bool" address="0xFFA6" bits="5"/>
+            <property name="up"     type="bool" address="0xFFA6" bits="6"/>
+            <property name="down"   type="bool" address="0xFFA6" bits="7"/>
         </input>
         <meta>
             <property name="generation" type="int" value="2" />

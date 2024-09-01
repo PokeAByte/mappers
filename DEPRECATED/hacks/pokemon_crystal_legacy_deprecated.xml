@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_crystal.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.1.0"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -30,10 +30,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
             <property name="specialAttack"  address="address + 44" type="int" length="2" />
             <property name="specialDefense" address="address + 46" type="int" length="2" />
             <property name="speed"          address="address + 42" type="int" length="2" />
-            <property name="dvAttack"  address="address + 21" type="int" after-read-value-expression="(x - (x % 16))/16" />
-            <property name="dvDefense" address="address + 21" type="int" after-read-value-expression="x % 16" />
-            <property name="dvSpeed"   address="address + 22" type="int" after-read-value-expression="(x - (x % 16))/16" />
-            <property name="dvSpecial" address="address + 22" type="int" after-read-value-expression="x % 16" />
+            <property name="dvAttack"  address="address + 21" type="int" bits="4-7" />
+            <property name="dvDefense" address="address + 21" type="int" bits="0-3" />
+            <property name="dvSpeed"   address="address + 22" type="int" bits="4-7" />
+            <property name="dvSpecial" address="address + 22" type="int" bits="0-3" />
             <property name="move1" address="address + 2" type="int" reference="moves" />
             <property name="move2" address="address + 3" type="int" reference="moves" />
             <property name="move3" address="address + 4" type="int" reference="moves" />
@@ -95,10 +95,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
             <property name="mapGroup"  address="address + 2" type="int" length="1" reference="mapGroups" />
             <property name="mapNumber" address="address + 3" type="int" length="1" />
             <property name="hp"        address="address + 4" type="int" length="1" />
-            <!-- <property name="dvAttack"  address="address + 5" type="int" after-read-value-expression="(x - (x % 16))/16" /> -->
-            <!-- <property name="dvDefense" address="address + 5" type="int" after-read-value-expression="x % 16" /> -->
-            <!-- <property name="dvSpeed"   address="address + 6" type="int" after-read-value-expression="(x - (x % 16))/16" /> -->
-            <!-- <property name="dvSpecial" address="address + 6" type="int" after-read-value-expression="x % 16" /> -->
+            <!-- <property name="dvAttack"  address="address + 5" type="int" bits="4-7" /> -->
+            <!-- <property name="dvDefense" address="address + 5" type="int" bits="0-3" /> -->
+            <!-- <property name="dvSpeed"   address="address + 6" type="int" bits="4-7" /> -->
+            <!-- <property name="dvSpecial" address="address + 6" type="int" bits="0-3" /> -->
         </roamer>
     </classes>
 
@@ -442,10 +442,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
         <property name="modStageAccuracy"       type="int" address="0xc6d9" reference="stageModifiers" />
         <property name="modStageEvasion"        type="int" address="0xc6da" reference="stageModifiers" />
         <property name="enemyMonEnd" type="int" address="0xd22d" />
-        <!-- <property name="dvAttack"  type="int" address="0xD0F5", after-read-value-expression="(x - (x % 16))/16" /> -->
-        <!-- <property name="dvDefense" type="int" address="0xD0F5", after-read-value-expression="x % 16" /> -->
-        <!-- <property name="dvSpeed"   type="int" address="0xD0F6", after-read-value-expression="(x - (x % 16))/16" /> -->
-        <!-- <property name="dvSpecial" type="int" address="0xD0F6", after-read-value-expression="x % 16" /> -->
+        <!-- <property name="dvAttack"  type="int" address="0xD0F5" bits="4-7" /> -->
+        <!-- <property name="dvDefense" type="int" address="0xD0F5" bits="0-3" /> -->
+        <!-- <property name="dvSpeed"   type="int" address="0xD0F6" bits="4-7" /> -->
+        <!-- <property name="dvSpecial" type="int" address="0xD0F6" bits="0-3" /> -->
         <counters>
           <property name="rollout"    type="int" address="0xc67a" />
           <property name="confuse"    type="int" address="0xc67b" />

@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_yellow.xml'
 -->
 
-<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.1.0"
+<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -27,10 +27,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="defense" address="{address} + 38" type="int" length="2" description="The Defense stat as it appears in the Pokemon's summary page in game" />
 			<property name="speed"   address="{address} + 40" type="int" length="2" description="The Speed stat as it appears in the Pokemon's summary page in game" />
 			<property name="special" address="{address} + 42" type="int" length="2" description="The Special stat as it appears in the Pokemon's summary page in game" />
-			<property name="dvAttack"  address="{address} + 27" type="int" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvDefense" address="{address} + 27" type="int" after-read-value-expression="x % 16" />
-			<property name="dvSpeed"   address="{address} + 28" type="int" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvSpecial" address="{address} + 28" type="int" after-read-value-expression="x % 16" />
+			<property name="dvAttack"  address="{address} + 27" type="int" bits="4-7" />
+			<property name="dvDefense" address="{address} + 27" type="int" bits="0-3" />
+			<property name="dvSpeed"   address="{address} + 28" type="int" bits="4-7" />
+			<property name="dvSpecial" address="{address} + 28" type="int" bits="0-3" />
 			<property name="move1" address="{address} + 8"  type="int" reference="moves" description="Top moveslot" />
 			<property name="move2" address="{address} + 9"  type="int" reference="moves" />
 			<property name="move3" address="{address} + 10" type="int" reference="moves" />
@@ -43,7 +43,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="move2ppUp" address="{address} + 30" type="int" after-read-value-expression="Math.floor(x / 64)" />
 			<property name="move3ppUp" address="{address} + 31" type="int" after-read-value-expression="Math.floor(x / 64)" />
 			<property name="move4ppUp" address="{address} + 32" type="int" after-read-value-expression="Math.floor(x / 64)" />
-			<property name="statExpHp" address="{address} + 17" type="int" length="2" description="HP EV (stat experience)" />
+			<property name="statExpHp"      address="{address} + 17" type="int" length="2" description="HP EV (stat experience)" />
 			<property name="statExpAttack"  address="{address} + 19" type="int" length="2" description="Attack EV (stat experience)" />
 			<property name="statExpDefense" address="{address} + 21" type="int" length="2" description="Defense EV (stat experience)" />
 			<property name="statExpSpeed"   address="{address} + 23" type="int" length="2" description="Speed EV (stat experience)" />
@@ -69,10 +69,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="expPoints"       type="int" address="{address} + 14" length="3" />
 			<property name="statusCondition" type="int" address="{address} + 4"  reference="statusConditions" />
 			<property name="hp"              type="int" address="{address} + 1"  length="2" />
-			<property name="dvAttack"        type="int" address="{address} + 27" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvDefense"       type="int" address="{address} + 27" after-read-value-expression="x % 16" />
-			<property name="dvSpeed"         type="int" address="{address} + 28" after-read-value-expression="(x - (x % 16))/16" />
-			<property name="dvSpecial"       type="int" address="{address} + 28" after-read-value-expression="x % 16" />
+			<property name="dvAttack"        type="int" address="{address} + 27" bits="4-7" />
+			<property name="dvDefense"       type="int" address="{address} + 27" bits="0-3" />
+			<property name="dvSpeed"         type="int" address="{address} + 28" bits="4-7" />
+			<property name="dvSpecial"       type="int" address="{address} + 28" bits="0-3" />
 			<property name="statExpHp"       type="int" address="{address} + 17" length="2" description="HP EV (stat experience)" />
 			<property name="statExpAttack"   type="int" address="{address} + 19" length="2" description="Attack EV (stat experience)" />
 			<property name="statExpDefense"  type="int" address="{address} + 21" length="2" description="Defense EV (stat experience)" />
@@ -191,11 +191,11 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="battled_rival_in_oaks_lab" type="bool" address="0xD74A" bits="3" />
 			<overworldFlags>
 				<property name="countPlayTime" type="bool" address="0xD731" bits="0" description="play time being counted" />
-				<property name="debugMode" type="bool" address="0xD731" bits="1" description="Only set by the debug build. If true: [detailed description omitted for brevity]" />
-				<property name="flyOrDungeon" type="bool" address="0xD731" bits="2" description="the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)" />
-				<property name="flyWarp" type="bool" address="0xD731" bits="3" />
-				<property name="dungeonWarp" type="bool" address="0xD731" bits="4" />
-				<property name="forceBike" type="bool" address="0xD731" bits="5" description="currently being forced to ride bike (cycling road)" />
+				<property name="debugMode"     type="bool" address="0xD731" bits="1" description="Only set by the debug build. If true: [detailed description omitted for brevity]" />
+				<property name="flyOrDungeon"  type="bool" address="0xD731" bits="2" description="the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)" />
+				<property name="flyWarp"       type="bool" address="0xD731" bits="3" />
+				<property name="dungeonWarp"   type="bool" address="0xD731" bits="4" />
+				<property name="forceBike"     type="bool" address="0xD731" bits="5" description="currently being forced to ride bike (cycling road)" />
 				<property name="destinationIsBlackout" type="bool" address="0xD731" bits="6" description="map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)" />
 			</overworldFlags>
 			<property name="trashCanPuzzle" type="bool" address="0xD772" bits="0" description="Set value to 3 to solve the puzzle. Freezing this property breaks the gym trainers." />
@@ -306,28 +306,28 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<yourPokemon>
 			<property name="partyPos" type="int" address="0xCC2F"/>
 			<property name="nickname" type="string" address="0xD008" length="11" />
-			<property name="species" type="int" address="0xD013" reference="pokemonSpecies" />
+			<property name="species"  type="int" address="0xD013" reference="pokemonSpecies" />
 			<property name="pokedexNumber" type="int" address="0xD013" reference="pokemonPokedexNumbers" />
-			<property name="type1"  type="int" address="0xD018" reference="pokemonTypes" />
-			<property name="type2"  type="int" address="0xD019" reference="pokemonTypes" />
-			<property name="level"  type="int" address="0xD021"/>
-			<property name="modStageAttack"  type="int" address="0xCD1A" reference="stageModifiers" />
-			<property name="modStageDefense" type="int" address="0xCD1B" reference="stageModifiers" />
-			<property name="modStageSpeed"   type="int" address="0xCD1C" reference="stageModifiers" />
-			<property name="modStageSpecial" type="int" address="0xCD1D" reference="stageModifiers" />
+			<property name="type1" type="int" address="0xD018" reference="pokemonTypes" />
+			<property name="type2" type="int" address="0xD019" reference="pokemonTypes" />
+			<property name="level" type="int" address="0xD021"/>
+			<property name="modStageAttack"   type="int" address="0xCD1A" reference="stageModifiers" />
+			<property name="modStageDefense"  type="int" address="0xCD1B" reference="stageModifiers" />
+			<property name="modStageSpeed"    type="int" address="0xCD1C" reference="stageModifiers" />
+			<property name="modStageSpecial"  type="int" address="0xCD1D" reference="stageModifiers" />
 			<property name="modStageAccuracy" type="int" address="0xCD1E" reference="stageModifiers" />
-			<property name="modStageEvasion" type="int" address="0xCD1F" reference="stageModifiers" />
-			<property name="hp"     type="int" address="0xD014" length="2" description="The Player's active Pokemon's current HP" />
-			<property name="maxHp"  type="int" address="0xD022" length="2" description="The Player's active Pokemon's max HP" />
-			<property name="attack" type="int" address="0xD024" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
+			<property name="modStageEvasion"  type="int" address="0xCD1F" reference="stageModifiers" />
+			<property name="hp"      type="int" address="0xD014" length="2" description="The Player's active Pokemon's current HP" />
+			<property name="maxHp"   type="int" address="0xD022" length="2" description="The Player's active Pokemon's max HP" />
+			<property name="attack"  type="int" address="0xD024" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
 			<property name="defense" type="int" address="0xD026" length="2" description="The Player's active Pokemon's Defense stat as calculated in battle (badge boosts and stat modifications included" />
-			<property name="speed"  type="int" address="0xD028" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included" />
+			<property name="speed"   type="int" address="0xD028" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included" />
 			<property name="special" type="int" address="0xD02A" length="2" description="The Player's active Pokemon's Special stat as calculated in battle (badge boosts and stat modifications included" />
-			<property name="battleStatHp"     type="int" address="0xD014" length="2" />
-			<property name="battleStatMaxHp"  type="int" address="0xD022" length="2" />
-			<property name="battleStatAttack" type="int" address="0xD024" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
+			<property name="battleStatHp"      type="int" address="0xD014" length="2" />
+			<property name="battleStatMaxHp"   type="int" address="0xD022" length="2" />
+			<property name="battleStatAttack"  type="int" address="0xD024" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
 			<property name="battleStatDefense" type="int" address="0xD026" length="2" description="The Player's active Pokemon's Defense stat as calculated in battle (badge boosts and stat modifications included" />
-			<property name="battleStatSpeed"  type="int" address="0xD028" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included"/>
+			<property name="battleStatSpeed"   type="int" address="0xD028" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included"/>
 			<property name="battleStatSpecial" type="int" address="0xD02A" length="2" description="The Player's active Pokemon's Special stat as calculated in battle (badge boosts and stat modifications included" />
 			<property name="battleStatusCondition" type="int" address="0xD017" reference="statusConditions" />
 			<property name="tempStatusConfusion" type="int" address="0xd061" reference="tempStatusConfused" />
@@ -341,14 +341,14 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<property name="move3pp" type="int" address="0xD02E" after-read-value-expression="x % 64" />
 			<property name="move4pp" type="int" address="0xD02F" after-read-value-expression="x % 64" />
 			<effects>
-				<property name="bide"         type="bool" address="0xD061" bits="0" />
-				<property name="thrash"       type="bool" address="0xD061" bits="1" />
-				<property name="multiHit"     type="bool" address="0xD061" bits="2" />
-				<property name="flinch"       type="bool" address="0xD061" bits="3" />
-				<property name="charging"     type="bool" address="0xD061" bits="4" />
-				<property name="multiTurn"    type="bool" address="0xD061" bits="5" />
-				<property name="invulnerable" type="bool" address="0xD061" bits="6" />
-				<property name="confusion"    type="bool" address="0xD061" bits="6" />     
+				<property name="bide"          type="bool" address="0xD061" bits="0" />
+				<property name="thrash"        type="bool" address="0xD061" bits="1" />
+				<property name="multiHit"      type="bool" address="0xD061" bits="2" />
+				<property name="flinch"        type="bool" address="0xD061" bits="3" />
+				<property name="charging"      type="bool" address="0xD061" bits="4" />
+				<property name="multiTurn"     type="bool" address="0xD061" bits="5" />
+				<property name="invulnerable"  type="bool" address="0xD061" bits="6" />
+				<property name="confusion"     type="bool" address="0xD061" bits="6" />     
 				<property name="xAccuracy"     type="bool" address="0xD062" bits="0" />
 				<property name="mist"          type="bool" address="0xD062" bits="1" />
 				<property name="focusEnergy"   type="bool" address="0xD062" bits="2" />
@@ -356,10 +356,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<property name="recharge"      type="bool" address="0xD062" bits="5" />
 				<property name="rage"          type="bool" address="0xD062" bits="6" />
 				<property name="leechSeeded"   type="bool" address="0xD062" bits="7" />
-				<property name="toxic"       type="bool" address="0xD063" bits="0" />
-				<property name="lightScreen" type="bool" address="0xD063" bits="1" />
-				<property name="reflect"     type="bool" address="0xD063" bits="2" />
-				<property name="transformed" type="bool" address="0xD063" bits="3" />
+				<property name="toxic"         type="bool" address="0xD063" bits="0" />
+				<property name="lightScreen"   type="bool" address="0xD063" bits="1" />
+				<property name="reflect"       type="bool" address="0xD063" bits="2" />
+				<property name="transformed"   type="bool" address="0xD063" bits="3" />
 			</effects>
 			<counters>
 				<property name="multiHit"  type="int" address="0xD069" />
@@ -392,10 +392,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<property name="move2" type="int" address="0xCFED" reference="moves" />
 				<property name="move3" type="int" address="0xCFEE" reference="moves" />
 				<property name="move4" type="int" address="0xCFEF" reference="moves" />
-				<property name="dvAttack"  type="int" address="0xCFF0" after-read-value-expression="(x - (x % 16))/16" />
-				<property name="dvDefense" type="int" address="0xCFF0" after-read-value-expression="x % 16" />
-				<property name="dvSpeed"   type="int" address="0xCFF1" after-read-value-expression="(x - (x % 16))/16" />
-				<property name="dvSpecial" type="int" address="0xCFF1" after-read-value-expression="x % 16" />
+				<property name="dvAttack"  type="int" address="0xCFF0" bits="4-7" />
+				<property name="dvDefense" type="int" address="0xCFF0" bits="0-3" />
+				<property name="dvSpeed"   type="int" address="0xCFF1" bits="4-7" />
+				<property name="dvSpecial" type="int" address="0xCFF1" bits="0-3" />
 				<property name="baseHp"      type="int" address="0xD001" after-read-value-expression="x % 16" />
 				<property name="baseAttack"  type="int" address="0xD002" after-read-value-expression="x % 16" />
 				<property name="baseDefense" type="int" address="0xD003" after-read-value-expression="x % 16" />
@@ -403,14 +403,14 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<property name="baseSpecial" type="int" address="0xD005" after-read-value-expression="x % 16" />
 				<property name="baseExp"     type="int" address="0xD007" after-read-value-expression="x % 16" />
 				<effects>
-					<property name="bide"         type="bool" address="0xD066" bits="0" />
-					<property name="thrash"       type="bool" address="0xD066" bits="1" />
-					<property name="multiHit"     type="bool" address="0xD066" bits="2" />
-					<property name="flinch"       type="bool" address="0xD066" bits="3" />
-					<property name="charging"     type="bool" address="0xD066" bits="4" />
-					<property name="multiTurn"    type="bool" address="0xD066" bits="5" />
-					<property name="invulnerable" type="bool" address="0xD066" bits="6" />
-					<property name="confusion"    type="bool" address="0xD066" bits="6" />     
+					<property name="bide"          type="bool" address="0xD066" bits="0" />
+					<property name="thrash"        type="bool" address="0xD066" bits="1" />
+					<property name="multiHit"      type="bool" address="0xD066" bits="2" />
+					<property name="flinch"        type="bool" address="0xD066" bits="3" />
+					<property name="charging"      type="bool" address="0xD066" bits="4" />
+					<property name="multiTurn"     type="bool" address="0xD066" bits="5" />
+					<property name="invulnerable"  type="bool" address="0xD066" bits="6" />
+					<property name="confusion"     type="bool" address="0xD066" bits="6" />     
 					<property name="xAccuracy"     type="bool" address="0xD067" bits="0" />
 					<property name="mist"          type="bool" address="0xD067" bits="1" />
 					<property name="focusEnergy"   type="bool" address="0xD067" bits="2" />
@@ -418,10 +418,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 					<property name="recharge"      type="bool" address="0xD067" bits="5" />
 					<property name="rage"          type="bool" address="0xD067" bits="6" />
 					<property name="leechSeeded"   type="bool" address="0xD067" bits="7" />
-					<property name="toxic"       type="bool" address="0xD068" bits="0" />
-					<property name="lightScreen" type="bool" address="0xD068" bits="1" />
-					<property name="reflect"     type="bool" address="0xD068" bits="2" />
-					<property name="transformed" type="bool" address="0xD068" bits="3" />
+					<property name="toxic"         type="bool" address="0xD068" bits="0" />
+					<property name="lightScreen"   type="bool" address="0xD068" bits="1" />
+					<property name="reflect"       type="bool" address="0xD068" bits="2" />
+					<property name="transformed"   type="bool" address="0xD068" bits="3" />
 				</effects>
 				<counters>
 					<property name="multiHit"  type="int" address="0xD06E" />
@@ -637,13 +637,13 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			</tiles>
 		</screen>
 		<options>
-			<property name="textSpeed1" type="bool" address="0xD354" bits="1" description="Fast text speed is set when both 1 and 2 are set to false" />
-			<property name="textSpeed2" type="bool" address="0xD354" bits="2" description="Fast text speed is set when both 1 and 2 are set to false" />
-			<property name="sound1" type="bool" address="0xD354" bits="4" /> 
-			<property name="sound2" type="bool" address="0xD354" bits="5" /> 
-			<property name="battleStyle" type="bool" address="0xD354" bits="6" />
+			<property name="textSpeed1"       type="bool" address="0xD354" bits="1" description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="textSpeed2"       type="bool" address="0xD354" bits="2" description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="sound1"           type="bool" address="0xD354" bits="4" /> 
+			<property name="sound2"           type="bool" address="0xD354" bits="5" /> 
+			<property name="battleStyle"      type="bool" address="0xD354" bits="6" />
 			<property name="battleAnimations" type="bool" address="0xD354" bits="7" />
-			<property name="soloChallenge" type="int" address="0xD354" reference="options"/>
+			<property name="soloChallenge"    type="int" address="0xD354" reference="options"/>
 		</options>
 		<settings>
 			<property name="textSpeedMid"    type="bool" address="0xD354" bits="1" description="Fast text speed is set when both Mid and Slow are set to false" />
@@ -792,7 +792,8 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 	</properties>
   
 	<references>
-		<backports>
+		<!-- TODO: Backports -->
+		<!-- <backports>
 			<entry key="0x00000000" />
 			<entry key="0x060202C6" value="Pumpkaboo" />
 		</backports>
@@ -802,7 +803,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0x02" value="TrickOrTreat" />
 			<entry key="0x03" value="SacredFire" />
 			<entry key="0x04" value="Aeroblast" />
-		</backport_moves>
+		</backport_moves> -->
 		<battleTypes>
 			<entry key="0x00" value="None" />
 			<entry key="0x01" value="Wild" />
@@ -839,6 +840,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0x18" value="Psychic" />
 			<entry key="0x19" value="Ice" />
 			<entry key="0x1A" value="Dragon" />
+			<!-- TODO: Backport -->
+			<!-- <entry key="0x09" value="Steel" /> -->
+			<!-- <entry key="0x1B" value="Dark" /> -->
+			<!-- <entry key="0x1C" value="Fairy" /> -->
 		</pokemonTypes>
 		<textPrompt>
 			<entry key="0xEE" value="▼" />
@@ -1786,7 +1791,8 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0xBC" value="Bellsprout" />
 			<entry key="0xBD" value="Weepinbell" />
 			<entry key="0xBE" value="Victreebel" />
-			<entry key="0xBF" value="Chandelure" />
+			<!-- TODO: Backport -->
+			<!-- <entry key="0xBF" value="Backport" /> -->
 		</pokemonSpecies>
 		<maps>
 			<entry key="0x00" value="Pallet Town" />
