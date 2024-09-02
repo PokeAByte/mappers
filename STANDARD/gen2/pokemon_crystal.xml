@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="9f46da7e-5087-439d-bcc8-7fe81e54e988" name="Pokemon Crystal" platform="GBC" version="1.1.2"
+<mapper id="9f46da7e-5087-439d-bcc8-7fe81e54e988" name="Pokemon Crystal" platform="GBC" version="1.1.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -381,7 +381,7 @@
             <!-- REQUIRE ADDITIONAL PROPERTIES AND A FUNCTION TO CALCULATE THE CURRENT RATE 
 				Need to know the state of the player (Walking vs surfing) to make this fully dynamic
 			-->
-            <property name="repel_count" type="int" adress="0xDCA1" />
+            <property name="repel_count" type="int" address="0xDCA1" />
 			<property name="encounter_rate" type="int" />
             <encounter_rates>
                 <property name="morning" type="int" address="0xD25A" />
