@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="e1396b30-2dc2-11ee-be56-0242ac120002" name="Pokemon Red and Blue" platform="GB" version="1.1.2"
+<mapper id="e1396b30-2dc2-11ee-be56-0242ac120002" name="Pokemon Red and Blue" platform="GB" version="1.1.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -329,6 +329,9 @@
             <property name="destination_is_blackout" type="bool" address="0xD731" bits="6" />
             <property name="beat_champion" type="bool" bits="1" address="0xd867" />
         </flags>
+        <variables>
+            <property name="save_file_status" type="int" address="0xd087" reference="save_file_status" />
+        </variables>
         <event_flags> <!-- TODO: test to ensure these work -->
             <property name="followed_oak_into_lab" type="bool" address="0xD747" bits="0" />
             <property name="hall_of_fame_dex_rating" type="bool" address="0xD747" bits="3" />
@@ -1225,6 +1228,11 @@
     </properties>
 
     <references>
+        <save_file_status>
+			<entry key="0x00" />
+			<entry key="0x01" value="No Save" />
+			<entry key="0x02" value="Save" />
+		</save_file_status>
         <text_speeds>
             <entry key="0x00" value="Instant" />
             <entry key="0x01" value="Fast" />

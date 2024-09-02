@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_yellow.xml'
 -->
 
-<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.1.1"
+<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.1.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -186,6 +186,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			</mapData>
 		</overworld>
 		<events>
+			<property name="wSaveFileStatus" type="int" address="0xd087" reference="saveFileStatus" />
 			<property name="beatChampion" type="bool" bits="1" address="0xd866" />
 			<property name="got_pokedex"  type="bool" address="0xD74A" bits="5" />
 			<property name="battled_rival_in_oaks_lab" type="bool" address="0xD74A" bits="3" />
@@ -637,8 +638,9 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			</tiles>
 		</screen>
 		<options>
-			<property name="textSpeed1"       type="bool" address="0xD354" bits="1" description="Fast text speed is set when both 1 and 2 are set to false" />
-			<property name="textSpeed2"       type="bool" address="0xD354" bits="2" description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="textSpeed"        type="int"  address="0xD354" bits="0-2" description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="textSpeed1"       type="bool" address="0xD354" bits="1"   description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="textSpeed2"       type="bool" address="0xD354" bits="2"   description="Fast text speed is set when both 1 and 2 are set to false" />
 			<property name="sound1"           type="bool" address="0xD354" bits="4" /> 
 			<property name="sound2"           type="bool" address="0xD354" bits="5" /> 
 			<property name="battleStyle"      type="bool" address="0xD354" bits="6" />
@@ -673,6 +675,13 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<property name="prop_8" type="int" address="0xd707" />
 				<property name="prop_9" type="int" address="0xd708" />
 			</backport>
+			<encounter_flags>
+				<property name="EVENT_ENCOUNTER_ROUTE1_TEST" type="bool" address="0xD746" bits="7" />
+				<property name="EVENT_ENCOUNTER_VIRIDIAN_FOREST_PIDGEY" type="bool" address="0xD747" bits="0" />
+				<property name="EVENT_ENCOUNTER_ROUTE3_SPEAROW" type="bool" address="0xD747" bits="1" />
+				<property name="EVENT_ENCOUNTER_MTMOON_SANDSHREW" type="bool" address="0xD747" bits="2" />
+				<property name="EVENT_ENCOUNTER_ROUTE16_DODUO" type="bool" address="0xD747" bits="3" />
+			</encounter_flags>
 			<time>
 				<property name="frameCount"       type="int" length="4" address="0xdbdf" />
 				<property name="oWFrameCount"     type="int" length="4" address="0xdbe3" />
@@ -804,6 +813,11 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0x03" value="SacredFire" />
 			<entry key="0x04" value="Aeroblast" />
 		</backport_moves> -->
+		<saveFileStatus>
+			<entry key="0x00" />
+			<entry key="0x01" value="No Save" />
+			<entry key="0x02" value="Save" />
+		</saveFileStatus>
 		<battleTypes>
 			<entry key="0x00" value="None" />
 			<entry key="0x01" value="Wild" />
