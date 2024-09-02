@@ -529,9 +529,14 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     <options>
       <!-- <property name="clockDay"         type="string" address="0xXXXX" length="5" /> -->
       <!-- <property name="clockTime"        type="string" address="0xXXXX" length="5" /> -->
-      <property name="textSpeep"        type="int"  address="0xCFCC" bits="0-2" description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="textSpeed"        type="int"  address="0xCFCC" bits="0-2" />
       <property name="textSpeed2"       type="bool" address="0xCFCC" bits="1"   description="False+False = Fast, True+False = Mid, True+True = Slow" />
       <property name="textSpeed3"       type="bool" address="0xCFCC" bits="2"   description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="noTextDelay"      type="bool" address="0xCFCC" bits="3" />
+      <wTextboxFlags>
+        <property name="FAST_TEXT_DELAY_F" type="bool" address="0xcfcf" bits="0" />
+        <property name="NO_TEXT_DELAY_F"   type="bool" address="0xcfcf" bits="1" />
+      </wTextboxFlags>
       <property name="sound"            type="bool" address="0xCFCC" bits="5"   description="Mono = False, Stereo = True" />
       <property name="battleStyle"      type="bool" address="0xCFCC" bits="6"   description="Shift = False, Set = True" />
       <property name="battleAnimations" type="bool" address="0xCFCC" bits="7"   description="On = False, Off = True" />
