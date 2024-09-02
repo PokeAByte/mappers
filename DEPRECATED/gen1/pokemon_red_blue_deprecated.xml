@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 -->
 
-<mapper id="fdd1d91c-5be7-497a-b420-a53e6132ff0a" name="Pokemon Red and Blue - Deprecated Mapper" platform="GB" version="1.1.3"
+<mapper id="fdd1d91c-5be7-497a-b420-a53e6132ff0a" name="Pokemon Red and Blue - Deprecated Mapper" platform="GB" version="1.1.4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -529,8 +529,8 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 				<class name="55" type="playerItem" address="0xD5A9" />    
 				<class name="56" type="playerItem" address="0xD5AB" />    
 				<class name="57" type="playerItem" address="0xD5AD" />
-			</items> -->
-      	</itemStorage>
+			</items>
+      	</itemStorage> -->
     </pc>
     <screen>
       <text>

@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_crystal.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.1"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -680,6 +680,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     <!-- These will not work without a ROM patch -->
     <patch>
       <!-- <property name="patchPresent" type="int" length="1" address="0x3fb5" after-read-value-expression="x != 0" />  -->
+      <property name="wStarterHiddenPowerType" type="int" address="0xc2d1" reference="hidden_power_types" />
       <battle_statuses>
       <yourPokemon>
           <property name="phantomforce" type="bool" address="0xc66b" bits="3" />
@@ -811,6 +812,24 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
   </properties>
 
   <references>
+    <hidden_power_types>
+      <entry key="0xFF" value="Dark" />   
+      <entry key="0xFD" value="Ice" />    
+      <entry key="0xCF" value="Ground" /> 
+      <entry key="0xDC" value="Rock" />   
+      <entry key="0xCD" value="Flying" /> 
+      <entry key="0xFC" value="Psychic" />
+      <entry key="0xDE" value="Ghost" />  
+      <entry key="0xEC" value="Fire" />   
+      <entry key="0xED" value="Water" />  
+      <entry key="0xEF" value="Electric" />
+      <entry key="0xEE" value="Grass" />  
+      <entry key="0xDD" value="Bug" />    
+      <entry key="0xCE" value="Poison" /> 
+      <entry key="0xCC" value="Fighting" />
+      <entry key="0xFE" value="Dragon" /> 
+      <entry key="0xDF" value="Steel" />  
+    </hidden_power_types>
     <dayNames>
       <entry key="0x00" value="Sunday" />
       <entry key="0x01" value="Monday" />
