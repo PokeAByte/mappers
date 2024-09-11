@@ -51,16 +51,17 @@ function setProperty(path, values) {
     if (values.value !== undefined)
         property.value = values.value;
 }
+
 function copyProperties(sourcePath, destinationPath) {
-    const sourceProps = Object.values(mapper.properties).filter(x => x.path.startsWith(sourcePath));
-    const destinationProps = Object.values(mapper.properties).filter(x => x.path.startsWith(destinationPath));
-    destinationProps.forEach(property => {
-        const restOfThePath = property.path.replace(destinationPath, '');
-        const source = sourceProps.find(x => x.path === `${sourcePath}${restOfThePath}`);
-        if (source) {
-            setProperty(property.path, source);
-        }
-    });
+	const destPathLength = destinationPath.length;
+	Object.keys(mapper.properties)
+		.filter(key => key.startsWith(destinationPath))
+		.forEach((key) => {
+			const source = mapper.properties[`${sourcePath}${key.slice(destPathLength)}`];
+			if (source) {
+				setProperty(key, source);
+			}
+		});
 }
 
 /** Generate a nibble from each IV's respective bit */
