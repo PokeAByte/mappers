@@ -4,6 +4,16 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
+	<memory>
+		<!-- "Header                  <read start="0x0000" end="0x00FF" /> --> 
+		<!-- "VRAM                --> <read start="0x8000" end="0x9FFF" />
+		<!-- "External RAM Part 1     <read start="0xA000" end="0xAFFF" /> --> 
+		<!-- "External RAM Part 2     <read start="0xB000" end="0xBFFF" /> --> 
+		<!-- "Work RAM Bank 0     --> <read start="0xC000" end="0xCFFF" />
+		<!-- "Work RAM Bank 1     --> <read start="0xD000" end="0xDFFF" />
+		<!-- "I/O Registers           <read start="0xFF00" end="0xFF7F" /> --> 
+		<!-- "High RAM            --> <read start="0xFF80" end="0xFFFE" />
+	</memory>
     <macros>
         <pokemon>
             <property name="species"    type="int" address="{address}" reference="species" />
