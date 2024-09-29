@@ -264,6 +264,8 @@
 
         <bag> <!-- TODO: map the bad struture -->
             <property name="quantity_decyption_key" type="int" length="2" address="0x3005E3C" />
+	    <property name="money" type="int" length="4" address="0x02025BC4"/>
+            <property name="coins" type="int" length="2" address="0x02025BC8"/>
             <items> <!-- saveblock1 + 0x560 = 0x2025C94 -->
                 <!-- <class name="0" type="player_item" var:address="0x2025C94" var:offset="1376" /> -->
             </items>
