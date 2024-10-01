@@ -12,7 +12,20 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
-
+	<memory>
+		<!-- Header                  <read start="0x0000" end="0x00FF" /> --> 
+		<!-- VRAM                --> <read start="0x8000" end="0x9FFF" />
+		<!-- External RAM Bank 1     <read start="0xA000" end="0xAFFF" /> --> 
+		<!-- External RAM Bank 2     <read start="0xB000" end="0xBFFF" /> --> 
+		<!-- Work RAM Bank 0     --> <read start="0xC000" end="0xCFFF" />
+		<!-- Work RAM Bank 1     --> <read start="0xD000" end="0xDFFF" />
+		<!-- I/O Registers           <read start="0xFF00" end="0xFF7F" /> --> 
+		<!-- High RAM            --> <read start="0xFF80" end="0xFFFE" />
+		<!-- Work RAM (Bank 2)   --> <read start="0x10000" end="0x10FFF" />
+		<!-- Work RAM (Bank 3)       <read start="0x11000" end="0x11FFF" /> -->
+		<!-- Work RAM (Bank 6)       <read start="0x14000" end="0x14FFF" /> -->
+		<!-- Work RAM (Bank 7)       <read start="0x15000" end="0x15FFF" /> -->
+	</memory>
     <classes>
         <pokemonInParty>
             <property name="nickname"      address="{nicknameAddress}" type="string" reference="defaultCharacterMap" length="11" />
