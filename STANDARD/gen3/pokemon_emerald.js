@@ -232,7 +232,12 @@ function preprocessor() {
     variables.dma_a = memory.defaultNamespace.get_uint32_le(0x3005D8C);
     variables.dma_b = memory.defaultNamespace.get_uint32_le(0x3005D90);
     variables.dma_c = memory.defaultNamespace.get_uint32_le(0x3005D94);
-    variables.quantity_decryption_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 172);
+	if (variables.dma_a == 0 ||
+        variables.dma_b == 0 ||
+        variables.dma_c == 0) {
+		return false;
+	}
+	variables.quantity_decryption_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 172);
     variables.player_id = memory.defaultNamespace.get_uint16_le(variables.dma_b + 10);
     variables.first_item_type = memory.defaultNamespace.get_uint16_le(variables.dma_a + 1376);
     variables.second_item_type = memory.defaultNamespace.get_uint16_le(variables.dma_a + 1380);
@@ -437,4 +442,5 @@ function preprocessor() {
     return true;
 }
 
+globalThis.decryptItemQuantity = decryptItemQuantity;
 export { decryptItemQuantity, preprocessor };
