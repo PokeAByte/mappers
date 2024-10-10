@@ -181,6 +181,7 @@ For all new software, please use the paths within 'pokemon_emerald.xml'
       </vsSeeker>
       <bag>
         <property name="quantityDecyptionKey" type="int" length="2" address="{dma_b} + 3872" />
+        <property name="money"                type="int" length="2" address="{dma_a} + 656" />
         <items>
           <class name="0"  type="playerItem" var:offset="784" />
           <class name="1"  type="playerItem" var:offset="788" />
