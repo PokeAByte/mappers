@@ -793,154 +793,144 @@
 				</cursor>
 			</menu>
 			<voltorb_flip>
-				<property name="activate_voltorb_flip" type="int" address="0x22E5E40" length="4"/>
+				<property name="activate_voltorb_flip" type="int" address="{global_pointer} + 0x76C18" length="4"/>
 				<information>
-					<!-- <property name="x_points_1" type="int" address="{global_pointer} + 0x76D5B + 0" />
-					<property name="x_points_2" type="int" address="{global_pointer} + 0x76D5B + 1" />
-					<property name="x_points_3" type="int" address="{global_pointer} + 0x76D5B + 2" />
-					<property name="x_points_4" type="int" address="{global_pointer} + 0x76D5B + 3" />
-					<property name="x_points_5" type="int" address="{global_pointer} + 0x76D5B + 4" />
-					<property name="y_points_1" type="int" address="{global_pointer} + 0x76D5B + 5" />
-					<property name="y_points_2" type="int" address="{global_pointer} + 0x76D5B + 6" />
-					<property name="y_points_3" type="int" address="{global_pointer} + 0x76D5B + 7" />
-					<property name="y_points_4" type="int" address="{global_pointer} + 0x76D5B + 8" />
-					<property name="y_points_5" type="int" address="{global_pointer} + 0x76D5B + 9" /> -->
 					<!-- 
 						0x22E5F77 @ save state 1 
 						Global Pointer Bytes: 1C F2 26 02
 						Global Pointer Value: 226F21C
 					-->
-					<property name="round_coins" type="int" address="0x22E5F88" />
-					<property name="x_points_1" type="int" address="0x22E5F70 + 0" />
-					<property name="x_points_2" type="int" address="0x22E5F70 + 1" />
-					<property name="x_points_3" type="int" address="0x22E5F70 + 2" />
-					<property name="x_points_4" type="int" address="0x22E5F70 + 3" />
-					<property name="x_points_5" type="int" address="0x22E5F70 + 4" />
-					<property name="y_points_1" type="int" address="0x22E5F70 + 5" />
-					<property name="y_points_2" type="int" address="0x22E5F70 + 6" />
-					<property name="y_points_3" type="int" address="0x22E5F70 + 7" />
-					<property name="y_points_4" type="int" address="0x22E5F70 + 8" />
-					<property name="y_points_5" type="int" address="0x22E5F70 + 9" />
-					<property name="x_voltorbs_1" type="int" address="0x22E5F70 + 10" />
-					<property name="x_voltorbs_2" type="int" address="0x22E5F70 + 11" />
-					<property name="x_voltorbs_3" type="int" address="0x22E5F70 + 12" />
-					<property name="x_voltorbs_4" type="int" address="0x22E5F70 + 13" />
-					<property name="x_voltorbs_5" type="int" address="0x22E5F70 + 14" />
-					<property name="y_voltorbs_1" type="int" address="0x22E5F70 + 15" />
-					<property name="y_voltorbs_2" type="int" address="0x22E5F70 + 16" />
-					<property name="y_voltorbs_3" type="int" address="0x22E5F70 + 17" />
-					<property name="y_voltorbs_4" type="int" address="0x22E5F70 + 18" />
-					<property name="y_voltorbs_5" type="int" address="0x22E5F70 + 19" />
+					<property name="round_coins"  type="int" address="{global_pointer} + 0x76D60" />
+					<property name="x_points_1"   type="int" address="{global_pointer} + 0x76D48 + 0" />
+					<property name="x_points_2"   type="int" address="{global_pointer} + 0x76D48 + 1" />
+					<property name="x_points_3"   type="int" address="{global_pointer} + 0x76D48 + 2" />
+					<property name="x_points_4"   type="int" address="{global_pointer} + 0x76D48 + 3" />
+					<property name="x_points_5"   type="int" address="{global_pointer} + 0x76D48 + 4" />
+					<property name="y_points_1"   type="int" address="{global_pointer} + 0x76D48 + 5" />
+					<property name="y_points_2"   type="int" address="{global_pointer} + 0x76D48 + 6" />
+					<property name="y_points_3"   type="int" address="{global_pointer} + 0x76D48 + 7" />
+					<property name="y_points_4"   type="int" address="{global_pointer} + 0x76D48 + 8" />
+					<property name="y_points_5"   type="int" address="{global_pointer} + 0x76D48 + 9" />
+					<property name="x_voltorbs_1" type="int" address="{global_pointer} + 0x76D48 + 10" />
+					<property name="x_voltorbs_2" type="int" address="{global_pointer} + 0x76D48 + 11" />
+					<property name="x_voltorbs_3" type="int" address="{global_pointer} + 0x76D48 + 12" />
+					<property name="x_voltorbs_4" type="int" address="{global_pointer} + 0x76D48 + 13" />
+					<property name="x_voltorbs_5" type="int" address="{global_pointer} + 0x76D48 + 14" />
+					<property name="y_voltorbs_1" type="int" address="{global_pointer} + 0x76D48 + 15" />
+					<property name="y_voltorbs_2" type="int" address="{global_pointer} + 0x76D48 + 16" />
+					<property name="y_voltorbs_3" type="int" address="{global_pointer} + 0x76D48 + 17" />
+					<property name="y_voltorbs_4" type="int" address="{global_pointer} + 0x76D48 + 18" />
+					<property name="y_voltorbs_5" type="int" address="{global_pointer} + 0x76D48 + 19" />
 				</information>
 				<value>
 					<row_1>
-						<property name="a" type="int" length="4" address="0x22E5E44 + (12 * 0)"  reference="voltorb_flip_values" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + (12 * 1)"  reference="voltorb_flip_values" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + (12 * 2)"  reference="voltorb_flip_values" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + (12 * 3)"  reference="voltorb_flip_values" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + (12 * 4)"  reference="voltorb_flip_values" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 0)"  reference="voltorb_flip_values" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 1)"  reference="voltorb_flip_values" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 2)"  reference="voltorb_flip_values" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 3)"  reference="voltorb_flip_values" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 4)"  reference="voltorb_flip_values" />
 					</row_1>
 					<row_2>
-						<property name="a" type="int" length="4" address="0x22E5E44 + (12 * 5)"  reference="voltorb_flip_values" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + (12 * 6)"  reference="voltorb_flip_values" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + (12 * 7)"  reference="voltorb_flip_values" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + (12 * 8)"  reference="voltorb_flip_values" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + (12 * 9)"  reference="voltorb_flip_values" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 5)"  reference="voltorb_flip_values" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 6)"  reference="voltorb_flip_values" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 7)"  reference="voltorb_flip_values" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 8)"  reference="voltorb_flip_values" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 9)"  reference="voltorb_flip_values" />
 					</row_2>
 					<row_3>
-						<property name="a" type="int" length="4" address="0x22E5E44 + (12 * 10)" reference="voltorb_flip_values" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + (12 * 11)" reference="voltorb_flip_values" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + (12 * 12)" reference="voltorb_flip_values" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + (12 * 13)" reference="voltorb_flip_values" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + (12 * 14)" reference="voltorb_flip_values" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 10)" reference="voltorb_flip_values" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 11)" reference="voltorb_flip_values" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 12)" reference="voltorb_flip_values" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 13)" reference="voltorb_flip_values" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 14)" reference="voltorb_flip_values" />
 					</row_3>
 					<row_4>
-						<property name="a" type="int" length="4" address="0x22E5E44 + (12 * 15)" reference="voltorb_flip_values" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + (12 * 16)" reference="voltorb_flip_values" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + (12 * 17)" reference="voltorb_flip_values" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + (12 * 18)" reference="voltorb_flip_values" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + (12 * 19)" reference="voltorb_flip_values" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 15)" reference="voltorb_flip_values" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 16)" reference="voltorb_flip_values" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 17)" reference="voltorb_flip_values" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 18)" reference="voltorb_flip_values" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 19)" reference="voltorb_flip_values" />
 					</row_4>
 					<row_5>
-						<property name="a" type="int" length="4" address="0x22E5E44 + (12 * 20)" reference="voltorb_flip_values" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + (12 * 21)" reference="voltorb_flip_values" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + (12 * 22)" reference="voltorb_flip_values" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + (12 * 23)" reference="voltorb_flip_values" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + (12 * 24)" reference="voltorb_flip_values" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 20)" reference="voltorb_flip_values" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 21)" reference="voltorb_flip_values" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 22)" reference="voltorb_flip_values" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 23)" reference="voltorb_flip_values" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + (12 * 24)" reference="voltorb_flip_values" />
 					</row_5>
 				</value>
 				<label>
 					<row_1>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 4 + (12 * 0)"  reference="voltorb_flip_label" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + 4 + (12 * 1)"  reference="voltorb_flip_label" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + 4 + (12 * 2)"  reference="voltorb_flip_label" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + 4 + (12 * 3)"  reference="voltorb_flip_label" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + 4 + (12 * 4)"  reference="voltorb_flip_label" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 0)"  reference="voltorb_flip_label" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 1)"  reference="voltorb_flip_label" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 2)"  reference="voltorb_flip_label" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 3)"  reference="voltorb_flip_label" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 4)"  reference="voltorb_flip_label" />
 					</row_1>
 					<row_2>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 4 + (12 * 5)"  reference="voltorb_flip_label" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + 4 + (12 * 6)"  reference="voltorb_flip_label" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + 4 + (12 * 7)"  reference="voltorb_flip_label" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + 4 + (12 * 8)"  reference="voltorb_flip_label" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + 4 + (12 * 9)"  reference="voltorb_flip_label" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 5)"  reference="voltorb_flip_label" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 6)"  reference="voltorb_flip_label" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 7)"  reference="voltorb_flip_label" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 8)"  reference="voltorb_flip_label" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 9)"  reference="voltorb_flip_label" />
 					</row_2>
 					<row_3>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 4 + (12 * 10)" reference="voltorb_flip_label" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + 4 + (12 * 11)" reference="voltorb_flip_label" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + 4 + (12 * 12)" reference="voltorb_flip_label" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + 4 + (12 * 13)" reference="voltorb_flip_label" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + 4 + (12 * 14)" reference="voltorb_flip_label" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 10)" reference="voltorb_flip_label" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 11)" reference="voltorb_flip_label" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 12)" reference="voltorb_flip_label" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 13)" reference="voltorb_flip_label" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 14)" reference="voltorb_flip_label" />
 					</row_3>
 					<row_4>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 4 + (12 * 15)" reference="voltorb_flip_label" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + 4 + (12 * 16)" reference="voltorb_flip_label" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + 4 + (12 * 17)" reference="voltorb_flip_label" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + 4 + (12 * 18)" reference="voltorb_flip_label" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + 4 + (12 * 19)" reference="voltorb_flip_label" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 15)" reference="voltorb_flip_label" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 16)" reference="voltorb_flip_label" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 17)" reference="voltorb_flip_label" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 18)" reference="voltorb_flip_label" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 19)" reference="voltorb_flip_label" />
 					</row_4>
 					<row_5>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 4 + (12 * 20)" reference="voltorb_flip_label" />
-						<property name="b" type="int" length="4" address="0x22E5E44 + 4 + (12 * 21)" reference="voltorb_flip_label" />
-						<property name="c" type="int" length="4" address="0x22E5E44 + 4 + (12 * 22)" reference="voltorb_flip_label" />
-						<property name="d" type="int" length="4" address="0x22E5E44 + 4 + (12 * 23)" reference="voltorb_flip_label" />
-						<property name="e" type="int" length="4" address="0x22E5E44 + 4 + (12 * 24)" reference="voltorb_flip_label" />
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 20)" reference="voltorb_flip_label" />
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 21)" reference="voltorb_flip_label" />
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 22)" reference="voltorb_flip_label" />
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 23)" reference="voltorb_flip_label" />
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 4 + (12 * 24)" reference="voltorb_flip_label" />
 					</row_5>
 				</label>
 				<status>
 					<row_1>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 8 + (12 * 0)"  bits="0"/>
-						<property name="b" type="int" length="4" address="0x22E5E44 + 8 + (12 * 1)"  bits="0"/>
-						<property name="c" type="int" length="4" address="0x22E5E44 + 8 + (12 * 2)"  bits="0"/>
-						<property name="d" type="int" length="4" address="0x22E5E44 + 8 + (12 * 3)"  bits="0"/>
-						<property name="e" type="int" length="4" address="0x22E5E44 + 8 + (12 * 4)"  bits="0"/>
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 0)"  bits="0"/>
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 1)"  bits="0"/>
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 2)"  bits="0"/>
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 3)"  bits="0"/>
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 4)"  bits="0"/>
 					</row_1>
 					<row_2>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 8 + (12 * 5)"  bits="0"/>
-						<property name="b" type="int" length="4" address="0x22E5E44 + 8 + (12 * 6)"  bits="0"/>
-						<property name="c" type="int" length="4" address="0x22E5E44 + 8 + (12 * 7)"  bits="0"/>
-						<property name="d" type="int" length="4" address="0x22E5E44 + 8 + (12 * 8)"  bits="0"/>
-						<property name="e" type="int" length="4" address="0x22E5E44 + 8 + (12 * 9)"  bits="0"/>
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 5)"  bits="0"/>
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 6)"  bits="0"/>
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 7)"  bits="0"/>
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 8)"  bits="0"/>
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 9)"  bits="0"/>
 					</row_2>
 					<row_3>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 8 + (12 * 10)" bits="0"/>
-						<property name="b" type="int" length="4" address="0x22E5E44 + 8 + (12 * 11)" bits="0"/>
-						<property name="c" type="int" length="4" address="0x22E5E44 + 8 + (12 * 12)" bits="0"/>
-						<property name="d" type="int" length="4" address="0x22E5E44 + 8 + (12 * 13)" bits="0"/>
-						<property name="e" type="int" length="4" address="0x22E5E44 + 8 + (12 * 14)" bits="0"/>
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 10)" bits="0"/>
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 11)" bits="0"/>
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 12)" bits="0"/>
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 13)" bits="0"/>
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 14)" bits="0"/>
 					</row_3>
 					<row_4>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 8 + (12 * 15)" bits="0"/>
-						<property name="b" type="int" length="4" address="0x22E5E44 + 8 + (12 * 16)" bits="0"/>
-						<property name="c" type="int" length="4" address="0x22E5E44 + 8 + (12 * 17)" bits="0"/>
-						<property name="d" type="int" length="4" address="0x22E5E44 + 8 + (12 * 18)" bits="0"/>
-						<property name="e" type="int" length="4" address="0x22E5E44 + 8 + (12 * 19)" bits="0"/>
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 15)" bits="0"/>
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 16)" bits="0"/>
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 17)" bits="0"/>
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 18)" bits="0"/>
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 19)" bits="0"/>
 					</row_4>
 					<row_5>
-						<property name="a" type="int" length="4" address="0x22E5E44 + 8 + (12 * 20)" bits="0"/>
-						<property name="b" type="int" length="4" address="0x22E5E44 + 8 + (12 * 21)" bits="0"/>
-						<property name="c" type="int" length="4" address="0x22E5E44 + 8 + (12 * 22)" bits="0"/>
-						<property name="d" type="int" length="4" address="0x22E5E44 + 8 + (12 * 23)" bits="0"/>
-						<property name="e" type="int" length="4" address="0x22E5E44 + 8 + (12 * 24)" bits="0"/>
+						<property name="a" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 20)" bits="0"/>
+						<property name="b" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 21)" bits="0"/>
+						<property name="c" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 22)" bits="0"/>
+						<property name="d" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 23)" bits="0"/>
+						<property name="e" type="int" length="4" address="{global_pointer} + 0x76C1C + 8 + (12 * 24)" bits="0"/>
 					</row_5>
 				</status>
 			</voltorb_flip>
