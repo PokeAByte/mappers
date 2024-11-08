@@ -95,7 +95,7 @@ function getGamestate() {
     const battleNickname   = getValue('battle.player.active_pokemon.nickname');                     //TODO: remove these once all properties are mapped - HGSS and Plat should have the same state functions
     const outcome_flags    = getValue('battle.other.outcome_flags');
     // if (team_count === 0 || global_pointer === 0 || global_pointer === -451145720) {
-    if (team_count === 0 || global_pointer <= 0) {
+    if (team_count === 0 || (global_pointer <= 0 && team_count === 0)) {
         return 'No Pokemon';
     }
     else if (active_pokemonPv === teamPokemonPv && outcome_flags == 1) {

@@ -271,7 +271,8 @@
 
         <bag>
             <property name="quantity_decryption_key" type="int" length="2" address="{dma_b} + 172" />
-            <property name="money" type="int" length="2" address="{dma_a} + 1168" after-read-value-expression="decryptItemQuantity(x)" />
+            <property name="money" type="int" length="4" address="{dma_a} + 1168" after-read-value-expression="decryptItemQuantity(x)" />
+            <property name="coins" type="int" length="2" address="{dma_a} + 1172" />
             <items>
                 <class name="0"  type="player_item" var:offset="1376" />
                 <class name="1"  type="player_item" var:offset="1380" />

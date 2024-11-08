@@ -1281,9 +1281,14 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0xA2" value="SUPER FANG" />
 			<entry key="0xA3" value="SLASH" />
 			<entry key="0xA4" value="SUBSTITUTE" />
-			<entry key="0xA5" value="STRUGGLE" />
-			<!-- <entry key="0xA5" value="NEW MOVE" />
-			<entry key="0xA6" value="STRUGGLE" /> -->
+			<entry key="0xA5" value="BACKPORT_MOVE_1" /> <!-- OR STRUGGLE -->
+			<entry key="0xA6" value="BACKPORT_MOVE_2" />
+			<entry key="0xA7" value="BACKPORT_MOVE_3" />
+			<entry key="0xA8" value="BACKPORT_MOVE_4" />
+			<entry key="0xA9" value="BACKPORT_MOVE_5" />
+			<entry key="0xB0" value="BACKPORT_MOVE_6" />
+			<entry key="0xB1" value="BACKPORT_MOVE_7" />
+			<entry key="0xB1" value="BACKPORT_MOVE_8" />
 		</moves>	
 		<items>
 			<entry key="0x00" />
@@ -1815,7 +1820,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0xBD" value="Weepinbell" />
 			<entry key="0xBE" value="Victreebel" />
 			<!-- TODO: Backport -->
-			<!-- <entry key="0xBF" value="Backport" /> -->
+			<entry key="0xBF" value="Backport" />
 		</pokemonSpecies>
 		<maps>
 			<entry key="0x00" value="Pallet Town" />

@@ -3,6 +3,20 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
+    <memory>
+        <!-- <read name="this is to stop crashes"  start="0x00" end="0x3FFF" />
+        <read name="Partial EWRAM 4"  start="0x2021000" end="0x2023FFF" />
+        <read name="Partial EWRAM 5"  start="0x2024000" end="0x2025FFF" />
+        <read name="Partial EWRAM 5"  start="0x2026000" end="0x2027FFF" />
+        <read name="Partial EWRAM 6"  start="0x2031000" end="0x2032FFF" /> 
+        <read name="Partial EWRAM 2"  start="0x2036e00" end="0x2036eff" />
+        <read name="Partial EWRAM 6"  start="0x2032000" end="0x2032FFF" />
+        <read name="Partial EWRAM 7"  start="0x2037000" end="0x2039999" />
+        <read name="Partial EWRAM 10" start="0x203C000" end="0x203CFFF" /> -->
+        <read name="Partial EWRAM 3"  start="0x3000000" end="0x3000fff" />
+        <!-- <read name="Partial IWRAM"    start="0x3001000" end="0x3004FFF" /> -->
+        <!-- <read name="Partial IWRAM"    start="0x3005000" end="0x3005FFF" /> -->
+    </memory>
     <classes>
         <pokemonInParty>
             <property name="personalityValue"  type="uint"   address="{address}"    length="4" />
@@ -166,7 +180,8 @@
             </badges>   
             <bag>
                 <property name="quantityDecyptionKey" type="int" length="2" address="{dma_b} + 172" />
-                <property name="money"                type="int" length="2" address="{dma_a} + 1168" />
+                <property name="money"                type="int" length="4" address="{dma_a} + 1168" />
+                <property name="coins"                type="int" length="2" address="{dma_a} + 1172" />
                 <items>
                     <class name="0"  type="playerItem" var:address="{dma_a} + 1376" />
                     <class name="1"  type="playerItem" var:address="{dma_a} + 1380" />
@@ -487,6 +502,13 @@
                 <property name="battleDialogue" type="int" address="0x2023064" reference="battleDialogue"/>
             </turnInfo>
         </battle>
+        <vars>
+            <property name="repel_count" type="int" address="{dma_a} + 5020 + 66" length="2" />
+        </vars>
+        <stp_vars>
+            <property name="STP_VAR_RESETS"    type="int" address="0x0203cf64 + 0" length="4" />
+            <property name="STP_VAR_BLACKOUTS" type="int" address="0x0203cf64 + 4" length="4" />
+        </stp_vars>
         <events>
             <property name="received_running_shoes" type="bool" address="{dma_a} + 4754" bits="2"/>
             <property name="hide_route_101_birch_zigzagoon_battle" type="bool" address="{dma_a} + 4810" bits="0"/>
@@ -615,6 +637,7 @@
         </trainers>
         <options>
             <property name="textSpeed"   type="int"  address="{dma_b} + 20" bits="0-2"/>
+            <property name="textSpeedInst" type="int"  address="{dma_b} + 20" bits="0-3"/>
             <property name="battleAnim"  type="bool" address="{dma_b} + 21" bits="2"/>
             <property name="battleStyle" type="bool" address="{dma_b} + 21" bits="1"/>
             <property name="sound"       type="bool" address="{dma_b} + 21" bits="0"/>
@@ -624,6 +647,7 @@
         <audio>
             <!-- <property name="soundEffect1" address="0x030075f0" type="int" length="4" /> -->
             <!-- <property name="soundEffect1" address="0x030075f0" type="int" length="4" reference="soundId" /> -->
+            <property name="musicID"      type="int"  address="0x03000f48" length="2" />
             <property name="soundEffect1" address="0x030075f0" type="int" length="4" after-read-value-expression="x - 12" />
             <property name="soundEffect2" address="0x03007630" type="int" length="4" />        
         </audio>
@@ -893,6 +917,8 @@
             <entry key="75" value="SHELL ARMOR"/>
             <entry key="76" value="CACOPHONY"/>
             <entry key="77" value="AIR LOCK"/>
+            <entry key="78" value="DOWNLOAD"/>
+            <entry key="79" value="MUMMY"/>
         </abilities>
         <natures>
             <entry key="0" value="Hardy"/>
@@ -1277,6 +1303,7 @@
             <entry key="352" value="WATER PULSE"/>
             <entry key="353" value="DOOM DESIRE"/>
             <entry key="354" value="PSYCHO BOOST"/>
+            <entry key="355" value="TECHNO BLAST"/>
         </moves>
         <items>
             <entry key="1" value="MASTER BALL"/>
@@ -2635,9 +2662,10 @@
             <entry key="0x199" value="Jirachi"/>
             <entry key="0x19A" value="Deoxys"/>
             <entry key="0x19B" value="Chimecho"/>
-            <entry key="0x19C" value="Pokemon Egg"/>
-            <entry key="0x19D" value="Unown"/>
+            <entry key="0x19C" value="Backport"/>
+            <entry key="0x19D" value="Pokemon Egg"/>
             <entry key="0x19E" value="Unown"/>
+            <entry key="0x19F" value="Unown"/>
         </pokemonSpecies>
         <trainerClasses>
             <entry key="0x0000" />
@@ -4430,9 +4458,10 @@
             <entry key="0x199" value="Jirachi" />
             <entry key="0x19A" value="Deoxys" />
             <entry key="0x19B" value="Chimecho" />
-            <entry key="0x19C" value="Pokemon Egg" />
-            <entry key="0x19D" value="Unown" />
+            <entry key="0x19C" value="Backport" />
+            <entry key="0x19D" value="Pokemon Egg" />
             <entry key="0x19E" value="Unown" />
+            <entry key="0x19F" value="Unown" />
         </pokemon>
         <pokemonArray>
             <entry key="0x00" />
@@ -4847,7 +4876,7 @@
             <entry key="0x199" value="{ pokedexNumber: 385, name: 'Jirachi' }" />
             <entry key="0x19A" value="{ pokedexNumber: 386, name: 'Deoxys' }" />
             <entry key="0x19B" value="{ pokedexNumber: 358, name: 'Chimecho' }" />
-            <entry key="0x19C" value="{ pokedexNumber: null, name: 'Pokemon Egg' }" />
+            <entry key="0x19C" value="{ pokedexNumber: null, name: 'Backport' }" />
             <entry key="0x19D" value="{ pokedexNumber: 201, name: 'Unown' }" />
             <entry key="0x19E" value="{ pokedexNumber: 201, name: 'Unown' }" />
         </pokemonArray>
