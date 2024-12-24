@@ -712,6 +712,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <property name="Blackouts_Total"     type="int" address="0x10640" length="2" />
       <property name="Blackouts_Overworld" type="int" address="0x10642" length="2" />
       <property name="Blackouts_Battle"    type="int" address="0x10644" length="2" />
+      <property name="hChosenStarter"      type="int" address="0xffdd"  length="1" reference="pokemonSpecies"/>
       <battle_statuses>
       <yourPokemon>
           <property name="phantomforce" type="bool" address="0xc66b" bits="3" />
