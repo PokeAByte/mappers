@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 -->
 
-<mapper id="fdd1d91c-5be7-497a-b420-a53e6132ff0a" name="Pokemon Red and Blue - Deprecated Mapper" platform="GB" version="1.1.4"
+<mapper id="fdd1d91c-5be7-497a-b420-a53e6132ff0a" name="Pokemon Red and Blue - Deprecated Mapper" platform="GB" version="1.1.5"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -390,6 +390,7 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
     <rival>
       <property name="name"      type="string" address="0xD34A" length="8" description="The rival's name." />
       <property name="finalTeam" type="int" address="0xD714" reference="finalTeam" /> 
+	  <property name="starter"   type="int" address="0xd715" reference="pokemonSpecies"/>
     </rival>
 	<audio>
 		<property name="channel1" type="int" address="0xC027" description="When 1, the opponent has lost" />
@@ -574,6 +575,9 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
       <property name="frames"  type="int" address="0xDA45" />
     </gameTime>
 	<patch>
+		<property name="hChosenStarter" type="int" address="0xffdf" reference="pokemonSpecies"/>
+		<property name="wRivalStarter"  type="int" address="0xd715" reference="pokemonSpecies"/>
+		<property name="wPlayerStarterPosition"  type="int" address="0xd716" />
 		<time>
 			<property name="frameCount"       type="int" length="4" address="0xdbef + 1" />
 			<property name="oWFrameCount"     type="int" length="4" address="0xdbe3 + 1" />

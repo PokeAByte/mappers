@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_crystal.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.2"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -307,6 +307,13 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     </overworld>
     <events>
       <property name="beatChampion" type="bool" address="0xdb29" bits="1" />
+      <property name="beat_elite_four" type="bool" address="0xDA7A" bits="4" />
+      <property name="beat_elm" type="bool" address="0xDA79" bits="3" />
+      <property name="hide_oak" type="bool" address="0xDA79" bits="4" />
+      <property name="beat_oak" type="bool" address="0xDAD9" bits="7" />
+      <property name="beat_red" type="bool" address="0xDADA" bits="1" />
+      <property name="healed_moomoo" type="bool" address="0xDA79" bits="5" />
+      <property name="rival_new_bark_town" type="bool" address="0xDB49" bits="5" />
       <property name="elm_called_about_stolen_pokemon" type="bool" address="0xDA7A" bits="3" />
     </events>
     <roamers>
@@ -698,7 +705,13 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
     <!-- These will not work without a ROM patch -->
     <patch>
       <!-- <property name="patchPresent" type="int" length="1" address="0x3fb5" after-read-value-expression="x != 0" />  -->
-      <property name="wStarterHiddenPowerType" type="int" address="0xc2d1" reference="hidden_power_types" />
+      <property name="wStarterHiddenPowerType"  type="int" address="0xc2d1" reference="hidden_power_types" />
+      <property name="wOptionsHiddenPower"      type="int" address="0xc2d2" reference="hidden_power_types" />
+      <property name="wEarlyEncounters"         type="int" address="0xc2d3" reference="encounter_setting" />
+      <property name="Resets"              type="int" address="0x10646" length="2" />
+      <property name="Blackouts_Total"     type="int" address="0x10640" length="2" />
+      <property name="Blackouts_Overworld" type="int" address="0x10642" length="2" />
+      <property name="Blackouts_Battle"    type="int" address="0x10644" length="2" />
       <battle_statuses>
       <yourPokemon>
           <property name="phantomforce" type="bool" address="0xc66b" bits="3" />
@@ -830,6 +843,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
   </properties>
 
   <references>
+    <encounter_setting>
+      <entry key="0x00" value="Off" />   
+      <entry key="0x01" value="On" />   
+    </encounter_setting>
     <hidden_power_types>
       <entry key="0xFF" value="Dark" />   
       <entry key="0xFD" value="Ice" />    

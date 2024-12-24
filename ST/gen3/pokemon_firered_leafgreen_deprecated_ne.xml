@@ -16,6 +16,7 @@
             <property name="friendship"        type="int"    address="{address} + 41"/>
             <property name="nature"            type="uint"   address="{address} + 0"  length="4" after-read-value-expression="x % 25" reference="natures"/>
             <property name="pokerus"           type="int"    address="{address} + 85" />
+            <property name="fateful_encounter" type="bool"   address="{address} + 68 + 0x0B" bits="7"/>
             <property name="itemHeld"          type="int"    address="{address} + 34" length="2" reference="items" />
             <property name="statusCondition"   type="int"    address="{address} + 80" reference="statusConditions"  />
             <property name="gender_threshold"  type="uint" length="4" after-read-value-expression="x % 256" />

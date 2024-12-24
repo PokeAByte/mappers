@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_yellow.xml'
 -->
 
-<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.1.5"
+<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.1.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -104,7 +104,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 	<properties>
 		<player>
 			<property name="name"      type="string" address="0xD157" length="11" />
-			<property name="playerId"  type="int" address="0xD358" length="2" description="The active player user Id, better tracking for if the game has loaded a new or saved game" />
+			<property name="playerId"  type="int" address="0xd35e" length="2" description="The active player user Id, better tracking for if the game has loaded a new or saved game" />
 			<property name="teamCount" type="int" address="0xD162" />
 			<team>
 				<class name="0" type="pokemonInParty" var:address="0xD16A" var:nicknameAddress="0xD2B4" />
@@ -114,184 +114,102 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<class name="4" type="pokemonInParty" var:address="0xD21A" var:nicknameAddress="0xD2E0" />
 				<class name="5" type="pokemonInParty" var:address="0xD246" var:nicknameAddress="0xD2EB" />
 			</team>
-			<property name="itemCount" type="int" address="0xD31C" />
+			<property name="itemCount" type="int" address="0xd322" />
 			<items>
-				<class name="0"  type="playerItem" var:address="0xD31D" />
-				<class name="1"  type="playerItem" var:address="0xD31F" />
-				<class name="2"  type="playerItem" var:address="0xD321" />
-				<class name="3"  type="playerItem" var:address="0xD323" />
-				<class name="4"  type="playerItem" var:address="0xD325" />
-				<class name="5"  type="playerItem" var:address="0xD327" />
-				<class name="6"  type="playerItem" var:address="0xD329" />
-				<class name="7"  type="playerItem" var:address="0xD32B" />
-				<class name="8"  type="playerItem" var:address="0xD32D" />
-				<class name="9"  type="playerItem" var:address="0xD32F" />
-				<class name="10" type="playerItem" var:address="0xD331" />
-				<class name="11" type="playerItem" var:address="0xD333" />
-				<class name="12" type="playerItem" var:address="0xD335" />
-				<class name="13" type="playerItem" var:address="0xD337" />
-				<class name="14" type="playerItem" var:address="0xD339" />
-				<class name="15" type="playerItem" var:address="0xD33B" />
-				<class name="16" type="playerItem" var:address="0xD33D" />
-				<class name="17" type="playerItem" var:address="0xD33F" />
-				<class name="18" type="playerItem" var:address="0xD341" />
-				<class name="19" type="playerItem" var:address="0xD343" />
+				<class name="0"  type="playerItem" var:address="0xd323 + 0" />
+				<class name="1"  type="playerItem" var:address="0xd323 + 2" />
+				<class name="2"  type="playerItem" var:address="0xd323 + 4" />
+				<class name="3"  type="playerItem" var:address="0xd323 + 6" />
+				<class name="4"  type="playerItem" var:address="0xd323 + 8" />
+				<class name="5"  type="playerItem" var:address="0xd323 + 10" />
+				<class name="6"  type="playerItem" var:address="0xd323 + 12" />
+				<class name="7"  type="playerItem" var:address="0xd323 + 14" />
+				<class name="8"  type="playerItem" var:address="0xd323 + 16" />
+				<class name="9"  type="playerItem" var:address="0xd323 + 18" />
+				<class name="10" type="playerItem" var:address="0xd323 + 20" />
+				<class name="11" type="playerItem" var:address="0xd323 + 22" />
+				<class name="12" type="playerItem" var:address="0xd323 + 24" />
+				<class name="13" type="playerItem" var:address="0xd323 + 26" />
+				<class name="14" type="playerItem" var:address="0xd323 + 28" />
+				<class name="15" type="playerItem" var:address="0xd323 + 30" />
+				<class name="16" type="playerItem" var:address="0xd323 + 32" />
+				<class name="17" type="playerItem" var:address="0xd323 + 34" />
+				<class name="18" type="playerItem" var:address="0xd323 + 36" />
+				<class name="19" type="playerItem" var:address="0xd323 + 38" />
 			</items>
-			<property name="money"           type="binaryCodedDecimal" address="0xD346" length="3" />
-			<property name="gameCornerCoins" type="binaryCodedDecimal" address="0xD5A3" length="2" />
-			<property name="pokedexSeen"     type="bitArray" address="0xD309" length="19" />
+			<property name="money"           type="binaryCodedDecimal" address="0xd34c" length="3" />
+			<property name="gameCornerCoins" type="binaryCodedDecimal" address="0xd5a9" length="2" />
+			<property name="pokedexSeen"     type="bitArray" address="0xd30c" length="19" />
 			<property name="pokedexCaught"   type="bitArray" address="0xD2F6" length="19" />
 			<badges>
-				<property name="badge1" type="bool" address="0xD355" bits="0" description="boulderbadge" />
-				<property name="badge2" type="bool" address="0xD355" bits="1" description="cascadebadge" />
-				<property name="badge3" type="bool" address="0xD355" bits="2" description="thunderbadge" />
-				<property name="badge4" type="bool" address="0xD355" bits="3" description="rainbowbadge" />
-				<property name="badge5" type="bool" address="0xD355" bits="4" description="soulbadge" />
-				<property name="badge6" type="bool" address="0xD355" bits="5" description="marshbadge" />
-				<property name="badge7" type="bool" address="0xD355" bits="6" description="volcanobadge" />
-				<property name="badge8" type="bool" address="0xD355" bits="7" description="earthbadge" />
+				<property name="badge1" type="bool" address="0xd35b" bits="0" description="boulderbadge" />
+				<property name="badge2" type="bool" address="0xd35b" bits="1" description="cascadebadge" />
+				<property name="badge3" type="bool" address="0xd35b" bits="2" description="thunderbadge" />
+				<property name="badge4" type="bool" address="0xd35b" bits="3" description="rainbowbadge" />
+				<property name="badge5" type="bool" address="0xd35b" bits="4" description="soulbadge" />
+				<property name="badge6" type="bool" address="0xd35b" bits="5" description="marshbadge" />
+				<property name="badge7" type="bool" address="0xd35b" bits="6" description="volcanobadge" />
+				<property name="badge8" type="bool" address="0xd35b" bits="7" description="earthbadge" />
 			</badges>
-			<property name="starterPokemon"   type="int"  address="0xD716" reference="pokemonSpecies" description="The starter Pokemon received from Oak." />
-			<property name="joypadSimulation" type="bool" address="0xCD38" bits="0" description="Setting this to true will disable collision for your character." />
-			<property name="joypadIgnore"     type="int"  address="0xCD6B" description="Buttons to ignore in the joypad (bit mask). Each button corresponds to the following bits: A Button: bit 0 (0x01, dec 1), B Button: bit 1 (0x02, dec 2), Select: bit 2 (0x04, dec 4), Start: bit 3 (0x08, dec 8), D-Pad Right: bit 4 (0x10, dec 16), D-Pad Left: bit 5 (0x20, dec 32), D-Pad Up: bit 6 (0x40, dec 64), D-Pad Down: bit 7 (0x80, dec 128). Example values: 0x00: no input is ignored (all buttons are processed), 0xFF: every button is ignored (no player input), 0xFC: only A and B are allowed" />
+			<property name="starterPokemon"   type="int"  address="0xd71c" reference="pokemonSpecies" description="The starter Pokemon received from Oak." />
+			<property name="joypadSimulation" type="bool" address="0xcd38" bits="0" description="Setting this to true will disable collision for your character." />
+			<property name="joypadIgnore"     type="int"  address="0xcd6b" description="Buttons to ignore in the joypad (bit mask). Each button corresponds to the following bits: A Button: bit 0 (0x01, dec 1), B Button: bit 1 (0x02, dec 2), Select: bit 2 (0x04, dec 4), Start: bit 3 (0x08, dec 8), D-Pad Right: bit 4 (0x10, dec 16), D-Pad Left: bit 5 (0x20, dec 32), D-Pad Up: bit 6 (0x40, dec 64), D-Pad Down: bit 7 (0x80, dec 128). Example values: 0x00: no input is ignored (all buttons are processed), 0xFF: every button is ignored (no player input), 0xFC: only A and B are allowed" />
 		</player>
 		<overworld>
-			<property name="map" type="int" address="0xD35D" reference="maps" />
-			<property name="y"   type="int" address="0xD360" />
-			<property name="x"   type="int" address="0xD361" />
-			<property name="encounterRate" type="int" address="0xD886" />
+			<property name="map" type="int" address="0xd363" reference="maps" />
+			<property name="y"   type="int" address="0xd366" />
+			<property name="x"   type="int" address="0xd367" />
+			<property name="encounterRate" type="int" address="0xd88c" />
 			<encounters>
 				<common>
-					<class name="0" type="encounter" var:address="0xD887" />
-					<class name="1" type="encounter" var:address="0xD889" />
-					<class name="2" type="encounter" var:address="0xD88B" />
-					<class name="3" type="encounter" var:address="0xD88D" />
+					<class name="0" type="encounter" var:address="0xd88d + 0" />
+					<class name="1" type="encounter" var:address="0xd88d + 2" />
+					<class name="2" type="encounter" var:address="0xd88d + 4" />
+					<class name="3" type="encounter" var:address="0xd88d + 6" />
 				</common>
 				<uncommon>
-					<class name="0" type="encounter" var:address="0xD88F" />
-					<class name="1" type="encounter" var:address="0xD891" />
-					<class name="2" type="encounter" var:address="0xD893" />
-					<class name="3" type="encounter" var:address="0xD895" />
+					<class name="0" type="encounter" var:address="0xd88d + 8" />
+					<class name="1" type="encounter" var:address="0xd88d + 10" />
+					<class name="2" type="encounter" var:address="0xd88d + 12" />
+					<class name="3" type="encounter" var:address="0xd88d + 14" />
 				</uncommon>
 				<rare>
-					<class name="0" type="encounter" var:address="0xD897" />
-					<class name="1" type="encounter" var:address="0xD899" />
+					<class name="0" type="encounter" var:address="0xd88d + 16" />
+					<class name="1" type="encounter" var:address="0xd88d + 18" />
 				</rare>
 			</encounters>
-			<property name="repelCount" type="int" address="0xD0DA" />
+			<property name="repelCount" type="int" address="0xd0da" />
 			<!-- <property name="flash" type="int" address="0xD35D" /> -->
 			<safariZone>
-				<property name="safariTime" type="int" address="0xD70C" size="2" />
-				<property name="safariBalls" type="int" address="0xDA46" />
+				<property name="safariTime" type="int" address="0xd712" size="2" />
+				<property name="safariBalls" type="int" address="0xda4c" />
 				<!-- <property name="oppEscapingFactor" type="int" address="0xCCE7" /> -->
-				<property name="oppBaitingFactor" type="int" address="0xCCE8" />
+				<property name="oppBaitingFactor" type="int" address="0xcce8" />
 			</safariZone>
 			<mapData>
-				<property name="tileset"         type="int" address="0xD366" />
-				<property name="height"          type="int" address="0xD367" />
-				<property name="width"           type="int" address="0xD368" />
-				<property name="palette"         type="int" address="0xD35C" />
-				<property name="lastMapLocation" type="int" address="0xD365" reference="maps" />
+				<property name="tileset"         type="int" address="0xd36c" />
+				<property name="height"          type="int" address="0xd36d" />
+				<property name="width"           type="int" address="0xd36e" />
+				<property name="palette"         type="int" address="0xd362" />
+				<property name="lastMapLocation" type="int" address="0xd36b" reference="maps" />
 			</mapData>
 		</overworld>
 		<events>
 			<property name="wSaveFileStatus" type="int" address="0xd087" reference="saveFileStatus" />
-			<property name="beatChampion" type="bool" bits="1" address="0xd866" />
-			<property name="got_pokedex"  type="bool" address="0xD74A" bits="5" />
-			<property name="battled_rival_in_oaks_lab" type="bool" address="0xD74A" bits="3" />
+			<!-- <property name="beatChampion" type="bool" bits="1" address="0xd866" /> -->
+			<!-- <property name="got_pokedex"  type="bool" address="0xD74A" bits="5" /> -->
+			<!-- <property name="battled_rival_in_oaks_lab" type="bool" address="0xD74A" bits="3" /> -->
 			<overworldFlags>
-				<property name="countPlayTime" type="bool" address="0xD731" bits="0" description="play time being counted" />
-				<property name="debugMode"     type="bool" address="0xD731" bits="1" description="Only set by the debug build. If true: [detailed description omitted for brevity]" />
-				<property name="flyOrDungeon"  type="bool" address="0xD731" bits="2" description="the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)" />
-				<property name="flyWarp"       type="bool" address="0xD731" bits="3" />
-				<property name="dungeonWarp"   type="bool" address="0xD731" bits="4" />
-				<property name="forceBike"     type="bool" address="0xD731" bits="5" description="currently being forced to ride bike (cycling road)" />
-				<property name="destinationIsBlackout" type="bool" address="0xD731" bits="6" description="map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)" />
+				<property name="countPlayTime" type="bool" address="0xd735" bits="0" description="play time being counted" />
+				<property name="debugMode"     type="bool" address="0xd735" bits="1" description="Only set by the debug build. If true: [detailed description omitted for brevity]" />
+				<property name="flyOrDungeon"  type="bool" address="0xd735" bits="2" description="the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)" />
+				<property name="flyWarp"       type="bool" address="0xd735" bits="3" />
+				<property name="dungeonWarp"   type="bool" address="0xd735" bits="4" />
+				<property name="forceBike"     type="bool" address="0xd735" bits="5" description="currently being forced to ride bike (cycling road)" />
+				<property name="destinationIsBlackout" type="bool" address="0xd735" bits="6" description="map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)" />
 			</overworldFlags>
-			<property name="trashCanPuzzle" type="bool" address="0xD772" bits="0" description="Set value to 3 to solve the puzzle. Freezing this property breaks the gym trainers." />
+			<property name="trashCanPuzzle" type="bool" address="0xd74c + 0x2c" bits="0" description="Set value to 3 to solve the puzzle. Freezing this property breaks the gym trainers." />
 		</events>
-		<trainers>
-			<viridianForest>
-				<property name="bugcatcher1" type="bool" address="0xD7F2" bits="2" />
-				<property name="bugcatcher2" type="bool" address="0xD7F2" bits="3" />
-				<property name="bugcatcher3" type="bool" address="0xD7F2" bits="4" />
-				<property name="lass19" type="bool" address="0xD7F2" bits="5" description="check trainer number" />
-				<property name="bugcatcher15" type="bool" address="0xD7F2" bits="6" />
-			</viridianForest>
-			<pewterCityGym>
-				<property name="jrTrainerM1" type="bool" address="0xD754" bits="2" />
-				<property name="tmReceived" type="bool" address="0xD754" bits="6" />
-				<property name="leaderDefeated" type="bool" address="0xD754" bits="7" />
-			</pewterCityGym>
-			<ceruleanCityGym>
-				<property name="jrTrainerF1" type="bool" address="0xD75D" bits="2" />
-				<property name="swimmer1" type="bool" address="0xD75D" bits="3" />
-				<property name="tmReceived" type="bool" address="0xD75D" bits="6" />
-				<property name="leaderDefeated" type="bool" address="0xD75D" bits="7" />
-			</ceruleanCityGym>
-			<vermilionCityGym>
-				<property name="gentleman3" type="bool" address="0xD772" bits="2" />
-				<property name="rocker1" type="bool" address="0xD772" bits="3" />
-				<property name="sailor8" type="bool" address="0xD772" bits="4" />
-				<property name="tmReceived" type="bool" address="0xD772" bits="6" />
-				<property name="leaderDefeated" type="bool" address="0xD772" bits="7" />
-			</vermilionCityGym>
-			<celadonCityGym>
-				<property name="tmReceived" type="bool" address="0xD77B" bits="0" />
-				<property name="leaderDefeated" type="bool" address="0xD77B" bits="1" />
-				<property name="lass17" type="bool" address="0xD77B" bits="2" />
-				<property name="beauty1" type="bool" address="0xD77B" bits="3" />
-				<property name="jrTrainerF11" type="bool" address="0xD77B" bits="4" />
-				<property name="beauty2" type="bool" address="0xD77B" bits="5" />
-				<property name="lass18" type="bool" address="0xD77B" bits="6" />
-				<property name="beauty3" type="bool" address="0xD77B" bits="7" />
-				<property name="cooltrainerF1" type="bool" address="0xD77C" bits="0" />
-			</celadonCityGym>
-			<fucshiaCityGym>
-				<property name="tmReceived" type="bool" address="0xD791" bits="0" />
-				<property name="leaderDefeated" type="bool" address="0xD791" bits="1" />
-				<property name="juggler7" type="bool" address="0xD791" bits="2" />
-				<property name="juggler3" type="bool" address="0xD791" bits="3" />
-				<property name="juggler8" type="bool" address="0xD791" bits="4" />
-				<property name="tamer1" type="bool" address="0xD791" bits="5" />
-				<property name="tamer2" type="bool" address="0xD791" bits="6" />
-				<property name="juggler4" type="bool" address="0xD791" bits="7" />
-			</fucshiaCityGym>
-			<cinnabarIslandGym>
-				<property name="tmReceived" type="bool" address="0xD799" bits="0" />
-				<property name="leaderDefeated" type="bool" address="0xD799" bits="1" />
-				<property name="superNerd9" type="bool" address="0xD799" bits="2" />
-				<property name="burglar4" type="bool" address="0xD799" bits="3" />
-				<property name="superNerd10" type="bool" address="0xD799" bits="4" />
-				<property name="burglar5" type="bool" address="0xD799" bits="5" />
-				<property name="superNerd11" type="bool" address="0xD799" bits="6" />
-				<property name="burglar6" type="bool" address="0xD799" bits="7" />
-				<property name="superNerd12" type="bool" address="0xD79A" bits="0" />
-			</cinnabarIslandGym>
-			<saffronCityGym>
-				<property name="tmReceived" type="bool" address="0xD7B2" bits="0" />
-				<property name="leaderDefeated" type="bool" address="0xD7B2" bits="1" />
-				<property name="channeler22" type="bool" address="0xD7B2" bits="2" />
-				<property name="psychic1" type="bool" address="0xD7B2" bits="3" />
-				<property name="channeler23" type="bool" address="0xD7B2" bits="4" />
-				<property name="psychic2" type="bool" address="0xD7B2" bits="5" />
-				<property name="channeler24" type="bool" address="0xD7B2" bits="6" />
-				<property name="psychic3" type="bool" address="0xD7B2" bits="7" />
-				<property name="psychic4" type="bool" address="0xD7B3" bits="0" />
-			</saffronCityGym>
-			<viridianCityGym>
-				<property name="tmReceived" type="bool" address="0xD750" bits="0" />
-				<property name="leaderDefeated" type="bool" address="0xD750" bits="1" />
-				<property name="cooltrainerM9" type="bool" address="0xD750" bits="2" />
-				<property name="blackbelt6" type="bool" address="0xD750" bits="3" />
-				<property name="tamer3" type="bool" address="0xD750" bits="4" />
-				<property name="blackbelt7" type="bool" address="0xD750" bits="5" />
-				<property name="cooltrainerM10" type="bool" address="0xD750" bits="6" />
-				<property name="blackbelt8" type="bool" address="0xD750" bits="7" />
-				<property name="tamer4" type="bool" address="0xD751" bits="0" />
-				<property name="coolTrainerM" type="bool" address="0xD751" bits="1" />
-			</viridianCityGym>
-		</trainers>
 		<battle>
 			<property name="type"           type="int" address="0xD056" reference="battleTypes" />
 			<property name="animationTurn"  type="int" address="0xFFF3" reference="battleTurn" description="This dictates which direction battle animations are played. (Enemy attacking player, or player attacking enemy.)" />
@@ -483,8 +401,8 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			</items>
 		</pokemart>
 		<rival>
-			<property name="name"      type="string" address="0xD349" length="8" description="The rival's name." />
-			<property name="finalTeam" type="int" address="0xD714" reference="finalTeam" />
+			<property name="name"      type="string" address="0xd34f" length="8" description="The rival's name." />
+			<property name="finalTeam" type="int" address="0xd71a" reference="finalTeam" />
 		</rival>
 		<audio>
 			<property name="channel1" type="int" address="0xC026" description="When 1, the opponent has lost" />
@@ -517,115 +435,52 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 		</audio>
 		<pc>
 			<pokemonStorage>
-				<property name="currentBoxCount" type="int" address="0xDA7F" />
+				<property name="currentBoxCount" type="int" address="0xda85" />
 					<currentBoxSummary>
-						<property name="pkmn1"  type="int" address="0xDA80" reference="pokemonSpecies" />
-						<property name="pkmn2"  type="int" address="0xDA81" reference="pokemonSpecies" />
-						<property name="pkmn3"  type="int" address="0xDA82" reference="pokemonSpecies" />
-						<property name="pkmn4"  type="int" address="0xDA83" reference="pokemonSpecies" />
-						<property name="pkmn5"  type="int" address="0xDA84" reference="pokemonSpecies" />
-						<property name="pkmn6"  type="int" address="0xDA85" reference="pokemonSpecies" />
-						<property name="pkmn7"  type="int" address="0xDA86" reference="pokemonSpecies" />
-						<property name="pkmn8"  type="int" address="0xDA87" reference="pokemonSpecies" />
-						<property name="pkmn9"  type="int" address="0xDA88" reference="pokemonSpecies" />
-						<property name="pkmn10" type="int" address="0xDA89" reference="pokemonSpecies" />
-						<property name="pkmn11" type="int" address="0xDA8A" reference="pokemonSpecies" />
-						<property name="pkmn12" type="int" address="0xDA8B" reference="pokemonSpecies" />
-						<property name="pkmn13" type="int" address="0xDA8C" reference="pokemonSpecies" />
-						<property name="pkmn14" type="int" address="0xDA8D" reference="pokemonSpecies" />
-						<property name="pkmn15" type="int" address="0xDA8E" reference="pokemonSpecies" />
-						<property name="pkmn16" type="int" address="0xDA8F" reference="pokemonSpecies" />
-						<property name="pkmn17" type="int" address="0xDA90" reference="pokemonSpecies" />
-						<property name="pkmn18" type="int" address="0xDA91" reference="pokemonSpecies" />
-						<property name="pkmn19" type="int" address="0xDA92" reference="pokemonSpecies" />
-						<property name="pkmn20" type="int" address="0xDA93" reference="pokemonSpecies" />
+						<property name="pkmn1"  type="int" address="0xda86 + 0"  reference="pokemonSpecies" />
+						<property name="pkmn2"  type="int" address="0xda86 + 1"  reference="pokemonSpecies" />
+						<property name="pkmn3"  type="int" address="0xda86 + 2"  reference="pokemonSpecies" />
+						<property name="pkmn4"  type="int" address="0xda86 + 3"  reference="pokemonSpecies" />
+						<property name="pkmn5"  type="int" address="0xda86 + 4"  reference="pokemonSpecies" />
+						<property name="pkmn6"  type="int" address="0xda86 + 5"  reference="pokemonSpecies" />
+						<property name="pkmn7"  type="int" address="0xda86 + 6"  reference="pokemonSpecies" />
+						<property name="pkmn8"  type="int" address="0xda86 + 7"  reference="pokemonSpecies" />
+						<property name="pkmn9"  type="int" address="0xda86 + 8"  reference="pokemonSpecies" />
+						<property name="pkmn10" type="int" address="0xda86 + 9"  reference="pokemonSpecies" />
+						<property name="pkmn11" type="int" address="0xda86 + 10" reference="pokemonSpecies" />
+						<property name="pkmn12" type="int" address="0xda86 + 11" reference="pokemonSpecies" />
+						<property name="pkmn13" type="int" address="0xda86 + 12" reference="pokemonSpecies" />
+						<property name="pkmn14" type="int" address="0xda86 + 13" reference="pokemonSpecies" />
+						<property name="pkmn15" type="int" address="0xda86 + 14" reference="pokemonSpecies" />
+						<property name="pkmn16" type="int" address="0xda86 + 15" reference="pokemonSpecies" />
+						<property name="pkmn17" type="int" address="0xda86 + 16" reference="pokemonSpecies" />
+						<property name="pkmn18" type="int" address="0xda86 + 17" reference="pokemonSpecies" />
+						<property name="pkmn19" type="int" address="0xda86 + 18" reference="pokemonSpecies" />
+						<property name="pkmn20" type="int" address="0xda86 + 19" reference="pokemonSpecies" />
 					</currentBoxSummary>
 					<currentBox>
-						<class name="0"  type="storedPokemon" var:address="0xDA95" var:nicknameAddress="0xDE05" />
-						<class name="1"  type="storedPokemon" var:address="0xDAB6" var:nicknameAddress="0xDE10" />
-						<class name="2"  type="storedPokemon" var:address="0xDAD7" var:nicknameAddress="0xDE1B" />
-						<class name="3"  type="storedPokemon" var:address="0xDAF8" var:nicknameAddress="0xDE26" />
-						<class name="4"  type="storedPokemon" var:address="0xDB19" var:nicknameAddress="0xDE31" />
-						<class name="5"  type="storedPokemon" var:address="0xDB3A" var:nicknameAddress="0xDE3C" />
-						<class name="6"  type="storedPokemon" var:address="0xDB5B" var:nicknameAddress="0xDE47" />
-						<class name="7"  type="storedPokemon" var:address="0xDB7C" var:nicknameAddress="0xDE52" />
-						<class name="8"  type="storedPokemon" var:address="0xDB9D" var:nicknameAddress="0xDE5D" />
-						<class name="9"  type="storedPokemon" var:address="0xDBBE" var:nicknameAddress="0xDE68" />
-						<class name="10" type="storedPokemon" var:address="0xDBDF" var:nicknameAddress="0xDE73" />
-						<class name="11" type="storedPokemon" var:address="0xDC00" var:nicknameAddress="0xDE7E" />
-						<class name="12" type="storedPokemon" var:address="0xDC21" var:nicknameAddress="0xDE89" />
-						<class name="13" type="storedPokemon" var:address="0xDC42" var:nicknameAddress="0xDE94" />
-						<class name="14" type="storedPokemon" var:address="0xDC63" var:nicknameAddress="0xDE9F" />
-						<class name="15" type="storedPokemon" var:address="0xDC84" var:nicknameAddress="0xDEAA" />
-						<class name="16" type="storedPokemon" var:address="0xDCA5" var:nicknameAddress="0xDEB5" />
-						<class name="17" type="storedPokemon" var:address="0xDCC6" var:nicknameAddress="0xDEC0" />
-						<class name="18" type="storedPokemon" var:address="0xDCE7" var:nicknameAddress="0xDECB" />
-						<class name="19" type="storedPokemon" var:address="0xDD08" var:nicknameAddress="0xDED6" />
+						<class name="0"  type="storedPokemon" var:address="0xda9b" var:nicknameAddress="0xDE05 + 6" />
+						<class name="1"  type="storedPokemon" var:address="0xdabc" var:nicknameAddress="0xDE10 + 6" />
+						<class name="2"  type="storedPokemon" var:address="0xdadd" var:nicknameAddress="0xDE1B + 6" />
+						<class name="3"  type="storedPokemon" var:address="0xdafe" var:nicknameAddress="0xDE26 + 6" />
+						<class name="4"  type="storedPokemon" var:address="0xdb1f" var:nicknameAddress="0xDE31 + 6" />
+						<class name="5"  type="storedPokemon" var:address="0xdb40" var:nicknameAddress="0xDE3C + 6" />
+						<class name="6"  type="storedPokemon" var:address="0xdb61" var:nicknameAddress="0xDE47 + 6" />
+						<class name="7"  type="storedPokemon" var:address="0xdb82" var:nicknameAddress="0xDE52 + 6" />
+						<class name="8"  type="storedPokemon" var:address="0xdba3" var:nicknameAddress="0xDE5D + 6" />
+						<class name="9"  type="storedPokemon" var:address="0xdbc4" var:nicknameAddress="0xDE68 + 6" />
+						<class name="10" type="storedPokemon" var:address="0xdbe5" var:nicknameAddress="0xDE73 + 6" />
+						<class name="11" type="storedPokemon" var:address="0xdc06" var:nicknameAddress="0xDE7E + 6" />
+						<class name="12" type="storedPokemon" var:address="0xdc27" var:nicknameAddress="0xDE89 + 6" />
+						<class name="13" type="storedPokemon" var:address="0xdc48" var:nicknameAddress="0xDE94 + 6" />
+						<class name="14" type="storedPokemon" var:address="0xdc69" var:nicknameAddress="0xDE9F + 6" />
+						<class name="15" type="storedPokemon" var:address="0xdc8a" var:nicknameAddress="0xDEAA + 6" />
+						<class name="16" type="storedPokemon" var:address="0xdcab" var:nicknameAddress="0xDEB5 + 6" />
+						<class name="17" type="storedPokemon" var:address="0xdccc" var:nicknameAddress="0xDEC0 + 6" />
+						<class name="18" type="storedPokemon" var:address="0xdced" var:nicknameAddress="0xDECB + 6" />
+						<class name="19" type="storedPokemon" var:address="0xdd0e" var:nicknameAddress="0xDED6 + 6" />
 					</currentBox>
 			</pokemonStorage>
-			<!-- <itemStorage>
-				<property name="itemCount" type="int" address="0xD539" />
-				<items>
-					<class name="0"  type="playerItem" address="0xD53A" />
-					<class name="1"  type="playerItem" address="0xD53C" />    
-					<class name="2"  type="playerItem" address="0xD53E" />    
-					<class name="3"  type="playerItem" address="0xD540" />    
-					<class name="4"  type="playerItem" address="0xD542" />    
-					<class name="5"  type="playerItem" address="0xD544" />    
-					<class name="6"  type="playerItem" address="0xD546" />    
-					<class name="7"  type="playerItem" address="0xD548" />    
-					<class name="8"  type="playerItem" address="0xD54A" />    
-					<class name="9"  type="playerItem" address="0xD54C" />    
-					<class name="10" type="playerItem" address="0xD54E" />    
-					<class name="11" type="playerItem" address="0xD550" />    
-					<class name="12" type="playerItem" address="0xD552" />    
-					<class name="13" type="playerItem" address="0xD554" />    
-					<class name="14" type="playerItem" address="0xD556" />    
-					<class name="15" type="playerItem" address="0xD558" />    
-					<class name="16" type="playerItem" address="0xD55A" />    
-					<class name="17" type="playerItem" address="0xD55C" />    
-					<class name="18" type="playerItem" address="0xD55E" />    
-					<class name="19" type="playerItem" address="0xD560" />    
-					<class name="20" type="playerItem" address="0xD562" />    
-					<class name="21" type="playerItem" address="0xD564" />    
-					<class name="22" type="playerItem" address="0xD566" />    
-					<class name="23" type="playerItem" address="0xD568" />    
-					<class name="24" type="playerItem" address="0xD56A" />    
-					<class name="25" type="playerItem" address="0xD56C" />    
-					<class name="26" type="playerItem" address="0xD56E" />    
-					<class name="27" type="playerItem" address="0xD570" />    
-					<class name="28" type="playerItem" address="0xD572" />    
-					<class name="29" type="playerItem" address="0xD574" />    
-					<class name="30" type="playerItem" address="0xD576" />    
-					<class name="31" type="playerItem" address="0xD578" />    
-					<class name="32" type="playerItem" address="0xD57A" />    
-					<class name="33" type="playerItem" address="0xD57C" />    
-					<class name="34" type="playerItem" address="0xD57E" />    
-					<class name="35" type="playerItem" address="0xD580" />    
-					<class name="36" type="playerItem" address="0xD582" />    
-					<class name="37" type="playerItem" address="0xD584" />    
-					<class name="38" type="playerItem" address="0xD586" />    
-					<class name="39" type="playerItem" address="0xD588" />    
-					<class name="40" type="playerItem" address="0xD58A" />    
-					<class name="41" type="playerItem" address="0xD58C" />    
-					<class name="42" type="playerItem" address="0xD58E" />    
-					<class name="43" type="playerItem" address="0xD590" />    
-					<class name="44" type="playerItem" address="0xD592" />    
-					<class name="45" type="playerItem" address="0xD594" />    
-					<class name="46" type="playerItem" address="0xD596" />    
-					<class name="47" type="playerItem" address="0xD598" />    
-					<class name="48" type="playerItem" address="0xD59A" />    
-					<class name="49" type="playerItem" address="0xD59C" />    
-					<class name="50" type="playerItem" address="0xD59E" />    
-					<class name="51" type="playerItem" address="0xD5A0" />    
-					<class name="52" type="playerItem" address="0xD5A2" />    
-					<class name="53" type="playerItem" address="0xD5A4" />    
-					<class name="54" type="playerItem" address="0xD5A6" />    
-					<class name="55" type="playerItem" address="0xD5A8" />    
-					<class name="56" type="playerItem" address="0xD5AA" />    
-					<class name="57" type="playerItem" address="0xD5AC" />
-				</items>
-			</itemStorage> -->
 		</pc>
 		<screen>
 			<text>
@@ -647,37 +502,29 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			</tiles>
 		</screen>
 		<options>
-			<property name="textSpeed"        type="int"  address="0xD354" bits="0-2" description="Fast text speed is set when both 1 and 2 are set to false" />
-			<property name="textSpeed1"       type="bool" address="0xD354" bits="1"   description="Fast text speed is set when both 1 and 2 are set to false" />
-			<property name="textSpeed2"       type="bool" address="0xD354" bits="2"   description="Fast text speed is set when both 1 and 2 are set to false" />
-			<property name="sound1"           type="bool" address="0xD354" bits="4" /> 
-			<property name="sound2"           type="bool" address="0xD354" bits="5" /> 
-			<property name="battleStyle"      type="bool" address="0xD354" bits="6" />
-			<property name="battleAnimations" type="bool" address="0xD354" bits="7" />
-			<property name="soloChallenge"    type="int" address="0xD354" reference="options"/>
+			<property name="textSpeed"        type="int"  address="0xD354 + 6" bits="0-2" description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="textSpeed1"       type="bool" address="0xD354 + 6" bits="1"   description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="textSpeed2"       type="bool" address="0xD354 + 6" bits="2"   description="Fast text speed is set when both 1 and 2 are set to false" />
+			<property name="sound1"           type="bool" address="0xD354 + 6" bits="4" /> 
+			<property name="sound2"           type="bool" address="0xD354 + 6" bits="5" /> 
+			<property name="battleStyle"      type="bool" address="0xD354 + 6" bits="6" />
+			<property name="battleAnimations" type="bool" address="0xD354 + 6" bits="7" />
+			<property name="soloChallenge"    type="int"  address="0xD354 + 6" reference="options"/>
 		</options>
 		<settings>
-			<property name="textSpeedMid"    type="bool" address="0xD354" bits="1" description="Fast text speed is set when both Mid and Slow are set to false" />
-			<property name="textSpeedSlow"   type="bool" address="0xD354" bits="2" description="Fast text speed is set when both Mid and Slow are set to false" />
-			<property name="battleAnimation" type="bool" address="0xD354" bits="7" />
-			<property name="battleStyle"     type="bool" address="0xD354" bits="6" />
+			<property name="textSpeedMid"    type="bool" address="0xD354 + 6" bits="1" description="Fast text speed is set when both Mid and Slow are set to false" />
+			<property name="textSpeedSlow"   type="bool" address="0xD354 + 6" bits="2" description="Fast text speed is set when both Mid and Slow are set to false" />
+			<property name="battleAnimation" type="bool" address="0xD354 + 6" bits="7" />
+			<property name="battleStyle"     type="bool" address="0xD354 + 6" bits="6" />
 		</settings>
 		<gameTime>
-			<property name="hours"   type="int" address="0xDA3F" length="2" />
-			<property name="minutes" type="int" address="0xDA41" length="2" />
-			<property name="seconds" type="int" address="0xDA43" />
-			<property name="frames"  type="int" address="0xDA44" />
+			<property name="hours"   type="int" address="0xda46" length="2" />
+			<property name="minutes" type="int" address="0xda48" length="2" />
+			<property name="seconds" type="int" address="0xda49" />
+			<property name="frames"  type="int" address="0xda4a" />
 		</gameTime>
 		<patch>
-			<!-- <property name="RomStarter" type="int" address="0x1DCE" /> -->
-			<property name="hChosenStarter" type="int" address="0xffdf" reference="pokemonSpecies"/>
-			<!-- <property name="resets"    type="int" address="0xdca9" /> -->
-			<!-- <property name="blackouts" type="int" address="0xdcab" /> -->
 			<backport>
-				<!-- <property name="identifier" type="int" address="0x00FC" length="4" reference="backports" /> -->
-				<!-- <property name="generation" type="int" address="0x00FC" /> -->
-				<!-- <property name="moves"      type="int" address="0x00FD" reference="backport_moves" /> -->
-				<!-- <property name="species"    type="int" address="0x00FE" length="2" reference="backport_species" /> -->
 				<property name="prop_1" type="int" address="0xd700" />
 				<property name="prop_2" type="int" address="0xd701" />
 				<property name="prop_3" type="int" address="0xd702" />
@@ -689,11 +536,11 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 				<property name="prop_9" type="int" address="0xd708" />
 			</backport>
 			<encounter_flags>
-				<property name="EVENT_ENCOUNTER_ROUTE1_TEST"            type="bool" address="0xD746" bits="7" />
+				<property name="EVENT_ENCOUNTER_ROUTE1_TEST" type="bool" address="0xD746" bits="7" />
 				<property name="EVENT_ENCOUNTER_VIRIDIAN_FOREST_PIDGEY" type="bool" address="0xD747" bits="0" />
-				<property name="EVENT_ENCOUNTER_ROUTE3_SPEAROW"         type="bool" address="0xD747" bits="1" />
-				<property name="EVENT_ENCOUNTER_MTMOON_SANDSHREW"       type="bool" address="0xD747" bits="2" />
-				<property name="EVENT_ENCOUNTER_ROUTE16_DODUO"          type="bool" address="0xD747" bits="3" />
+				<property name="EVENT_ENCOUNTER_ROUTE3_SPEAROW" type="bool" address="0xD747" bits="1" />
+				<property name="EVENT_ENCOUNTER_MTMOON_SANDSHREW" type="bool" address="0xD747" bits="2" />
+				<property name="EVENT_ENCOUNTER_ROUTE16_DODUO" type="bool" address="0xD747" bits="3" />
 			</encounter_flags>
 			<time>
 				<property name="frameCount"       type="int" length="4" address="0xdbdf" />
@@ -814,18 +661,6 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 	</properties>
   
 	<references>
-		<!-- TODO: Backports -->
-		<!-- <backports>
-			<entry key="0x00000000" />
-			<entry key="0x060202C6" value="Pumpkaboo" />
-		</backports>
-		<backport_moves>
-			<entry key="0x00" />
-			<entry key="0x01" value="Rage Fist"/>
-			<entry key="0x02" value="TrickOrTreat" />
-			<entry key="0x03" value="SacredFire" />
-			<entry key="0x04" value="Aeroblast" />
-		</backport_moves> -->
 		<saveFileStatus>
 			<entry key="0x00" />
 			<entry key="0x01" value="No Save" />
@@ -1285,7 +1120,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0xA2" value="SUPER FANG" />
 			<entry key="0xA3" value="SLASH" />
 			<entry key="0xA4" value="SUBSTITUTE" />
-			<entry key="0xA5" value="PRESENT" /> <!-- OR STRUGGLE -->
+			<entry key="0xA5" value="LUMINA CRASH" /> <!-- OR STRUGGLE -->
 			<entry key="0xA6" value="BACKPORT_MOVE_2" />
 			<entry key="0xA7" value="BACKPORT_MOVE_3" />
 			<entry key="0xA8" value="BACKPORT_MOVE_4" />
@@ -1663,8 +1498,8 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0x1C" value="Blastoise" />
 			<entry key="0x1D" value="Pinsir" />
 			<entry key="0x1E" value="Tangela" />
-			<entry key="0x1F" />
-			<entry key="0x20" />
+			<entry key="0x1F" value="Espathra" />
+			<entry key="0x20" value="Sableye" />
 			<entry key="0x21" value="Growlithe" />
 			<entry key="0x22" value="Onix" />
 			<entry key="0x23" value="Fearow" />
@@ -1682,26 +1517,26 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0x2F" value="Psyduck" />
 			<entry key="0x30" value="Drowzee" />
 			<entry key="0x31" value="Golem" />
-			<entry key="0x32" />
+			<entry key="0x32" value="Houndoom" />
 			<entry key="0x33" value="Magmar" />
-			<entry key="0x34" />
+			<entry key="0x34" value="Toxicroak" />
 			<entry key="0x35" value="Electabuzz" />
 			<entry key="0x36" value="Magneton" />
 			<entry key="0x37" value="Koffing" />
-			<entry key="0x38" />
+			<entry key="0x38" value="Chandelure" />
 			<entry key="0x39" value="Mankey" />
 			<entry key="0x3A" value="Seel" />
 			<entry key="0x3B" value="Diglett" />
 			<entry key="0x3C" value="Tauros" />
-			<entry key="0x3D" />
-			<entry key="0x3E" />
-			<entry key="0x3F" />
+			<entry key="0x3D" value="Annihilape" />
+			<entry key="0x3E" value="Sandile" />
+			<entry key="0x3F" value="Pumpkaboo" />
 			<entry key="0x40" value="Farfetch'd" />
 			<entry key="0x41" value="Venonat" />
 			<entry key="0x42" value="Dragonite" />
-			<entry key="0x43" />
-			<entry key="0x44" />
-			<entry key="0x45" />
+			<entry key="0x43" value="Jirachi" />
+			<entry key="0x44" value="Roselia" />
+			<entry key="0x45" value="Slugma" />
 			<entry key="0x46" value="Doduo" />
 			<entry key="0x47" value="Poliwag" />
 			<entry key="0x48" value="Jynx" />
@@ -1711,23 +1546,23 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0x4C" value="Ditto" />
 			<entry key="0x4D" value="Meowth" />
 			<entry key="0x4E" value="Krabby" />
-			<entry key="0x4F" />
-			<entry key="0x50" />
-			<entry key="0x51" />
+			<entry key="0x4F" value="Wooper" />
+			<entry key="0x50" value="Girafarig" />
+			<entry key="0x51" value="Stantler" />
 			<entry key="0x52" value="Vulpix" />
 			<entry key="0x53" value="Ninetales" />
 			<entry key="0x54" value="Pikachu" />
 			<entry key="0x55" value="Raichu" />
-			<entry key="0x56" />
-			<entry key="0x57" />
+			<entry key="0x56" value="Ho-oh" />
+			<entry key="0x57" value="Lugia" />
 			<entry key="0x58" value="Dratini" />
 			<entry key="0x59" value="Dragonair" />
 			<entry key="0x5A" value="Kabuto" />
 			<entry key="0x5B" value="Kabutops" />
 			<entry key="0x5C" value="Horsea" />
 			<entry key="0x5D" value="Seadra" />
-			<entry key="0x5E" />
-			<entry key="0x5F" />
+			<entry key="0x5E" value="Partner Eevee" />
+			<entry key="0x5F" value="Partner Pikachu" />
 			<entry key="0x60" value="Sandshrew" />
 			<entry key="0x61" value="Sandslash" />
 			<entry key="0x62" value="Omanyte" />
@@ -1824,7 +1659,7 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0xBD" value="Weepinbell" />
 			<entry key="0xBE" value="Victreebel" />
 			<!-- TODO: Backport -->
-			<entry key="0xBF" value="Iron Bundle" />
+			<entry key="0xBF" value="Espathra" />
 		</pokemonSpecies>
 		<maps>
 			<entry key="0x00" value="Pallet Town" />
