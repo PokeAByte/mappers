@@ -670,7 +670,8 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 		</gameTime>
 		<patch>
 			<!-- <property name="RomStarter" type="int" address="0x1DCE" /> -->
-			<property name="hChosenStarter" type="int" address="0xffdf" reference="pokemonSpecies"/>
+			<property name="hChosenStarter"   type="int" address="0xffdf" reference="pokemonSpecies"/>
+			<property name="wEarlyEncounters" type="int" address="0xda39" reference="early_encounters"/>
 			<!-- <property name="resets"    type="int" address="0xdca9" /> -->
 			<!-- <property name="blackouts" type="int" address="0xdcab" /> -->
 			<backport>
@@ -814,6 +815,10 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 	</properties>
   
 	<references>
+		<early_encounters>
+			<entry key="0x00" value="On" />
+			<entry key="0x80" value="Off" />
+		</early_encounters>
 		<!-- TODO: Backports -->
 		<!-- <backports>
 			<entry key="0x00000000" />

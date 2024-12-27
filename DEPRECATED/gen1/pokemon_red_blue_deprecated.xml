@@ -578,6 +578,20 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 		<property name="hChosenStarter" type="int" address="0xffdf" reference="pokemonSpecies"/>
 		<property name="wRivalStarter"  type="int" address="0xd715" reference="pokemonSpecies"/>
 		<property name="wPlayerStarterPosition"  type="int" address="0xd716" />
+		<property name="wEarlyEncounters" type="int" address="0xda3a" reference="early_encounters"/>
+		<encounter_flags>
+			<property name="EVENT_ENCOUNTER_ROUTE3_SPEAROW"  type="bool" address="0xD748" bits="4" />
+			<property name="EVENT_ENCOUNTER_MTMOON_GEODUDE"  type="bool" address="0xD748" bits="5" />
+			<property name="EVENT_ENCOUNTER_MTMOON_PARAS"    type="bool" address="0xD748" bits="6" />
+			<property name="EVENT_ENCOUNTER_ROUTE6_CUT_USER" type="bool" address="0xD748" bits="7" />
+			<property name="EVENT_ENCOUNTER_ROUTE16_DODUO"   type="bool" address="0xD749" bits="0" />
+		</encounter_flags>
+		<custom_trainers>
+			<property name="EVENT_BEAT_REDS_HOUSE_1F_TRAINER_0" type="bool" address="0xD748" bits="0" />
+			<property name="EVENT_BEAT_OAK_0" type="bool" address="0xD748" bits="1" />
+			<property name="EVENT_BEAT_OAK_1" type="bool" address="0xD748" bits="2" />
+			<property name="EVENT_BEAT_OAK_2" type="bool" address="0xD748" bits="3" />
+		</custom_trainers>
 		<time>
 			<property name="frameCount"       type="int" length="4" address="0xdbef + 1" />
 			<property name="oWFrameCount"     type="int" length="4" address="0xdbe3 + 1" />
@@ -698,6 +712,10 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
   </properties>
   
 	<references>
+		<early_encounters>
+			<entry key="0x00" value="On" />
+			<entry key="0x80" value="Off" />
+		</early_encounters>
 		<!-- TODO: Backports -->
 		<!-- <backports>
 			<entry key="0x00000000" />
