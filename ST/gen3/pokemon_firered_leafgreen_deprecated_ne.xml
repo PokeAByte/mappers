@@ -532,8 +532,19 @@
             </menu>
         </events>
         <variables>
-            <property name="pokedex" type="int" address="{dma_a} + 0x1000 + (0x404E - 0x4000) * 2" length="2"/>
+            <property name="VAR_TEMP_1" type="int" address="{dma_a} + 0x1000 + (0x4001 - 0x4000) * 2" length="2"/>
+            <property name="VAR_TEMP_2" type="int" address="{dma_a} + 0x1000 + (0x4002 - 0x4000) * 2" length="2"/>
+            <property name="VAR_TEMP_3" type="int" address="{dma_a} + 0x1000 + (0x4003 - 0x4000) * 2" length="2"/>
+            <property name="VAR_TEMP_4" type="int" address="{dma_a} + 0x1000 + (0x4004 - 0x4000) * 2" length="2"/>
+            <property name="pokedex"    type="int" address="{dma_a} + 0x1000 + (0x404E - 0x4000) * 2" length="2"/>
+            <property name="VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB" type="int" address="{dma_a} + 0x1000 + (0x4055 - 0x4000) * 2" length="2"/>
+            <property name="VAR_CHOSEN_STARTER" type="int" address="{dma_a} + 0x1000 + (0x408C - 0x4000) * 2" length="2"/>
         </variables>
+        <patch>
+            <property name="STP_VAR_RESETS"     type="int" address="0x0203cf64 + (4 * 0)" length="4"/>
+            <property name="STP_VAR_BLACKOUTS"  type="int" address="0x0203cf64 + (4 * 1)" length="4"/>
+            <property name="STP_CHOSEN_STARTER" type="int" address="0x0203cf64 + (4 * 2)" length="4"/>
+        </patch>
         <flags>
             <property name="national_dex" type="bool" bits="0" address="{dma_a} + 4072" />
         </flags>
