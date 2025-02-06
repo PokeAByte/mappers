@@ -53,6 +53,10 @@ function setProperty(path, values) {
 }
 
 function copyProperties(sourcePath, destinationPath) {
+	if (mapper.copy_properties) {
+		mapper.copy_properties(sourcePath, destinationPath);
+		return;
+	}
 	const destPathLength = destinationPath.length;
 	Object.keys(mapper.properties)
 		.filter(key => key.startsWith(destinationPath))
