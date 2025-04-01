@@ -85,8 +85,8 @@
                 <property name="card_57" type="int" address="0xa100 + 57" reference="cards" length="1" />
                 <property name="card_58" type="int" address="0xa100 + 58" reference="cards" length="1" />
                 <property name="card_59" type="int" address="0xa100 + 59" reference="cards" length="1" />
-            </owned_cards>
-            <a218>
+            </owned_cards> -->
+            <!-- <a218>
                 <property name="card_0" type="int" address="0xa218 + 0" reference="cards" length="1"/>
                 <property name="card_1" type="int" address="0xa218 + 1" reference="cards" length="1"/>
                 <property name="card_2" type="int" address="0xa218 + 2" reference="cards" length="1"/>
@@ -147,8 +147,8 @@
                 <property name="card_57" type="int" address="0xa218 + 57" reference="cards" length="1" />
                 <property name="card_58" type="int" address="0xa218 + 58" reference="cards" length="1" />
                 <property name="card_59" type="int" address="0xa218 + 59" reference="cards" length="1" />
-            </a218>
-            <sDeck1Cards>
+            </a218> -->
+            <!-- <sDeck1Cards>
                 <property name="card_0" type="int" address="0xc27e + 0" reference="cards" length="1"/>
                 <property name="card_1" type="int" address="0xc27e + 1" reference="cards" length="1"/>
                 <property name="card_2" type="int" address="0xc27e + 2" reference="cards" length="1"/>
@@ -213,9 +213,9 @@
         </testing>
 
         <player>
-            <property name="wPlayerPrizeCards"             type="int" address="0xc23c" /> <!-- 6 bytes -->
-            <property name="wPlayerHand"                   type="int" address="0xc242" /> <!-- 60 bytes -->
+            <property name="wPlayerArenaCard"              type="int" address="0xc2bb" /> <!-- 1 byte -->
             <property name="wPlayerNumberOfCardsInHand"    type="int" address="0xc2ee" />
+            <property name="wOpponentDeck" type="int" address="0xc480" />
             <property name="arena_pokemon" type="int" />
             <deck_1> <!-- 60 cards --> <!-- wPlayerDeck -->
                 <property name="0"  type="int" address="0xc400 + 0"  reference="cards" /> 
@@ -419,16 +419,213 @@
                 <property name="4"  type="int" address="0xc2bc + 4" />
                 <property name="5"  type="int" address="0xc2bc + 5" />
             </bench_raw>
-            <property name="wPlayerArenaCard"              type="int" address="0xc2bb" /> <!-- 1 byte -->
-            <property name="wPlayerBench"                  type="int" address="0xc2bc" /> <!-- 6 bytes -->
         </player>
         <opponent>
-            <property name="wOpponentPrizeCards"             type="int" address="0xc33c" /> <!-- 6 bytes -->         
-            <property name="wOpponentHand"                   type="int" address="0xc342" /> <!-- 60 bytes -->   
-            <property name="wOpponentDeckCards"              type="int" address="0xc37e" /> <!-- 60 bytes -->        
-            <property name="wOpponentNumberOfCardsNotInDeck" type="int" address="0xc3ba" /> <!-- 1 byte -->                     
-            <property name="wOpponentArenaCard"              type="int" address="0xc3bb" /> <!-- 1 byte -->        
-            <property name="wOpponentBench"                  type="int" address="0xc3bc" /> <!-- 6 bytes -->    
+            <property name="wOpponentArenaCard"         type="int" address="0xc3bb" /> <!-- 1 byte -->
+            <property name="wOpponentNumberOfCardsInHand" type="int" address="0xc3ee" />
+            <property name="arena_pokemon" type="int" />
+            <deck> <!-- 60 cards --> <!-- wOpponentDeck -->
+                <property name="0"  type="int" address="0xc480 + 0"  reference="cards" /> 
+                <property name="1"  type="int" address="0xc480 + 1"  reference="cards" />
+                <property name="2"  type="int" address="0xc480 + 2"  reference="cards" />
+                <property name="3"  type="int" address="0xc480 + 3"  reference="cards" />
+                <property name="4"  type="int" address="0xc480 + 4"  reference="cards" />
+                <property name="5"  type="int" address="0xc480 + 5"  reference="cards" />
+                <property name="6"  type="int" address="0xc480 + 6"  reference="cards" />
+                <property name="7"  type="int" address="0xc480 + 7"  reference="cards" />
+                <property name="8"  type="int" address="0xc480 + 8"  reference="cards" />
+                <property name="9"  type="int" address="0xc480 + 9"  reference="cards" />
+                <property name="10" type="int" address="0xc480 + 10" reference="cards" />
+                <property name="11" type="int" address="0xc480 + 11" reference="cards" />
+                <property name="12" type="int" address="0xc480 + 12" reference="cards" />
+                <property name="13" type="int" address="0xc480 + 13" reference="cards" />
+                <property name="14" type="int" address="0xc480 + 14" reference="cards" />
+                <property name="15" type="int" address="0xc480 + 15" reference="cards" />
+                <property name="16" type="int" address="0xc480 + 16" reference="cards" />
+                <property name="17" type="int" address="0xc480 + 17" reference="cards" />
+                <property name="18" type="int" address="0xc480 + 18" reference="cards" />
+                <property name="19" type="int" address="0xc480 + 19" reference="cards" />
+                <property name="20" type="int" address="0xc480 + 20" reference="cards" />
+                <property name="21" type="int" address="0xc480 + 21" reference="cards" />
+                <property name="22" type="int" address="0xc480 + 22" reference="cards" />
+                <property name="23" type="int" address="0xc480 + 23" reference="cards" />
+                <property name="24" type="int" address="0xc480 + 24" reference="cards" />
+                <property name="25" type="int" address="0xc480 + 25" reference="cards" />
+                <property name="26" type="int" address="0xc480 + 26" reference="cards" />
+                <property name="27" type="int" address="0xc480 + 27" reference="cards" />
+                <property name="28" type="int" address="0xc480 + 28" reference="cards" />
+                <property name="29" type="int" address="0xc480 + 29" reference="cards" />
+                <property name="30" type="int" address="0xc480 + 30" reference="cards" />
+                <property name="31" type="int" address="0xc480 + 31" reference="cards" />
+                <property name="32" type="int" address="0xc480 + 32" reference="cards" />
+                <property name="33" type="int" address="0xc480 + 33" reference="cards" />
+                <property name="34" type="int" address="0xc480 + 34" reference="cards" />
+                <property name="35" type="int" address="0xc480 + 35" reference="cards" />
+                <property name="36" type="int" address="0xc480 + 36" reference="cards" />
+                <property name="37" type="int" address="0xc480 + 37" reference="cards" />
+                <property name="38" type="int" address="0xc480 + 38" reference="cards" />
+                <property name="39" type="int" address="0xc480 + 39" reference="cards" />
+                <property name="40" type="int" address="0xc480 + 40" reference="cards" />
+                <property name="41" type="int" address="0xc480 + 41" reference="cards" />
+                <property name="42" type="int" address="0xc480 + 42" reference="cards" />
+                <property name="43" type="int" address="0xc480 + 43" reference="cards" />
+                <property name="44" type="int" address="0xc480 + 44" reference="cards" />
+                <property name="45" type="int" address="0xc480 + 45" reference="cards" />
+                <property name="46" type="int" address="0xc480 + 46" reference="cards" />
+                <property name="47" type="int" address="0xc480 + 47" reference="cards" />
+                <property name="48" type="int" address="0xc480 + 48" reference="cards" />
+                <property name="49" type="int" address="0xc480 + 49" reference="cards" />
+                <property name="50" type="int" address="0xc480 + 50" reference="cards" />
+                <property name="51" type="int" address="0xc480 + 51" reference="cards" />
+                <property name="52" type="int" address="0xc480 + 52" reference="cards" />
+                <property name="53" type="int" address="0xc480 + 53" reference="cards" />
+                <property name="54" type="int" address="0xc480 + 54" reference="cards" />
+                <property name="55" type="int" address="0xc480 + 55" reference="cards" />
+                <property name="56" type="int" address="0xc480 + 56" reference="cards" />
+                <property name="57" type="int" address="0xc480 + 57" reference="cards" />
+                <property name="58" type="int" address="0xc480 + 58" reference="cards" />
+                <property name="59" type="int" address="0xc480 + 59" reference="cards" />
+            </deck>
+            <hand> <!-- 60 cards -->
+                <property name="0"  type="int" /> 
+                <property name="1"  type="int" />
+                <property name="2"  type="int" />
+                <property name="3"  type="int" />
+                <property name="4"  type="int" />
+                <property name="5"  type="int" />
+                <property name="6"  type="int" />
+                <property name="7"  type="int" />
+                <property name="8"  type="int" />
+                <property name="9"  type="int" />
+                <property name="10" type="int" />
+                <property name="11" type="int" />
+                <property name="12" type="int" />
+                <property name="13" type="int" />
+                <property name="14" type="int" />
+                <property name="15" type="int" />
+                <property name="16" type="int" />
+                <property name="17" type="int" />
+                <property name="18" type="int" />
+                <property name="19" type="int" />
+                <property name="20" type="int" />
+                <property name="21" type="int" />
+                <property name="22" type="int" />
+                <property name="23" type="int" />
+                <property name="24" type="int" />
+                <property name="25" type="int" />
+                <property name="26" type="int" />
+                <property name="27" type="int" />
+                <property name="28" type="int" />
+                <property name="29" type="int" />
+                <property name="30" type="int" />
+                <property name="31" type="int" />
+                <property name="32" type="int" />
+                <property name="33" type="int" />
+                <property name="34" type="int" />
+                <property name="35" type="int" />
+                <property name="36" type="int" />
+                <property name="37" type="int" />
+                <property name="38" type="int" />
+                <property name="39" type="int" />
+                <property name="40" type="int" />
+                <property name="41" type="int" />
+                <property name="42" type="int" />
+                <property name="43" type="int" />
+                <property name="44" type="int" />
+                <property name="45" type="int" />
+                <property name="46" type="int" />
+                <property name="47" type="int" />
+                <property name="48" type="int" />
+                <property name="49" type="int" />
+                <property name="50" type="int" />
+                <property name="51" type="int" />
+                <property name="52" type="int" />
+                <property name="53" type="int" />
+                <property name="54" type="int" />
+                <property name="55" type="int" />
+                <property name="56" type="int" />
+                <property name="57" type="int" />
+                <property name="58" type="int" />
+                <property name="59" type="int" />
+            </hand>
+            <bench>
+                <property name="0" type="int" /> 
+                <property name="1" type="int" />
+                <property name="2" type="int" />
+                <property name="3" type="int" />
+                <property name="4" type="int" />
+                <property name="5" type="int" />
+            </bench>
+            <hand_raw>
+                <property name="0"  type="int" address="0xc342 + 0"   /> 
+                <property name="1"  type="int" address="0xc342 + 1"   />
+                <property name="2"  type="int" address="0xc342 + 2"   />
+                <property name="3"  type="int" address="0xc342 + 3"   />
+                <property name="4"  type="int" address="0xc342 + 4"   />
+                <property name="5"  type="int" address="0xc342 + 5"   />
+                <property name="6"  type="int" address="0xc342 + 6"   />
+                <property name="7"  type="int" address="0xc342 + 7"   />
+                <property name="8"  type="int" address="0xc342 + 8"   />
+                <property name="9"  type="int" address="0xc342 + 9"   />
+                <property name="10" type="int" address="0xc342 + 10"  />
+                <property name="11" type="int" address="0xc342 + 11"  />
+                <property name="12" type="int" address="0xc342 + 12"  />
+                <property name="13" type="int" address="0xc342 + 13"  />
+                <property name="14" type="int" address="0xc342 + 14"  />
+                <property name="15" type="int" address="0xc342 + 15"  />
+                <property name="16" type="int" address="0xc342 + 16"  />
+                <property name="17" type="int" address="0xc342 + 17"  />
+                <property name="18" type="int" address="0xc342 + 18"  />
+                <property name="19" type="int" address="0xc342 + 19"  />
+                <property name="20" type="int" address="0xc342 + 20"  />
+                <property name="21" type="int" address="0xc342 + 21"  />
+                <property name="22" type="int" address="0xc342 + 22"  />
+                <property name="23" type="int" address="0xc342 + 23"  />
+                <property name="24" type="int" address="0xc342 + 24"  />
+                <property name="25" type="int" address="0xc342 + 25"  />
+                <property name="26" type="int" address="0xc342 + 26"  />
+                <property name="27" type="int" address="0xc342 + 27"  />
+                <property name="28" type="int" address="0xc342 + 28"  />
+                <property name="29" type="int" address="0xc342 + 29"  />
+                <property name="30" type="int" address="0xc342 + 30"  />
+                <property name="31" type="int" address="0xc342 + 31"  />
+                <property name="32" type="int" address="0xc342 + 32"  />
+                <property name="33" type="int" address="0xc342 + 33"  />
+                <property name="34" type="int" address="0xc342 + 34"  />
+                <property name="35" type="int" address="0xc342 + 35"  />
+                <property name="36" type="int" address="0xc342 + 36"  />
+                <property name="37" type="int" address="0xc342 + 37"  />
+                <property name="38" type="int" address="0xc342 + 38"  />
+                <property name="39" type="int" address="0xc342 + 39"  />
+                <property name="40" type="int" address="0xc342 + 40"  />
+                <property name="41" type="int" address="0xc342 + 41"  />
+                <property name="42" type="int" address="0xc342 + 42"  />
+                <property name="43" type="int" address="0xc342 + 43"  />
+                <property name="44" type="int" address="0xc342 + 44"  />
+                <property name="45" type="int" address="0xc342 + 45"  />
+                <property name="46" type="int" address="0xc342 + 46"  />
+                <property name="47" type="int" address="0xc342 + 47"  />
+                <property name="48" type="int" address="0xc342 + 48"  />
+                <property name="49" type="int" address="0xc342 + 49"  />
+                <property name="50" type="int" address="0xc342 + 50"  />
+                <property name="51" type="int" address="0xc342 + 51"  />
+                <property name="52" type="int" address="0xc342 + 52"  />
+                <property name="53" type="int" address="0xc342 + 53"  />
+                <property name="54" type="int" address="0xc342 + 54"  />
+                <property name="55" type="int" address="0xc342 + 55"  />
+                <property name="56" type="int" address="0xc342 + 56"  />
+                <property name="57" type="int" address="0xc342 + 57"  />
+                <property name="58" type="int" address="0xc342 + 58"  />
+                <property name="59" type="int" address="0xc342 + 59"  />
+            </hand_raw>   
+            <bench_raw>
+                <property name="0"  type="int" address="0xc3bc + 0" /> 
+                <property name="1"  type="int" address="0xc3bc + 1" />
+                <property name="2"  type="int" address="0xc3bc + 2" />
+                <property name="3"  type="int" address="0xc3bc + 3" />
+                <property name="4"  type="int" address="0xc3bc + 4" />
+                <property name="5"  type="int" address="0xc3bc + 5" />
+            </bench_raw>
         </opponent>
         <!-- <player_arena>
             <property name="wPlayerArenaCardFlags" type="int" address="0xc2c2" />

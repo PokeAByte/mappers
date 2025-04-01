@@ -52,14 +52,14 @@ function setProperty(path, values) {
         property.value = values.value;
 }
 
-function getHandCard() {
+function getHand(cards_in_hand, raw_hand, hand_path, deck_path) {
     // Get the number of cards in the player's hand.
-    const numCards = getValue("player.wPlayerNumberOfCardsInHand");
+    const numCards = getValue(cards_in_hand);
     
     // Collect the card values from player.hand.0 to player.hand.(numCards - 1)
     const handCards = [];
     for (let i = 0; i < numCards; i++) {
-        handCards.push(getValue(`player.hand_raw.${i}`));
+        handCards.push(getValue(`${raw_hand}.${i}`));
     }
 
     // Reverse the order of the cards.
@@ -67,7 +67,7 @@ function getHandCard() {
 
     // Store the reversed array in the destination path.
     for (let i = 0; i < numCards; i++) {
-        setValue(`player.hand.${i}`, getValue(`player.deck_1.${reversedHandCards[i]}`));
+        setValue(`${hand_path}.${i}`, getValue(`${deck_path}.${reversedHandCards[i]}`));
     }
 }
 function setIndirectReference(set_location, indirect_reference_path, value_path) {
@@ -75,14 +75,29 @@ function setIndirectReference(set_location, indirect_reference_path, value_path)
 }
 
 function postprocessor() {
-    getHandCard()
+    // Set both Arena Pokemon
     if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`player.arena_pokemon`, `player.wPlayerArenaCard`, `player.deck_1`); }
+    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`opponent.arena_pokemon`, `opponent.wOpponentArenaCard`, `opponent.deck`); }
+    
+    // Populate hands with the correct values
+    getHand("player.wPlayerNumberOfCardsInHand", "player.hand_raw", "player.hand", "player.deck_1")
+    getHand("opponent.wOpponentNumberOfCardsInHand", "opponent.hand_raw", "opponent.hand", "opponent.deck")
+
+    // Set player bench Pokemon
     if (getValue(`player.bench_raw.0`) != 255) { setIndirectReference(`player.bench.0`, `player.bench_raw.0`, `player.deck_1`); }
     if (getValue(`player.bench_raw.1`) != 255) { setIndirectReference(`player.bench.1`, `player.bench_raw.1`, `player.deck_1`); }
     if (getValue(`player.bench_raw.2`) != 255) { setIndirectReference(`player.bench.2`, `player.bench_raw.2`, `player.deck_1`); }
     if (getValue(`player.bench_raw.3`) != 255) { setIndirectReference(`player.bench.3`, `player.bench_raw.3`, `player.deck_1`); }
     if (getValue(`player.bench_raw.4`) != 255) { setIndirectReference(`player.bench.4`, `player.bench_raw.4`, `player.deck_1`); }
     if (getValue(`player.bench_raw.5`) != 255) { setIndirectReference(`player.bench.5`, `player.bench_raw.5`, `player.deck_1`); }
+
+    // Set opponent bench Pokemon
+    if (getValue(`opponent.bench_raw.0`) != 255) { setIndirectReference(`opponent.bench.0`, `opponent.bench_raw.0`, `opponent.deck`); }
+    if (getValue(`opponent.bench_raw.1`) != 255) { setIndirectReference(`opponent.bench.1`, `opponent.bench_raw.1`, `opponent.deck`); }
+    if (getValue(`opponent.bench_raw.2`) != 255) { setIndirectReference(`opponent.bench.2`, `opponent.bench_raw.2`, `opponent.deck`); }
+    if (getValue(`opponent.bench_raw.3`) != 255) { setIndirectReference(`opponent.bench.3`, `opponent.bench_raw.3`, `opponent.deck`); }
+    if (getValue(`opponent.bench_raw.4`) != 255) { setIndirectReference(`opponent.bench.4`, `opponent.bench_raw.4`, `opponent.deck`); }
+    if (getValue(`opponent.bench_raw.5`) != 255) { setIndirectReference(`opponent.bench.5`, `opponent.bench_raw.5`, `opponent.deck`); }
 }
 
 export { postprocessor };
