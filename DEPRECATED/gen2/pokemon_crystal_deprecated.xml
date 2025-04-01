@@ -732,8 +732,6 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
         <property name="EVENT_ENCOUNTER_NATIONAL_PARK_PSYDUCK" type="bool" address="0xDA93" bits="4" />
         <property name="EVENT_ENCOUNTER_OLIVINE_CITY_KRABBY"   type="bool" address="0xDA93" bits="5" />
         <property name="EVENT_ENCOUNTER_VIOLET_CITY_POLIWAG"   type="bool" address="0xDA93" bits="6" />
-        <property name="route_32_hidden_great_ball"     type="bool" address="0xDA86" bits="5" />
-        <property name="lake_of_rage_hidden_rare_candy" type="bool" address="0xDA88" bits="6" />
       </encounter_flags>
       <property name="turnCounter"  type="int" length="2" address="0xcfd8" />
       <time>
@@ -1422,9 +1420,9 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xFA" value="Whirlpool" />
       <entry key="0xFB" value="Beat Up" />
       <!-- TODO_BACKPORT -->
-      <!-- <entry key="0xFC" value="NewMove1" />  -->
-      <!-- <entry key="0xFD" value="NewMove2" />  -->
-      <!-- <entry key="0xFE" value="NewMove3" />  -->
+      <entry key="0xFC" value="Diamond Storm" /> 
+      <entry key="0xFD" value="Rock Polish" /> 
+      <entry key="0xFE" value="Power Gem" /> 
     </moves>
     <items>
       <entry key="0x00" />
@@ -1937,6 +1935,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="{ pokedexNumber: 249, name: Lugia }" />
       <entry key="0xFA" value="{ pokedexNumber: 250, name: Ho-oh " />
       <entry key="0xFB" value="{ pokedexNumber: 251, name: Celebi }" />
+      <entry key="0xFC" value="{ pokedexNumber: 252, name: Diancie }" />
       <!-- TODO: Backport -->
       <!-- <entry key="0xFB" value="{ pokedexNumber: Backport_Dex, name: Backport }" /> -->
     </pokemon>
@@ -2193,6 +2192,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="Lugia" />
       <entry key="0xFA" value="Ho-oh" />
       <entry key="0xFB" value="Celebi" />
+      <entry key="0xFC" value="Diancie" />
       <!-- TODO: Backport -->
       <!-- <entry key="0xFC" value="Backport" /> -->
     </pokemonSpecies>
@@ -2449,6 +2449,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="249" />
       <entry key="0xFA" value="250" />
       <entry key="0xFB" value="251" />
+      <entry key="0xFC" value="252" />
       <!-- TODO: Backport -->
       <!-- <entry key="0xFC" value="718" /> -->
     </pokemonPokedexNumbers>
