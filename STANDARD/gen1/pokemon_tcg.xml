@@ -256,6 +256,56 @@
             <property name="wPlayerNumberOfCardsInHand"    type="int" address="0xc2ee" />
             <property name="wOpponentDeck" type="int" address="0xc480" />
             <property name="arena_pokemon" type="int" />
+            <!-- <duel_variables>
+                <property name="wPlayerArenaCardFlags" type="int" address="0xc2c2" length="6" />
+                <property name="wPlayerArenaCardHP" type="int" address="0xc2c8" />
+                <property name="wPlayerBench1CardHP" type="int" address="0xc2c9" />
+                <property name="wPlayerBench2CardHP" type="int" address="0xc2ca" />
+                <property name="wPlayerBench3CardHP" type="int" address="0xc2cb" />
+                <property name="wPlayerBench4CardHP" type="int" address="0xc2cc" />
+                <property name="wPlayerBench5CardHP" type="int" address="0xc2cd" />
+                <property name="wPlayerArenaCardStage" type="int" address="0xc2ce" />
+                <property name="wPlayerBench1CardStage" type="int" address="0xc2cf" />
+                <property name="wPlayerBench2CardStage" type="int" address="0xc2d0" />
+                <property name="wPlayerBench3CardStage" type="int" address="0xc2d1" />
+                <property name="wPlayerBench4CardStage" type="int" address="0xc2d2" />
+                <property name="wPlayerBench5CardStage" type="int" address="0xc2d3" />
+                <property name="wPlayerArenaCardChangedType" type="int" address="0xc2d4" />
+                <property name="wPlayerBench1CardChangedType" type="int" address="0xc2d5" />
+                <property name="wPlayerBench2CardChangedType" type="int" address="0xc2d6" />
+                <property name="wPlayerBench3CardChangedType" type="int" address="0xc2d7" />
+                <property name="wPlayerBench4CardChangedType" type="int" address="0xc2d8" />
+                <property name="wPlayerBench5CardChangedType" type="int" address="0xc2d9" />
+                <property name="wPlayerArenaCardAttachedDefender" type="int" address="0xc2da" />
+                <property name="wPlayerBench1CardAttachedDefender" type="int" address="0xc2db" />
+                <property name="wPlayerBench2CardAttachedDefender" type="int" address="0xc2dc" />
+                <property name="wPlayerBench3CardAttachedDefender" type="int" address="0xc2dd" />
+                <property name="wPlayerBench4CardAttachedDefender" type="int" address="0xc2de" />
+                <property name="wPlayerBench5CardAttachedDefender" type="int" address="0xc2df" />
+                <property name="wPlayerArenaCardAttachedPluspower" type="int" address="0xc2e0" />
+                <property name="wPlayerBench1CardAttachedPluspower" type="int" address="0xc2e1" />
+                <property name="wPlayerBench2CardAttachedPluspower" type="int" address="0xc2e2" />
+                <property name="wPlayerBench3CardAttachedPluspower" type="int" address="0xc2e3" />
+                <property name="wPlayerBench4CardAttachedPluspower" type="int" address="0xc2e4" />
+                <property name="wPlayerBench5CardAttachedPluspower" type="int" address="0xc2e5" />
+                <property name="wPlayerArenaCardSubstatus1" type="int" address="0xc2e7" />
+                <property name="wPlayerArenaCardSubstatus2" type="int" address="0xc2e8" />
+                <property name="wPlayerArenaCardChangedWeakness" type="int" address="0xc2e9" />
+                <property name="wPlayerArenaCardChangedResistance" type="int" address="0xc2ea" />
+                <property name="wPlayerArenaCardSubstatus3" type="int" address="0xc2eb" />
+                <property name="wPlayerPrizes" type="int" address="0xc2ec" />
+                <property name="wPlayerNumberOfCardsInDiscardPile" type="int" address="0xc2ed" />
+                <property name="wPlayerNumberOfCardsInHand" type="int" address="0xc2ee" />
+                <property name="wPlayerNumberOfPokemonInPlayArea" type="int" address="0xc2ef" />
+                <property name="wPlayerArenaCardStatus" type="int" address="0xc2f0" />
+                <property name="wPlayerDuelistType" type="int" address="0xc2f1" />
+                <property name="wPlayerArenaCardDisabledAttackIndex" type="int" address="0xc2f2" />
+                <property name="wPlayerArenaCardLastTurnDamage" type="int" address="0xc2f3" />
+                <property name="wPlayerArenaCardLastTurnStatus" type="int" address="0xc2f5" />
+                <property name="wPlayerArenaCardLastTurnSubstatus2" type="int" address="0xc2f6" />
+                <property name="wPlayerArenaCardLastTurnChangeWeak" type="int" address="0xc2f7" />
+                <property name="wPlayerArenaCardLastTurnEffect" type="int" address="0xc2f8" />
+            </duel_variables> -->
             <medals>
                 <property name="medal0" type="bool" address="0xd3d2" bits="7" />
                 <property name="medal1" type="bool" address="0xd3d2" bits="6" />
@@ -280,66 +330,66 @@
                 <property name="EVENT_RECEIVED_DRAGONITE" type="bool" address="0xd3d2 + 0x19" bits="2" />
             </legendary_cards>
             <deck_1>
-                <property name="card_0"  type="int" address="0xa218 + 0"  reference="cards" length="1"/>
-                <property name="card_1"  type="int" address="0xa218 + 1"  reference="cards" length="1"/>
-                <property name="card_2"  type="int" address="0xa218 + 2"  reference="cards" length="1"/>
-                <property name="card_3"  type="int" address="0xa218 + 3"  reference="cards" length="1"/>
-                <property name="card_4"  type="int" address="0xa218 + 4"  reference="cards" length="1"/>
-                <property name="card_5"  type="int" address="0xa218 + 5"  reference="cards" length="1"/>
-                <property name="card_6"  type="int" address="0xa218 + 6"  reference="cards" length="1"/>
-                <property name="card_7"  type="int" address="0xa218 + 7"  reference="cards" length="1"/>
-                <property name="card_8"  type="int" address="0xa218 + 8"  reference="cards" length="1"/>
-                <property name="card_9"  type="int" address="0xa218 + 9"  reference="cards" length="1"/>
-                <property name="card_10" type="int" address="0xa218 + 10" reference="cards" length="1" />
-                <property name="card_11" type="int" address="0xa218 + 11" reference="cards" length="1" />
-                <property name="card_12" type="int" address="0xa218 + 12" reference="cards" length="1" />
-                <property name="card_13" type="int" address="0xa218 + 13" reference="cards" length="1" />
-                <property name="card_14" type="int" address="0xa218 + 14" reference="cards" length="1" />
-                <property name="card_15" type="int" address="0xa218 + 15" reference="cards" length="1" />
-                <property name="card_16" type="int" address="0xa218 + 16" reference="cards" length="1" />
-                <property name="card_17" type="int" address="0xa218 + 17" reference="cards" length="1" />
-                <property name="card_18" type="int" address="0xa218 + 18" reference="cards" length="1" />
-                <property name="card_19" type="int" address="0xa218 + 19" reference="cards" length="1" />
-                <property name="card_20" type="int" address="0xa218 + 20" reference="cards" length="1" />
-                <property name="card_21" type="int" address="0xa218 + 21" reference="cards" length="1" />
-                <property name="card_22" type="int" address="0xa218 + 22" reference="cards" length="1" />
-                <property name="card_23" type="int" address="0xa218 + 23" reference="cards" length="1" />
-                <property name="card_24" type="int" address="0xa218 + 24" reference="cards" length="1" />
-                <property name="card_25" type="int" address="0xa218 + 25" reference="cards" length="1" />
-                <property name="card_26" type="int" address="0xa218 + 26" reference="cards" length="1" />
-                <property name="card_27" type="int" address="0xa218 + 27" reference="cards" length="1" />
-                <property name="card_28" type="int" address="0xa218 + 28" reference="cards" length="1" />
-                <property name="card_29" type="int" address="0xa218 + 29" reference="cards" length="1" />
-                <property name="card_30" type="int" address="0xa218 + 30" reference="cards" length="1" />
-                <property name="card_31" type="int" address="0xa218 + 31" reference="cards" length="1" />
-                <property name="card_32" type="int" address="0xa218 + 32" reference="cards" length="1" />
-                <property name="card_33" type="int" address="0xa218 + 33" reference="cards" length="1" />
-                <property name="card_34" type="int" address="0xa218 + 34" reference="cards" length="1" />
-                <property name="card_35" type="int" address="0xa218 + 35" reference="cards" length="1" />
-                <property name="card_36" type="int" address="0xa218 + 36" reference="cards" length="1" />
-                <property name="card_37" type="int" address="0xa218 + 37" reference="cards" length="1" />
-                <property name="card_38" type="int" address="0xa218 + 38" reference="cards" length="1" />
-                <property name="card_39" type="int" address="0xa218 + 39" reference="cards" length="1" />
-                <property name="card_40" type="int" address="0xa218 + 40" reference="cards" length="1" />
-                <property name="card_41" type="int" address="0xa218 + 41" reference="cards" length="1" />
-                <property name="card_42" type="int" address="0xa218 + 42" reference="cards" length="1" />
-                <property name="card_43" type="int" address="0xa218 + 43" reference="cards" length="1" />
-                <property name="card_44" type="int" address="0xa218 + 44" reference="cards" length="1" />
-                <property name="card_45" type="int" address="0xa218 + 45" reference="cards" length="1" />
-                <property name="card_46" type="int" address="0xa218 + 46" reference="cards" length="1" />
-                <property name="card_47" type="int" address="0xa218 + 47" reference="cards" length="1" />
-                <property name="card_48" type="int" address="0xa218 + 48" reference="cards" length="1" />
-                <property name="card_49" type="int" address="0xa218 + 49" reference="cards" length="1" />
-                <property name="card_50" type="int" address="0xa218 + 50" reference="cards" length="1" />
-                <property name="card_51" type="int" address="0xa218 + 51" reference="cards" length="1" />
-                <property name="card_52" type="int" address="0xa218 + 52" reference="cards" length="1" />
-                <property name="card_53" type="int" address="0xa218 + 53" reference="cards" length="1" />
-                <property name="card_54" type="int" address="0xa218 + 54" reference="cards" length="1" />
-                <property name="card_55" type="int" address="0xa218 + 55" reference="cards" length="1" />
-                <property name="card_56" type="int" address="0xa218 + 56" reference="cards" length="1" />
-                <property name="card_57" type="int" address="0xa218 + 57" reference="cards" length="1" />
-                <property name="card_58" type="int" address="0xa218 + 58" reference="cards" length="1" />
-                <property name="card_59" type="int" address="0xa218 + 59" reference="cards" length="1" />
+                <property name="0"  type="int" address="0xa218 + 0"  reference="cards" length="1"/>
+                <property name="1"  type="int" address="0xa218 + 1"  reference="cards" length="1"/>
+                <property name="2"  type="int" address="0xa218 + 2"  reference="cards" length="1"/>
+                <property name="3"  type="int" address="0xa218 + 3"  reference="cards" length="1"/>
+                <property name="4"  type="int" address="0xa218 + 4"  reference="cards" length="1"/>
+                <property name="5"  type="int" address="0xa218 + 5"  reference="cards" length="1"/>
+                <property name="6"  type="int" address="0xa218 + 6"  reference="cards" length="1"/>
+                <property name="7"  type="int" address="0xa218 + 7"  reference="cards" length="1"/>
+                <property name="8"  type="int" address="0xa218 + 8"  reference="cards" length="1"/>
+                <property name="9"  type="int" address="0xa218 + 9"  reference="cards" length="1"/>
+                <property name="10" type="int" address="0xa218 + 10" reference="cards" length="1" />
+                <property name="11" type="int" address="0xa218 + 11" reference="cards" length="1" />
+                <property name="12" type="int" address="0xa218 + 12" reference="cards" length="1" />
+                <property name="13" type="int" address="0xa218 + 13" reference="cards" length="1" />
+                <property name="14" type="int" address="0xa218 + 14" reference="cards" length="1" />
+                <property name="15" type="int" address="0xa218 + 15" reference="cards" length="1" />
+                <property name="16" type="int" address="0xa218 + 16" reference="cards" length="1" />
+                <property name="17" type="int" address="0xa218 + 17" reference="cards" length="1" />
+                <property name="18" type="int" address="0xa218 + 18" reference="cards" length="1" />
+                <property name="19" type="int" address="0xa218 + 19" reference="cards" length="1" />
+                <property name="20" type="int" address="0xa218 + 20" reference="cards" length="1" />
+                <property name="21" type="int" address="0xa218 + 21" reference="cards" length="1" />
+                <property name="22" type="int" address="0xa218 + 22" reference="cards" length="1" />
+                <property name="23" type="int" address="0xa218 + 23" reference="cards" length="1" />
+                <property name="24" type="int" address="0xa218 + 24" reference="cards" length="1" />
+                <property name="25" type="int" address="0xa218 + 25" reference="cards" length="1" />
+                <property name="26" type="int" address="0xa218 + 26" reference="cards" length="1" />
+                <property name="27" type="int" address="0xa218 + 27" reference="cards" length="1" />
+                <property name="28" type="int" address="0xa218 + 28" reference="cards" length="1" />
+                <property name="29" type="int" address="0xa218 + 29" reference="cards" length="1" />
+                <property name="30" type="int" address="0xa218 + 30" reference="cards" length="1" />
+                <property name="31" type="int" address="0xa218 + 31" reference="cards" length="1" />
+                <property name="32" type="int" address="0xa218 + 32" reference="cards" length="1" />
+                <property name="33" type="int" address="0xa218 + 33" reference="cards" length="1" />
+                <property name="34" type="int" address="0xa218 + 34" reference="cards" length="1" />
+                <property name="35" type="int" address="0xa218 + 35" reference="cards" length="1" />
+                <property name="36" type="int" address="0xa218 + 36" reference="cards" length="1" />
+                <property name="37" type="int" address="0xa218 + 37" reference="cards" length="1" />
+                <property name="38" type="int" address="0xa218 + 38" reference="cards" length="1" />
+                <property name="39" type="int" address="0xa218 + 39" reference="cards" length="1" />
+                <property name="40" type="int" address="0xa218 + 40" reference="cards" length="1" />
+                <property name="41" type="int" address="0xa218 + 41" reference="cards" length="1" />
+                <property name="42" type="int" address="0xa218 + 42" reference="cards" length="1" />
+                <property name="43" type="int" address="0xa218 + 43" reference="cards" length="1" />
+                <property name="44" type="int" address="0xa218 + 44" reference="cards" length="1" />
+                <property name="45" type="int" address="0xa218 + 45" reference="cards" length="1" />
+                <property name="46" type="int" address="0xa218 + 46" reference="cards" length="1" />
+                <property name="47" type="int" address="0xa218 + 47" reference="cards" length="1" />
+                <property name="48" type="int" address="0xa218 + 48" reference="cards" length="1" />
+                <property name="49" type="int" address="0xa218 + 49" reference="cards" length="1" />
+                <property name="50" type="int" address="0xa218 + 50" reference="cards" length="1" />
+                <property name="51" type="int" address="0xa218 + 51" reference="cards" length="1" />
+                <property name="52" type="int" address="0xa218 + 52" reference="cards" length="1" />
+                <property name="53" type="int" address="0xa218 + 53" reference="cards" length="1" />
+                <property name="54" type="int" address="0xa218 + 54" reference="cards" length="1" />
+                <property name="55" type="int" address="0xa218 + 55" reference="cards" length="1" />
+                <property name="56" type="int" address="0xa218 + 56" reference="cards" length="1" />
+                <property name="57" type="int" address="0xa218 + 57" reference="cards" length="1" />
+                <property name="58" type="int" address="0xa218 + 58" reference="cards" length="1" />
+                <property name="59" type="int" address="0xa218 + 59" reference="cards" length="1" />
             </deck_1>
             <deck> <!-- 60 cards --> <!-- wPlayerDeck -->
                 <property name="0"  type="int" address="0xc400 + 0"  reference="cards" /> 
@@ -549,6 +599,56 @@
             <property name="wOpponentArenaCard"         type="int" address="0xc3bb" /> <!-- 1 byte -->
             <property name="wOpponentNumberOfCardsInHand" type="int" address="0xc3ee" />
             <property name="arena_pokemon" type="int" />
+            <!-- <duel_variables>
+	            <property name="wOpponentArenaCardFlags" type="int" address="0xc3c2" length="6"/>
+	            <property name="wOpponentArenaCardHP" type="int" address="0xc3c8" />
+	            <property name="wOpponentBench1CardHP" type="int" address="0xc3c9" />
+	            <property name="wOpponentBench2CardHP" type="int" address="0xc3ca" />
+	            <property name="wOpponentBench3CardHP" type="int" address="0xc3cb" />
+	            <property name="wOpponentBench4CardHP" type="int" address="0xc3cc" />
+	            <property name="wOpponentBench5CardHP" type="int" address="0xc3cd" />
+	            <property name="wOpponentArenaCardStage" type="int" address="0xc3ce" />
+	            <property name="wOpponentBench1CardStage" type="int" address="0xc3cf" />
+	            <property name="wOpponentBench2CardStage" type="int" address="0xc3d0" />
+	            <property name="wOpponentBench3CardStage" type="int" address="0xc3d1" />
+	            <property name="wOpponentBench4CardStage" type="int" address="0xc3d2" />
+	            <property name="wOpponentBench5CardStage" type="int" address="0xc3d3" />
+	            <property name="wOpponentArenaCardChangedType" type="int" address="0xc3d4" />
+	            <property name="wOpponentBench1CardChangedType" type="int" address="0xc3d5" />
+	            <property name="wOpponentBench2CardChangedType" type="int" address="0xc3d6" />
+	            <property name="wOpponentBench3CardChangedType" type="int" address="0xc3d7" />
+	            <property name="wOpponentBench4CardChangedType" type="int" address="0xc3d8" />
+	            <property name="wOpponentBench5CardChangedType" type="int" address="0xc3d9" />
+	            <property name="wOpponentArenaCardAttachedDefender" type="int" address="0xc3da" />
+	            <property name="wOpponentBench1CardAttachedDefender" type="int" address="0xc3db" />
+	            <property name="wOpponentBench2CardAttachedDefender" type="int" address="0xc3dc" />
+	            <property name="wOpponentBench3CardAttachedDefender" type="int" address="0xc3dd" />
+	            <property name="wOpponentBench4CardAttachedDefender" type="int" address="0xc3de" />
+	            <property name="wOpponentBench5CardAttachedDefender" type="int" address="0xc3df" />
+	            <property name="wOpponentArenaCardAttachedPluspower" type="int" address="0xc3e0" />
+	            <property name="wOpponentBench1CardAttachedPluspower" type="int" address="0xc3e1" />
+	            <property name="wOpponentBench2CardAttachedPluspower" type="int" address="0xc3e2" />
+	            <property name="wOpponentBench3CardAttachedPluspower" type="int" address="0xc3e3" />
+	            <property name="wOpponentBench4CardAttachedPluspower" type="int" address="0xc3e4" />
+	            <property name="wOpponentBench5CardAttachedPluspower" type="int" address="0xc3e5" />
+	            <property name="wOpponentArenaCardSubstatus1" type="int" address="0xc3e7" />
+	            <property name="wOpponentArenaCardSubstatus2" type="int" address="0xc3e8" />
+	            <property name="wOpponentArenaCardChangedWeakness" type="int" address="0xc3e9" />
+	            <property name="wOpponentArenaCardChangedResistance" type="int" address="0xc3ea" />
+	            <property name="wOpponentArenaCardSubstatus3" type="int" address="0xc3eb" />
+	            <property name="wOpponentPrizes" type="int" address="0xc3ec" />
+	            <property name="wOpponentNumberOfCardsInDiscardPile" type="int" address="0xc3ed" />
+	            <property name="wOpponentNumberOfCardsInHand" type="int" address="0xc3ee" />
+	            <property name="wOpponentNumberOfPokemonInPlayArea" type="int" address="0xc3ef" />
+	            <property name="wOpponentArenaCardStatus" type="int" address="0xc3f0" />
+	            <property name="wOpponentDuelistType" type="int" address="0xc3f1" />
+	            <property name="wOpponentArenaCardDisabledAttackIndex" type="int" address="0xc3f2" />
+	            <property name="wOpponentArenaCardLastTurnDamage" type="int" address="0xc3f3" />
+	            <property name="wOpponentArenaCardLastTurnStatus" type="int" address="0xc3f5" />
+	            <property name="wOpponentArenaCardLastTurnSubstatus2" type="int" address="0xc3f6" />
+	            <property name="wOpponentArenaCardLastTurnChangeWeak" type="int" address="0xc3f7" />
+	            <property name="wOpponentArenaCardLastTurnEffect" type="int" address="0xc3f8" />
+            </duel_variables> -->
             <deck> <!-- 60 cards --> <!-- wOpponentDeck -->
                 <property name="0"  type="int" address="0xc480 + 0"  reference="cards" /> 
                 <property name="1"  type="int" address="0xc480 + 1"  reference="cards" />

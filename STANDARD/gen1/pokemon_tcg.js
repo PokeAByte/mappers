@@ -86,7 +86,7 @@ function getHand(cards_in_hand, raw_hand, hand_path, deck_path) {
     }
 }
 function setIndirectReference(set_location, indirect_reference_path, value_path) {
-    if (getValue(indirect_reference_path) == 255) { return }
+    if (getValue(indirect_reference_path) == 255) { setValue(set_location, null); }
     setValue(set_location, getValue(`${value_path}.${getValue(indirect_reference_path)}`));
 }
 
