@@ -85,8 +85,8 @@ function getHand(cards_in_hand, raw_hand, hand_path, deck_path) {
         setValue(`${hand_path}.${i}`, getValue(`${deck_path}.${reversedHandCards[i]}`));
     }
 }
-function setIndirectReference(set_location, indirect_reference_path, value_path) {
-    if (getValue(indirect_reference_path) == 255) { setValue(set_location, null); }
+function setIndirectReference(set_location, indirect_reference_path, value_path, break_value = 255) {
+    if (getValue(indirect_reference_path) >= break_value) { setValue(set_location, null); return; }
     setValue(set_location, getValue(`${value_path}.${getValue(indirect_reference_path)}`));
 }
 
@@ -101,20 +101,20 @@ function postprocessor() {
     getHand("opponent.wOpponentNumberOfCardsInHand", "opponent.hand_raw", "opponent.hand", "opponent.deck")
 
     // Set player bench Pokemon
-    if (getValue(`player.bench_raw.0`) != 255) { setIndirectReference(`player.bench.0`, `player.bench_raw.0`, `player.deck`); }
-    if (getValue(`player.bench_raw.1`) != 255) { setIndirectReference(`player.bench.1`, `player.bench_raw.1`, `player.deck`); }
-    if (getValue(`player.bench_raw.2`) != 255) { setIndirectReference(`player.bench.2`, `player.bench_raw.2`, `player.deck`); }
-    if (getValue(`player.bench_raw.3`) != 255) { setIndirectReference(`player.bench.3`, `player.bench_raw.3`, `player.deck`); }
-    if (getValue(`player.bench_raw.4`) != 255) { setIndirectReference(`player.bench.4`, `player.bench_raw.4`, `player.deck`); }
-    if (getValue(`player.bench_raw.5`) != 255) { setIndirectReference(`player.bench.5`, `player.bench_raw.5`, `player.deck`); }
+    if (getValue(`player.bench_raw.0`) != 255) { setIndirectReference(`player.bench.0`, `player.bench_raw.0`, `player.deck`, 60); }
+    if (getValue(`player.bench_raw.1`) != 255) { setIndirectReference(`player.bench.1`, `player.bench_raw.1`, `player.deck`, 60); }
+    if (getValue(`player.bench_raw.2`) != 255) { setIndirectReference(`player.bench.2`, `player.bench_raw.2`, `player.deck`, 60); }
+    if (getValue(`player.bench_raw.3`) != 255) { setIndirectReference(`player.bench.3`, `player.bench_raw.3`, `player.deck`, 60); }
+    if (getValue(`player.bench_raw.4`) != 255) { setIndirectReference(`player.bench.4`, `player.bench_raw.4`, `player.deck`, 60); }
+    if (getValue(`player.bench_raw.5`) != 255) { setIndirectReference(`player.bench.5`, `player.bench_raw.5`, `player.deck`, 60); }
 
     // Set opponent bench Pokemon
-    if (getValue(`opponent.bench_raw.0`) != 255) { setIndirectReference(`opponent.bench.0`, `opponent.bench_raw.0`, `opponent.deck`); }
-    if (getValue(`opponent.bench_raw.1`) != 255) { setIndirectReference(`opponent.bench.1`, `opponent.bench_raw.1`, `opponent.deck`); }
-    if (getValue(`opponent.bench_raw.2`) != 255) { setIndirectReference(`opponent.bench.2`, `opponent.bench_raw.2`, `opponent.deck`); }
-    if (getValue(`opponent.bench_raw.3`) != 255) { setIndirectReference(`opponent.bench.3`, `opponent.bench_raw.3`, `opponent.deck`); }
-    if (getValue(`opponent.bench_raw.4`) != 255) { setIndirectReference(`opponent.bench.4`, `opponent.bench_raw.4`, `opponent.deck`); }
-    if (getValue(`opponent.bench_raw.5`) != 255) { setIndirectReference(`opponent.bench.5`, `opponent.bench_raw.5`, `opponent.deck`); }
+    if (getValue(`opponent.bench_raw.0`) != 255) { setIndirectReference(`opponent.bench.0`, `opponent.bench_raw.0`, `opponent.deck`, 60); }
+    if (getValue(`opponent.bench_raw.1`) != 255) { setIndirectReference(`opponent.bench.1`, `opponent.bench_raw.1`, `opponent.deck`, 60); }
+    if (getValue(`opponent.bench_raw.2`) != 255) { setIndirectReference(`opponent.bench.2`, `opponent.bench_raw.2`, `opponent.deck`, 60); }
+    if (getValue(`opponent.bench_raw.3`) != 255) { setIndirectReference(`opponent.bench.3`, `opponent.bench_raw.3`, `opponent.deck`, 60); }
+    if (getValue(`opponent.bench_raw.4`) != 255) { setIndirectReference(`opponent.bench.4`, `opponent.bench_raw.4`, `opponent.deck`, 60); }
+    if (getValue(`opponent.bench_raw.5`) != 255) { setIndirectReference(`opponent.bench.5`, `opponent.bench_raw.5`, `opponent.deck`, 60); }
 
     // Update the game state
     setValue(`meta.state`, getGameState());
