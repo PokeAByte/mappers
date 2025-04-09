@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="ed4632b2-e220-4504-ad3c-2a79e57e30c0" name="Pokémon Trading Card Game" platform="GBC" version="1.0.2"
+<mapper id="ed4632b2-e220-4504-ad3c-2a79e57e30c0" name="Pokémon Trading Card Game" platform="GBC" version="1.0.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -254,6 +254,8 @@
         <player>
             <property name="wPlayerArenaCard"              type="int" address="0xc2bb" /> <!-- 1 byte -->
             <property name="wPlayerNumberOfCardsInHand"    type="int" address="0xc2ee" />
+            <property name="wPlayerPrizes"    type="int" address="0xc2ec" />
+            <property name="wPlayerNumberOfPokemonInPlayArea"    type="int" address="0xc2ef" />
             <property name="wOpponentDeck" type="int" address="0xc480" />
             <property name="arena_pokemon" type="int" />
             <!-- <duel_variables>
@@ -593,11 +595,20 @@
                 <property name="4" type="int" address="0xc2bc + 4" />
                 <property name="5" type="int" address="0xc2bc + 5" />
             </bench_raw>
+            <prizes>
+                <!-- <property name="wPlayerPrizeCards" type="int" address="0xc23c" /> -->
+                <!-- <property name="wPlayerPrizeCards" type="int" address="0xc23c" /> -->
+                <!-- <property name="wPlayerPrizeCards" type="int" address="0xc23c" /> -->
+                <!-- <property name="wPlayerPrizeCards" type="int" address="0xc23c" /> -->
+            </prizes>
+
         </player>
 
         <opponent>
             <property name="wOpponentArenaCard"         type="int" address="0xc3bb" /> <!-- 1 byte -->
             <property name="wOpponentNumberOfCardsInHand" type="int" address="0xc3ee" />
+            <property name="wOpponentPrizes"    type="int" address="0xc3ec" />
+            <property name="wOpponentNumberOfPokemonInPlayArea"    type="int" address="0xc3ef" />
             <property name="arena_pokemon" type="int" />
             <!-- <duel_variables>
 	            <property name="wOpponentArenaCardFlags" type="int" address="0xc3c2" length="6"/>
