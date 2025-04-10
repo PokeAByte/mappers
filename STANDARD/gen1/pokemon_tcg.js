@@ -93,28 +93,28 @@ function setIndirectReference(set_location, indirect_reference_path, value_path,
 // Post Processor
 function postprocessor() {
     // Set both Arena Pokemon
-    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`player.arena_pokemon`, `player.wPlayerArenaCard`, `player.deck`); }
-    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`opponent.arena_pokemon`, `opponent.wOpponentArenaCard`, `opponent.deck`); }
+    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`player.arena_pokemon`, `player.wPlayerArenaCard`, `player.deck`); }         else { setValue(`player.arena_pokemon`, null);}
+    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`opponent.arena_pokemon`, `opponent.wOpponentArenaCard`, `opponent.deck`); } else { setValue(`opponent.arena_pokemon`, null);}
     
     // Populate hands with the correct values
     getHand("player.wPlayerNumberOfCardsInHand", "player.hand_raw", "player.hand", "player.deck")
     getHand("opponent.wOpponentNumberOfCardsInHand", "opponent.hand_raw", "opponent.hand", "opponent.deck")
 
     // Set player bench Pokemon
-    if (getValue(`player.bench_raw.0`) != 255) { setIndirectReference(`player.bench.0`, `player.bench_raw.0`, `player.deck`, 60); }
-    if (getValue(`player.bench_raw.1`) != 255) { setIndirectReference(`player.bench.1`, `player.bench_raw.1`, `player.deck`, 60); }
-    if (getValue(`player.bench_raw.2`) != 255) { setIndirectReference(`player.bench.2`, `player.bench_raw.2`, `player.deck`, 60); }
-    if (getValue(`player.bench_raw.3`) != 255) { setIndirectReference(`player.bench.3`, `player.bench_raw.3`, `player.deck`, 60); }
-    if (getValue(`player.bench_raw.4`) != 255) { setIndirectReference(`player.bench.4`, `player.bench_raw.4`, `player.deck`, 60); }
-    if (getValue(`player.bench_raw.5`) != 255) { setIndirectReference(`player.bench.5`, `player.bench_raw.5`, `player.deck`, 60); }
+    if (getValue(`player.bench_raw.0`) != 255) { setIndirectReference(`player.bench.0`, `player.bench_raw.0`, `player.deck`, 60); } else { setValue(`player.bench.0`, null);}
+    if (getValue(`player.bench_raw.1`) != 255) { setIndirectReference(`player.bench.1`, `player.bench_raw.1`, `player.deck`, 60); } else { setValue(`player.bench.1`, null);}
+    if (getValue(`player.bench_raw.2`) != 255) { setIndirectReference(`player.bench.2`, `player.bench_raw.2`, `player.deck`, 60); } else { setValue(`player.bench.2`, null);}
+    if (getValue(`player.bench_raw.3`) != 255) { setIndirectReference(`player.bench.3`, `player.bench_raw.3`, `player.deck`, 60); } else { setValue(`player.bench.3`, null);}
+    if (getValue(`player.bench_raw.4`) != 255) { setIndirectReference(`player.bench.4`, `player.bench_raw.4`, `player.deck`, 60); } else { setValue(`player.bench.4`, null);}
+    if (getValue(`player.bench_raw.5`) != 255) { setIndirectReference(`player.bench.5`, `player.bench_raw.5`, `player.deck`, 60); } else { setValue(`player.bench.5`, null);}
 
     // Set opponent bench Pokemon
-    if (getValue(`opponent.bench_raw.0`) != 255) { setIndirectReference(`opponent.bench.0`, `opponent.bench_raw.0`, `opponent.deck`, 60); }
-    if (getValue(`opponent.bench_raw.1`) != 255) { setIndirectReference(`opponent.bench.1`, `opponent.bench_raw.1`, `opponent.deck`, 60); }
-    if (getValue(`opponent.bench_raw.2`) != 255) { setIndirectReference(`opponent.bench.2`, `opponent.bench_raw.2`, `opponent.deck`, 60); }
-    if (getValue(`opponent.bench_raw.3`) != 255) { setIndirectReference(`opponent.bench.3`, `opponent.bench_raw.3`, `opponent.deck`, 60); }
-    if (getValue(`opponent.bench_raw.4`) != 255) { setIndirectReference(`opponent.bench.4`, `opponent.bench_raw.4`, `opponent.deck`, 60); }
-    if (getValue(`opponent.bench_raw.5`) != 255) { setIndirectReference(`opponent.bench.5`, `opponent.bench_raw.5`, `opponent.deck`, 60); }
+    if (getValue(`opponent.bench_raw.0`) != 255) { setIndirectReference(`opponent.bench.0`, `opponent.bench_raw.0`, `opponent.deck`, 60); } else { setValue(`opponent.bench.0`, null);}
+    if (getValue(`opponent.bench_raw.1`) != 255) { setIndirectReference(`opponent.bench.1`, `opponent.bench_raw.1`, `opponent.deck`, 60); } else { setValue(`opponent.bench.1`, null);}
+    if (getValue(`opponent.bench_raw.2`) != 255) { setIndirectReference(`opponent.bench.2`, `opponent.bench_raw.2`, `opponent.deck`, 60); } else { setValue(`opponent.bench.2`, null);}
+    if (getValue(`opponent.bench_raw.3`) != 255) { setIndirectReference(`opponent.bench.3`, `opponent.bench_raw.3`, `opponent.deck`, 60); } else { setValue(`opponent.bench.3`, null);}
+    if (getValue(`opponent.bench_raw.4`) != 255) { setIndirectReference(`opponent.bench.4`, `opponent.bench_raw.4`, `opponent.deck`, 60); } else { setValue(`opponent.bench.4`, null);}
+    if (getValue(`opponent.bench_raw.5`) != 255) { setIndirectReference(`opponent.bench.5`, `opponent.bench_raw.5`, `opponent.deck`, 60); } else { setValue(`opponent.bench.5`, null);}
 
     // Update the game state
     setValue(`meta.state`, getGameState());
