@@ -261,6 +261,17 @@
             <property name="wPlayerNumberOfPokemonInPlayArea"    type="int" address="0xc2ef" />
             <property name="wOpponentDeck" type="int" address="0xc480" />
             <property name="arena_pokemon" type="int" />
+            <property name="arena_status"  type="int" address="0xc2f0" reference="status_conditions" />
+            <arena_status_conditions>
+                <property name="wPlayerArenaCardStatus_0" type="bool" address="0xc2f0" bits="0" />
+                <property name="wPlayerArenaCardStatus_1" type="bool" address="0xc2f0" bits="1" />
+                <property name="wPlayerArenaCardStatus_2" type="bool" address="0xc2f0" bits="2" />
+                <property name="wPlayerArenaCardStatus_3" type="bool" address="0xc2f0" bits="3" />
+                <property name="wPlayerArenaCardStatus_4" type="bool" address="0xc2f0" bits="4" />
+                <property name="wPlayerArenaCardStatus_5" type="bool" address="0xc2f0" bits="5" />
+                <property name="wPlayerArenaCardStatus_6" type="bool" address="0xc2f0" bits="6" />
+                <property name="wPlayerArenaCardStatus_7" type="bool" address="0xc2f0" bits="7" />
+            </arena_status_conditions>
             <!-- <duel_variables>
                 <property name="wPlayerArenaCardFlags" type="int" address="0xc2c2" length="6" />
                 <property name="wPlayerArenaCardHP" type="int" address="0xc2c8" />
@@ -684,6 +695,17 @@
             <property name="wOpponentPrizes"    type="int" address="0xc3ec" />
             <property name="wOpponentNumberOfPokemonInPlayArea"    type="int" address="0xc3ef" />
             <property name="arena_pokemon" type="int" />
+            <property name="arena_status"  type="int" address="0xc3f0" reference="status_conditions" />
+            <arena_status_conditions>
+                <property name="wOpponentArenaCardStatus_0" type="bool" address="0xc3f0" bits="0" />
+                <property name="wOpponentArenaCardStatus_1" type="bool" address="0xc3f0" bits="1" />
+                <property name="wOpponentArenaCardStatus_2" type="bool" address="0xc3f0" bits="2" />
+                <property name="wOpponentArenaCardStatus_3" type="bool" address="0xc3f0" bits="3" />
+                <property name="wOpponentArenaCardStatus_4" type="bool" address="0xc3f0" bits="4" />
+                <property name="wOpponentArenaCardStatus_5" type="bool" address="0xc3f0" bits="5" />
+                <property name="wOpponentArenaCardStatus_6" type="bool" address="0xc3f0" bits="6" />
+                <property name="wOpponentArenaCardStatus_7" type="bool" address="0xc3f0" bits="7" />
+            </arena_status_conditions>
             <!-- <duel_variables>
 	            <property name="wOpponentArenaCardFlags" type="int" address="0xc3c2" length="6"/>
 	            <property name="wOpponentArenaCardHP" type="int" address="0xc3c8" />
@@ -1272,6 +1294,23 @@
             <entry key="0x14" value="Bench_4"      />
             <entry key="0x15" value="Bench_5"      />
         </card_positions>
+        <status_conditions>
+            <entry key="0x00" />
+            <entry key="0x01" value="CONFUSED" />
+            <entry key="0x02" value="ASLEEP" />
+            <entry key="0x03" value="PARALYZED" />
+            <entry key="0x80" value="POISONED" />
+            <entry key="0xc0" value="DOUBLE_POISONED" />
+
+            <entry key="6"    value="DOUBLE_POISONED_F" />
+            <entry key="7"    value="POISONED_F" />
+
+            <entry key="0x0f" value="CNF_SLP_PRZ" />
+            <entry key="0xf0" value="PSN_DBLPSN" />
+
+            <entry key="10"   value="PSN_DAMAGE" />
+            <entry key="20"   value="DBLPSN_DAMAGE" />
+        </status_conditions>
         <defaultCharacterMap>
             <entry key="0x0330" value="A" />
             <entry key="0x0331" value="B" />

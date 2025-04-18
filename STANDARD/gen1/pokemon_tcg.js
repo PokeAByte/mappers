@@ -93,8 +93,8 @@ function setIndirectReference(set_location, indirect_reference_path, value_path,
 // Post Processor
 function postprocessor() {
     // Set both Arena Pokemon
-    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`player.arena_pokemon`, `player.wPlayerArenaCard`, `player.deck`); }         else { setValue(`player.arena_pokemon`, null);}
-    if (getValue(`player.wPlayerArenaCard`) != 0) { setIndirectReference(`opponent.arena_pokemon`, `opponent.wOpponentArenaCard`, `opponent.deck`); } else { setValue(`opponent.arena_pokemon`, null);}
+    if (getValue(`player.wPlayerArenaCard`) != 0)     { setIndirectReference(`player.arena_pokemon`, `player.wPlayerArenaCard`, `player.deck`); }         else { setValue(`player.arena_pokemon`, null);}
+    if (getValue(`opponent.wOpponentArenaCard`) != 0) { setIndirectReference(`opponent.arena_pokemon`, `opponent.wOpponentArenaCard`, `opponent.deck`); } else { setValue(`opponent.arena_pokemon`, null);}
     
     // Populate hands with the correct values
     getHand("player.wPlayerNumberOfCardsInHand", "player.hand_raw", "player.hand", "player.deck")

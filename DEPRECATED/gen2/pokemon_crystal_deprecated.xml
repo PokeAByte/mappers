@@ -314,7 +314,15 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <property name="beat_red" type="bool" address="0xDADA" bits="1" />
       <property name="healed_moomoo" type="bool" address="0xDA79" bits="5" />
       <property name="rival_new_bark_town" type="bool" address="0xDB49" bits="5" />
-      <property name="elm_called_about_stolen_pokemon" type="bool" address="0xDA7A" bits="3" />
+      <radio_tower>
+        <property name="elm_called_about_stolen_pokemon" type="bool" address="0xDA7A" bits="3" />
+        <property name="goldenrod_city_rocket_scout" type="bool" address="0xDB4B" bits="4" />
+        <property name="goldenrod_city_rocket_takeover" type="bool" address="0xDB4B" bits="5" />
+        <property name="radio_tower_rocket_takeover" type="bool" address="0xDB4B" bits="6" />
+        <property name="goldenrod_city_civilians" type="bool" address="0xDB4B" bits="7" />
+        <property name="radio_tower_civilians_after" type="bool" address="0xDB4C" bits="0" />
+        <property name="radio_tower_blackbelt_blocks_stairs" type="bool" address="0xDB4C" bits="1" />
+      </radio_tower>
     </events>
     <roamers>
       <class name="0" type="roamer" address="0xDFCF" />

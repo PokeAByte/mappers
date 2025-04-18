@@ -438,9 +438,11 @@
             <property name="safariSteps"        type="int" address="0x02039996" />
             <property name="disabledEncounters" type="int" address="0x2038c00" />
             <encounters>
-                <property name="zigzagoon" type="bool" address="{dma_a} + 5008" bits="0" />
-                <property name="marill"    type="bool" address="{dma_a} + 5008" bits="1" />
-                <property name="taillow"   type="bool" address="{dma_a} + 5008" bits="2" />
+                <property name="zigzagoon"    type="bool" address="{dma_a} + 5008" bits="0" />
+                <property name="marill"       type="bool" address="{dma_a} + 5008" bits="1" />
+                <property name="taillow"      type="bool" address="{dma_a} + 5008" bits="2" />
+                <property name="abra_116"     type="bool" address="{dma_a} + 5008" bits="3" />
+                <property name="abra_granite" type="bool" address="{dma_a} + 5008" bits="4" />
             </encounters>
         </overworld>
         <battle>
