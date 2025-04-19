@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.1.1"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.2.1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -653,11 +653,13 @@
             <property name="frames"  type="int" address="{dma_b} + 18" />
         </gameTime>
         <pointers>
-            <property name="dma1"      type="uint" length="4" address="0x3005008" />
-            <property name="dma2"      type="uint" length="4" address="0x300500C" />
-            <property name="dma3"      type="uint" length="4" address="0x3005010" />
-            <property name="callback1" type="int"  length="4" address="0x30030f0" />
-            <property name="callback2" type="int"  length="4" address="0x30030f4" />
+            <property name="dma1"          type="uint" length="4" address="0x3005008" />
+            <property name="dma2"          type="uint" length="4" address="0x300500C" />
+            <property name="dma3"          type="uint" length="4" address="0x3005010" />
+            <property name="callback1"     type="int"  length="4" address="0x30030f0" />
+            <property name="callback2"     type="int"  length="4" address="0x30030f4" />
+            <property name="sStpCallback1" type="int"  length="4" address="0x203f474" reference="stp_callback1" />
+            <property name="sStpCallback2" type="int"  length="4" address="0x203f478" reference="stp_callback2" />
         </pointers>
     </properties>
     <references>
@@ -706,6 +708,76 @@
             <entry key="135186921" value="Intro Cinematic" />
             <entry key="134712241" value="Title Screen" />
         </subState>
+        <stp_callback1>
+            <entry key="0" />
+            <entry key="1" value="CB1_Overworld" />
+            <entry key="2" />
+            <entry key="3" value="CB1_UpdateLinkState" />
+        </stp_callback1>
+        <stp_callback2>
+            <entry key="0" />
+            <entry key="1"  value="gCB2_AfterEvolution" />
+            <entry key="2"  value="CB2_LinkError" />
+            <entry key="3"  value="CB2_InitMainMenu" />
+            <entry key="4"  value="CB2_InitBattle" />
+            <entry key="5"  value="BattleMainCB2" />
+            <entry key="6"  value="CB2_InitEndLinkBattle" />
+            <entry key="7"  value="SetCB2ToReshowScreenAfterMenu" />
+            <entry key="8"  value="SetCB2ToReshowScreenAfterMenu2" />
+            <entry key="9"  value="CB2_StartCreateTradeMenu" />
+            <entry key="10" value="CB2_ReturnToTradeMenuFromSummary" />
+            <entry key="11" value="CB2_LinkTrade" />
+            <entry key="12" value="CB2_OverworldBasic" />
+            <entry key="13" value="CB2_NewGame" />
+            <entry key="14" value="CB2_WhiteOut" />
+            <entry key="15" value="CB2_LoadMap" />
+            <entry key="16" value="CB2_ReturnToFieldCableClub" />
+            <entry key="17" value="CB2_ReturnToField" />
+            <entry key="18" value="CB2_ReturnToFieldFromMultiplayer" />
+            <entry key="19" value="CB2_ReturnToFieldWithOpenMenu" />
+            <entry key="20" value="CB2_ReturnToFieldContinueScript" />
+            <entry key="21" value="CB2_ReturnToFieldContinueScriptPlayMapMusic" />
+            <entry key="22" value="CB2_ReturnToFieldFromDiploma" />
+            <entry key="23" value="CB2_ContinueSavedGame" />
+            <entry key="24" value="CB2_SetUpOverworldForQLPlaybackWithWarpExit" />
+            <entry key="25" value="CB2_SetUpOverworldForQLPlayback" />
+            <entry key="26" value="CB2_EnterFieldFromQuestLog" />
+            <entry key="27" value="CB2_SetUpSaveAfterLinkBattle" />
+            <entry key="28" value="CB2_InitTitleScreen" />
+            <entry key="29" value="CB2_ReturnFromCableClubBattle" />
+            <entry key="30" value="CB2_OptionsMenuFromStartMenu" />
+            <entry key="31" value="CB2_ExitPokeStorage" />
+            <entry key="32" value="CB2_ReturnToPokeStorage" />
+            <entry key="33" value="CB2_EndSafariBattle" />
+            <entry key="34" value="CB2_OpenFlyMap" />
+            <entry key="35" value="CB2_DoChangeMap" />
+            <entry key="36" value="SetCB2WhiteOut" />
+            <entry key="37" value="CB2_InitCopyrightScreenAfterBootup" />
+            <entry key="38" value="CB2_InitCopyrightScreenAfterTitleScreen" />
+            <entry key="39" value="CB2_DoHallOfFameScreen" />
+            <entry key="40" value="CB2_DoHallOfFameScreenDontSaveData" />
+            <entry key="41" value="CB2_InitHofPC" />
+            <entry key="42" value="CB2_ShowDiploma" />
+            <entry key="43" value="CB2_SaveClearScreen_Init" />
+            <entry key="44" value="CB2_PokedexScreen" />
+            <entry key="45" value="CB2_OpenPokedexFromStartMenu" />
+            <entry key="46" value="CB2_ClosePokedex" />
+            <entry key="47" value="CB2_BagMenuFromStartMenu" />
+            <entry key="48" value="CB2_BagMenuFromBattle" />
+            <entry key="49" value="CB2_SetUpReshowBattleScreenAfterMenu" />
+            <entry key="50" value="CB2_UnionRoomBattle" />
+            <entry key="51" value="CB2_SelectBagItemToGive" />
+            <entry key="52" value="CB2_GiveHoldItem" />
+            <entry key="53" value="CB2_ReturnToPartyMenuFromFlyMap" />
+            <entry key="54" value="CB2_ShowPartyMenuForItemUse" />
+            <entry key="55" value="CB2_PartyMenuFromStartMenu" />
+            <entry key="56" value="CB2_ChooseMonToGiveItem" />
+            <entry key="57" value="CB2_MysteryGiftEReader" />
+            <entry key="58" value="CB2_InitMysteryGift" />
+            <entry key="59" value="CB2_InitEReader" />
+            <entry key="60" value="CB2_ReturnToTeachyTV" />
+            <entry key="61" value="CB2_InitBerryFixProgram" />
+        </stp_callback2>
         <battleAction>
             <entry key="0x00" value="USE_MOVE"/>
             <entry key="0x01" value="USE_ITEM"/>

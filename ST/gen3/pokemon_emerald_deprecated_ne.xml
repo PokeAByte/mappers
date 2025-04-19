@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.1.0"
+<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.2.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -664,11 +664,13 @@
             <property name="palette5" type="int" address="0x2037724" length="4" reference="palette"/>
         </misc>
         <pointers>
-            <property name="dma1" type="uint" length="4" address="0x3005D8C" />
-            <property name="dma2" type="uint" length="4" address="0x3005D90" />
-            <property name="dma3" type="uint" length="4" address="0x3005D94" />
-            <property name="callback1" type="int" length="4" address="0x030022c0" />
-            <property name="callback2" type="int" length="4" address="0x030022c4" />
+            <property name="dma1"          type="uint" length="4" address="0x3005D8C" />
+            <property name="dma2"          type="uint" length="4" address="0x3005D90" />
+            <property name="dma3"          type="uint" length="4" address="0x3005D94" />
+            <property name="callback1"     type="int" length="4" address="0x030022c0" />
+            <property name="callback2"     type="int" length="4" address="0x030022c4" />
+            <property name="sStpCallback1" type="int" length="4" address="0x0203cf6c" reference="stp_callback1" />
+            <property name="sStpCallback2" type="int" length="4" address="0x0203cf70" reference="stp_callback2" />
         </pointers>
     </properties>
     <references>
@@ -723,6 +725,87 @@
             <entry key="135155545" value="Naming Screen"/>
             <entry key="135036245" value="PC"/>
         </subState>
+        <stp_callback1>
+            <entry key="0" />
+            <entry key="1" value="CB1_Overworld" />  
+            <entry key="2" value="BattleMainCB1" />  
+            <entry key="3" value="CB1_UpdateLink" />  
+        </stp_callback1>
+        <stp_callback2>
+            <entry key="0" />
+            <entry key="1"   value="CB2_LinkError" />
+            <entry key="2"   value="CB2_MysteryGiftEReader" />
+            <entry key="3"   value="CB2_InitMysteryGift" />
+            <entry key="4"   value="CB2_InitEReader" />
+            <entry key="5"   value="CB2_UnionRoomBattle" />
+            <entry key="6"   value="CB2_InitMainMenu" />
+            <entry key="7"   value="CB2_ReinitMainMenu" />
+            <entry key="8"   value="CB2_InitBattle" />
+            <entry key="9"   value="BattleMainCB2" />
+            <entry key="10"  value="CB2_QuitRecordedBattle" />
+            <entry key="11"  value="CB2_InitEndLinkBattle" />
+            <entry key="12"  value="CB2_SetUpReshowBattleScreenAfterMenu" />
+            <entry key="13"  value="CB2_SetUpReshowBattleScreenAfterMenu2" />
+            <entry key="14"  value="CB2_StartCreateTradeMenu" />
+            <entry key="15"  value="CB2_LinkTrade" />
+            <entry key="16"  value="CB2_OverworldBasic" />
+            <entry key="17"  value="CB2_Overworld" />
+            <entry key="18"  value="CB2_NewGame" />
+            <entry key="19"  value="CB2_WhiteOut" />
+            <entry key="20"  value="CB2_LoadMap" />
+            <entry key="21"  value="CB2_ReturnToFieldContestHall" />
+            <entry key="22"  value="CB2_ReturnToFieldCableClub" />
+            <entry key="23"  value="CB2_ReturnToField" />
+            <entry key="24"  value="CB2_ReturnToFieldFromMultiplayer" />
+            <entry key="25"  value="CB2_ReturnToFieldWithOpenMenu" />
+            <entry key="26"  value="CB2_ReturnToFieldContinueScript" />
+            <entry key="27"  value="CB2_ReturnToFieldContinueScriptPlayMapMusic" />
+            <entry key="28"  value="CB2_ReturnToFieldFadeFromBlack" />
+            <entry key="29"  value="CB2_ContinueSavedGame" />
+            <entry key="30"  value="CB2_InitResetRtcScreen" />
+            <entry key="31"  value="CB2_SetUpSaveAfterLinkBattle" />
+            <entry key="32"  value="CB2_InitTitleScreen" />
+            <entry key="33"  value="CB2_ReturnFromCableClubBattle" />
+            <entry key="34"  value="CB2_InitOptionMenu" />
+            <entry key="35"  value="CB2_OpenPokedex" />
+            <entry key="36"  value="CB2_ReshowFrontierPass" />
+            <entry key="37"  value="CB2_StartContest" />
+            <entry key="38"  value="CB2_ExitSellMenu" />
+            <entry key="39"  value="CB2_SetStartContestCallback" />
+            <entry key="40"  value="CB2_EndSafariBattle" />
+            <entry key="41"  value="CB2_OpenFlyMap" />
+            <entry key="42"  value="CB2_ContestPainting" />
+            <entry key="43"  value="CB2_ChooseStarter" />
+            <entry key="44"  value="CB2_StartWallClock" />
+            <entry key="45"  value="CB2_ViewWallClock" />
+            <entry key="46"  value="CB2_DoChangeMap" />
+            <entry key="47"  value="CB2_PlayerPCExitBagMenu" />
+            <entry key="48"  value="CB2_InitCopyrightScreenAfterBootup" />
+            <entry key="49"  value="CB2_InitCopyrightScreenAfterTitleScreen" />
+            <entry key="50"  value="CB2_DoHallOfFameScreen" />
+            <entry key="51"  value="CB2_DoHallOfFameScreenDontSaveData" />
+            <entry key="52"  value="CB2_DoHallOfFamePC" />
+            <entry key="53"  value="CB2_StartCreditsSequence" />
+            <entry key="54"  value="CB2_ShowDiploma" />
+            <entry key="55"  value="CB2_InitMysteryEventMenu" />
+            <entry key="56"  value="CB2_InitClearSaveDataScreen" />
+            <entry key="57"  value="CB2_BagMenuFromStartMenu" />
+            <entry key="58"  value="CB2_BagMenuFromBattle" />
+            <entry key="59"  value="CB2_ChooseBerry" />
+            <entry key="60"  value="CB2_GoToSellMenu" />
+            <entry key="61"  value="CB2_GoToItemDepositMenu" />
+            <entry key="62"  value="CB2_BagMenuRun" />
+            <entry key="63"  value="CB2_ReturnToBagMenuPocket" />
+            <entry key="64"  value="CB2_ReturnToPartyMenuFromFlyMap" />
+            <entry key="65"  value="CB2_ShowPartyMenuForItemUse" />
+            <entry key="66"  value="CB2_PartyMenuFromStartMenu" />
+            <entry key="67"  value="CB2_ChooseMonToGiveItem" />
+            <entry key="68"  value="CB2_FadeFromPartyMenu" />
+            <entry key="69"  value="CB2_InitBerryFixProgram" />
+            <entry key="70"  value="CB2_PyramidBagMenuFromStartMenu" />
+            <entry key="71"  value="CB2_ReturnToPyramidBagMenu" />
+            <entry key="72"  value="CB2_InitPokeNav" />
+        </stp_callback2>
         <battleAction>
             <entry key="0x00" value="USE_MOVE"/>
             <entry key="0x01" value="USE_ITEM"/>
