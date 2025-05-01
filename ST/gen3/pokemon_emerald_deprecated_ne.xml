@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.2.0"
+<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.2.1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -442,7 +442,8 @@
                 <property name="marill"       type="bool" address="{dma_a} + 5008" bits="1" />
                 <property name="taillow"      type="bool" address="{dma_a} + 5008" bits="2" />
                 <property name="abra_116"     type="bool" address="{dma_a} + 5008" bits="3" />
-                <property name="abra_granite" type="bool" address="{dma_a} + 5008" bits="4" />
+                <property name="shroomish"    type="bool" address="{dma_a} + 5008" bits="4" />
+                <property name="abra_granite" type="bool" address="{dma_a} + 5008" bits="5" />
             </encounters>
         </overworld>
         <battle>

@@ -57,9 +57,18 @@ function getGameState() {
         case "MUSIC_MATCH_START_1": return "To Battle";
         case "MUSIC_MATCH_START_2": return "To Battle";
         case "MUSIC_MATCH_START_3": return "To Battle";
-        case "MUSIC_DUEL_THEME_1" : return "Battle";
-        case "MUSIC_DUEL_THEME_2" : return "Battle";
-        case "MUSIC_DUEL_THEME_3" : return "Battle";
+        case "MUSIC_DUEL_THEME_1" : {
+            if (getValue(`player.NumberOfCardsNotInDeck`) >= 7) { return "Battle"; }
+            else { return "To Battle"; }
+        }
+        case "MUSIC_DUEL_THEME_2" : {
+            if (getValue(`player.NumberOfCardsNotInDeck`) >= 7) { return "Battle"; }
+            else { return "To Battle"; }
+        }
+        case "MUSIC_DUEL_THEME_3" : {
+            if (getValue(`player.NumberOfCardsNotInDeck`) >= 7) { return "Battle"; }
+            else { return "To Battle"; }
+        }
         case "MUSIC_MATCH_VICTORY": return "From Battle";
         case "MUSIC_MATCH_LOSS"   : return "From Battle";
         case "MUSIC_MATCH_DRAW"   : return "From Battle";
