@@ -5,22 +5,24 @@
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 	<memory>
-		<!-- EWRAM Block 01     <read start="0x00000000" end="0x00003FFF" /> -->
-		<!-- EWRAM Block 02     <read start="0x02020000" end="0x02020FFF" /> -->
-		<!-- EWRAM Block 03 --> <read start="0x02021000" end="0x02022FFF" />
-		<!-- EWRAM Block 04 --> <read start="0x02023000" end="0x02023FFF" />
-		<!-- EWRAM Block 05 --> <read start="0x02024000" end="0x02027FFF" />
-		<!-- EWRAM Block 06 --> <read start="0x02030000" end="0x02033FFF" />
-		<!-- EWRAM Block 07     <read start="0x02037000" end="0x02039999" /> -->
-		<!-- EWRAM Block 08     <read start="0x0203A000" end="0x0203AFFF" /> -->
-		<!-- EWRAM Block 09     <read start="0x0203B000" end="0x0203BFFF" /> -->
-		<!-- EWRAM Block 10     <read start="0x0203C000" end="0x0203CFFF" /> -->
-		<!-- EWRAM Block 11     <read start="0x0203D000" end="0x0203DFFF" /> -->
+		<!-- EWRAM Block 01 <read start="0x00000000" end="0x00003FFF" /> -->
+		<!-- EWRAM Block 02 <read start="0x02020000" end="0x02020FFF" /> -->
+		<!-- EWRAM Block 03 --> <read start="0x02022FEC" end="0x020230FF" /> 
+		<!-- EWRAM Block 04 <read start="0x02023400" end="0x02023FFF" /> -->
+		<!-- EWRAM Block 05 --> <read start="0x0202406E" end="0x02026FFF" />
+		<!-- EWRAM Block 06 --> <read start="0x020322E4" end="0x020322E6" />
+		<!-- EWRAM Block 07 --> <read start="0x02037000" end="0x020375FF" /> 
+		<!-- EWRAM Block 07 --> <read start="0x02038B00" end="0x02038BFF" /> 
+		<!-- EWRAM Block 07 --> <read start="0x02039996" end="0x0203999F" /> 
+		<!-- EWRAM Block 08 <read start="0x0203A000" end="0x0203AFFF" />  -->
+		<!-- EWRAM Block 09 <read start="0x0203B000" end="0x0203BFFF" />  -->
+		<!-- EWRAM Block 10 --> <read start="0x0203CE00" end="0x0203CEFF" /> 
+		<!-- EWRAM Block 11 <read start="0x0203D000" end="0x0203DFFF" />  -->
 
-		<!-- IWRAM Block 1     <read start="0x03001000" end="0x03004FFF" />-->
-		<!-- IWRAM Block 2 --> <read start="0x03005000" end="0x03005FFF" />
-		<!-- IWRAM Block 3     <read start="0x03006000" end="0x03006FFF" /> -->
-		<!-- IWRAM Block 4 --> <read start="0x03007000" end="0x03007FFF" />
+		<!-- IWRAM Block 1 --> <read start="0x03002200" end="0x030022FF" />
+		<!-- IWRAM Block 2 --> <read start="0x03005D00" end="0x03005DFF" />
+		<!-- IWRAM Block 3 <read start="0x03006000" end="0x03006FFF" />  -->
+		<!-- IWRAM Block 4 --> <read start="0x03007500" end="0x030076FF" /> 
 	</memory>
     <classes>
         <party_pokemon>
