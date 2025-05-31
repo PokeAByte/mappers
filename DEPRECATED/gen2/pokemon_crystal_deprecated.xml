@@ -317,9 +317,9 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <property name="elm_called_about_stolen_pokemon" type="bool" address="0xDA7A" bits="3" />
     </events>
     <roamers>
-      <class name="0" type="roamer" address="0xDFCF" />
-      <class name="1" type="roamer" address="0xDFD6" />
-      <class name="2" type="roamer" address="0xDFDD" />
+      <class name="0" type="roamer" var:address="0xDFCF" />
+      <class name="1" type="roamer" var:address="0xDFD6" />
+      <class name="2" type="roamer" var:address="0xDFDD" />
     </roamers>
 
     <encounterRate>
