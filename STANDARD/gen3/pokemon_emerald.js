@@ -8,22 +8,27 @@ const memory = __memory;
 const mapper = __mapper;
 // @ts-ignore
 const console = __console;
-function getValue(path) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
+
+const getValue = mapper.get_property_value
+    ? mapper.get_property_value
+    : (path) => {
+        const property = mapper.properties[path];
+        if (!property) {
+            throw new Error(`${path} is not defined in properties.`);
+        }
+        return property.value;
     }
-    return property.value;
-}
-function setValue(path, value) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
+
+const setValue = mapper.set_property_value
+    ? mapper.set_property_value
+    : (path) => {
+        const property = mapper.properties[path];
+        if (!property) {
+            throw new Error(`${path} is not defined in properties.`);
+        }
+        property.value = value;
     }
-    property.value = value;
-}
+
 function getProperty(path) {
     // @ts-ignore
     const property = mapper.properties[path];
@@ -32,6 +37,7 @@ function getProperty(path) {
     }
     return property;
 }
+
 function setProperty(path, values) {
     const property = getProperty(path);
     if (values.memoryContainer !== undefined)
@@ -52,45 +58,46 @@ function setProperty(path, values) {
         property.value = values.value;
 }
 
-function copyProperties(sourcePath, destinationPath) {
-	if (mapper.copy_properties) {
-		mapper.copy_properties(sourcePath, destinationPath);
-		return;
-	}
-	const destPathLength = destinationPath.length;
-	Object.keys(mapper.properties)
-		.filter(key => key.startsWith(destinationPath))
-		.forEach((key) => {
-			const source = mapper.properties[`${sourcePath}${key.slice(destPathLength)}`];
-			if (source) {
-				setProperty(key, source);
-			}
-		});
-}
+
+const copyProperties = mapper.copy_properties
+    ? mapper.copy_properties
+    : (sourcePath, destinationPath) => {
+        const destPathLength = destinationPath.length;
+        Object.keys(mapper.properties)
+            .filter(key => key.startsWith(destinationPath))
+            .forEach((key) => {
+                const source = mapper.properties[`${sourcePath}${key.slice(destPathLength)}`];
+                if (source) {
+                    setProperty(key, source);
+                }
+            });
+    }
+
 
 //Decryption Functions
 //16-bit and 32-bit data access functions
 function DATA16_LE(data, offset) {
-    let val = (data[offset] << 0) | (data[offset + 1] << 8);
+    const val = (data[offset] << 0) | (data[offset + 1] << 8);
     return val & 0xFFFF;
 }
-function DATA32_LE(data, offset) {
-    let val = (data[offset] << 0)
-        | (data[offset + 1] << 8)
-        | (data[offset + 2] << 16)
-        | (data[offset + 3] << 24);
-    return val >>> 0;
-}
+
 function getTotalgame_time() {
     return ((216000 * memory.defaultNamespace.get_byte(variables.dma_b + 14)) +
         (3600 * memory.defaultNamespace.get_byte(variables.dma_b + 16)) +
         (60 * memory.defaultNamespace.get_byte(variables.dma_b + 17)) +
         memory.defaultNamespace.get_byte(variables.dma_b + 18));
 }
+
 function decryptItemQuantity(x) {
-    let quantity_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 0xAC);
+    const quantity_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 0xAC);
     return x ^ quantity_key;
 }
+
+function encryptItemQuantity(property) {
+    const quantity_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 0xAC);
+    return property.value ^ quantity_key;
+}
+
 function equalArrays(a1, a2) {
     if (a1 === undefined || a2 === undefined)
         return a1 == a2;
@@ -102,21 +109,23 @@ function equalArrays(a1, a2) {
     }
     return true;
 }
+
+const partyStructures = ["player", "opponent"];
 // Block shuffling orders - used for Party structure encryption and decryption
 // Once a Pokemon's data has been generated it is assigned a PID which determines the order of the blocks
 // As the Pokemon's PID never changes, the order of the blocks always remains the same for that Pokemon
 // Each individial Pokemon receives its own unique shuffle order
 const shuffleOrders = {
-    0:  [0, 1, 2, 3],
-    1:  [0, 1, 3, 2],
-    2:  [0, 2, 1, 3],
-    3:  [0, 3, 1, 2],
-    4:  [0, 2, 3, 1],
-    5:  [0, 3, 2, 1],
-    6:  [1, 0, 2, 3],
-    7:  [1, 0, 3, 2],
-    8:  [2, 0, 1, 3],
-    9:  [3, 0, 1, 2],
+    0: [0, 1, 2, 3],
+    1: [0, 1, 3, 2],
+    2: [0, 2, 1, 3],
+    3: [0, 3, 1, 2],
+    4: [0, 2, 3, 1],
+    5: [0, 3, 2, 1],
+    6: [1, 0, 2, 3],
+    7: [1, 0, 3, 2],
+    8: [2, 0, 1, 3],
+    9: [3, 0, 1, 2],
     10: [2, 0, 3, 1],
     11: [3, 0, 2, 1],
     12: [1, 2, 0, 3],
@@ -132,24 +141,7 @@ const shuffleOrders = {
     22: [2, 3, 1, 0],
     23: [3, 2, 1, 0]
 };
-const hidden_power_types = {
-    0 : "Fighting",
-    1 : "Flying",
-    2 : "Poison",
-    3 : "Ground",
-    4 : "Rock",
-    5 : "Bug",
-    6 : "Ghost",
-    7 : "Steel",
-    8 : "Fire",
-    9 : "Water",
-    10: "Grass",
-    11: "Electric",
-    12: "Psychic",
-    13: "Ice",
-    14: "Dragon",
-    15: "Dark",
-};
+
 function getGamestate() {
     // FSM FOR GAMESTATE TRACKING
     // MAIN GAMESTATE: This tracks the three basic states the game can be in.
@@ -158,34 +150,34 @@ function getGamestate() {
     // 3. "To Battle": Battle has started but player hasn't sent their Pokemon in yet
     // 4. "From Battle": Battle result has been decided but the battle has not transition to the overworld yet
     // 5. "Battle": In battle
-    const team_0_level    = getValue('player.team.0.level');
-    const callback_1      = getValue('pointers.callback_1');
-    const callback_2      = getValue('pointers.callback_2');
-    const battle_outcomes = getValue('battle.other.battle_outcomes');
+    const callback_1 = getValue('pointers.callback_1');
+
     // const battle_dialogue: string = getValue('battle.other.battle_dialogue')
     // const state: string = getValue('meta.state') ?? "No Pokemon"
-    if (team_0_level == 0)
+    if (getValue('player.team.0.level') == 0)
         return "No Pokemon";
-    else if (callback_1 == null)
+
+    if (callback_1 == null)
         return "No Pokemon";
-    else if (callback_2 == "Battle Animation")
+
+    if (getValue('pointers.callback_2') == "Battle Animation")
         return "To Battle";
-    else if (callback_1 == "Overworld")
+
+    if (callback_1 == "Overworld")
         return "Overworld";
-    else if (callback_1 == "Battle") {
-        if (battle_outcomes != null) {
-            return "From Battle";
-        }
-        return "Battle";
+
+    if (callback_1 == "Battle") {
+        return getValue('battle.other.battle_outcomes') != null
+            ? "From Battle"
+            : "Battle";
     }
     return "Error";
 }
-function getBattleOutcome() {
-    const outcome_flags = getValue('battle.other.battle_outcomes');
-    const state = getGamestate();
+
+function getBattleOutcome(state) {
     switch (state) {
         case 'From Battle':
-            switch (outcome_flags) {
+            switch (getValue('battle.other.battle_outcomes')) {
                 case "WON":
                     return 'Win';
                 case "LOST":
@@ -212,16 +204,15 @@ function getBattleOutcome() {
     }
     return null;
 }
-function getPlayerPartyPosition() {
-    const state = getGamestate();
+
+function getPlayerPartyPosition(state) {
     switch (state) {
         case 'Battle':
             return getValue('battle.player.party_position');
         case 'From Battle':
             return getValue('battle.player.party_position');
         default: {
-            const team = [0, 1, 2, 3, 4, 5];
-            for (let i = 0; i < team.length; i++) {
+            for (let i = 0; i < 6; i++) {
                 if (getValue(`player.team.${i}.stats.hp`) > 0) {
                     return i;
                 }
@@ -230,54 +221,106 @@ function getPlayerPartyPosition() {
         }
     }
 }
+
+
+function decryptPartyPokemon() {
+    // DECRYPTION OF THE PARTY POKEMON
+    // This process applies to all the the Player's Pokemon as well as to Pokemon loaded NPCs parties
+    // All Pokemon have a data structure of 100-bytes
+    // Only 48-bytes of data are encrypted and shuffled in generation 3
+    if (state.cached_pokemon === undefined) {
+        state.cached_pokemon = {
+            "player": { 0: { raw_data: ""}, 1: { raw_data: ""}, 2: { raw_data: ""}, 3: { raw_data: ""}, 4: { raw_data: ""}, 5: { raw_data: ""} },
+            "opponent": { 0: { raw_data: ""}, 1: { raw_data: ""}, 2: { raw_data: ""}, 3: { raw_data: ""}, 4: { raw_data: ""}, 5: { raw_data: ""} },
+        };
+    
+        const blankData = Array(100).fill(0);
+        for (let i = 0; i < partyStructures.length; i++) {
+            const user = partyStructures[i];
+            for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+                memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, blankData);
+            }
+        }
+
+    }
+    for (let i = 0; i < partyStructures.length; i++) {
+        let user = partyStructures[i];
+        let baseAddress;
+        let teamSize;
+        if (user === "player") {
+            baseAddress = 0x20244EC;
+            teamSize = getValue("battle.player.team_count");
+        } else {
+            baseAddress = 0x2024744;
+            teamSize = getValue("battle.opponent.team_count");
+        }
+        for (let slotIndex = 0; slotIndex < teamSize; slotIndex++) {
+            //Determine the starting address for the party we are decrypting
+            const startingAddress = baseAddress + (100 * slotIndex);
+            const pokemonData = memory.defaultNamespace.get_bytes(startingAddress, 100);
+            // Compare the raw data against the cached raw data. Skip decryption and rely on cache if identical
+            if (equalArrays(state.cached_pokemon[user][slotIndex]["raw_data"], pokemonData.data)) {
+                continue;
+            }
+            const pid = pokemonData.get_uint32_le();
+            const ot_id = pokemonData.get_uint32_le(4);
+            const decrypted_data = Array.from(pokemonData.data);
+            // Begin the decryption process for the block data
+            const key = ot_id ^ pid; // Calculate the encryption key using the Oritinal Trainer ID XODed with the PID
+            for (let i = 32; i < 80; i += 4) { // The first 32 and last 20 bytes don't need to be decrypted.
+                const data = pokemonData.get_uint32_le(i) ^ key; //XOR the data with the key
+                decrypted_data[i + 0] = data & 0xFF; // Isolates the least significant byte
+                decrypted_data[i + 1] = (data >> 8) & 0xFF; // Isolates the 2nd least significant byte
+                decrypted_data[i + 2] = (data >> 16) & 0xFF; // Isolates the 3rd least significant byte
+                decrypted_data[i + 3] = (data >> 24) & 0xFF; // Isolates the most significant byte
+            }
+            // Determine how the block data is shuffled   
+            const shuffleOrder = shuffleOrders[pid % 24]; //Recall the shuffle order
+            if (!shuffleOrder) {
+                throw new Error("The PID returned an unknown substructure order.");
+            }
+            // const dataCopy = Array.from(decrypted_data).splice(32, 48);
+            const dataCopy = decrypted_data.slice(32, 80);
+            // Unshuffle the block data
+            for (let i = 0; i < 4; i++) { // Copy the shuffled blocks into the decrypted_data
+                decrypted_data.splice(32 + i * 12, 12, ...dataCopy.slice(shuffleOrder[i] * 12, shuffleOrder[i] * 12 + 12));
+            }
+            // special case: if the solo mon species gets set to an invalid id, we probably don't want this update
+            // 2 bytes at 32 offset are the species value, and there are only 414 pokemon
+            // NOTE: this can still fail if the player's species gets randomly set to a value under 414. However, this should be very rare
+            if (user === "player" && slotIndex === 0 && DATA16_LE(decrypted_data, 32) > 415) {
+                console.log("Junk solo mon data detected. Delaying update...");
+                state.blocked_last_frame = true;
+                return false;
+            }
+            state.cached_pokemon[user][slotIndex]["raw_data"] = pokemonData.data;
+            memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decrypted_data);
+        }
+    }
+}
+
 function preprocessor() {
-    variables.reload_addresses = true;
-    const gamestate = getGamestate();
-    variables.dma_a = memory.defaultNamespace.get_uint32_le(0x3005D8C);
-    variables.dma_b = memory.defaultNamespace.get_uint32_le(0x3005D90);
-    variables.dma_c = memory.defaultNamespace.get_uint32_le(0x3005D94);
-	if (variables.dma_a == 0 ||
-        variables.dma_b == 0 ||
-        variables.dma_c == 0) {
-		return false;
-	}
-	variables.quantity_decryption_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 172);
-    variables.player_id = memory.defaultNamespace.get_uint16_le(variables.dma_b + 10);
-    variables.first_item_type = memory.defaultNamespace.get_uint16_le(variables.dma_a + 1376);
-    variables.second_item_type = memory.defaultNamespace.get_uint16_le(variables.dma_a + 1380);
-    setValue('meta.state', gamestate);
-    setValue('battle.outcome', getBattleOutcome());
-    //Set player.active_pokemon properties
-    const party_position_overworld = getPlayerPartyPosition();
-    const party_position_battle = getValue('battle.player.party_position');
-    setValue('player.party_position', getPlayerPartyPosition());
-    if (gamestate === 'Battle') {
-        copyProperties(`player.team.${party_position_battle}`, 'player.active_pokemon');
-        copyProperties('battle.player.active_pokemon', 'player.active_pokemon');
+    // Deals with the DMA and player party decryption.
+    const dma_a = memory.defaultNamespace.get_uint32_le(0x3005D8C);
+    variables.dma_a = dma_a;
+    const dma_b = memory.defaultNamespace.get_uint32_le(0x3005D90);
+    variables.dma_b = dma_b;
+    const dma_c = memory.defaultNamespace.get_uint32_le(0x3005D94);
+    variables.dma_c = dma_c;
+    if (variables.dma_a == 0 || variables.dma_b == 0 || variables.dma_c == 0) {
+        return false;
     }
-    else {
-        setProperty('player.active_pokemon.modifiers.attack', { address: null, value: 0 });
-        setProperty('player.active_pokemon.modifiers.defense', { address: null, value: 0 });
-        setProperty('player.active_pokemon.modifiers.speed', { address: null, value: 0 });
-        setProperty('player.active_pokemon.modifiers.special_attack', { address: null, value: 0 });
-        setProperty('player.active_pokemon.modifiers.special_defense', { address: null, value: 0 });
-        setProperty('player.active_pokemon.modifiers.accuracy', { address: null, value: 0 });
-        setProperty('player.active_pokemon.modifiers.evasion', { address: null, value: 0 });
-        copyProperties(`player.team.${party_position_overworld}`, 'player.active_pokemon');
-    }
+    variables.quantity_decryption_key = memory.defaultNamespace.get_uint16_le(dma_b + 172);
+    variables.player_id = memory.defaultNamespace.get_uint16_le(dma_b + 10);
+    variables.first_item_type = memory.defaultNamespace.get_uint16_le(dma_a + 1376);
+    variables.second_item_type = memory.defaultNamespace.get_uint16_le(dma_a + 1380);
     if (state.cached_dma_a === undefined) {
         state.dma_update_delay = 0;
         state.blocked_last_frame = false;
     }
-    else if (
-    // If any of the new values are 0, that indicates the player is resetting. Allow updates
-    // Additionally, if any of the cahed values are 0, that indicates the file is loading after a reset. Allow updates
-    variables.dma_a == 0 ||
-        variables.dma_b == 0 ||
-        variables.dma_c == 0 ||
-        state.cached_dma_a == 0 ||
-        state.cached_dma_b == 0 ||
-        state.cached_dma_c == 0) {
+    else if (state.cached_dma_a == 0 || state.cached_dma_b == 0 || state.cached_dma_c == 0) {
+        // If any of the new values are 0, that indicates the player is resetting. Allow updates
+        // Additionally, if any of the cahed values are 0, that indicates the file is loading after a reset. Allow updates
         if (state.dma_update_delay != 0) {
             console.log("reset detected, allowing messy updates");
         }
@@ -285,13 +328,11 @@ function preprocessor() {
         state.dma_update_delay = 0;
     }
     else if (
-    // Don't refresh the block if it's already active
-    state.dma_update_delay == 0 &&
+        // Don't refresh the block if it's already active
+        state.dma_update_delay == 0 &&
         // Once we know we aren't resetting, check to see if the dma values are shifting. If so, block updates
-        (state.cached_dma_a != variables.dma_a ||
-            state.cached_dma_b != variables.dma_b ||
-            state.cached_dma_c != variables.dma_c ||
-            state.cached_quantity_decryption_key != variables.quantity_decryption_key)) {
+        (state.cached_dma_a != dma_a || state.cached_dma_b != dma_b || state.cached_dma_c != dma_c
+            || state.cached_quantity_decryption_key != variables.quantity_decryption_key)) {
         // DMA is actually changing, and not due to a reset. Begin blocking
         state.dma_delay_init = getTotalgame_time();
         state.dma_update_delay = getTotalgame_time() + 60;
@@ -300,11 +341,12 @@ function preprocessor() {
         console.log("DMA change detected, enabling block until changes are complete");
         console.log("DMA init time: " + state.dma_delay_init + ", dma_update_delay: " + state.dma_update_delay + ", dma_safet_delay: " + state.dma_safety_delay);
     }
-    state.cached_dma_a = variables.dma_a;
-    state.cached_dma_b = variables.dma_b;
-    state.cached_dma_c = variables.dma_c;
+    state.cached_dma_a = dma_a;
+    state.cached_dma_b = dma_b;
+    state.cached_dma_c = dma_c;
+
     if (state.dma_update_delay != 0) {
-        let game_time = getTotalgame_time();
+        const game_time = getTotalgame_time();
         if (state.dma_delay_init > game_time) {
             console.log("Impossible game_time detected. Assuming player reset or loaded a save state. Lifting block");
             state.dma_update_delay = 0;
@@ -324,15 +366,13 @@ function preprocessor() {
                 if (state.dma_safety_delay > game_time) {
                     state.blocked_last_frame = true;
                     return false;
-                }
-                else {
+                } else {
                     console.log("New item values disagree with cache for first item: " + state.cached_first_item_sanity_check + " vs. " + variables.first_item_type);
                     console.log("New item values disagree with cache for second item: " + state.cached_second_item_sanity_check + " vs. " + variables.second_item_type);
                     console.log("DMA safety delay timed out. Allowing updates despite mismatching data logged above");
                 }
             }
-            else if (state.cached_player_id !== undefined &&
-                state.cached_player_id != variables.player_id) {
+            else if (state.cached_player_id !== undefined && state.cached_player_id != variables.player_id) {
                 if (state.dma_safety_delay > game_time) {
                     state.blocked_last_frame = true;
                     return false;
@@ -352,99 +392,45 @@ function preprocessor() {
     state.cached_player_id = variables.player_id;
     state.cached_first_item_sanity_check = variables.first_item_type;
     state.cached_second_item_sanity_check = variables.second_item_type;
-    //DECRYPTION OF THE PARTY POKEMON
-    //This process applies to all the the Player's Pokemon as well as to Pokemon loaded NPCs parties
-    //All Pokemon have a data structure of 100-bytes
-    //Only 48-bytes of data are encrypted and shuffled in generation 3
-    const partyStructures = ["player", "opponent"];
-    if (state.cached_pokemon === undefined) {
-        state.cached_pokemon = {
-            "player": { 0: { raw_data: "", decrypted_data: "" }, 1: { raw_data: "", decrypted_data: "" }, 2: { raw_data: "", decrypted_data: "" }, 3: { raw_data: "", decrypted_data: "" }, 4: { raw_data: "", decrypted_data: "" }, 5: { raw_data: "", decrypted_data: "" } },
-            "opponent": { 0: { raw_data: "", decrypted_data: "" }, 1: { raw_data: "", decrypted_data: "" }, 2: { raw_data: "", decrypted_data: "" }, 3: { raw_data: "", decrypted_data: "" }, 4: { raw_data: "", decrypted_data: "" }, 5: { key: "", decrypted_data: "" } },
-        };
-        state.blank_pokemon = new Array(100).fill(0x00);
-    }
-    for (let i = 0; i < partyStructures.length; i++) {
-        let user = partyStructures[i];
-        let activeMonIndexAddress = 0;
-        if (user == "opponent") {
-            activeMonIndexAddress = 0x2024070;
-        }
-        for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
-            //Determine the starting address for the party we are decrypting
-            let startingAddress = 0;
-            if (user == "player") {
-                startingAddress = 0x20244EC + (100 * slotIndex);
-            }
-            if (user == "opponent") {
-                startingAddress = 0x2024744 + (100 * slotIndex);
-            }
-            let pokemonData = memory.defaultNamespace.get_bytes(startingAddress, 100);
-            // Compare the raw data against the cached raw data. Skip decryption and rely on cache if identical
-            if (equalArrays(state.cached_pokemon[user][slotIndex]["raw_data"], pokemonData.data)) {
-                memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, state.cached_pokemon[user][slotIndex]["decrypted_data"]);
-                continue;
-            }
-            let pid = pokemonData.get_uint32_le();
-            let ot_id = pokemonData.get_uint32_le(4);
-            let decrypted_data = [];
-            for (let i = 0; i < 100; i++) { //Transfer the first 32-bytes of unencrypted data to the decrypted data array
-                decrypted_data[i] = pokemonData.data[i];
-            }
-            //Begin the decryption process for the block data
-            let key = ot_id ^ pid; //Calculate the encryption key using the Oritinal Trainer ID XODed with the PID
-            for (let i = 32; i < 80; i += 4) {
-                let data = DATA32_LE(pokemonData.data, i) ^ key; //XOR the data with the key
-                decrypted_data[i + 0] = data & 0xFF; // Isolates the least significant byte
-                decrypted_data[i + 1] = (data >> 8) & 0xFF; // Isolates the 2nd least significant byte
-                decrypted_data[i + 2] = (data >> 16) & 0xFF; // Isolates the 3rd least significant byte
-                decrypted_data[i + 3] = (data >> 24) & 0xFF; // Isolates the most significant byte
-            }
-            //Determine how the block data is shuffled   
-            const shuffleId = pid % 24; //Determine the shuffle order index
-            let shuffleOrder = shuffleOrders[shuffleId]; //Recall the shuffle order
-            if (!shuffleOrder) {
-                throw new Error("The PID returned an unknown substructure order.");
-            }
-            let dataCopy = Array.from(decrypted_data);
-            decrypted_data = Array.from(decrypted_data);
-            dataCopy = dataCopy.splice(32, 48);
-            //Unshuffle the block data
-            for (let i = 0; i < 4; i++) { // Copy the shuffled blocks into the decrypted_data
-                decrypted_data.splice(32 + i * 12, 12, ...dataCopy.slice(shuffleOrder[i] * 12, shuffleOrder[i] * 12 + 12));
-            }
-            //Transfer the remaining 20-bytes of unencrypted data to the decrypted data array
-            for (let i = 80; i < 100; i++) {
-                decrypted_data[i] = pokemonData.data[i];
-            }
-            // special case: if the solo mon species gets set to an invalid id, we probably don't want this update
-            // 2 bytes at 32 offset are the species value, and there are only 414 pokemon
-            // NOTE: this can still fail if the player's species gets randomly set to a value under 414. However, this should be very rare
-            if (user == "player" && slotIndex == 0 && DATA16_LE(decrypted_data, 32) > 415) {
-                console.log("Junk solo mon data detected. Delaying update...");
-                state.blocked_last_frame = true;
-                return false;
-            }
-            state.cached_pokemon[user][slotIndex]["raw_data"] = pokemonData.data;
-            state.cached_pokemon[user][slotIndex]["decrypted_data"] = decrypted_data;
-            memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decrypted_data);
-        }
-        if (activeMonIndexAddress != 0) {
-            let activeIndex = memory.defaultNamespace.get_uint16_le(activeMonIndexAddress);
-            if (activeIndex < 0 || activeIndex >= 6) {
-                memory.fill(`${user}_party_structure_active_pokemon`, 0x00, state.blank_pokemon);
-            }
-            else {
-                memory.fill(`${user}_party_structure_active_pokemon`, 0x00, state.cached_pokemon[user][activeIndex]["decrypted_data"]);
-            }
-        }
-    }
     if (state.blocked_last_frame) {
         console.log("Block fully lifted until further notice");
         state.blocked_last_frame = false;
+        // Only reload addressed after the block lifted. It's reset again in the postprocessor.
+        variables.reload_addresses = true;
     }
+    decryptPartyPokemon();    
     return true;
 }
 
+function postprocessor() {
+    // Set gamestate, battle outcome and player.active_pokemon properties
+    const gamestate = getGamestate();
+    setValue('meta.state', gamestate);
+    setValue('battle.outcome', getBattleOutcome(gamestate));
+    const party_position_overworld = getPlayerPartyPosition(gamestate);
+    setValue('player.party_position', party_position_overworld);
+    if (gamestate === 'Battle' && gamestate != state.old_gamestate) {
+        if (party_position_overworld != state.old_position) {
+            mapper.copy_properties(`player.team.${party_position_overworld}`, 'player.active_pokemon');
+            mapper.copy_properties('battle.player.active_pokemon', 'player.active_pokemon');
+        }
+        state.old_position = party_position_overworld;
+        state.old_gamestate = gamestate;
+    } else if (gamestate != state.old_gamestate || state.old_position != party_position_overworld) {
+        setProperty('player.active_pokemon.modifiers.attack', { address: null, value: 0 });
+        setProperty('player.active_pokemon.modifiers.defense', { address: null, value: 0 });
+        setProperty('player.active_pokemon.modifiers.speed', { address: null, value: 0 });
+        setProperty('player.active_pokemon.modifiers.special_attack', { address: null, value: 0 });
+        setProperty('player.active_pokemon.modifiers.special_defense', { address: null, value: 0 });
+        setProperty('player.active_pokemon.modifiers.accuracy', { address: null, value: 0 });
+        setProperty('player.active_pokemon.modifiers.evasion', { address: null, value: 0 });
+        copyProperties(`player.team.${party_position_overworld}`, 'player.active_pokemon');
+        state.old_position = party_position_overworld;
+        state.old_gamestate = gamestate;
+    }
+    variables.reload_addresses = false;
+}
+
 globalThis.decryptItemQuantity = decryptItemQuantity;
-export { decryptItemQuantity, preprocessor };
+globalThis.encryptItemQuantity = encryptItemQuantity;
+export { decryptItemQuantity, preprocessor, postprocessor, encryptItemQuantity };
