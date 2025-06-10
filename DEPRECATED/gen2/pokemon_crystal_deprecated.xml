@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_crystal.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.3"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.2.4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -2200,7 +2200,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="Lugia" />
       <entry key="0xFA" value="Ho-oh" />
       <entry key="0xFB" value="Celebi" />
-      <entry key="0xFC" value="Diancie" />
+      <entry key="0xFC" value="Backport" />
       <!-- TODO: Backport -->
       <!-- <entry key="0xFC" value="Backport" /> -->
     </pokemonSpecies>
