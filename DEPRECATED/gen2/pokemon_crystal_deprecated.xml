@@ -1943,7 +1943,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xF9" value="{ pokedexNumber: 249, name: Lugia }" />
       <entry key="0xFA" value="{ pokedexNumber: 250, name: Ho-oh " />
       <entry key="0xFB" value="{ pokedexNumber: 251, name: Celebi }" />
-      <entry key="0xFC" value="{ pokedexNumber: 252, name: Diancie }" />
+      <entry key="0xFC" value="{ pokedexNumber: 252, name: Backport }" />
       <!-- TODO: Backport -->
       <!-- <entry key="0xFB" value="{ pokedexNumber: Backport_Dex, name: Backport }" /> -->
     </pokemon>
