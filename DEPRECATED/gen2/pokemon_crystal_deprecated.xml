@@ -1428,7 +1428,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <entry key="0xFA" value="Whirlpool" />
       <entry key="0xFB" value="Beat Up" />
       <!-- TODO_BACKPORT -->
-      <entry key="0xFC" value="Diamond Storm" /> 
+      <entry key="0xFC" value="Nasty Plot" /> 
       <entry key="0xFD" value="Rock Polish" /> 
       <entry key="0xFE" value="Power Gem" /> 
     </moves>
