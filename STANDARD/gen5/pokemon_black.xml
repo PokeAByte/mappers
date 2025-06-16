@@ -12,7 +12,7 @@
 			- Double and triple battles need testing to see how the battle ram allocates space for those fights
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.3.2"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.3.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -829,7 +829,7 @@
 			</ally>
 			<opponent>
 				<!-- <property name="name"    type="int" address="" length="2" reference="trainers" /> -->
-				<!-- <property name="trainer" type="int" address="" length="2" reference="trainers" /> -->
+				<property name="trainer" type="int" address="0x225E1F8" length="2" reference="trainers" />
 				<!-- <property name="id"      type="int" address="" length="2" />  -->
 				<!-- <property name="enemy_bar_synced_hp" type="int" address="" length="2" /> -->
 				<property name="team_count" type="int" address="0x226ACF4 - 4" /> <!-- This is correct -->
@@ -844,12 +844,12 @@
 					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_5" />
 				</team>
 				<pkmn_ram>
-					<class name="pokemon_0_ram" type="battle_structure" var:address="{battle_ram_opponent_0" />
-					<class name="pokemon_1_ram" type="battle_structure" var:address="{battle_ram_opponent_1" />
-					<class name="pokemon_2_ram" type="battle_structure" var:address="{battle_ram_opponent_2" />
-					<class name="pokemon_3_ram" type="battle_structure" var:address="{battle_ram_opponent_3" />
-					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_opponent_4" />
-					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_opponent_5" />
+					<class name="pokemon_0_ram" type="battle_structure" var:address="{battle_ram_opponent_0}" />
+					<class name="pokemon_1_ram" type="battle_structure" var:address="{battle_ram_opponent_1}" />
+					<class name="pokemon_2_ram" type="battle_structure" var:address="{battle_ram_opponent_2}" />
+					<class name="pokemon_3_ram" type="battle_structure" var:address="{battle_ram_opponent_3}" />
+					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_opponent_4}" />
+					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_opponent_5}" />
 				</pkmn_ram>
 			</opponent>
 			<opponent_2>
