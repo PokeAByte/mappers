@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.3.3"
+<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.3.4"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -678,8 +678,8 @@
             <property name="dma3"          type="uint" length="4" address="0x3005D94" />
             <property name="callback1"     type="int" length="4" address="0x030022c0" />
             <property name="callback2"     type="int" length="4" address="0x030022c4" />
-            <property name="sStpCallback1" type="int" length="4" address="0x0203cf6c" reference="stp_callback1" />
-            <property name="sStpCallback2" type="int" length="4" address="0x0203cf70" reference="stp_callback2" />
+            <property name="sStpCallback1" type="int" length="4" address="0x0203cf70" reference="stp_callback1" />
+            <property name="sStpCallback2" type="int" length="4" address="0x0203cf74" reference="stp_callback2" />
         </pointers>
     </properties>
     <references>
