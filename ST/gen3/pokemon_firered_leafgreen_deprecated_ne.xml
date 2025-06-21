@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.3"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.4"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -659,8 +659,8 @@
             <property name="dma3"          type="uint" length="4" address="0x3005010" />
             <property name="callback1"     type="int"  length="4" address="0x30030f0" />
             <property name="callback2"     type="int"  length="4" address="0x30030f4" />
-            <property name="sStpCallback1" type="int"  length="4" address="0x203f474" reference="stp_callback1" />
-            <property name="sStpCallback2" type="int"  length="4" address="0x203f478" reference="stp_callback2" />
+            <property name="sStpCallback1" type="int"  length="4" address="0x203f478" reference="stp_callback1" />
+            <property name="sStpCallback2" type="int"  length="4" address="0x203f47c" reference="stp_callback2" />
         </pointers>
     </properties>
     <references>
