@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.4"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.5"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -507,6 +507,12 @@
                 <property name="weather" type="int" address="0x2023F1C" reference="battleWeather" /> 
                 <property name="weatherCount" type="int" address="0x02023F48" />
             </field>
+            <playerMove>
+				<property name="wPlayerLastUsedMove" type="int" address="0x2023d98 + 0" length="2" reference="moves" />
+			</playerMove>
+			<enemyMove>
+				<property name="wEnemyLastUsedMove"  type="int" address="0x2023d98 + 2" length="2" reference="moves" />
+			</enemyMove>
             <turnInfo>
                 <property name="battleWeather"               type="int" address="0x2023F1C" reference="battleWeather" />
                 <property name="battleWeatherTurnCounter"    type="int" address="0x2023F48" />
@@ -1592,7 +1598,7 @@
             <entry key="96" value="THUNDER STONE"/>
             <entry key="97" value="WATER STONE"/>
             <entry key="98" value="LEAF STONE"/>
-            <entry key="99" value="063"/>
+            <entry key="99" value="LINK CABLE"/>
             <entry key="100" value="064"/>
             <entry key="101" value="065"/>
             <entry key="102" value="066"/>

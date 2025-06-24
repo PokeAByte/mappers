@@ -282,6 +282,7 @@
 			<property name="secret_id"  type="int" address="{global_pointer} + 0xD06E" length="2" />
 			<property name="team_count" type="int" address="{global_pointer} + 0xD090" />
 			<property name="starter"    type="int" address="{global_pointer} + 0xDE00" length="2" reference="species" /> <!-- When the starter is picked global_pointer offset 0xE20C also is set to the starter's species index -->
+			<property name="starter_pos"    type="int" address="{global_pointer} + 0xDE00 + 2" length="2"/>
 			<property name="party_position" type="int" />
             <!-- <class name="active_pokemon" type="player_active_pokemon" /> -->
 			<team>
@@ -905,13 +906,19 @@
 			<property name="minutes" type="int" address="{global_pointer} + 0xD080" />
 			<property name="seconds" type="int" address="{global_pointer} + 0xD081" />
 		</game_time>
+		<patch>
+			<!-- <property name="stpStarterSpecies"  type="int" address="0x21C3A38 + (0 * 4)" length="4" reference="species" /> -->
+			<!-- <property name="stpStarterPosition" type="int" address="0x21C3A38 + (1 * 4)" length="4" /> -->
+			<property name="stpStarterSpecies"  type="int" address="0x21C3A78 + (0 * 4)" length="4" reference="species" />
+		</patch>
 		<meta>
 			<property name="generation"     type="int" value="4" />
 			<property name="game_name"      type="string" value="Platinum" />
 			<property name="game_type"      type="string" value="Third Version" />
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
-			<property name="global_pointer" type="int" address="0x2101D2C" length="4"/>
+			<property name="global_pointer" type="int" address="0x2101D8C" length="4"/>
+			<!-- <property name="global_pointer" type="int" address="0x2101D2C" length="4"/> -->
 			<property name="enemy_pointer"  type="int" address="{global_pointer} + 0x352F4" length="4"/>
 		</meta>
 	</properties>
@@ -6373,7 +6380,7 @@
 			<entry key="0x006E" value="Oval Stone" />
 			<entry key="0x006F" value="Odd Keystone" />
 			<entry key="0x0070" value="Griseous Orb" />
-			<entry key="0x0071" value="unknown" />
+			<entry key="0x0071" value="Link Cable" />
 			<entry key="0x0072" value="unknown" />
 			<entry key="0x0073" value="unknown" />
 			<entry key="0x0074" value="unknown" />

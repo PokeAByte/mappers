@@ -207,6 +207,29 @@ function hiddenPower(path) {
 // Preprocessor runs every loop (everytime pokeabyte updates)
 let original_base_ptr = 0x0;
 function preprocessor() {
+    
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+    // This block of code is used to solve the issue of patch differences as I have continued to modify the game. 
+    // Patch1: 2024 to 2025.06.22 (all runs before Rhyperior use this setting)
+    // Offset: 0x00
+    //
+    // Patch2: 2024.06.23 (Rhyperior uses this setting; this patch implements changes to evolution mechanics (Rhyperior patch has an issue with HM08))
+    // Offset: 0x24
+    //
+    // Patch3: Planned (After Rhyperior, fixes spinners and changes how the starters and rival mons are assigned)
+    // Offset: Unknown (currently unreleased)
+    //
+    let patch_update = true;
+    let address_offset = 0x0; // Patch1
+    if (patch_update) {
+        address_offset = 0x24 // Patch2
+    }
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+
     variables.reload_addresses = false;
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
@@ -222,10 +245,10 @@ function preprocessor() {
     }
     variables.global_pointer        = base_ptr;                          // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD088;
-    variables.dynamic_player        = base_ptr + 0x5BA78;
-    variables.dynamic_opponent      = base_ptr + 0x5C048;
-    variables.dynamic_ally          = base_ptr + 0x5BA78 + (0x5D0 * 2);
-    variables.dynamic_opponent_2    = base_ptr + 0x5BA78 + (0x5D0 * 3);
+    variables.dynamic_player        = base_ptr + 0x5BA78 + address_offset;
+    variables.dynamic_opponent      = base_ptr + 0x5C048 + address_offset;
+    variables.dynamic_ally          = base_ptr + 0x5BA78 + (0x5D0 * 2) + address_offset;
+    variables.dynamic_opponent_2    = base_ptr + 0x5BA78 + (0x5D0 * 3) + address_offset;
     variables.current_party_indexes = base_ptr + 0x571E0;
     // Set property values
     const gamestate = getGamestate();

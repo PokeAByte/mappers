@@ -900,6 +900,9 @@
 				</cursor>
 			</menu>
 		</screen>
+		<patch>
+			<property name="stpStarterSpecies" type="int" address="0x21C3A38" length="4" />
+		</patch>
 		<game_time>
 			<property name="hours"   type="int" address="{global_pointer} + 0xD07E" length="2" />
 			<property name="minutes" type="int" address="{global_pointer} + 0xD080" />

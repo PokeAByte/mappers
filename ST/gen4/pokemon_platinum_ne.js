@@ -206,7 +206,8 @@ let original_base_ptr = 0x0;
 function preprocessor() {
     variables.reload_addresses = false;
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D2C); // Platinum pointer (Test value: 22711B8)
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D6C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
+    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D8C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
     if (base_ptr === 0) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
