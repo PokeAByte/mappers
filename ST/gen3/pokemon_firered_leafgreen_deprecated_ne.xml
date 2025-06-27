@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.6"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.7"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -112,8 +112,90 @@
             <property name="type1"                  type="int"    address="{address} + 33" reference="pokemonTypes" />
             <property name="type2"                  type="int"    address="{address} + 34" reference="pokemonTypes" />
             <property name="status1"                type="int"    address="{address} + 76" reference="statusConditions" />
-            <property name="status2"                type="int"    address="{address} + 76" reference="statusConditions" />
+            <status2>
+                <property address="{address}+80" type="bool" length="4" bits="0-2"   name="STATUS2_CONFUSION" />
+                <property address="{address}+80" type="bool" length="4" bits="0-2"   name="STATUS2_CONFUSION_TURN" />
+                <property address="{address}+80" type="bool" length="4" bits="3"     name="STATUS2_FLINCHED" />
+                <property address="{address}+80" type="bool" length="4" bits="4-6"   name="STATUS2_UPROAR" />
+                <property address="{address}+80" type="bool" length="4" bits="4-6"   name="STATUS2_UPROAR_TURN" />
+                <property address="{address}+80" type="bool" length="4" bits="7"     name="STATUS2_UNUSED" />
+                <property address="{address}+80" type="bool" length="4" bits="8-9"   name="STATUS2_BIDE" />
+                <property address="{address}+80" type="bool" length="4" bits="8-9"   name="STATUS2_BIDE_TURN" />
+                <property address="{address}+80" type="bool" length="4" bits="10-11" name="STATUS2_LOCK_CONFUSE" />
+                <property address="{address}+80" type="bool" length="4" bits="10-11" name="STATUS2_LOCK_CONFUSE_TURN" />
+                <property address="{address}+80" type="bool" length="4" bits="12"    name="STATUS2_MULTIPLETURNS" />
+                <property address="{address}+80" type="bool" length="4" bits="13-15" name="STATUS2_WRAPPED" />
+                <property address="{address}+80" type="bool" length="4" bits="13-15" name="STATUS2_WRAPPED_TURN" />
+                <property address="{address}+80" type="bool" length="4" bits="16-19" name="STATUS2_INFATUATION" />
+                <property address="{address}+80" type="bool" length="4" bits="16-19" name="STATUS2_INFATUATED_WITH" />
+                <property address="{address}+80" type="bool" length="4" bits="20"    name="STATUS2_FOCUS_ENERGY" />
+                <property address="{address}+80" type="bool" length="4" bits="21"    name="STATUS2_TRANSFORMED" />
+                <property address="{address}+80" type="bool" length="4" bits="22"    name="STATUS2_RECHARGE" />
+                <property address="{address}+80" type="bool" length="4" bits="23"    name="STATUS2_RAGE" />
+                <property address="{address}+80" type="bool" length="4" bits="24"    name="STATUS2_SUBSTITUTE" />
+                <property address="{address}+80" type="bool" length="4" bits="25"    name="STATUS2_DESTINY_BOND" />
+                <property address="{address}+80" type="bool" length="4" bits="26"    name="STATUS2_ESCAPE_PREVENTION" />
+                <property address="{address}+80" type="bool" length="4" bits="27"    name="STATUS2_NIGHTMARE" />
+                <property address="{address}+80" type="bool" length="4" bits="28"    name="STATUS2_CURSED" />
+                <property address="{address}+80" type="bool" length="4" bits="29"    name="STATUS2_FORESIGHT" />
+                <property address="{address}+80" type="bool" length="4" bits="30"    name="STATUS2_DEFENSE_CURL" />
+                <property address="{address}+80" type="bool" length="4" bits="31"    name="STATUS2_TORMENT" />
+            </status2>
+            <status3>
+                <property address="{status3}+0" type="bool" length="4" bits="0-1"   name="STATUS3_LEECHSEED_BATTLER" />
+                <property address="{status3}+0" type="bool" length="4" bits="2"     name="STATUS3_LEECHSEED" />
+                <property address="{status3}+0" type="bool" length="4" bits="3-4"   name="STATUS3_ALWAYS_HITS" />
+                <property address="{status3}+0" type="bool" length="4" bits="3-4"   name="STATUS3_ALWAYS_HITS_TURN" />
+                <property address="{status3}+0" type="bool" length="4" bits="5"     name="STATUS3_PERISH_SONG" />
+                <property address="{status3}+0" type="bool" length="4" bits="6"     name="STATUS3_ON_AIR" />
+                <property address="{status3}+0" type="bool" length="4" bits="7"     name="STATUS3_UNDERGROUND" />
+                <property address="{status3}+0" type="bool" length="4" bits="8"     name="STATUS3_MINIMIZED" />
+                <property address="{status3}+0" type="bool" length="4" bits="9"     name="STATUS3_CHARGED_UP" />
+                <property address="{status3}+0" type="bool" length="4" bits="10"    name="STATUS3_ROOTED" />
+                <property address="{status3}+0" type="bool" length="4" bits="11-12" name="STATUS3_YAWN" />
+                <property address="{status3}+0" type="bool" length="4" bits="11-12" name="STATUS3_YAWN_TURN" />
+                <property address="{status3}+0" type="bool" length="4" bits="13"    name="STATUS3_IMPRISONED_OTHERS" />
+                <property address="{status3}+0" type="bool" length="4" bits="14"    name="STATUS3_GRUDGE" />
+                <property address="{status3}+0" type="bool" length="4" bits="15"    name="STATUS3_CANT_SCORE_A_CRIT" />
+                <property address="{status3}+0" type="bool" length="4" bits="16"    name="STATUS3_MUDSPORT" />
+                <property address="{status3}+0" type="bool" length="4" bits="17"    name="STATUS3_WATERSPORT" />
+                <property address="{status3}+0" type="bool" length="4" bits="18"    name="STATUS3_UNDERWATER" />
+                <property address="{status3}+0" type="bool" length="4" bits="19"    name="STATUS3_INTIMIDATE_POKES" />
+                <property address="{status3}+0" type="bool" length="4" bits="20"    name="STATUS3_TRACE" />
+            </status3>
+            <protectStruct>
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="0"   name="protected" /> 
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="1"   name="endured" /> 
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="2"   name="noValidMoves" /> 
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="3"   name="helpingHand" /> 
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="4"   name="bounceMove" /> 
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="5"   name="stealMove" /> 
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="6"   name="flag0Unknown" />
+                <property address="{protectStruct} + 0" type="bool" length="1" bits="7"   name="prlzImmobility" /> 
+                <property address="{protectStruct} + 1" type="bool" length="1" bits="0"   name="confusionSelfDmg" /> 
+                <property address="{protectStruct} + 1" type="bool" length="1" bits="1"   name="targetNotAffected" /> 
+                <property address="{protectStruct} + 1" type="bool" length="1" bits="2"   name="chargingTurn" />  
+                <property address="{protectStruct} + 1" type="int"  length="1" bits="3-4" name="fleeType" />
+                <property address="{protectStruct} + 1" type="bool" length="1" bits="5"   name="usedImprisonedMove" />  
+                <property address="{protectStruct} + 1" type="bool" length="1" bits="6"   name="loveImmobility" />  
+                <property address="{protectStruct} + 1" type="bool" length="1" bits="7"   name="usedDisabledMove" />  
+                <property address="{protectStruct} + 2" type="bool" length="1" bits="0"   name="usedTauntedMove" />  
+                <property address="{protectStruct} + 2" type="bool" length="1" bits="1"   name="flag2Unknown" />
+                <property address="{protectStruct} + 2" type="bool" length="1" bits="2"   name="flinchImmobility" />  
+                <property address="{protectStruct} + 2" type="bool" length="1" bits="3"   name="notFirstStrike" />  
+                <property address="{protectStruct} + 2" type="bool" length="1" bits="4"   name="palaceUnableToUseMove" />  
+                <!-- These properties are u32, u32, u8, u8, but I am not 100% sure that they occupy adjacent bits within this struct. The protect struct is 16-bytes long for each Pokemon. I can see these being in the later 3/4 of that allocated space. More testing is required -->
+                <!-- <property address="{protectStruct} + 2" type="int"  length="16" bits="21-52"  name="physicalDmg" /> 
+                <property address="{protectStruct} + 2" type="int"  length="16" bits="53-84"  name="specialDmg" />
+                <property address="{protectStruct} + 2" type="int"  length="16" bits="85-92"  name="physicalBattlerId" /> 
+                <property address="{protectStruct} + 2" type="int"  length="16" bits="93-100" name="specialBattlerId" />  -->
+            </protectStruct>
             <property name="otName"                 type="string" address="{address} + 60" length="8" characterMap="defaultCharacterMap" />
+            <counters>
+                <property name="furyCutter"    address="{disableStruct} + 0x10 + 0" type="int" length="1" description="gDisableStructs" />
+                <property name="rollout"       address="{disableStruct} + 0x10 + 1" type="int" length="1" bits="0-3" description="gDisableStructs"/>
+                <property name="rollout_start" address="{disableStruct} + 0x10 + 2" type="int" length="1" bits="4-7" description="gDisableStructs"/> <!-- What does this do? -->
+            </counters>
         </battleStructure>
         <playerItem>
             <property name="item"     address="{address}"     type="int" length="2" reference="items" />
@@ -483,10 +565,10 @@
                     <class name="5" var:address="0x2024220" type="pokemonInParty"  />
                 </team>
             </trainer>
-            <class name="yourPokemon"        type="battleStructure" var:address="0x2023BE4" var:partyPos="0x02023BCE" />
-            <class name="yourSecondPokemon"  type="battleStructure" var:address="0x2023C94" var:partyPos="0x02023BD2" />                
-            <class name="enemyPokemon"       type="battleStructure" var:address="0x2023C3C" var:partyPos="0x02023BD0" />
-            <class name="enemySecondPokemon" type="battleStructure" var:address="0x2023CEC" var:partyPos="0x02023BD4" />
+            <class name="yourPokemon"        type="battleStructure" var:address="0x2023BE4" var:partyPos="0x02023BCE" var:status3="0x2023dfc + (0 * 4)" var:disableStruct="0x02023e0c + (0x00 * 0x10)" var:protectStruct="0x2023e8c + (0x00 * 0x1C)" />
+            <class name="yourSecondPokemon"  type="battleStructure" var:address="0x2023C94" var:partyPos="0x02023BD2" var:status3="0x2023dfc + (2 * 4)" var:disableStruct="0x02023e0c + (0x02 * 0x10)" var:protectStruct="0x2023e8c + (0x02 * 0x1C)" />                
+            <class name="enemyPokemon"       type="battleStructure" var:address="0x2023C3C" var:partyPos="0x02023BD0" var:status3="0x2023dfc + (1 * 4)" var:disableStruct="0x02023e0c + (0x01 * 0x10)" var:protectStruct="0x2023e8c + (0x01 * 0x1C)" />
+            <class name="enemySecondPokemon" type="battleStructure" var:address="0x2023CEC" var:partyPos="0x02023BD4" var:status3="0x2023dfc + (3 * 4)" var:disableStruct="0x02023e0c + (0x03 * 0x10)" var:protectStruct="0x2023e8c + (0x03 * 0x1C)" />
             <field>
                 <player>
                     <property name="statusSafeguard"   type="int" address="0x02023DDE" length="2" bits="5" />
