@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.7"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.8"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -36,6 +36,8 @@
             <property name="ivSpecialDefense"  type="int"  address="{address} + 72" length="4" bits="25-29"/>
             <property name="isEgg"             type="bool" address="{address} + 72" length="4" bits="30"/>
             <property name="ability"           type="bool" address="{address} + 72" length="4" bits="31"/>
+            <property name="int_isEgg"         type="int"  address="{address} + 72" length="4" bits="30"/>
+            <property name="int_ability"       type="int"  address="{address} + 72" length="4" bits="31"/>
             <property name="evHp"              type="int"  address="{address} + 56"/>
             <property name="evAttack"          type="int"  address="{address} + 57"/>
             <property name="evDefense"         type="int"  address="{address} + 58"/>

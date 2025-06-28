@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.2"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -282,6 +282,7 @@
 			<property name="secret_id"  type="int" address="{global_pointer} + 0xD06E" length="2" />
 			<property name="team_count" type="int" address="{global_pointer} + 0xD090" />
 			<property name="starter"    type="int" address="{global_pointer} + 0xDE00" length="2" reference="species" /> <!-- When the starter is picked global_pointer offset 0xE20C also is set to the starter's species index -->
+			<property name="stp_catch_rate"    type="int" address="{global_pointer} + 0xDE02" length="2" /> <!-- When the starter is picked global_pointer offset 0xE20C also is set to the starter's species index -->
 			<property name="starter_pos"    type="int" address="{global_pointer} + 0xDE00 + 2" length="2"/>
 			<property name="party_position" type="int" />
             <!-- <class name="active_pokemon" type="player_active_pokemon" /> -->
@@ -5338,7 +5339,7 @@
 			<entry key="592" value="Rock Peak Ruins - Map 1" />
 		</maps>
 		<trainers>
-			<entry key="0" value="Pokemon Trainer  -" />
+			<entry key="0" />
 			<entry key="1" value="Youngster Tristan" />
 			<entry key="2" value="Youngster Logan" />
 			<entry key="3" value="Lass Natalie" />
