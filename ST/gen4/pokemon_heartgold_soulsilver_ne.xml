@@ -5,6 +5,11 @@
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
+    <memory>
+        <!-- Nothing seems to happen below 0x2100000. From there just grab 2mb: -->
+        <read start="0x2100000"  end="0x22E8480"/>
+    </memory>
+
 	<classes>
 		<party_pokemon>
 			<property name="species"    type="int"    address="{address} + 8"   length="2" reference="species" />

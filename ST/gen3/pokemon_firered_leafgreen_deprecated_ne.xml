@@ -557,7 +557,7 @@
             <trainer>
                 <property name="opponent"     type="int" length="2" address="0x20386AE" reference="trainerClasses"/>
                 <property name="opponentId"   type="int" length="2" address="0x20386AE" />
-                <property name="totalPokemon" type="int" address="0x202402A" />
+                <property name="totalPokemon" type="int" length="2" address="0x202402A" />
                 <team>
                     <class name="0" var:address="0x202402C" type="pokemonInParty"  />
                     <class name="1" var:address="0x2024090" type="pokemonInParty"  />
