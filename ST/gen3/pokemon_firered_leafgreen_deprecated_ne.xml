@@ -742,6 +742,7 @@
         <audio>
             <property name="soundEffect1" type="int" address="0x03007340" length="4" />
             <property name="soundEffect2" type="int" address="0x03007380" length="4" />
+            <property name="musicID"      type="int" address="0x03000fc0" length="4" />
         </audio>
         <gameTime>
             <property name="hours"   type="int" address="{dma_b} + 14" />
