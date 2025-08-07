@@ -233,7 +233,8 @@ function preprocessor() {
     variables.reload_addresses = false;
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x21117CC); //HGSS pointer (Test value: 226F234)
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x21117CC); //HGSS pointer prior to 2025-08-07
+    const base_ptr = memory.defaultNamespace.get_uint32_le(0x211182C); //HGSS pointer after 2025-08-07
     if (base_ptr === 0 || base_ptr >= 38438215) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
