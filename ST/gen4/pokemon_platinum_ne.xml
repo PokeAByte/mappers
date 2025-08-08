@@ -912,6 +912,7 @@
 			<!-- <property name="stpStarterPosition" type="int" address="0x21C3A38 + (1 * 4)" length="4" /> -->
 			<property name="stpStarterSpecies"  type="int" address="0x21C3D18 + (0 * 4)" length="4" reference="species" />
 			<property name="FLAG_STP_CATCH_RATE" type="int" address="{global_pointer} + 0x372" length="1" bits="1" />
+			<property name="stpCatchRate" type="int" address="{global_pointer} + 0x372" length="1" />
 		</patch>
 		<meta>
 			<property name="generation"     type="int" value="4" />

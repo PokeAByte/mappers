@@ -223,8 +223,11 @@ function preprocessor() {
     //
     let patch_update = true;
     let address_offset = 0x0; // Patch1
+    // if (patch_update) {
+    //     address_offset = 0x24 // Patch2
+    // }
     if (patch_update) {
-        address_offset = 0x24 // Patch2
+        address_offset = 0x48 // Patch3
     }
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
