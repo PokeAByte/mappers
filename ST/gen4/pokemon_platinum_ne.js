@@ -208,6 +208,12 @@ function preprocessor() {
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D6C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
     
+    let patch_update = true;
+    let address_offset = 0x0; // Patch1
+    if (patch_update) {
+        address_offset = 0x24 // Patch2
+    }
+
     // Pointer History:
         // 0x2101D6C
     const base_ptr = memory.defaultNamespace.get_uint32_le(0x210200C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
@@ -222,8 +228,8 @@ function preprocessor() {
     }
     variables.global_pointer        = base_ptr;                    // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD094;
-    variables.dynamic_player        = base_ptr + 0x5888C;
-    variables.dynamic_opponent      = base_ptr + 0x58E3C;
+    variables.dynamic_player        = base_ptr + 0x5888C + address_offset;
+    variables.dynamic_opponent      = base_ptr + 0x58E3C + address_offset;
     variables.dynamic_ally          = base_ptr + 0x593EC;
     variables.dynamic_opponent_2    = base_ptr + 0x5999C;
     variables.current_party_indexes = base_ptr + 0x54598 + 0x3EC;

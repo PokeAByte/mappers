@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.3"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -835,7 +835,7 @@
 				<property name="trainer" type="int" address="{global_pointer} + 0x4E87E" length="2" reference="trainers" />
 				<property name="id"      type="int" address="{global_pointer} + 0x4E87E" length="2" />
 				<property name="enemy_bar_synced_hp" type="int" address="{global_pointer} + 0x546A4" length="2" />
-				<property name="team_count"          type="int" address="{global_pointer} + 0x54598 + 0x48A0" />
+				<property name="team_count"          type="int" address="{dynamic_opponent} - 0x04" />
 				<property name="party_position"      type="int" address="{global_pointer} + 0x54598 + 0x3F2"/>
 				<class name="active_pokemon" type="battle_structure" var:address="{global_pointer} + 0x54598 + 192" />
 				<team>
