@@ -243,17 +243,35 @@ function preprocessor() {
     setValue('meta.state_enemy', getMetaEnemyState(gamestate, battle_outcomes, enemyBarSyncedHp));
     setValue('overworld.encounter_rate', getEncounterRate());
     setValue('player.party_position', getPlayerPartyPosition());
-    for (let i = 0; i < 6; i++) {
-        setValue(`player.team.${i}.hidden_power.power`, hiddenPower(`player.team.${i}`).power);
-        setValue(`player.team.${i}.hidden_power.type`, hiddenPower(`player.team.${i}`).type);
-        setValue(`battle.player.team.${i}.hidden_power.power`, hiddenPower(`battle.player.team.${i}`).power);
-        setValue(`battle.player.team.${i}.hidden_power.type`, hiddenPower(`battle.player.team.${i}`).type);
-        setValue(`battle.ally.team.${i}.hidden_power.power`, hiddenPower(`battle.ally.team.${i}`).power);
-        setValue(`battle.ally.team.${i}.hidden_power.type`, hiddenPower(`battle.ally.team.${i}`).type);
-        setValue(`battle.opponent.team.${i}.hidden_power.power`, hiddenPower(`battle.opponent.team.${i}`).power);
-        setValue(`battle.opponent.team.${i}.hidden_power.type`, hiddenPower(`battle.opponent.team.${i}`).type);
-        setValue(`battle.opponent_2.team.${i}.hidden_power.power`, hiddenPower(`battle.opponent_2.team.${i}`).power);
-        setValue(`battle.opponent_2.team.${i}.hidden_power.type`, hiddenPower(`battle.opponent_2.team.${i}`).type);
+
+    // Calculate player and enemy pokemon hidden power move data as needed:
+    // Math.min() because the memory value can go higher than 6 during resets, which would cause the mapper to unload.
+    const party_size = Math.min(6, getValue("player.team_count")); 
+    for (let i = 0; i < party_size; i++) {
+        // breaking out the calculation to a variable instead of invoking hiddenPower() multiple times saves
+        // a bunch of calculation. The JavaScript engine is sadly slow :(
+        const team_hidden_power = hiddenPower(`battle.player.team.${i}`)
+        setValue(`player.team.${i}.hidden_power.power`, team_hidden_power.power);
+        setValue(`player.team.${i}.hidden_power.type`, team_hidden_power.type);
+
+        const battle_team_hidden_power = hiddenPower(`battle.player.team.${i}`)
+        setValue(`battle.player.team.${i}.hidden_power.power`, battle_team_hidden_power.power);
+        setValue(`battle.player.team.${i}.hidden_power.type`, battle_team_hidden_power.type);
+    }
+    if (getValue("battle.mode") != null) {
+        for (let i = 0; i < 6; i++) {
+            const ally_team_hidden_power = hiddenPower(`battle.opponent.team.${i}`);
+            setValue(`battle.ally.team.${i}.hidden_power.power`, ally_team_hidden_power.power);
+            setValue(`battle.ally.team.${i}.hidden_power.type`, ally_team_hidden_power.type);
+
+            const opponent_team_hidden_power = hiddenPower(`battle.opponent.team.${i}`);
+            setValue(`battle.opponent.team.${i}.hidden_power.power`, opponent_team_hidden_power.power);
+            setValue(`battle.opponent.team.${i}.hidden_power.type`, opponent_team_hidden_power.type);
+
+            const opponent_2_hidden_power = hiddenPower(`battle.opponent_2.team.${i}`);
+            setValue(`battle.opponent_2.team.${i}.hidden_power.power`, opponent_2_hidden_power.power);
+            setValue(`battle.opponent_2.team.${i}.hidden_power.type`, opponent_2_hidden_power.type);
+        }
     }
 }
 
