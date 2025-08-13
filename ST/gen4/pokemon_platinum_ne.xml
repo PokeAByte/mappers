@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.4"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.6"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -257,6 +257,7 @@
 			</ivs>
 			<internals>
 				<property name="personality_value" address="{address} + 104" type="uint" length="4"/>
+				<property name="turn_counter" address="{address} + 124" type="uint" length="1"/>
 			</internals>
 		</battle_structure>
 
@@ -679,21 +680,21 @@
 			<property name="player_room_talked_to_barry" type="bool" address="{global_pointer} + 0xDEEA" bits="0" /> <!-- This flag is set to when the player finishes talking to Barry in their room -->
 			<property name="player_house_talked_to_mom" type="int" address="{global_pointer} + 0xDEE8" /> 
 				<!-- This value is incremented when:
-						the player finishes talking to Mom downstairs in their house, 
-						2x after leaving room, 1x after barry1, 
-						1x after getting running shoes, 
-						1x after leaving the player house 
-						1x after saying your going on an adventure;
-						1x after leaving the house
+					the player finishes talking to Mom downstairs in their house, 
+					2x after leaving room, 1x after barry1, 
+					1x after getting running shoes, 
+					1x after leaving the player house 
+					1x after saying your going on an adventure;
+					1x after leaving the house
 				-->
 			<property name="bumped_into_barry" type="bool" address="{global_pointer} + 0xDF6C" bits="0" /> <!-- This flag is set when Barry bumps into the player outside his house -->
 			<property name="barry_room_talked_to_barry" type="bool" address="{global_pointer} + 0xDF06" bits="0" /> <!-- This flag is set after you talk to Barry in his room; several other flags are set at the same time -->
 			<property name="choosing_starter" type="int" address="{global_pointer} + 0xDEAC" /> 
 				<!-- This is incremented when: (barry finishes interacting with the player)
-						the player regains control in order to interact with the briefcase with the 3 starters; 
-						when barry1 is defeated;
-						when barry follows the player (going to the lake);
-						when barry leaves at the lake;
+					the player regains control in order to interact with the briefcase with the 3 starters; 
+					when barry1 is defeated;
+					when barry follows the player (going to the lake);
+					when barry leaves at the lake;
 				-->
 			<property name="beat_barry_1a" type="bool" address="{global_pointer} + 0xDE3A" bits="0" /> <!-- These flags are set after defeating Barry1 -->
 			<property name="beat_barry_1b" type="bool" address="{global_pointer} + 0xDE3A" bits="2" /> <!-- These flags are set after defeating Barry1 -->
@@ -717,7 +718,6 @@
 				<!-- 
 					increments when the vs recorder is received
 					increments when the rockets are defeated after returning from Oreburgh
-
 				-->
 			<property name="got_town_map" type="bool" address="{global_pointer} + 0xDFFE" bits="0" /> <!-- One of these events controls delivery of the parcel -->
 			<property name="jubilife_city_events" type="int" address="{global_pointer} + 0xDF6E" /> 
@@ -766,8 +766,6 @@
 			<property name="beat_aroma_laby_taylor" type="bool" address="{global_pointer} + 0xE08B" bits="6" /> 
 			<property name="route_204_awakening" type="bool" address="{global_pointer} + 0xE07E" bits="4" /> 
 			<property name="bug_catcher_brandon" type="bool" address="{global_pointer} + 0xE08B" bits="5" /> 
-
-
 			<!-- 
 				Bit Values 
 					position 0: 0x01
