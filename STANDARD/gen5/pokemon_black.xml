@@ -254,6 +254,8 @@
 			<!-- <property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="defaultCharacterMap" /> -->
 			<!-- <property name="nature"           address="{address} + 104"  type="uint"   length="4" after-read-value-expression="x % 25" reference="natures" /> -->
 			<!-- <property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="defaultCharacterMap" /> -->
+			<property name="pointer_address_1"  address="{address} + 16 + 0"  type="int" length="4" />
+			<property name="pointer_address_2"  address="{address} + 16 + 4"  type="int" length="4" />
 			
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
@@ -265,6 +267,7 @@
 			<property name="type_1"           address="{address} + 300" type="int" reference="pokemon_types" />
 			<property name="type_2"           address="{address} + 301" type="int" reference="pokemon_types" />
 			<property name="friendship"       address="{address} + 370" type="int" />
+			<property name="fainted"       address="{address} + 0x220" type="bool" bits="0"/>
 			<!-- <property name="status_condition" address="{address} + 108"  type="int" reference="status_conditions" /> -->
 			<!-- The classes aren't working anymore; I believe this is a mapper syntax issue because these are the offsets -->
 			<!-- 
@@ -336,9 +339,9 @@
 				<property name="hp_max"          address="{address} + 66"  type="int" length="2" />
 				<property name="attack"          address="{address} + 290" type="int" length="2" />
 				<property name="defense"         address="{address} + 292" type="int" length="2" />
-				<property name="speed"           address="{address} + 294" type="int" length="2" />
-				<property name="special_attack"  address="{address} + 296" type="int" length="2" />
-				<property name="special_defense" address="{address} + 298" type="int" length="2" />
+				<property name="special_attack"  address="{address} + 294" type="int" length="2" />
+				<property name="special_defense" address="{address} + 296" type="int" length="2" />
+				<property name="speed"           address="{address} + 298" type="int" length="2" />
 			</stats>
 			<modifiers>
 				<property name="attack"          address="{address} + 304" type="int" reference="stage_modifiers" />
@@ -776,19 +779,47 @@
 			</encounter_tables>
         </overworld>
 		<flags>
+			<property name="new_game" type="bool" address="0x2234EE0" length="1" bits="0"/>
 			<!--
 				Where are the Black flags located?
 
 				It seems like some are at 0x223BCAC - likely counters (0x223BDA4 increments to 0x02 when the cinematic at the end of route 1 triggers)
-
 			-->
 		</flags>
 		<battle>
 			<!-- <property name="mode"    type="string" /> -->
             <!-- <property name="outcome" type="string" /> -->
+			<TESTING>
+				<property name="enemy_state" type="int" address="0x2140524" length="2" />
+				<property name="player_indirect_1"   type="int" address="0x2269838 + (0 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_2"   type="int" address="0x2269838 + (1 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_3"   type="int" address="0x2269838 + (2 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_4"   type="int" address="0x2269838 + (3 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_5"   type="int" address="0x2269838 + (4 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_6"   type="int" address="0x2269838 + (5 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="opponent_indirect_1" type="int" address="0x2269854 + (0 * 4)" length="4" />
+				<property name="opponent_indirect_2" type="int" address="0x2269854 + (1 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_3" type="int" address="0x2269854 + (2 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_4" type="int" address="0x2269854 + (3 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_5" type="int" address="0x2269854 + (4 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_6" type="int" address="0x2269854 + (5 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="player_party_position_1" type="int" />
+				<property name="player_party_position_2" type="int" />
+				<property name="player_party_position_3" type="int" />
+				<property name="player_party_position_4" type="int" />
+				<property name="player_party_position_5" type="int" />
+				<property name="player_party_position_6" type="int" />
+				<property name="opponent_party_position_1" type="int" />
+				<property name="opponent_party_position_2" type="int" />
+				<property name="opponent_party_position_3" type="int" />
+				<property name="opponent_party_position_4" type="int" />
+				<property name="opponent_party_position_5" type="int" />
+				<property name="opponent_party_position_6" type="int" />
+			</TESTING>
 			<player>
 				<!-- <property name="party_position"   type="int" address="0x226EBD7"/> -->
 				<!-- <property name="party_position_2" type="int" address=""/> -->
+				<property name="party_position"   type="int" address="0x2269838 + (0 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
 				<property name="team_count"    type="int" address="0x22349B4 - 4" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
 				<team>
@@ -800,12 +831,12 @@
 					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_player_party_structure_5" />
 				</team>
 				<pkmn_ram>
-					<class name="pokemon_0_ram" type="battle_structure" var:address="{battle_ram_player_0" />
-					<class name="pokemon_1_ram" type="battle_structure" var:address="{battle_ram_player_1" />
-					<class name="pokemon_2_ram" type="battle_structure" var:address="{battle_ram_player_2" />
-					<class name="pokemon_3_ram" type="battle_structure" var:address="{battle_ram_player_3" />
-					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_player_4" />
-					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_player_5" />
+					<class name="pokemon_0_ram" type="battle_structure" var:address="{battle_ram_player_0}" />
+					<class name="pokemon_1_ram" type="battle_structure" var:address="{battle_ram_player_1}" />
+					<class name="pokemon_2_ram" type="battle_structure" var:address="{battle_ram_player_2}" />
+					<class name="pokemon_3_ram" type="battle_structure" var:address="{battle_ram_player_3}" />
+					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_player_4}" />
+					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_player_5}" />
 				</pkmn_ram>
 			</player>
 			<wild>
@@ -829,11 +860,12 @@
 			</ally>
 			<opponent>
 				<!-- <property name="name"    type="int" address="" length="2" reference="trainers" /> -->
-				<property name="trainer" type="int" address="0x225E1F8" length="2" reference="trainers" />
+				<!-- <property name="trainer" type="int" address="0x224EB5C" length="2" reference="trainers" /> -->
+				<property name="trainer" type="int" address="0x224EB76" length="2" reference="trainers" />
 				<!-- <property name="id"      type="int" address="" length="2" />  -->
 				<!-- <property name="enemy_bar_synced_hp" type="int" address="" length="2" /> -->
 				<property name="team_count" type="int" address="0x226ACF4 - 4" /> <!-- This is correct -->
-				<!-- <property name="party_position"      type="int" address=""/> -->
+				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_0" />
@@ -879,7 +911,9 @@
             	<property name="battle_header_generic_2" type="int" address="0x226D274" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
             	<property name="battle_header_generic_3" type="int" address="0x226D278" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
             	<property name="battle_header_generic_4" type="int" address="0x226D27C" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
-            	<property name="outcome_flags"           type="int" address="0x226EBD6" />
+            	<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE" length="1" />
+            	<!-- <property name="outcome_flags_1"         type="int" address="{outcome_flags_offset} + 0xDE" length="1" /> -->
+            	<!-- <property name="outcome_flags_offset_value" type="int" /> -->
 			</other>
 		</battle>
 		<rival>  <!-- This doesn't seem to work correctly -->

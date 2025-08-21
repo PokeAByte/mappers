@@ -100,21 +100,23 @@ function getGamestate() {
     // 5. "From Battle": not yet implemented
     const state         = getValue('meta.state');
     const team_count    = getValue('player.team_count');
+    const enemy_state   = getValue('battle.TESTING.enemy_state');
     const header        = getValue('battle.other.battle_header');
     const generic_1     = getValue('battle.other.battle_header_generic_1');
     const generic_2     = getValue('battle.other.battle_header_generic_2');
     const generic_3     = getValue('battle.other.battle_header_generic_3');
     const generic_4     = getValue('battle.other.battle_header_generic_4');
+    const active_mon_species = getValue('battle.player.active_pokemon.species');
     const outcome_flags = getValue('battle.other.outcome_flags');
     // const outcome_flags: number = getValue<number>('battle.other.outcome_flags')
     if (team_count === 0) {
         return 'No Pokemon';
     }
-    else if (header == 87 && (generic_1 > 0 || generic_2 > 0 || generic_3 > 0 || generic_4 > 0 )) {
-        return 'Battle';
-    }
-    else if (outcome_flags > 0 && (state == 'Battle' || state == 'From Battle')) {
+    else if (outcome_flags == 1 && active_mon_species != null) {
         return 'From Battle';
+    }
+    else if (header == 87 && active_mon_species != null && (generic_1 > 0 || generic_2 > 0 || generic_3 > 0 || generic_4 > 0 )) {
+        return 'Battle';
     }
     else {
         return 'Overworld';
@@ -211,13 +213,63 @@ function preprocessor() {
     const null_data_address           = 0x226D290
     const player_structure_size       = player_team_count * pkmn_ram_allocation
     const enemy_battle_ram_start      = battle_ram_starting_address + player_structure_size
+    // const battle_data_start           = 0x226D670 + (10 * 0x224)
     variables.battle_ram_player_0     = battle_ram_starting_address
     variables.battle_ram_opponent_0   = enemy_battle_ram_start
+
+
+    // Indirect variables
+    // let indirect = getValue('battle.TESTING.player_indirect_1')
+    // variables.player_indirect_1 = indirect;
+    // variables.player_indirect_2 = getValue('battle.TESTING.player_indirect_2');
+    // variables.player_indirect_3 = getValue('battle.TESTING.player_indirect_3');
+    // variables.player_indirect_4 = getValue('battle.TESTING.player_indirect_4');
+    // variables.player_indirect_5 = getValue('battle.TESTING.player_indirect_5');
+    // variables.player_indirect_6 = getValue('battle.TESTING.player_indirect_6');
+    // variables.opponent_indirect_1 = getValue('battle.TESTING.opponent_indirect_1');
+    // variables.opponent_indirect_2 = getValue('battle.TESTING.opponent_indirect_2');
+    // variables.opponent_indirect_3 = getValue('battle.TESTING.opponent_indirect_3');
+    // variables.opponent_indirect_4 = getValue('battle.TESTING.opponent_indirect_4');
+    // variables.opponent_indirect_5 = getValue('battle.TESTING.opponent_indirect_5');
+    // variables.opponent_indirect_6 = getValue('battle.TESTING.opponent_indirect_6');
+
+    
+
+
+    let outcome_flags_address = battle_ram_starting_address + (((player_team_count + opponent_team_count) * 2) * 0x224)
+    variables.outcome_flags_offset = outcome_flags_address
+
+
+    const enemy_party_position_address = getValue('battle.TESTING.opponent_indirect_1')
+    const indirect_offset = 0x34
+    const enemy_party_position = (enemy_party_position_address - (enemy_battle_ram_start + indirect_offset)) / 548
+    setValue('battle.opponent.party_position', enemy_party_position);
+    // 226D670 - player pokemon 1 (0x224 allocation)
+    // 226D894 - 2
+    // 226DAB8 - 3
+    // 226DCDC - 4
+    // 226DF00 - 5
+    // 226E124 - 6
+    // 226E348 - 7
+    // 226E56C - 8
+    // 226E790 - 9
+    // 226E9B4 - 10
+    // 226EBD8 - 11 - this isn't Pokemon data
+    // 226EDFC - no data at this location
+
+// 226DCDC
+
+    // 0x226ECB6 - 2 enemy Pokemon, offset from spot 11
+    // Outcome flags location
+    // 0x226ECB6 - 2 enemy Pokemon, offset from spot 11
+    //             1 enemy Pokemon, offset from spot 10
+    // 0x226ECBA - 0 enemy Pokemon, offset from spot 11
+
     for (let i = 1; i < 6; i++) {
-        variables[`battle_ram_player_${i}`] = player_team_count >= (i + 1) ? battle_ram_starting_address + (pkmn_ram_allocation * (i + 1)) : null_data_address
+        variables[`battle_ram_player_${i}`] = player_team_count > i ? battle_ram_starting_address + (pkmn_ram_allocation * i) : null_data_address
     }
     for (let i = 1; i < 6; i++) {
-        variables[`battle_ram_opponent_${i}`] = opponent_team_count >= (i + 1) ? enemy_battle_ram_start + (pkmn_ram_allocation * (i + 1)) : null_data_address
+        variables[`battle_ram_opponent_${i}`] = opponent_team_count > i ? enemy_battle_ram_start + (pkmn_ram_allocation * i) : null_data_address
     }
 
     const partyStructures = [

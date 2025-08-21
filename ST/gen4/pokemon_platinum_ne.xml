@@ -792,6 +792,7 @@
 		<battle>
             <property name="mode"    type="string" />
             <property name="outcome" type="string" />
+            <property name="turn_counter" type="int" address="{global_pointer} + 0x519A8" />
 			<player>
 				<property name="party_position"   type="int" address="{global_pointer} + 0x54598 + 0x3EC"/>
 				<property name="party_position_2" type="int" address="{global_pointer} + 0x54598 + 0x3F8"/>
