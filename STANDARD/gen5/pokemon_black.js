@@ -24,6 +24,14 @@ function setValue(path, value) {
     }
     property.value = value;
 }
+function setBytes(path, value) {
+    // @ts-ignore
+    const property = mapper.properties[path];
+    if (!property) {
+        throw new Error(`${path} is not defined in properties.`);
+    }
+    property.bytes = value;
+}
 
 //notable addresses:
 // 0x22349B4 - likely the player's key items
@@ -343,20 +351,11 @@ function preprocessor() {
             }
             // Fills the memory contains for the mapper's class to interpret
             memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decryptedData);
+            if (slotIndex == 0 && user == "player") {
+                setValue(`player.decrypted_mon_0`, memory[`player_party_structure_0`]);
+            }
         }
     }
-    // for (let i = 0; i < 6; i++) {
-    //     setValue(`player.team.${i}.hidden_power.power`, hiddenPower(`player.team.${i}`).power);
-    //     setValue(`player.team.${i}.hidden_power.type`, hiddenPower(`player.team.${i}`).type);
-    //     setValue(`battle.player.team.${i}.hidden_power.power`, hiddenPower(`battle.player.team.${i}`).power);
-    //     setValue(`battle.player.team.${i}.hidden_power.type`, hiddenPower(`battle.player.team.${i}`).type);
-    //     setValue(`battle.ally.team.${i}.hidden_power.power`, hiddenPower(`battle.ally.team.${i}`).power);
-    //     setValue(`battle.ally.team.${i}.hidden_power.type`, hiddenPower(`battle.ally.team.${i}`).type);
-    //     setValue(`battle.opponent.team.${i}.hidden_power.power`, hiddenPower(`battle.opponent.team.${i}`).power);
-    //     setValue(`battle.opponent.team.${i}.hidden_power.type`, hiddenPower(`battle.opponent.team.${i}`).type);
-    //     setValue(`battle.opponent_2.team.${i}.hidden_power.power`, hiddenPower(`battle.opponent_2.team.${i}`).power);
-    //     setValue(`battle.opponent_2.team.${i}.hidden_power.type`, hiddenPower(`battle.opponent_2.team.${i}`).type);
-    // }
 }
 
 export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor };

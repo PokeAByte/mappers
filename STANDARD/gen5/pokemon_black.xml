@@ -12,13 +12,14 @@
 			- Double and triple battles need testing to see how the battle ram allocates space for those fights
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.3.3"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.4.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
 	<classes>
 		<party_pokemon>
+			<property name="raw"        type="string" address="0"   memoryContainer="{memoryContainer}" length="220" />
 			<property name="species"    type="int"    address="8"   memoryContainer="{memoryContainer}" length="2" reference="species" />
 			<property name="dex_number" type="int"    address="8"   memoryContainer="{memoryContainer}" length="2" />
 			<property name="nickname"   type="string" address="72"  memoryContainer="{memoryContainer}" length="22" size="2" />
@@ -27,7 +28,7 @@
 			<property name="ot_name"    type="string" address="104" memoryContainer="{memoryContainer}" length="16" size="2" />
 			<property name="ot_id"      type="int"    address="12"  memoryContainer="{memoryContainer}" length="2" />
 			<property name="ability"    type="int"    address="21"  memoryContainer="{memoryContainer}" reference="abilities" />
-			<property name="nature"     type="uint"   address="65"  memoryContainer="{memoryContainer}" length="4" reference="natures" after-read-value-expression="x % 25" />
+			<property name="nature"     type="uint"   address="65"  memoryContainer="{memoryContainer}" length="1" reference="natures" />
 			<property name="held_item"  type="int"    address="10"  memoryContainer="{memoryContainer}" length="2" reference="items" />
 			<property name="friendship" type="int"    address="20"  memoryContainer="{memoryContainer}" />
 			<property name="pokerus"    type="int"    address="130" memoryContainer="{memoryContainer}" />
@@ -378,6 +379,8 @@
 			<property name="player_id"  type="int" address="0x2234FC0" length="2" />
 			<property name="secret_id"  type="int" address="0x2234FC2" length="2" />
 			<property name="team_count" type="int" address="0x22349B4 - 4" />
+			<property name="decrypted_mon_0" type="string" address="0x22349B4" length="220" />
+			<property name="decrypted_mon_1" type="string" address="0x2268594" length="220" />
 			<!-- <property name="party_position" type="int" /> -->
             <!-- <class name="active_pokemon" type="player_active_pokemon" /> -->
 			<team>
