@@ -2,6 +2,10 @@
 <!-- 
 	TODO:
 		- Check if the trainer classes are the same between White and Black
+		- Figure out how Reflect/Safeguard/Light Sceen work
+		- Find where storyline flags are located
+		- Clean up unneeded properties
+		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
 <mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.7.0"
