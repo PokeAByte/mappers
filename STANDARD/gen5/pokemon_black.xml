@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.0"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -4617,5 +4617,86 @@
 			<entry key="0x80" value="Down" />
 			<entry key="0xC0" value="Right" />
 		</directions>
+		<unown_forms>
+			<entry key="0x00" value="A" />				
+			<entry key="0x08" value="B" />				
+			<entry key="0x10" value="C" />				
+			<entry key="0x18" value="D" />				
+			<entry key="0x20" value="E" />				
+			<entry key="0x28" value="F" />				
+			<entry key="0x30" value="G" />				
+			<entry key="0x38" value="H" />	
+			<entry key="0x40" value="I" />	
+			<entry key="0x48" value="J" />	
+			<entry key="0x50" value="K" />	
+			<entry key="0x58" value="L" />	
+			<entry key="0x60" value="M" />	
+			<entry key="0x68" value="N" />	
+			<entry key="0x70" value="O" />	
+			<entry key="0x78" value="P" />	
+			<entry key="0x80" value="Q" />	
+			<entry key="0x88" value="R" />	
+			<entry key="0x90" value="S" />	
+			<entry key="0x98" value="T" />	
+			<entry key="0xA0" value="U" />	
+			<entry key="0xA8" value="V" />	
+			<entry key="0xB0" value="W" />	
+			<entry key="0xB8" value="X" />	
+			<entry key="0xC0" value="Y" />	
+			<entry key="0xC8" value="Z" />	
+			<entry key="0xD0" value="!" />	 
+			<entry key="0xD8" value="?" />	 
+		</unown_forms>
+		<deoxys_forms>
+			<entry key="0x00" value="Normal" />
+			<entry key="0x08" value="Attack" />
+			<entry key="0x10" value="Defense" />
+			<entry key="0x18" value="Speed" />
+		</deoxys_forms>
+		<burmy_forms>
+			<entry key="0x00" value="Plant" />
+			<entry key="0x08" value="Sandy" />
+			<entry key="0x10" value="Trash" />
+		</burmy_forms>
+		<shellos_forms>
+			<entry key="0x00" value="West" />
+			<entry key="0x08" value="East" />
+		</shellos_forms>
+		<rotom_forms>
+			<entry key="0x00" value="Normal" />
+			<entry key="0x08" value="Heat" />
+			<entry key="0x10" value="Wash" />
+			<entry key="0x18" value="Frost" />
+			<entry key="0x20" value="Fan" />
+			<entry key="0x28" value="Cut" />
+		</rotom_forms>
+		<giratina_forms>
+			<entry key="0x00" value="Altered" />
+			<entry key="0x08" value="Origin" />
+		</giratina_forms>
+		<shaymin_forms>
+			<entry key="0x00" value="Land" />
+			<entry key="0x08" value="Sky" />
+		</shaymin_forms>
+		<arceus_forms>
+			<entry key="0x00" value="Normal" />	
+			<entry key="0x08" value="Fist" />	
+			<entry key="0x10" value="Sky" />		
+			<entry key="0x18" value="Toxic" />	
+			<entry key="0x20" value="Earth" />	
+			<entry key="0x28" value="Stone" />	
+			<entry key="0x30" value="Insect" />	
+			<entry key="0x38" value="Spooky" />	
+			<entry key="0x40" value="Iron" />	
+			<entry key="0x48" value="Flame" />	
+			<entry key="0x50" value="Splash" />	
+			<entry key="0x58" value="Meadow" />	
+			<entry key="0x60" value="Zap" />
+			<entry key="0x68" value="Mind" />
+			<entry key="0x70" value="Icicle" />
+			<entry key="0x78" value="Draco" />
+			<entry key="0x80" value="Dread" />
+			<entry key="0x4C" value="Curse" />
+		</arceus_forms>
 	</references>
 </mapper>
