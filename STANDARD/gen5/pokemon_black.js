@@ -24,14 +24,6 @@ function setValue(path, value) {
     }
     property.value = value;
 }
-function setBytes(path, value) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
-    }
-    property.bytes = value;
-}
 
 //notable addresses:
 // 0x22349B4 - likely the player's key items
@@ -108,7 +100,6 @@ function getGamestate() {
     // 5. "From Battle": not yet implemented
     const state         = getValue('meta.state');
     const team_count    = getValue('player.team_count');
-    const enemy_state   = getValue('battle.TESTING.enemy_state');
     const header        = getValue('battle.other.battle_header');
     const generic_1     = getValue('battle.other.battle_header_generic_1');
     const generic_2     = getValue('battle.other.battle_header_generic_2');
@@ -121,7 +112,6 @@ function getGamestate() {
     const battle_state_ready = getValue('battle.other.battle_state_ready');
     const battle = getValue('battle.other.battle');
     const player_lock = getValue('battle.other.player_lock');
-    const trainer_2_id = getValue('battle.opponent_2.id');
     var return_state = '';
     // const outcome_flags: number = getValue<number>('battle.other.outcome_flags')
     if (team_count === 0) {
@@ -226,6 +216,8 @@ function hiddenPower(path) {
 }
 // Preprocessor runs every loop (everytime pokeabyte updates)
 function preprocessor() {
+    const white_version_offset = 0x00
+
     variables.reload_addresses = true;
     const gamestate = getGamestate();
     setValue('meta.state', gamestate);
@@ -236,30 +228,12 @@ function preprocessor() {
     const ally_team_count             = getValue('battle.ally.team_count');
     const opponent_2_team_count       = getValue('battle.opponent_2.team_count');
     const pkmn_ram_allocation         = 0x224
-    const battle_ram_starting_address = 0x226D670
-    const null_data_address           = 0x226D290
+    const battle_ram_starting_address = 0x226D670 + white_version_offset
+    const null_data_address           = 0x226D290 + white_version_offset
     const player_structure_size       = player_team_count * pkmn_ram_allocation
     const enemy_battle_ram_start      = battle_ram_starting_address + player_structure_size
-    // const battle_data_start           = 0x226D670 + (10 * 0x224)
     variables.battle_ram_player_0     = battle_ram_starting_address
     variables.battle_ram_opponent_0   = enemy_battle_ram_start
-
-
-    // Indirect variables
-    // let indirect = getValue('battle.TESTING.player_indirect_1')
-    // variables.player_indirect_1 = indirect;
-    // variables.player_indirect_2 = getValue('battle.TESTING.player_indirect_2');
-    // variables.player_indirect_3 = getValue('battle.TESTING.player_indirect_3');
-    // variables.player_indirect_4 = getValue('battle.TESTING.player_indirect_4');
-    // variables.player_indirect_5 = getValue('battle.TESTING.player_indirect_5');
-    // variables.player_indirect_6 = getValue('battle.TESTING.player_indirect_6');
-    // variables.opponent_indirect_1 = getValue('battle.TESTING.opponent_indirect_1');
-    // variables.opponent_indirect_2 = getValue('battle.TESTING.opponent_indirect_2');
-    // variables.opponent_indirect_3 = getValue('battle.TESTING.opponent_indirect_3');
-    // variables.opponent_indirect_4 = getValue('battle.TESTING.opponent_indirect_4');
-    // variables.opponent_indirect_5 = getValue('battle.TESTING.opponent_indirect_5');
-    // variables.opponent_indirect_6 = getValue('battle.TESTING.opponent_indirect_6');
-
     
     let additional_offset = 0;
     if (ally_team_count && opponent_2_team_count) {
@@ -285,14 +259,6 @@ function preprocessor() {
     // 226E9B4 - 10
     // 226EBD8 - 11 - this isn't Pokemon data
     // 226EDFC - no data at this location
-
-// 226DCDC
-
-    // 0x226ECB6 - 2 enemy Pokemon, offset from spot 11
-    // Outcome flags location
-    // 0x226ECB6 - 2 enemy Pokemon, offset from spot 11
-    //             1 enemy Pokemon, offset from spot 10
-    // 0x226ECBA - 0 enemy Pokemon, offset from spot 11
 
     for (let i = 1; i < 6; i++) {
         variables[`battle_ram_player_${i}`] = player_team_count > i ? battle_ram_starting_address + (pkmn_ram_allocation * i) : null_data_address
@@ -323,23 +289,23 @@ function preprocessor() {
         // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
         const offsets = {
             // An extremely long block of party structures starts at address 0x221BFB0
-            player            : 0x22349B4, //party
+            player            : 0x22349B4 + white_version_offset, //party
 
-            dynamic_player    : 0x226A220 + (0x560 * 1) + 0x14, // 0x226A794,
-            dynamic_opponent  : 0x226A220 + (0x560 * 3) + 0x14,
-            dynamic_ally      : 0x226A220 + (0x560 * 5) + 0x14, // TODO: Requires testing
-            dynamic_opponent_2: 0x226A220 + (0x560 * 7) + 0x14, // TODO: Requires testing
-            unknown_1         : 0x226BD14, // TODO: Requires testing
-            unknown_2         : 0x226C274, // TODO: Requires testing
+            dynamic_player    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // 0x226A794,
+            dynamic_opponent  : 0x226A220 + (0x560 * 3) + 0x14 + white_version_offset,
+            dynamic_ally      : 0x226A220 + (0x560 * 5) + 0x14 + white_version_offset, // TODO: Requires testing
+            dynamic_opponent_2: 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // TODO: Requires testing
+            unknown_1         : 0x226BD14 + white_version_offset, // TODO: Requires testing
+            unknown_2         : 0x226C274 + white_version_offset, // TODO: Requires testing
 
-            player1    : 0x226A220 + (0x560 * 1) + 0x14, // player
-            player2    : 0x226A220 + (0x560 * 1) + 0x14, // player
-            player3    : 0x226A220 + (0x560 * 2) + 0x14, // opponent_1
-            player4    : 0x226A220 + (0x560 * 3) + 0x14, // opponent_1
-            player5    : 0x226A220 + (0x560 * 4) + 0x14, // ally
-            player6    : 0x226A220 + (0x560 * 5) + 0x14, // ally
-            player7    : 0x226A220 + (0x560 * 6) + 0x14, // opponent_2
-            player8    : 0x226A220 + (0x560 * 7) + 0x14, // opponent_2
+            player1    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // player
+            player2    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // player
+            player3    : 0x226A220 + (0x560 * 2) + 0x14 + white_version_offset, // opponent_1
+            player4    : 0x226A220 + (0x560 * 3) + 0x14 + white_version_offset, // opponent_1
+            player5    : 0x226A220 + (0x560 * 4) + 0x14 + white_version_offset, // ally
+            player6    : 0x226A220 + (0x560 * 5) + 0x14 + white_version_offset, // ally
+            player7    : 0x226A220 + (0x560 * 6) + 0x14 + white_version_offset, // opponent_2
+            player8    : 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // opponent_2
         };
         // Loop through each party-slot within the given party-structure
         for (let slotIndex = 0; slotIndex < 6; slotIndex++) {

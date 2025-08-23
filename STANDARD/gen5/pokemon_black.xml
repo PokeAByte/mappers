@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 	TODO:
-		- All trainer classes need references
-		- All map locations need references
-		- RAM locations required for:
-			- Map locations
-			- Trainer classes
-			- Pointers resposible for determining which Pokemon is currently in battle
-			- Battle outcome flags for state management
-		- Testing
-			- Double and triple battles need testing to see how the battle ram allocates space for those fights
+		- Check if the trainer classes are the same between White and Black
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.6.3"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -790,7 +782,7 @@
 		<flags>
 			<property name="new_game" type="bool" address="0x2234EE0" length="1" bits="0"/>
 			<!--
-				Where are the Black flags located?
+				Where are the Black/White flags located?
 
 				It seems like some are at 0x223BCAC - likely counters (0x223BDA4 increments to 0x02 when the cinematic at the end of route 1 triggers)
 			-->
@@ -1012,9 +1004,6 @@
             	<!-- <property name="outcome_flags_offset_value" type="int" /> -->
 			</other>
 		</battle>
-		<rival>  <!-- This doesn't seem to work correctly -->
-			<!-- <property name="name" type="string" address="" length="14" size="2" /> -->
-		</rival>
 		<screen>
 			<menu>
 				<!--
