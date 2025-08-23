@@ -116,19 +116,36 @@ function getGamestate() {
     const generic_4     = getValue('battle.other.battle_header_generic_4');
     const active_mon_species = getValue('battle.player.active_pokemon.species');
     const outcome_flags = getValue('battle.other.outcome_flags');
+    const battle_end = getValue('battle.other.battle_end');
+    const to_battle_pointer = getValue('battle.other.to_battle_pointer_1');
+    const battle_state_ready = getValue('battle.other.battle_state_ready');
+    const battle = getValue('battle.other.battle');
+    const player_lock = getValue('battle.other.player_lock');
+    const trainer_2_id = getValue('battle.opponent_2.id');
+    var return_state = '';
     // const outcome_flags: number = getValue<number>('battle.other.outcome_flags')
     if (team_count === 0) {
-        return 'No Pokemon';
+        return_state = 'No Pokemon';
     }
-    else if (outcome_flags == 1 && active_mon_species != null) {
-        return 'From Battle';
+    else if (battle != 21828) {
+        return_state = 'Overworld';
     }
-    else if (header == 87 && active_mon_species != null && (generic_1 > 0 || generic_2 > 0 || generic_3 > 0 || generic_4 > 0 )) {
-        return 'Battle';
+    else if (state == 'To Battle' && battle_state_ready == 3) {
+        return_state = 'Battle';
     }
-    else {
-        return 'Overworld';
+    else if ((state != 'Battle' && return_state != 'Battle' && state != 'From Battle') && to_battle_pointer == 0 && player_lock == 1) {
+        return_state = 'To Battle'
     }
+    else if (battle_end == 1 && battle == 21828) {
+        return_state = 'From Battle'
+    }
+    else if (outcome_flags == 1 && battle == 21828) {
+        return_state = 'From Battle'
+    }
+    else if (state != 'To Battle' && header == 87 && active_mon_species != null && (generic_1 > 0 || generic_2 > 0 || generic_3 > 0 || generic_4 > 0 )) {
+        return_state = 'Battle';
+    }
+    return return_state
 }
 function getMetaEnemyState(state, battle_outcomes, enemyBarSyncedHp) {
     // ENEMY POKEMON MID-BATTLE STATE: Allows for precise timing during battles
@@ -216,6 +233,8 @@ function preprocessor() {
     // based on the number of Pokemon in the player's party
     const player_team_count           = getValue('player.team_count');
     const opponent_team_count         = getValue('battle.opponent.team_count');
+    const ally_team_count             = getValue('battle.ally.team_count');
+    const opponent_2_team_count       = getValue('battle.opponent_2.team_count');
     const pkmn_ram_allocation         = 0x224
     const battle_ram_starting_address = 0x226D670
     const null_data_address           = 0x226D290
@@ -242,9 +261,11 @@ function preprocessor() {
     // variables.opponent_indirect_6 = getValue('battle.TESTING.opponent_indirect_6');
 
     
-
-
-    let outcome_flags_address = battle_ram_starting_address + (((player_team_count + opponent_team_count) * 2) * 0x224)
+    let additional_offset = 0;
+    if (ally_team_count && opponent_2_team_count) {
+        additional_offset = 0x158
+    }
+    let outcome_flags_address = battle_ram_starting_address + (((player_team_count + opponent_team_count + ally_team_count + opponent_2_team_count) * 2) * 0x224) + additional_offset
     variables.outcome_flags_offset = outcome_flags_address
 
 
@@ -286,6 +307,14 @@ function preprocessor() {
         "dynamic_opponent", 
         "dynamic_ally", 
         "dynamic_opponent_2",
+        // "player1",
+        // "player2",
+        // "player3",
+        // "player4",
+        // "player5",
+        // "player6",
+        // "player7",
+        // "player8",
     ];
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
@@ -294,13 +323,23 @@ function preprocessor() {
         // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
         const offsets = {
             // An extremely long block of party structures starts at address 0x221BFB0
-            player            : 0x22349B4,
-            dynamic_player    : 0x226A794,
-            dynamic_opponent  : 0x226ACF4,
-            dynamic_ally      : 0x226B254, // TODO: Requires testing
-            dynamic_opponent_2: 0x226B7B4, // TODO: Requires testing
+            player            : 0x22349B4, //party
+
+            dynamic_player    : 0x226A220 + (0x560 * 1) + 0x14, // 0x226A794,
+            dynamic_opponent  : 0x226A220 + (0x560 * 3) + 0x14,
+            dynamic_ally      : 0x226A220 + (0x560 * 5) + 0x14, // TODO: Requires testing
+            dynamic_opponent_2: 0x226A220 + (0x560 * 7) + 0x14, // TODO: Requires testing
             unknown_1         : 0x226BD14, // TODO: Requires testing
             unknown_2         : 0x226C274, // TODO: Requires testing
+
+            player1    : 0x226A220 + (0x560 * 1) + 0x14, // player
+            player2    : 0x226A220 + (0x560 * 1) + 0x14, // player
+            player3    : 0x226A220 + (0x560 * 2) + 0x14, // opponent_1
+            player4    : 0x226A220 + (0x560 * 3) + 0x14, // opponent_1
+            player5    : 0x226A220 + (0x560 * 4) + 0x14, // ally
+            player6    : 0x226A220 + (0x560 * 5) + 0x14, // ally
+            player7    : 0x226A220 + (0x560 * 6) + 0x14, // opponent_2
+            player8    : 0x226A220 + (0x560 * 7) + 0x14, // opponent_2
         };
         // Loop through each party-slot within the given party-structure
         for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
