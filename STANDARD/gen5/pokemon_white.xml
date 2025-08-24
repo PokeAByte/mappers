@@ -935,7 +935,6 @@
 				<!-- <property name="trainer" type="int" address="" length="2" reference="trainers" /> -->
 				<property name="trainer" type="int" address="0x22697BE + 0x20" length="2" reference="trainers" />
 				<property name="id" type="int" address="0x22697BE + 0x20" length="2" />
-				<property name="trainer_old" type="int" address="0x224EB76 + 0x20" length="2" reference="trainers" />
 				<!-- <property name="id"      type="int" address="" length="2" />  -->
 				<!-- <property name="enemy_bar_synced_hp" type="int" address="" length="2" /> -->
 				<property name="team_count" type="int" address="0x226ACF4 + 0x20 - 4" /> <!-- This is correct -->

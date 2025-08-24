@@ -25,13 +25,14 @@ function setValue(path, value) {
     property.value = value;
 }
 
-//notable addresses:
+//white2 notable addresses:
 // 0x22349B4 - likely the player's key items
 // 0x2234786 - medicine pocket starting address
 // 0x223CDAC - player money (4 bytes)
 // 0x225B310 - player battle
 // 0x226D790 - player battle structure (around here) (there are two copies)
 // 0x226D9B0 - opponent battle structure (around here)
+
 // prng function; used for decryption.
 function prngNext(prngSeed) {
     // Ensure 32-bit unsigned result
@@ -101,20 +102,38 @@ function getGamestate() {
     const generic_2     = getValue('battle.other.battle_header_generic_2');
     const generic_3     = getValue('battle.other.battle_header_generic_3');
     const generic_4     = getValue('battle.other.battle_header_generic_4');
+    const active_mon_species = getValue('battle.player.active_pokemon.species');
     const outcome_flags = getValue('battle.other.outcome_flags');
+    const battle_end = getValue('battle.other.battle_end');
+    const to_battle_pointer = getValue('battle.other.to_battle_pointer_1');
+    const battle_state_ready = getValue('battle.other.battle_state_ready');
+    const battle = getValue('battle.other.battle');
+    const player_lock = getValue('battle.other.player_lock');
+    const trainer = getValue('battle.opponent.trainer');
+    var return_state = '';
     // const outcome_flags: number = getValue<number>('battle.other.outcome_flags')
     if (team_count === 0) {
-        return 'No Pokemon';
+        return_state = 'No Pokemon';
     }
-    else if (header == 87 && (generic_1 > 0 || generic_2 > 0 || generic_3 > 0 || generic_4 > 0 )) {
-        return 'Battle';
+    else if (battle != 21828) {
+        return_state = 'Overworld';
     }
-    else if (outcome_flags > 0 && (state == 'Battle' || state == 'From Battle')) {
-        return 'From Battle';
+    else if (state == 'To Battle' && battle_state_ready == 3) {
+        return_state = 'Battle';
     }
-    else {
-        return 'Overworld';
+    else if ((state != 'Battle' && return_state != 'Battle' && state != 'From Battle') && to_battle_pointer == 0 && player_lock == 1) {
+        return_state = 'To Battle'
     }
+    else if (trainer == "--" && battle_end == 1 && battle == 21828) {
+        return_state = 'From Battle'
+    }
+    else if (outcome_flags == 1 && battle == 21828) {
+        return_state = 'From Battle'
+    }
+    else if (state != 'To Battle' && header == 87 && active_mon_species != null && (generic_1 > 0 || generic_2 > 0 || generic_3 > 0 || generic_4 > 0 )) {
+        return_state = 'Battle';
+    }
+    return return_state
 }
 function getMetaEnemyState(state, battle_outcomes, enemyBarSyncedHp) {
     // ENEMY POKEMON MID-BATTLE STATE: Allows for precise timing during battles
@@ -195,6 +214,8 @@ function hiddenPower(path) {
 }
 // Preprocessor runs every loop (everytime pokeabyte updates)
 function preprocessor() {
+    const black2_version_offset = 0x00
+
     variables.reload_addresses = true;
     const gamestate = getGamestate();
     setValue('meta.state', gamestate);
@@ -202,26 +223,49 @@ function preprocessor() {
     // based on the number of Pokemon in the player's party
     const player_team_count           = getValue('player.team_count');
     const opponent_team_count         = getValue('battle.opponent.team_count');
+    const ally_team_count             = getValue('battle.ally.team_count');
+    const opponent_2_team_count       = getValue('battle.opponent_2.team_count');
     const pkmn_ram_allocation         = 0x224
-    const battle_ram_starting_address = 0x225B1F0
-    const null_data_address           = 0x225AE10
+    const battle_ram_starting_address = 0x225B1F0 - black2_version_offset
+    const null_data_address           = 0x225AE10 - black2_version_offset
     const player_structure_size       = player_team_count * pkmn_ram_allocation
     const enemy_battle_ram_start      = battle_ram_starting_address + player_structure_size
     variables.battle_ram_player_0     = battle_ram_starting_address
     variables.battle_ram_opponent_0   = enemy_battle_ram_start
+            
+    let additional_offset = 0;
+    if (ally_team_count && opponent_2_team_count) {
+        additional_offset = 0x158
+    }
+    let outcome_flags_address = battle_ram_starting_address + (((player_team_count + opponent_team_count + ally_team_count + opponent_2_team_count) * 2) * 0x224) + additional_offset
+    variables.outcome_flags_offset = outcome_flags_address
+
+
+    const enemy_party_position_address = getValue('battle.TESTING.opponent_indirect_1')
+    const indirect_offset = 0x34
+    const enemy_party_position = (enemy_party_position_address - (enemy_battle_ram_start + indirect_offset)) / 548
+    setValue('battle.opponent.party_position', enemy_party_position);
     for (let i = 1; i < 6; i++) {
-        variables[`battle_ram_player_${i}`] = player_team_count >= (i + 1) ? battle_ram_starting_address + (pkmn_ram_allocation * (i + 1)) : null_data_address
+        variables[`battle_ram_player_${i}`] = player_team_count > i ? battle_ram_starting_address + (pkmn_ram_allocation * i) : null_data_address
     }
     for (let i = 1; i < 6; i++) {
-        variables[`battle_ram_opponent_${i}`] = opponent_team_count >= (i + 1) ? enemy_battle_ram_start + (pkmn_ram_allocation * (i + 1)) : null_data_address
+        variables[`battle_ram_opponent_${i}`] = opponent_team_count > i ? enemy_battle_ram_start + (pkmn_ram_allocation * i) : null_data_address
     }
 
     const partyStructures = [
         "player", 
         "dynamic_player", 
         "dynamic_opponent", 
-        // "dynamic_ally", 
-        // "dynamic_opponent_2",
+        "dynamic_ally", 
+        "dynamic_opponent_2",
+        // "player1",
+        // "player2",
+        // "player3",
+        // "player4",
+        // "player5",
+        // "player6",
+        // "player7",
+        // "player8",
     ];
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
@@ -230,21 +274,23 @@ function preprocessor() {
         // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
         const offsets = {
             // An extremely long block of party structures starts at address 0x221BFB0
-            player          : 0x221E42C,
-            // player           : 0xD094,
-            // static_player    : 0x35514,
-            // static_wild      : 0x35AC4,
-            // static_opponent  : 0x7A0,
-            // static_ally      : 0x7A0 + 0x5B0,
-            // static_opponent_2: 0x7A0 + 0xB60,
-            dynamic_player   : 0x2258314, // Confirmed as White2 address (party structure length is 0x560)
-            dynamic_opponent : 0x2258874, // Confirmed as White2 address
-            dynamic_unknown_1: 0x2258DD4, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-            dynamic_unknown_2: 0x2259334, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-            dynamic_unknown_3: 0x2259894, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-            dynamic_unknown_4: 0x2259DF4, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-            dynamic_unknown_5: 0x225A354, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-            dynamic_unknown_6: 0x225A8B4, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            player          : 0x221E42C - black2_version_offset,
+
+            dynamic_player    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // Confirmed as White2 address (party structure length is 0x560)
+            dynamic_opponent  : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // Confirmed as White2 address
+            dynamic_ally      : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            dynamic_opponent_2: 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            // unknown_1         : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            // unknown_2         : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+
+            player1    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // player
+            player2    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // player
+            player3    : 0x2257DA0 + (0x560 * 2) + 0x14 - black2_version_offset, // opponent_1
+            player4    : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // opponent_1
+            player5    : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // ally
+            player6    : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // ally
+            player7    : 0x2257DA0 + (0x560 * 6) + 0x14 - black2_version_offset, // opponent_2
+            player8    : 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // opponent_2
         };
         // Loop through each party-slot within the given party-structure
         for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
@@ -295,20 +341,11 @@ function preprocessor() {
             }
             // Fills the memory contains for the mapper's class to interpret
             memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decryptedData);
+            if (slotIndex == 0 && user == "player") {
+                setValue(`player.decrypted_mon_0`, memory[`player_party_structure_0`]);
+            }
         }
     }
-    // for (let i = 0; i < 6; i++) {
-    //     setValue(`player.team.${i}.hidden_power.power`, hiddenPower(`player.team.${i}`).power);
-    //     setValue(`player.team.${i}.hidden_power.type`, hiddenPower(`player.team.${i}`).type);
-    //     setValue(`battle.player.team.${i}.hidden_power.power`, hiddenPower(`battle.player.team.${i}`).power);
-    //     setValue(`battle.player.team.${i}.hidden_power.type`, hiddenPower(`battle.player.team.${i}`).type);
-    //     setValue(`battle.ally.team.${i}.hidden_power.power`, hiddenPower(`battle.ally.team.${i}`).power);
-    //     setValue(`battle.ally.team.${i}.hidden_power.type`, hiddenPower(`battle.ally.team.${i}`).type);
-    //     setValue(`battle.opponent.team.${i}.hidden_power.power`, hiddenPower(`battle.opponent.team.${i}`).power);
-    //     setValue(`battle.opponent.team.${i}.hidden_power.type`, hiddenPower(`battle.opponent.team.${i}`).type);
-    //     setValue(`battle.opponent_2.team.${i}.hidden_power.power`, hiddenPower(`battle.opponent_2.team.${i}`).power);
-    //     setValue(`battle.opponent_2.team.${i}.hidden_power.type`, hiddenPower(`battle.opponent_2.team.${i}`).type);
-    // }
 }
 
 export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor };

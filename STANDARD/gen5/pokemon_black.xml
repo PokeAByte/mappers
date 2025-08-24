@@ -789,6 +789,7 @@
 				Where are the Black/White flags located?
 
 				It seems like some are at 0x223BCAC - likely counters (0x223BDA4 increments to 0x02 when the cinematic at the end of route 1 triggers)
+
 			-->
 		</flags>
 		<battle>
@@ -796,18 +797,18 @@
             <!-- <property name="outcome" type="string" /> -->
 			<TESTING>
 				<property name="enemy_state" type="int" address="0x2140524" length="2" />
-				<property name="player_indirect_1"   type="int" address="0x2269838 + (0 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_2"   type="int" address="0x2269838 + (1 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_3"   type="int" address="0x2269838 + (2 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_4"   type="int" address="0x2269838 + (3 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_5"   type="int" address="0x2269838 + (4 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_6"   type="int" address="0x2269838 + (5 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="opponent_indirect_1" type="int" address="0x2269854 + (0 * 4)" length="4" />
-				<property name="opponent_indirect_2" type="int" address="0x2269854 + (1 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_3" type="int" address="0x2269854 + (2 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_4" type="int" address="0x2269854 + (3 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_5" type="int" address="0x2269854 + (4 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_6" type="int" address="0x2269854 + (5 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="player_indirect_1"   type="int" address="0x2269838 + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_2"   type="int" address="0x2269838 + 0x00 + (1 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_3"   type="int" address="0x2269838 + 0x00 + (2 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_4"   type="int" address="0x2269838 + 0x00 + (3 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_5"   type="int" address="0x2269838 + 0x00 + (4 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="player_indirect_6"   type="int" address="0x2269838 + 0x00 + (5 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
+				<property name="opponent_indirect_1" type="int" address="0x2269838 + 0x1C + (0 * 4)" length="4" />
+				<property name="opponent_indirect_2" type="int" address="0x2269838 + 0x1C + (1 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_3" type="int" address="0x2269838 + 0x1C + (2 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_4" type="int" address="0x2269838 + 0x1C + (3 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_5" type="int" address="0x2269838 + 0x1C + (4 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="opponent_indirect_6" type="int" address="0x2269838 + 0x1C + (5 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
 				<property name="player_party_position_1" type="int" />
 				<property name="player_party_position_2" type="int" />
 				<property name="player_party_position_3" type="int" />
@@ -909,6 +910,14 @@
 					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_player_4}" />
 					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_player_5}" />
 				</pkmn_ram>
+				<!-- <misc>
+            		<property name="pkmn_in_battle"      type="int" address="0x225CA80" />
+            		<property name="pkmn_sent_in_first"  type="int" address="0x225CA80 + 2" />
+            		<property name="pkmn_sent_in_second" type="int" address="0x225CA80 + 3" />
+            		<property name="pkmn_sent_in_third"  type="int" address="0x225CA80 + 4" />
+            		<property name="pkmn_sent_in_fourth" type="int" address="0x225CA80 + 5" />
+            		<property name="pkmn_sent_in_fifth"  type="int" address="0x225CA80 + 6" />
+				</misc> -->
 			</player>
 			<wild>
 				<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_0" />
@@ -920,7 +929,7 @@
 				<!-- <property name="id"      type="int" address="" length="2" /> -->
 				<!-- <property name="party_position" type="int" address=""/> -->
 				<!-- <class name="active_pokemon" type="battle_structure" var:address="" /> -->
-				<property name="team_count" type="int" address="0x226A220 + (0x560 * 5) + 0x14 - 4" /> <!-- This is correct -->
+				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 5) + 0x14 - 4" /> <!-- This is correct -->
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_0" />
 					<class name="1" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_1" />
@@ -935,7 +944,6 @@
 				<!-- <property name="trainer" type="int" address="0x224EB5C" length="2" reference="trainers" /> -->
 				<property name="trainer" type="int" address="0x22697BE" length="2" reference="trainers" />
 				<property name="id" type="int" address="0x22697BE" length="2" />
-				<property name="trainer_old" type="int" address="0x224EB76" length="2" reference="trainers" />
 				<!-- <property name="id"      type="int" address="" length="2" />  -->
 				<!-- <property name="enemy_bar_synced_hp" type="int" address="" length="2" /> -->
 				<property name="team_count" type="int" address="0x226ACF4 - 4" /> <!-- This is correct -->

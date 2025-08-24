@@ -12,13 +12,14 @@
 			- Double and triple battles need testing to see how the battle ram allocates space for those fights
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.3.1"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.7.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
 	<classes>
 		<party_pokemon>
+			<property name="raw"        type="string" address="0"   memoryContainer="{memoryContainer}" length="220" />
 			<property name="species"    type="int"    address="8"   memoryContainer="{memoryContainer}" length="2" reference="species" />
 			<property name="dex_number" type="int"    address="8"   memoryContainer="{memoryContainer}" length="2" />
 			<property name="nickname"   type="string" address="72"  memoryContainer="{memoryContainer}" length="22" size="2" />
@@ -27,7 +28,7 @@
 			<property name="ot_name"    type="string" address="104" memoryContainer="{memoryContainer}" length="16" size="2" />
 			<property name="ot_id"      type="int"    address="12"  memoryContainer="{memoryContainer}" length="2" />
 			<property name="ability"    type="int"    address="21"  memoryContainer="{memoryContainer}" reference="abilities" />
-			<property name="nature"     type="uint"   address="65"  memoryContainer="{memoryContainer}" length="4" reference="natures" after-read-value-expression="x % 25" />
+			<property name="nature"     type="uint"   address="65"  memoryContainer="{memoryContainer}" length="1" reference="natures" />
 			<property name="held_item"  type="int"    address="10"  memoryContainer="{memoryContainer}" length="2" reference="items" />
 			<property name="friendship" type="int"    address="20"  memoryContainer="{memoryContainer}" />
 			<property name="pokerus"    type="int"    address="130" memoryContainer="{memoryContainer}" />
@@ -80,6 +81,9 @@
 			</flags>
 			<internals>
 				<property name="personality_value" type="uint" address="0"  memoryContainer="{memoryContainer}" length="4" />
+				<!-- <property name="shuffle_order"     type="uint" address="0"  memoryContainer="{memoryContainer}" length="4" after-read-value-expression="((pid & 0x3E000) >> 0xD) % 24" /> -->
+				<property name="pid_gender"        type="int"  address="0"  memoryContainer="{memoryContainer}" length="1" />
+				<property name="pid_ability_flag"  type="bool" address="2"  memoryContainer="{memoryContainer}" length="1" bits="0"/>
 				<property name="checksum"          type="uint" address="6"  memoryContainer="{memoryContainer}" length="2" />
 				<property name="secret_id"         type="int"  address="14" memoryContainer="{memoryContainer}" length="2" />
 				<property name="language"          type="int"  address="23" memoryContainer="{memoryContainer}" reference="language" />
@@ -254,7 +258,9 @@
 			<!-- <property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="defaultCharacterMap" /> -->
 			<!-- <property name="nature"           address="{address} + 104"  type="uint"   length="4" after-read-value-expression="x % 25" reference="natures" /> -->
 			<!-- <property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="defaultCharacterMap" /> -->
-			
+			<property name="pointer_address_1"  address="{address} + 16 + 0"  type="int" length="4" />
+			<property name="pointer_address_2"  address="{address} + 16 + 4"  type="int" length="4" />
+
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
             <property name="held_item"        address="{address} + 70"  type="int" length="2" reference="items" />
@@ -265,6 +271,7 @@
 			<property name="type_1"           address="{address} + 300" type="int" reference="pokemon_types" />
 			<property name="type_2"           address="{address} + 301" type="int" reference="pokemon_types" />
 			<property name="friendship"       address="{address} + 370" type="int" />
+			<property name="fainted"       address="{address} + 0x220" type="bool" bits="0"/>
 			<!-- <property name="status_condition" address="{address} + 108"  type="int" reference="status_conditions" /> -->
 			<!-- The classes aren't working anymore; I believe this is a mapper syntax issue because these are the offsets -->
 			<!-- 
@@ -336,9 +343,9 @@
 				<property name="hp_max"          address="{address} + 66"  type="int" length="2" />
 				<property name="attack"          address="{address} + 290" type="int" length="2" />
 				<property name="defense"         address="{address} + 292" type="int" length="2" />
-				<property name="speed"           address="{address} + 294" type="int" length="2" />
-				<property name="special_attack"  address="{address} + 296" type="int" length="2" />
-				<property name="special_defense" address="{address} + 298" type="int" length="2" />
+				<property name="special_attack"  address="{address} + 294" type="int" length="2" />
+				<property name="special_defense" address="{address} + 296" type="int" length="2" />
+				<property name="speed"           address="{address} + 298" type="int" length="2" />
 			</stats>
 			<modifiers>
 				<property name="attack"          address="{address} + 304" type="int" reference="stage_modifiers" />
@@ -353,6 +360,9 @@
 				<property name="identified"         address="{address} + 152" type="bool" />
 				<property name="identified_unknown" address="{address} + 152 + 1" type="int" />
 			</flags>
+			<other>
+				<property name="turn_counter" address="{address} + 378" type="int" length="1" />
+			</other>
 		</battle_structure>
 
 		<player_item>
@@ -375,6 +385,8 @@
 			<property name="player_id"  type="int" address="0x223B4B4 - 0x40" length="2" />
 			<property name="secret_id"  type="int" address="0x223B4B4 - 0x40 + 2" length="2" />
 			<property name="team_count" type="int" address="0x221E42C - 0x40- 4" />
+			<property name="decrypted_mon_0" type="string" address="0x221E42C - 0x40" length="220" />
+			<!-- <property name="decrypted_mon_1" type="string" address="0x2268594 + 0x16688" length="220" /> --> <!--  Find address for White2 -->
 			<!-- <property name="party_position" type="int" /> -->
             <!-- <class name="active_pokemon" type="player_active_pokemon" /> -->
 			<team>
@@ -696,7 +708,7 @@
 			<property name="map_index" type="int" address="0x224F90C" length="4"/>
 			<property name="x" type="int" length="4" address="0x2148DA6" /> 
             <property name="y" type="int" length="4" address="0x2148DAE" /> 
-            <property name="z" type="int" length="4" address="" /> 
+            <!-- <property name="z" type="int" length="4" address="" />  -->
             <!-- REQUIRE ADDITIONAL PROPERTIES AND A FUNCTION TO CALCULATE THE CURRENT RATE 
 				Need to know the state of the player (Walking, surfing, fishing, etc.) and then
 				dynamically assign the encounter rate based on this
@@ -786,8 +798,9 @@
 			</encounter_tables>
         </overworld>
 		<flags>
+			<property name="new_game" type="bool" address="0x221DA14 - 0x40" length="1" bits="0"/>
 			<!--
-				Where are the Black flags located?
+				Where are the Black/White flags located?
 
 				It seems like some are at 0x223BCAC - likely counters (0x223BDA4 increments to 0x02 when the cinematic at the end of route 1 triggers)
 
@@ -796,10 +809,104 @@
 		<battle>
             <!-- <property name="mode"    type="string" /> -->
             <!-- <property name="outcome" type="string" /> -->
+			<TESTING>
+				<!-- <property name="enemy_state" type="int" address="0x2140524" length="2" /> -->
+				<property name="player_indirect_1"   type="int" address="0x2257494 - 0x40 + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_2"   type="int" address="0x2257494 - 0x40 + 0x00 + (1 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_3"   type="int" address="0x2257494 - 0x40 + 0x00 + (2 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_4"   type="int" address="0x2257494 - 0x40 + 0x00 + (3 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_5"   type="int" address="0x2257494 - 0x40 + 0x00 + (4 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_6"   type="int" address="0x2257494 - 0x40 + 0x00 + (5 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="opponent_indirect_1" type="int" address="0x2257494 - 0x40 + 0x1C + (0 * 4)" length="4" />
+				<property name="opponent_indirect_2" type="int" address="0x2257494 - 0x40 + 0x1C + (1 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_3" type="int" address="0x2257494 - 0x40 + 0x1C + (2 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_4" type="int" address="0x2257494 - 0x40 + 0x1C + (3 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_5" type="int" address="0x2257494 - 0x40 + 0x1C + (4 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_6" type="int" address="0x2257494 - 0x40 + 0x1C + (5 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="player_party_position_1" type="int" />
+				<property name="player_party_position_2" type="int" />
+				<property name="player_party_position_3" type="int" />
+				<property name="player_party_position_4" type="int" />
+				<property name="player_party_position_5" type="int" />
+				<property name="player_party_position_6" type="int" />
+				<property name="opponent_party_position_1" type="int" />
+				<property name="opponent_party_position_2" type="int" />
+				<property name="opponent_party_position_3" type="int" />
+				<property name="opponent_party_position_4" type="int" />
+				<property name="opponent_party_position_5" type="int" />
+				<property name="opponent_party_position_6" type="int" />
+			</TESTING>
+			<TEAM_TESTING>
+				<!-- <team1>
+					<class name="0" type="party_pokemon" var:memoryContainer="player1_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player1_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player1_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player1_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player1_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player1_party_structure_5" />
+				</team1>
+				<team2>
+					<class name="0" type="party_pokemon" var:memoryContainer="player2_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player2_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player2_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player2_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player2_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player2_party_structure_5" />
+				</team2>
+				<team3>
+					<class name="0" type="party_pokemon" var:memoryContainer="player3_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player3_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player3_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player3_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player3_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player3_party_structure_5" />
+				</team3>
+				<team4>
+					<class name="0" type="party_pokemon" var:memoryContainer="player4_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player4_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player4_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player4_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player4_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player4_party_structure_5" />
+				</team4>
+				<team5>
+					<class name="0" type="party_pokemon" var:memoryContainer="player5_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player5_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player5_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player5_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player5_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player5_party_structure_5" />
+				</team5>
+				<team6>
+					<class name="0" type="party_pokemon" var:memoryContainer="player6_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player6_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player6_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player6_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player6_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player6_party_structure_5" />
+				</team6>
+				<team7>
+					<class name="0" type="party_pokemon" var:memoryContainer="player7_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player7_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player7_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player7_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player7_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player7_party_structure_5" />
+				</team7>
+				<team8>
+					<class name="0" type="party_pokemon" var:memoryContainer="player8_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="player8_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="player8_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="player8_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="player8_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="player8_party_structure_5" />
+				</team8> -->
+			</TEAM_TESTING>
 			<player>
 				<!-- <property name="party_position"   type="int" address="global_pointer + 0x54598 + 0x3EC"/> -->
 				<!-- <property name="party_position_2" type="int" address="global_pointer + 0x54598 + 0x3F8"/> -->
-				<property name="team_count"    type="int" address="0x2258314 - 0x40 - 4" />
+				<property name="party_position"   type="int" address="0x2257494 + 0x00 + (0 * 4) - 0x40" length="4" after-read-value-expression="(x - (36027608 - 0x40)) / 548" />
+				<property name="team_count"    type="int" address="0x2258314 - 4 - 0x40" /> <!-- TODO: confirm this is the correct address -->
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_player_party_structure_0" />
@@ -817,14 +924,14 @@
 					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_player_4}" />
 					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_player_5}" />
 				</pkmn_ram>
-				<misc>
+				<!-- <misc>
             		<property name="pkmn_in_battle"      type="int" address="0x225CA80 - 0x40" />
             		<property name="pkmn_sent_in_first"  type="int" address="0x225CA80 - 0x40 + 2" />
             		<property name="pkmn_sent_in_second" type="int" address="0x225CA80 - 0x40 + 3" />
             		<property name="pkmn_sent_in_third"  type="int" address="0x225CA80 - 0x40 + 4" />
             		<property name="pkmn_sent_in_fourth" type="int" address="0x225CA80 - 0x40 + 5" />
             		<property name="pkmn_sent_in_fifth"  type="int" address="0x225CA80 - 0x40 + 6" />
-				</misc>
+				</misc> -->
 			</player>
 			<wild>
 				<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_0" />
@@ -836,22 +943,25 @@
 				<!-- <property name="id"      type="int" address="" length="2" /> -->
 				<!-- <property name="party_position" type="int" address=""/> -->
 				<!-- <class name="active_pokemon" type="battle_structure" var:address="" /> -->
-				<!-- <team>
+				<property name="team_count" type="int" address="0x226A220 + (0x560 * 5) + 0x14 - 4 - 0x40" /> <!-- This is correct -->
+				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_0" />
 					<class name="1" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_1" />
 					<class name="2" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_2" />
 					<class name="3" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_3" />
 					<class name="4" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_4" />
 					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_5" />
-				</team> -->
+				</team>
 			</ally>
 			<opponent>
-				<!-- <property name="name"    type="int" address="global_pointer + 0x4E87E" length="2" reference="trainers" /> May be best to filter this property so it is only the name. -->
-				<!-- <property name="trainer" type="int" address="global_pointer + 0x4E87E" length="2" reference="trainers" /> May be best to filter this property so it is only the name. -->
-				<!-- <property name="id"      type="int" address="global_pointer + 0x4E87E" length="2" /> Trainer ID contains Name, class, and ID unlike Gen1 & 2 -->
-				<!-- <property name="enemy_bar_synced_hp" type="int" address="global_pointer + 0x546A4" length="2" /> -->
-				<property name="team_count" type="int" address="0x2258874 - 0x40 - 4" />
-				<!-- <property name="party_position"      type="int" address="global_pointer + 0x54598 + 0x3F2"/> -->
+				<!-- <property name="name"    type="int" address="" length="2" reference="trainers" /> -->
+				<!-- <property name="trainer" type="int" address="0x224EB5C" length="2" reference="trainers" /> -->
+				<property name="trainer" type="int" address="0x2257332 - 0x40" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x2257332 - 0x40" length="2" />
+				<!-- <property name="id"      type="int" address="" length="2" />  -->
+				<!-- <property name="enemy_bar_synced_hp" type="int" address="" length="2" /> -->
+				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 1) + 0x14 - 4 - 0x40" />
+				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_0" />
@@ -862,15 +972,26 @@
 					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_5" />
 				</team>
 				<pkmn_ram>
-					<class name="pokemon_0_ram" type="battle_structure" var:address="{battle_ram_opponent_0" />
-					<class name="pokemon_1_ram" type="battle_structure" var:address="{battle_ram_opponent_1" />
-					<class name="pokemon_2_ram" type="battle_structure" var:address="{battle_ram_opponent_2" />
-					<class name="pokemon_3_ram" type="battle_structure" var:address="{battle_ram_opponent_3" />
-					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_opponent_4" />
-					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_opponent_5" />
+					<class name="pokemon_0_ram" type="battle_structure" var:address="{battle_ram_opponent_0}" />
+					<class name="pokemon_1_ram" type="battle_structure" var:address="{battle_ram_opponent_1}" />
+					<class name="pokemon_2_ram" type="battle_structure" var:address="{battle_ram_opponent_2}" />
+					<class name="pokemon_3_ram" type="battle_structure" var:address="{battle_ram_opponent_3}" />
+					<class name="pokemon_4_ram" type="battle_structure" var:address="{battle_ram_opponent_4}" />
+					<class name="pokemon_5_ram" type="battle_structure" var:address="{battle_ram_opponent_5}" />
 				</pkmn_ram>
 			</opponent>
 			<opponent_2>
+				<property name="trainer" type="int" address="0x2257332 + 0x50 - 0x40" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x2257332 + 0x50 - 0x40" length="2" />
+				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 7) + 0x14 - 4 - 0x40" /> <!-- This is correct -->
+				<team>
+					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_5" />
+				</team>
 				<!-- <property name="trainer" type="int" address="" length="2" reference="trainers" /> -->
 				<!-- <property name="party_position" type="int" address=""/> -->
 				<!-- <property name="team_count" type="int" address="" /> -->
@@ -897,12 +1018,18 @@
             	<property name="battle_header_generic_2" type="int" address="0x225ADF4 - 0x40" length="4" /> 
             	<property name="battle_header_generic_3" type="int" address="0x225ADF8 - 0x40" length="4" /> 
             	<property name="battle_header_generic_4" type="int" address="0x225ADFC - 0x40" length="4" /> 
-            	<property name="outcome_flags"           type="int" address="0x226EBD6 - 0x40 + 0x1950" />
+            	<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE - 0x40" length="1" />
+            	<property name="battle_end"              type="int" address="0x225ADDC - 0x40" length="4" />
+            	<property name="player_lock"             type="int" address="0x223B2F5 - 0x40" length="1" />
+            	<property name="to_battle_pointer"       type="int" address="0x223B2D8 - 0x40" length="4" />
+            	<property name="to_battle_pointer_1"     type="int" address="0x223B2D4 - 0x40" length="4" />
+            	<property name="to_battle_pointer_2"     type="int" address="0x223B2D8 - 0x40" length="4" />
+            	<property name="battle_state_ready"      type="int" address="{outcome_flags_offset} + 0x38 - 0x40" length="4" />
+            	<property name="battle"                  type="int" address="0x225ADE0 - 0x40" length="4" />
+            	<!-- <property name="outcome_flags_1"         type="int" address="{outcome_flags_offset} + 0xDE" length="1" /> -->
+            	<!-- <property name="outcome_flags_offset_value" type="int" /> -->
 			</other>
 		</battle>
-		<rival> <!-- This doesn't seem to work correctly -->
-			<property name="name" type="string" address="0x223B29C" length="14" size="2" />
-		</rival>
 		<screen>
 			<menu>
 				<!--
@@ -938,13 +1065,13 @@
 			<property name="save_before_ir" type="bool" address="0x221E9E5" bits="1" />
 		</options>
 		<game_time>
-			<property name="hours"   type="int" address="0x22427DC -0x40 + 0" length="2" />
-			<property name="minutes" type="int" address="0x22427DC -0x40 + 2" />
-			<property name="seconds" type="int" address="0x22427DC -0x40 + 3" />
+			<property name="hours"   type="int" address="0x22427DC - 0x40 + 0" length="2" />
+			<property name="minutes" type="int" address="0x22427DC - 0x40 + 2" />
+			<property name="seconds" type="int" address="0x22427DC - 0x40 + 3" />
 		</game_time>
-		<!-- <misc>
-			<property name="step_counter" type="int" address="0x22395AC" length="4" />
-		</misc> -->
+		<misc>
+			<!-- <property name="step_counter" type="int" address="0x22395AC" length="4" /> -->
+		</misc>
 		<meta>
 			<property name="generation" type="int" value="5" />
 			<property name="game_name"  type="string" value="Black 2" />
@@ -1483,7 +1610,623 @@
 			<entry key="0x024E"	value="Ɏ" /> 
 			<entry key="0x024F"	value="ɏ" /> 
 		</defaultCharacterMap>
-		<trainers> <!-- TODO: Add trainers from Gen5 -->
+		<trainers>
+			<entry key="0" value="--" />
+			<entry key="1" value="Jimmy" />
+			<entry key="2" value="Mali" />
+			<entry key="3" value="Al" />
+			<entry key="4" value="Marsha" />
+			<entry key="5" value="Elena" />
+			<entry key="6" value="Dan" />
+			<entry key="7" value="Joey" />
+			<entry key="8" value="Eri" />
+			<entry key="9" value="Maxwell" />
+			<entry key="10" value="Tia" />
+			<entry key="11" value="Chili" />
+			<entry key="12" value="Cilan" />
+			<entry key="13" value="Cress" />
+			<entry key="14" value="Autumn" />
+			<entry key="15" value="Wendy" />
+			<entry key="16" value="Doyle" />
+			<entry key="17" value="Tully" />
+			<entry key="18" value="Kumi &amp; Amy" />
+			<entry key="19" value="Galen" />
+			<entry key="20" value="Adelaide" />
+			<entry key="21" value="Lenora" />
+			<entry key="22" value="Burgh" />
+			<entry key="23" value="Elesa" />
+			<entry key="24" value="Clay" />
+			<entry key="25" value="Skyla" />
+			<entry key="26" value="Forrest" />
+			<entry key="27" value="Irene" />
+			<entry key="28" value="Miguel" />
+			<entry key="29" value="Audra" />
+			<entry key="30" value="Sammy" />
+			<entry key="31" value="Millie" />
+			<entry key="32" value="Mayo &amp; May" />
+			<entry key="33" value="Nicholas" />
+			<entry key="34" value="Eva" />
+			<entry key="35" value="Scott" />
+			<entry key="36" value="Shelby" />
+			<entry key="37" value="Zack" />
+			<entry key="38" value="Cairn" />
+			<entry key="39" value="Waylon" />
+			<entry key="40" value="Jill" />
+			<entry key="41" value="Hubert" />
+			<entry key="42" value="Andrew" />
+			<entry key="43" value="Aspen" />
+			<entry key="44" value="Michael" />
+			<entry key="45" value="Lois" />
+			<entry key="46" value="Preston" />
+			<entry key="47" value="Brian" />
+			<entry key="48" value="Paul" />
+			<entry key="49" value="Horton" />
+			<entry key="50" value="Jenn" />
+			<entry key="51" value="Perry" />
+			<entry key="52" value="Dua" />
+			<entry key="53" value="Cheren" />
+			<entry key="54" value="Cheren" />
+			<entry key="55" value="Cheren" />
+			<entry key="56" value="Cheren" />
+			<entry key="57" value="Cheren" />
+			<entry key="58" value="Cheren" />
+			<entry key="59" value="Bianca" />
+			<entry key="60" value="Bianca" />
+			<entry key="61" value="Bianca" />
+			<entry key="62" value="Grunt" />
+			<entry key="63" value="Grunt" />
+			<entry key="64" value="N" />
+			<entry key="65" value="N" />
+			<entry key="66" value="Cody" />
+			<entry key="67" value="Rolan" />
+			<entry key="68" value="Magnolia" />
+			<entry key="69" value="Colette" />
+			<entry key="70" value="Ted" />
+			<entry key="71" value="Chase" />
+			<entry key="72" value="Victor" />
+			<entry key="73" value="Filipe" />
+			<entry key="74" value="Glenn" />
+			<entry key="75" value="Ryan" />
+			<entry key="76" value="Patton" />
+			<entry key="77" value="Eddie" />
+			<entry key="78" value="Matthew" />
+			<entry key="79" value="" />
+			<entry key="80" value="" />
+			<entry key="81" value="Grunt" />
+			<entry key="82" value="Bobby" />
+			<entry key="83" value="John" />
+			<entry key="84" value="Edgar" />
+			<entry key="85" value="Roland" />
+			<entry key="86" value="Carter" />
+			<entry key="87" value="Lydia" />
+			<entry key="88" value="Satomi" />
+			<entry key="89" value="N" />
+			<entry key="90" value="Cheren" />
+			<entry key="91" value="Cheren" />
+			<entry key="92" value="Cheren" />
+			<entry key="93" value="Ingrid" />
+			<entry key="94" value="Alberta" />
+			<entry key="95" value="Katie" />
+			<entry key="96" value="Trisha" />
+			<entry key="97" value="Bert" />
+			<entry key="98" value="Flo" />
+			<entry key="99" value="Cheyenne" />
+			<entry key="100" value="Stella" />
+			<entry key="101" value="Allison" />
+			<entry key="102" value="Jamie" />
+			<entry key="103" value="Johan" />
+			<entry key="104" value="Corky" />
+			<entry key="105" value="Jared" />
+			<entry key="106" value="Jesse" />
+			<entry key="107" value="Isabel" />
+			<entry key="108" value="Manuel" />
+			<entry key="109" value="Corey" />
+			<entry key="110" value="Teppei" />
+			<entry key="111" value="Kentaro" />
+			<entry key="112" value="William" />
+			<entry key="113" value="Randall" />
+			<entry key="114" value="Steve" />
+			<entry key="115" value="Orville" />
+			<entry key="116" value="Samantha" />
+			<entry key="117" value="Naoko" />
+			<entry key="118" value="Micki" />
+			<entry key="119" value="Bryce" />
+			<entry key="120" value="Doreen" />
+			<entry key="121" value="Lin" />
+			<entry key="122" value="Rob" />
+			<entry key="123" value="Rich" />
+			<entry key="124" value="Heath" />
+			<entry key="125" value="Cliff" />
+			<entry key="126" value="" />
+			<entry key="127" value="Brady" />
+			<entry key="128" value="Arnold" />
+			<entry key="129" value="Tony" />
+			<entry key="130" value="Roberto" />
+			<entry key="131" value="Brycen" />
+			<entry key="132" value="Iris" />
+			<entry key="133" value="Drayden" />
+			<entry key="134" value="Chance" />
+			<entry key="135" value="Reese" />
+			<entry key="136" value="Fletcher" />
+			<entry key="137" value="Geoff" />
+			<entry key="138" value="Jude" />
+			<entry key="139" value="Georgia" />
+			<entry key="140" value="Albert" />
+			<entry key="141" value="Kenneth" />
+			<entry key="142" value="Mikey" />
+			<entry key="143" value="Parker" />
+			<entry key="144" value="Zachary" />
+			<entry key="145" value="Keita" />
+			<entry key="146" value="Abe" />
+			<entry key="147" value="Kevin" />
+			<entry key="148" value="Bruce" />
+			<entry key="149" value="Devon" />
+			<entry key="150" value="Wayne" />
+			<entry key="151" value="Hank" />
+			<entry key="152" value="Sachiko" />
+			<entry key="153" value="Jerome" />
+			<entry key="154" value="Terrance" />
+			<entry key="155" value="Ruth" />
+			<entry key="156" value="Anna" />
+			<entry key="157" value="Jim &amp; Cas" />
+			<entry key="158" value="Amy" />
+			<entry key="159" value="Sharon" />
+			<entry key="160" value="Lee" />
+			<entry key="161" value="Nicole" />
+			<entry key="162" value="Tihana" />
+			<entry key="163" value="Melita" />
+			<entry key="164" value="Lumi" />
+			<entry key="165" value="Clemens" />
+			<entry key="166" value="Warren" />
+			<entry key="167" value="Ivan" />
+			<entry key="168" value="Isaac" />
+			<entry key="169" value="Chaz" />
+			<entry key="170" value="Wade" />
+			<entry key="171" value="Fredric" />
+			<entry key="172" value="Hawk &amp; Dar" />
+			<entry key="173" value="Joe &amp; Ross" />
+			<entry key="174" value="Masa &amp; Yas" />
+			<entry key="175" value="Kay &amp; Ali" />
+			<entry key="176" value="Ami &amp; Eira" />
+			<entry key="177" value="Bob" />
+			<entry key="178" value="Chester" />
+			<entry key="179" value="Karla" />
+			<entry key="180" value="Phillip" />
+			<entry key="181" value="Zeke" />
+			<entry key="182" value="Richard" />
+			<entry key="183" value="Pedro" />
+			<entry key="184" value="Lewis" />
+			<entry key="185" value="Alain" />
+			<entry key="186" value="Shanti" />
+			<entry key="187" value="Mary" />
+			<entry key="188" value="Annie" />
+			<entry key="189" value="Heidi" />
+			<entry key="190" value="Kara" />
+			<entry key="191" value="Alex" />
+			<entry key="192" value="Connor" />
+			<entry key="193" value="Bret" />
+			<entry key="194" value="Hardy" />
+			<entry key="195" value="Neil" />
+			<entry key="196" value="Jack" />
+			<entry key="197" value="" />
+			<entry key="198" value="Louis" />
+			<entry key="199" value="Kerry" />
+			<entry key="200" value="Rick" />
+			<entry key="201" value="Felix" />
+			<entry key="202" value="Sterling" />
+			<entry key="203" value="Don" />
+			<entry key="204" value="" />
+			<entry key="205" value="Mariana" />
+			<entry key="206" value="Henry" />
+			<entry key="207" value="Sibyl" />
+			<entry key="208" value="Brad" />
+			<entry key="209" value="Elizandra" />
+			<entry key="210" value="Cassandra" />
+			<entry key="211" value="Robert" />
+			<entry key="212" value="Miriam" />
+			<entry key="213" value="Mikiko" />
+			<entry key="214" value="Chandra" />
+			<entry key="215" value="Grant" />
+			<entry key="216" value="Kendrew" />
+			<entry key="217" value="Thomas" />
+			<entry key="218" value="N" />
+			<entry key="219" value="" />
+			<entry key="220" value="" />
+			<entry key="221" value="Grunt" />
+			<entry key="222" value="Grunt" />
+			<entry key="223" value="Grunt" />
+			<entry key="224" value="Grunt" />
+			<entry key="225" value="Grunt" />
+			<entry key="226" value="Grunt" />
+			<entry key="227" value="Grunt" />
+			<entry key="228" value="Shauntal" />
+			<entry key="229" value="Marshal" />
+			<entry key="230" value="Grimsley" />
+			<entry key="231" value="Caitlin" />
+			<entry key="232" value="Ghetsis" />
+			<entry key="233" value="Low" />
+			<entry key="234" value="Gaven" />
+			<entry key="235" value="Cybil" />
+			<entry key="236" value="Kelsey" />
+			<entry key="237" value="Nate" />
+			<entry key="238" value="Liz" />
+			<entry key="239" value="Elaine" />
+			<entry key="240" value="Ronald" />
+			<entry key="241" value="Brand" />
+			<entry key="242" value="Darrell" />
+			<entry key="243" value="Terrell" />
+			<entry key="244" value="Shanta" />
+			<entry key="245" value="Cathy" />
+			<entry key="246" value="Dwayne" />
+			<entry key="247" value="David" />
+			<entry key="248" value="Tyrone" />
+			<entry key="249" value="Logan" />
+			<entry key="250" value="Martell" />
+			<entry key="251" value="Tiffany" />
+			<entry key="252" value="Edward" />
+			<entry key="253" value="Maggie" />
+			<entry key="254" value="Xiao" />
+			<entry key="255" value="Hugh" />
+			<entry key="256" value="Clarke" />
+			<entry key="257" value="Ron" />
+			<entry key="258" value="Maria" />
+			<entry key="259" value="Shaun" />
+			<entry key="260" value="Julia" />
+			<entry key="261" value="Beverly" />
+			<entry key="262" value="Terry" />
+			<entry key="263" value="Belle" />
+			<entry key="264" value="Kassandra" />
+			<entry key="265" value="Olwen" />
+			<entry key="266" value="Clara" />
+			<entry key="267" value="Dara" />
+			<entry key="268" value="" />
+			<entry key="269" value="Beckett" />
+			<entry key="270" value="Webster" />
+			<entry key="271" value="Jose" />
+			<entry key="272" value="Tom" />
+			<entry key="273" value="" />
+			<entry key="274" value="Hugo" />
+			<entry key="275" value="Kim" />
+			<entry key="276" value="Grunt" />
+			<entry key="277" value="" />
+			<entry key="278" value="Grunt" />
+			<entry key="279" value="Grunt" />
+			<entry key="280" value="" />
+			<entry key="281" value="Austin" />
+			<entry key="282" value="" />
+			<entry key="283" value="" />
+			<entry key="284" value="Martin" />
+			<entry key="285" value="Maya" />
+			<entry key="286" value="" />
+			<entry key="287" value="Cheren" />
+			<entry key="288" value="Cheren" />
+			<entry key="289" value="Cheren" />
+			<entry key="290" value="Keane" />
+			<entry key="291" value="Gus" />
+			<entry key="292" value="Gina" />
+			<entry key="293" value="Grunt" />
+			<entry key="294" value="Grunt" />
+			<entry key="295" value="Grunt" />
+			<entry key="296" value="Grunt" />
+			<entry key="297" value="Grunt" />
+			<entry key="298" value="Grunt" />
+			<entry key="299" value="Grunt" />
+			<entry key="300" value="Grunt" />
+			<entry key="301" value="Grunt" />
+			<entry key="302" value="Grunt" />
+			<entry key="303" value="Grunt" />
+			<entry key="304" value="Grunt" />
+			<entry key="305" value="Grunt" />
+			<entry key="306" value="Grunt" />
+			<entry key="307" value="Grunt" />
+			<entry key="308" value="Grunt" />
+			<entry key="309" value="Grunt" />
+			<entry key="310" value="Grunt" />
+			<entry key="311" value="Grunt" />
+			<entry key="312" value="Grunt" />
+			<entry key="313" value="Grunt" />
+			<entry key="314" value="Mari" />
+			<entry key="315" value="Elena" />
+			<entry key="316" value="Elena" />
+			<entry key="317" value="Elena" />
+			<entry key="318" value="Aspen" />
+			<entry key="319" value="Todd" />
+			<entry key="320" value="Alex" />
+			<entry key="321" value="Alex" />
+			<entry key="322" value="Alex" />
+			<entry key="323" value="Connor" />
+			<entry key="324" value="Marco" />
+			<entry key="325" value="Tony" />
+			<entry key="326" value="Tony" />
+			<entry key="327" value="Tony" />
+			<entry key="328" value="Roberto" />
+			<entry key="329" value="Jonah" />
+			<entry key="330" value="Dan" />
+			<entry key="331" value="Dan" />
+			<entry key="332" value="Dan" />
+			<entry key="333" value="Bob" />
+			<entry key="334" value="Lamarcus" />
+			<entry key="335" value="Bobby" />
+			<entry key="336" value="Bobby" />
+			<entry key="337" value="Bobby" />
+			<entry key="338" value="John" />
+			<entry key="339" value="Hawk &amp; Dar" />
+			<entry key="340" value="Hawk &amp; Dar" />
+			<entry key="341" value="Joe &amp; Ross" />
+			<entry key="342" value="Joe &amp; Ross" />
+			<entry key="343" value="Masa &amp; Yas" />
+			<entry key="344" value="Masa &amp; Yas" />
+			<entry key="345" value="Les &amp; Web" />
+			<entry key="346" value="Alf &amp; Fred" />
+			<entry key="347" value="Kay &amp; Ali" />
+			<entry key="348" value="Kay &amp; Ali" />
+			<entry key="349" value="Ami &amp; Eira" />
+			<entry key="350" value="Ami &amp; Eira" />
+			<entry key="351" value="Cam &amp; Abby" />
+			<entry key="352" value="Ai &amp; Ciel" />
+			<entry key="353" value="Kat &amp; Phae" />
+			<entry key="354" value="Dana" />
+			<entry key="355" value="Alan" />
+			<entry key="356" value="Sally" />
+			<entry key="357" value="Lucille" />
+			<entry key="358" value="Charlie" />
+			<entry key="359" value="Arlen" />
+			<entry key="360" value="Sayuri" />
+			<entry key="361" value="Owen" />
+			<entry key="362" value="Brooke" />
+			<entry key="363" value="Clint" />
+			<entry key="364" value="Bonita" />
+			<entry key="365" value="Simon" />
+			<entry key="366" value="Blythe" />
+			<entry key="367" value="Sophie" />
+			<entry key="368" value="Anthony" />
+			<entry key="369" value="Emilia" />
+			<entry key="370" value="Renaud" />
+			<entry key="371" value="Lao" />
+			<entry key="372" value="Janie" />
+			<entry key="373" value="Colin" />
+			<entry key="374" value="Darcy" />
+			<entry key="375" value="Leonard" />
+			<entry key="376" value="Tyler" />
+			<entry key="377" value="Lilly" />
+			<entry key="378" value="Leah" />
+			<entry key="379" value="Nelson" />
+			<entry key="380" value="Wren" />
+			<entry key="381" value="Caleb" />
+			<entry key="382" value="Patty" />
+			<entry key="383" value="Alexander" />
+			<entry key="384" value="Jules" />
+			<entry key="385" value="Kirsten" />
+			<entry key="386" value="Gerard" />
+			<entry key="387" value="Madhu" />
+			<entry key="388" value="Josh" />
+			<entry key="389" value="Wright" />
+			<entry key="390" value="Joyce" />
+			<entry key="391" value="Davey" />
+			<entry key="392" value="Boris" />
+			<entry key="393" value="Charley" />
+			<entry key="394" value="Pierre" />
+			<entry key="395" value="Jeff" />
+			<entry key="396" value="Alica" />
+			<entry key="397" value="Gwyneth" />
+			<entry key="398" value="Russel" />
+			<entry key="399" value="Mia" />
+			<entry key="400" value="Evan" />
+			<entry key="401" value="Sarah" />
+			<entry key="402" value="Billy" />
+			<entry key="403" value="Cheren" />
+			<entry key="404" value="Cheren" />
+			<entry key="405" value="Cheren" />
+			<entry key="406" value="Ingo" />
+			<entry key="407" value="Alder" />
+			<entry key="408" value="Hector" />
+			<entry key="409" value="Krissa" />
+			<entry key="410" value="Junko" />
+			<entry key="411" value="Kipp" />
+			<entry key="412" value="Daniel" />
+			<entry key="413" value="Berke" />
+			<entry key="414" value="Benjamin" />
+			<entry key="415" value="Jay" />
+			<entry key="416" value="Zach" />
+			<entry key="417" value="Kathrine" />
+			<entry key="418" value="Chan" />
+			<entry key="419" value="Markus" />
+			<entry key="420" value="Luke" />
+			<entry key="421" value="Nathan" />
+			<entry key="422" value="Future" />
+			<entry key="423" value="Rudolf" />
+			<entry key="424" value="Tommy" />
+			<entry key="425" value="Yan" />
+			<entry key="426" value="Marian" />
+			<entry key="427" value="Jem" />
+			<entry key="428" value="Ann" />
+			<entry key="429" value="Elliot" />
+			<entry key="430" value="Astor" />
+			<entry key="431" value="Sid" />
+			<entry key="432" value="Lydon" />
+			<entry key="433" value="Jones" />
+			<entry key="434" value="Mick" />
+			<entry key="435" value="Pete" />
+			<entry key="436" value="Vince" />
+			<entry key="437" value="Corin" />
+			<entry key="438" value="Lora" />
+			<entry key="439" value="Kumiko" />
+			<entry key="440" value="Talon" />
+			<entry key="441" value="Sam" />
+			<entry key="442" value="Peter" />
+			<entry key="443" value="Stephen" />
+			<entry key="444" value="Susie" />
+			<entry key="445" value="Hillary" />
+			<entry key="446" value="Laura" />
+			<entry key="447" value="Caroline" />
+			<entry key="448" value="Fey &amp; Sue" />
+			<entry key="449" value="Emy &amp; Lin" />
+			<entry key="450" value="Ray" />
+			<entry key="451" value="Eustace" />
+			<entry key="452" value="Ethel" />
+			<entry key="453" value="Thalia" />
+			<entry key="454" value="Shelly" />
+			<entry key="455" value="Crofton" />
+			<entry key="456" value="Keith" />
+			<entry key="457" value="Fey" />
+			<entry key="458" value="Jebediah" />
+			<entry key="459" value="Kit" />
+			<entry key="460" value="Jeremiah" />
+			<entry key="461" value="Britney" />
+			<entry key="462" value="Piper" />
+			<entry key="463" value="Lena" />
+			<entry key="464" value="Vincent" />
+			<entry key="465" value="Lynette" />
+			<entry key="466" value="Pierce" />
+			<entry key="467" value="Ryder" />
+			<entry key="468" value="Jacques" />
+			<entry key="469" value="Marie" />
+			<entry key="470" value="Doug" />
+			<entry key="471" value="Collin" />
+			<entry key="472" value="Frederic" />
+			<entry key="473" value="Leo" />
+			<entry key="474" value="Silvia" />
+			<entry key="475" value="Dave" />
+			<entry key="476" value="Robbie" />
+			<entry key="477" value="Molly" />
+			<entry key="478" value="Emi" />
+			<entry key="479" value="Carlos" />
+			<entry key="480" value="Herman" />
+			<entry key="481" value="Karenna" />
+			<entry key="482" value="Rosa" />
+			<entry key="483" value="Ken" />
+			<entry key="484" value="Miki" />
+			<entry key="485" value="Gene" />
+			<entry key="486" value="Eliza" />
+			<entry key="487" value="Ralph" />
+			<entry key="488" value="Grace" />
+			<entry key="489" value="Miho" />
+			<entry key="490" value="Shane" />
+			<entry key="491" value="Bianca" />
+			<entry key="492" value="Bianca" />
+			<entry key="493" value="Bianca" />
+			<entry key="494" value="Bianca" />
+			<entry key="495" value="Bianca" />
+			<entry key="496" value="Bianca" />
+			<entry key="497" value="" />
+			<entry key="498" value="Bianca" />
+			<entry key="499" value="Bianca" />
+			<entry key="500" value="Bianca" />
+			<entry key="501" value="Juliet" />
+			<entry key="502" value="Homer" />
+			<entry key="503" value="Pat" />
+			<entry key="504" value="Ian" />
+			<entry key="505" value="April" />
+			<entry key="506" value="Charles" />
+			<entry key="507" value="Bianca" />
+			<entry key="508" value="Bianca" />
+			<entry key="509" value="Bianca" />
+			<entry key="510" value="" />
+			<entry key="511" value="" />
+			<entry key="512" value="" />
+			<entry key="513" value="Eileen" />
+			<entry key="514" value="Lou" />
+			<entry key="515" value="Kyle" />
+			<entry key="516" value="Dye" />
+			<entry key="517" value="Dye" />
+			<entry key="518" value="Caroll" />
+			<entry key="519" value="Jordan" />
+			<entry key="520" value="Draco" />
+			<entry key="521" value="" />
+			<entry key="522" value="" />
+			<entry key="523" value="Trish" />
+			<entry key="524" value="Clairdonna" />
+			<entry key="525" value="Zillion" />
+			<entry key="526" value="Dudley" />
+			<entry key="527" value="" />
+			<entry key="528" value="Kiyo" />
+			<entry key="529" value="Shaye" />
+			<entry key="530" value="Briana" />
+			<entry key="531" value="Brenda" />
+			<entry key="532" value="Claude" />
+			<entry key="533" value="Sean" />
+			<entry key="534" value="" />
+			<entry key="535" value="Andy" />
+			<entry key="536" value="Winter" />
+			<entry key="537" value="Dirk" />
+			<entry key="538" value="Aurora" />
+			<entry key="539" value="Cheren" />
+			<entry key="540" value="Cheren" />
+			<entry key="541" value="Cheren" />
+			<entry key="542" value="Morimoto" />
+			<entry key="543" value="Tanya" />
+			<entry key="544" value="Morgann" />
+			<entry key="545" value="Jeremy" />
+			<entry key="546" value="Shery" />
+			<entry key="547" value="Susan" />
+			<entry key="548" value="Miles" />
+			<entry key="549" value="Mylene" />
+			<entry key="550" value="Jaden" />
+			<entry key="551" value="Chris" />
+			<entry key="552" value="Grunt" />
+			<entry key="553" value="Grunt" />
+			<entry key="554" value="Grunt" />
+			<entry key="555" value="Grunt" />
+			<entry key="556" value="Grunt" />
+			<entry key="557" value="Grunt" />
+			<entry key="558" value="" />
+			<entry key="559" value="" />
+			<entry key="560" value="" />
+			<entry key="561" value="" />
+			<entry key="562" value="" />
+			<entry key="563" value="Shauntal" />
+			<entry key="564" value="Marshal" />
+			<entry key="565" value="Grimsley" />
+			<entry key="566" value="Caitlin" />
+			<entry key="567" value="Cynthia" />
+			<entry key="568" value="Matt" />
+			<entry key="569" value="Bart" />
+			<entry key="570" value="Tim" />
+			<entry key="571" value="Rebecca" />
+			<entry key="572" value="Tyra" />
+			<entry key="573" value="Larissa" />
+			<entry key="574" value="Maki" />
+			<entry key="575" value="Wes" />
+			<entry key="576" value="Lester" />
+			<entry key="577" value="Vicki" />
+			<entry key="578" value="Toru" />
+			<entry key="579" value="Serena" />
+			<entry key="580" value="Shannon" />
+			<entry key="581" value="Lurleen" />
+			<entry key="582" value="Chloris" />
+			<entry key="583" value="Harry" />
+			<entry key="584" value="Damon" />
+			<entry key="585" value="Mariah" />
+			<entry key="586" value="N" />
+			<entry key="587" value="N" />
+			<entry key="588" value="Cheren" />
+			<entry key="589" value="Cheren" />
+			<entry key="590" value="Cheren" />
+			<entry key="591" value="Cheren" />
+			<entry key="592" value="Cheren" />
+			<entry key="593" value="Cheren" />
+			<entry key="594" value="Bianca" />
+			<entry key="595" value="Bianca" />
+			<entry key="596" value="Bianca" />
+			<entry key="597" value="Grunt" />
+			<entry key="598" value="Grunt" />
+			<entry key="599" value="Grunt" />
+			<entry key="600" value="Mickey" />
+			<entry key="601" value="Raymond" />
+			<entry key="602" value="Edmond" />
+			<entry key="603" value="Charles" />
+			<entry key="604" value="Eileen" />
+			<entry key="605" value="Lou" />
+			<entry key="606" value="Elmer" />
+			<entry key="607" value="Elmer" />
+			<entry key="608" value="Glinda" />
+			<entry key="609" value="Glinda" />
+			<entry key="610" value="Grunt" />
+			<entry key="611" value="Grunt" />
+			<entry key="612" value="Grunt" />
+			<entry key="613" value="Jerry" />
+			<entry key="614" value="Emmet" />
+			<entry key="615" value="Johnny" />
 		</trainers>
 		<maps>
 			<entry key="0x0000" />
@@ -2320,13 +3063,13 @@
 			<entry key="0x0225" value="Water Gem" />
 			<entry key="0x0226" value="Electric Gem" />	
 			<entry key="0x0227" value="Grass Gem" />
-			<entry key="0x0228" value="Ice Gem	Ice " />
+			<entry key="0x0228" value="Ice Gem" />
 			<entry key="0x0229" value="Fighting Gem" />	
 			<entry key="0x022A" value="Poison Gem" />
 			<entry key="0x022B" value="Ground Gem" />
 			<entry key="0x022C" value="Flying Gem" />
 			<entry key="0x022D" value="Psychic Gem" />
-			<entry key="0x022E" value="Bug Gem	Bug " />
+			<entry key="0x022E" value="Bug Gem" />
 			<entry key="0x022F" value="Rock Gem" />	
 			<entry key="0x0230" value="Ghost Gem" />
 			<entry key="0x0231" value="Dragon Gem" />
@@ -2956,7 +3699,7 @@
 			<entry key="0x0205" value="Munna"/>
 			<entry key="0x0206" value="Musharna"/>
 			<entry key="0x0207" value="Pidove"/>
-			<entry key="0x0208" value="Tranquill"/>
+			<entry key="0x0208" value="Tranquil"/>
 			<entry key="0x0209" value="Unfezant"/>
 			<entry key="0x020A" value="Blitzle"/>
 			<entry key="0x020B" value="Zebstrika"/>
@@ -3646,7 +4389,7 @@
 			<entry key="554" value="Ice Burn" />
 			<entry key="555" value="Snarl" />
 			<entry key="556" value="Icicle Crash" />
-			<entry key="557" value="V-create" />
+			<entry key="557" value="V-Create" />
 			<entry key="558" value="Fusion Flare" />
 			<entry key="559" value="Fusion Bolt" />
 		</moves>
@@ -3795,7 +4538,6 @@
 			<entry key="122" value="Flower Gift" />
 			<entry key="123" value="Bad Dreams" />
 			<entry key="124" value="Pickpocket" />
-			<!-- TODO: check these abilities, order may not be correct, there are likely more -->
 			<entry key="125" value="Sheer Force" />
 			<entry key="126" value="Contrary" />
 			<entry key="127" value="Unnerve" />
@@ -3882,11 +4624,10 @@
 		</status_conditions>
 		<weather>
             <entry key="0" />
-            <entry key="1"   value="Rain" />
+            <entry key="1"   value="Sun" />
+            <entry key="2"   value="Rain" />
+            <entry key="3"   value="Hail" />
             <entry key="4"   value="Sandstorm" />
-            <entry key="16"  value="Sun" />
-            <entry key="64"  value="Hail" />
-            <entry key="128" value="Fog" />
 		</weather>
 		<genders>
 			<entry key="0x00" value="Male" />
@@ -3898,5 +4639,86 @@
 			<entry key="0x80" value="Down" />
 			<entry key="0xC0" value="Right" />
 		</directions>
+		<unown_forms>
+			<entry key="0x00" value="A" />				
+			<entry key="0x08" value="B" />				
+			<entry key="0x10" value="C" />				
+			<entry key="0x18" value="D" />				
+			<entry key="0x20" value="E" />				
+			<entry key="0x28" value="F" />				
+			<entry key="0x30" value="G" />				
+			<entry key="0x38" value="H" />	
+			<entry key="0x40" value="I" />	
+			<entry key="0x48" value="J" />	
+			<entry key="0x50" value="K" />	
+			<entry key="0x58" value="L" />	
+			<entry key="0x60" value="M" />	
+			<entry key="0x68" value="N" />	
+			<entry key="0x70" value="O" />	
+			<entry key="0x78" value="P" />	
+			<entry key="0x80" value="Q" />	
+			<entry key="0x88" value="R" />	
+			<entry key="0x90" value="S" />	
+			<entry key="0x98" value="T" />	
+			<entry key="0xA0" value="U" />	
+			<entry key="0xA8" value="V" />	
+			<entry key="0xB0" value="W" />	
+			<entry key="0xB8" value="X" />	
+			<entry key="0xC0" value="Y" />	
+			<entry key="0xC8" value="Z" />	
+			<entry key="0xD0" value="!" />	 
+			<entry key="0xD8" value="?" />	 
+		</unown_forms>
+		<deoxys_forms>
+			<entry key="0x00" value="Normal" />
+			<entry key="0x08" value="Attack" />
+			<entry key="0x10" value="Defense" />
+			<entry key="0x18" value="Speed" />
+		</deoxys_forms>
+		<burmy_forms>
+			<entry key="0x00" value="Plant" />
+			<entry key="0x08" value="Sandy" />
+			<entry key="0x10" value="Trash" />
+		</burmy_forms>
+		<shellos_forms>
+			<entry key="0x00" value="West" />
+			<entry key="0x08" value="East" />
+		</shellos_forms>
+		<rotom_forms>
+			<entry key="0x00" value="Normal" />
+			<entry key="0x08" value="Heat" />
+			<entry key="0x10" value="Wash" />
+			<entry key="0x18" value="Frost" />
+			<entry key="0x20" value="Fan" />
+			<entry key="0x28" value="Cut" />
+		</rotom_forms>
+		<giratina_forms>
+			<entry key="0x00" value="Altered" />
+			<entry key="0x08" value="Origin" />
+		</giratina_forms>
+		<shaymin_forms>
+			<entry key="0x00" value="Land" />
+			<entry key="0x08" value="Sky" />
+		</shaymin_forms>
+		<arceus_forms>
+			<entry key="0x00" value="Normal" />	
+			<entry key="0x08" value="Fist" />	
+			<entry key="0x10" value="Sky" />		
+			<entry key="0x18" value="Toxic" />	
+			<entry key="0x20" value="Earth" />	
+			<entry key="0x28" value="Stone" />	
+			<entry key="0x30" value="Insect" />	
+			<entry key="0x38" value="Spooky" />	
+			<entry key="0x40" value="Iron" />	
+			<entry key="0x48" value="Flame" />	
+			<entry key="0x50" value="Splash" />	
+			<entry key="0x58" value="Meadow" />	
+			<entry key="0x60" value="Zap" />
+			<entry key="0x68" value="Mind" />
+			<entry key="0x70" value="Icicle" />
+			<entry key="0x78" value="Draco" />
+			<entry key="0x80" value="Dread" />
+			<entry key="0x4C" value="Curse" />
+		</arceus_forms>
 	</references>
 </mapper>
