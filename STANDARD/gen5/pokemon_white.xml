@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.7.1"
+<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.7.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">

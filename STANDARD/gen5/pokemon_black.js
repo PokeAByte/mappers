@@ -112,6 +112,7 @@ function getGamestate() {
     const battle_state_ready = getValue('battle.other.battle_state_ready');
     const battle = getValue('battle.other.battle');
     const player_lock = getValue('battle.other.player_lock');
+    const trainer = getValue('battle.opponent.trainer');
     var return_state = '';
     // const outcome_flags: number = getValue<number>('battle.other.outcome_flags')
     if (team_count === 0) {
@@ -126,7 +127,7 @@ function getGamestate() {
     else if ((state != 'Battle' && return_state != 'Battle' && state != 'From Battle') && to_battle_pointer == 0 && player_lock == 1) {
         return_state = 'To Battle'
     }
-    else if (battle_end == 1 && battle == 21828) {
+    else if (trainer == "--" && battle_end == 1 && battle == 21828) {
         return_state = 'From Battle'
     }
     else if (outcome_flags == 1 && battle == 21828) {
