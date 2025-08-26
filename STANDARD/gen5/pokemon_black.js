@@ -25,28 +25,6 @@ function setValue(path, value) {
     }
     property.value = value;
 }
-function DATA32_LE(data, offset) {
-    let val = (data[offset] << 0)
-        | (data[offset + 1] << 8)
-        | (data[offset + 2] << 16)
-        | (data[offset + 3] << 24);
-    return val >>> 0;
-}
-function copyProperties(sourcePath, destinationPath) {
-    if (mapper.copy_properties) {
-        mapper.copy_properties(sourcePath, destinationPath);
-        return;
-    }
-	const destPathLength = destinationPath.length;
-	Object.keys(mapper.properties)
-		.filter(key => key.startsWith(destinationPath))
-		.forEach((key) => {
-			const source = mapper.properties[`${sourcePath}${key.slice(destPathLength)}`];
-			if (source) {
-				setProperty(key, source);
-			}
-		});
-}
 
 //notable addresses:
 // 0x22349B4 - likely the player's key items

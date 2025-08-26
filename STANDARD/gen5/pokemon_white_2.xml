@@ -12,7 +12,7 @@
 			- Double and triple battles need testing to see how the battle ram allocates space for those fights
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.7.2"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.7.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
