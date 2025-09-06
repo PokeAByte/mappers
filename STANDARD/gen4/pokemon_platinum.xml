@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<mapper id="03df12cd-aa9f-422a-bc99-58593841b1ef" name="Pokemon Platinum" platform="NDS" version="1.1.0"
+<mapper id="03df12cd-aa9f-422a-bc99-58593841b1ef" name="Pokemon Platinum" platform="NDS" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -270,7 +270,7 @@
 		    <property name="level_low"   type="int" address="{address}"/> <!-- this is the lowest/only level it can be -->
 		    <property name="level_high"   type="int" address="{address} + 1"/> <!-- This is the highest level it can be. pokemon by fishing or surfing are a range and the game uses rng to decide it -->
             <property name="species" type="int" address="{address} + 4" length="4" reference="species" />
-            <property name="dex_number" type="int" address="{address} + 4" length="4" reference="dex_numbers" />
+            <!-- <property name="dex_number" type="int" address="{address} + 4" length="4" reference="dex_numbers" /> -->
 		</wild_encounter>
 	</classes>
 

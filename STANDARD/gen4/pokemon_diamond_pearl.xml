@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="7ae693c4-1b65-4201-872a-bb27e7d3ab5b" name="Pokemon Diamond and Pearl - Beta" platform="NDS" version="0.3.1"
+<mapper id="7ae693c4-1b65-4201-872a-bb27e7d3ab5b" name="Pokemon Diamond and Pearl - Beta" platform="NDS" version="0.3.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -270,7 +270,7 @@
 		    <property name="level_low"   type="int" address="{address}"/> <!-- this is the lowest/only level it can be -->
 		    <property name="level_high"   type="int" address="{address} + 1"/> <!-- This is the highest level it can be. pokemon by fishing or surfing are a range and the game uses rng to decide it -->
             <property name="species" type="int" address="{address} + 4" length="4" reference="species" />
-            <property name="dex_number" type="int" address="{address} + 4" length="4" reference="dex_numbers" />
+            <!-- <property name="dex_number" type="int" address="{address} + 4" length="4" reference="dex_numbers" /> -->
 		</wild_encounter>
 	</classes>
 

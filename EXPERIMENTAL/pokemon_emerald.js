@@ -1,3 +1,4 @@
+const driver = __driver;
 // @ts-ignore
 const variables = __variables;
 // @ts-ignore
@@ -276,7 +277,6 @@ function getPartyPokemonBytes(container, containerBytes) {
     return encrypted_data;
 }
 
-
 function preprocessor() {
     variables.reload_addresses = true;
     const gamestate = getGamestate();
@@ -422,7 +422,6 @@ function preprocessor() {
             let startingAddress = 0;
             if (user == "player") {
                 startingAddress = 0x20244EC + (100 * slotIndex);
-                // console.log("Player party decrypting slot " + slotIndex + " at address " + (startingAddress).toString(16));
             }
             if (user == "opponent") {
                 startingAddress = 0x2024744 + (100 * slotIndex);
@@ -493,7 +492,6 @@ function preprocessor() {
     }
     return true;
 }
-
 
 globalThis.decryptItemQuantity = decryptItemQuantity;
 export { decryptItemQuantity, preprocessor, getPartyPokemonBytes as writePartyPokemon };

@@ -1,3 +1,4 @@
+const driver = __driver;
 // @ts-ignore
 const variables = __variables;
 // @ts-ignore
@@ -53,6 +54,10 @@ function setProperty(path, values) {
 }
 
 function copyProperties(sourcePath, destinationPath) {
+    if (mapper.copy_properties) {
+        mapper.copy_properties(sourcePath, destinationPath);
+        return;
+    }
 	const destPathLength = destinationPath.length;
 	Object.keys(mapper.properties)
 		.filter(key => key.startsWith(destinationPath))
@@ -226,6 +231,62 @@ function getPlayerPartyPosition() {
         }
     }
 }
+
+function calculateChecksum(data) {
+    let checkSum = 0;
+    for (let i = 32; i < 80; i += 2) {
+        checkSum += (data[i] | (data[i + 1] << 8));
+    }
+    return checkSum & 0xFFFF;
+}
+
+function encrypt_pokemon(container, containerBytes) {
+    const pid = (containerBytes[0] | (containerBytes[1] << 8) | (containerBytes[2] << 16) | (containerBytes[3] << 24)) >>> 0;
+    const ot_id = (containerBytes[4] | (containerBytes[5] << 8) | (containerBytes[6] << 16) | (containerBytes[7] << 24)) >>> 0;
+    var encrypted_data = [];
+    for (let i = 0; i < 100; i++) {
+        encrypted_data[i] = containerBytes[i];
+    }
+
+    const checksum = calculateChecksum(encrypted_data);
+    encrypted_data[28] = checksum & 0xFF;
+    encrypted_data[29] = (checksum >> 8) & 0xFF;
+
+    let key = ot_id ^ pid;
+    const shuffleId = pid % 24;
+    let shuffleOrder = shuffleOrders[shuffleId];
+    if (!shuffleOrder) {
+        throw new Error("The PID returned an unknown substructure order.");
+    }
+    let dataCopy = Array.from(encrypted_data);
+    encrypted_data = Array.from(encrypted_data);
+    dataCopy = dataCopy.splice(32, 48);
+    for (let i = 0; i < 4; i++) {
+        encrypted_data.splice(32 + shuffleOrder[i] * 12, 12, ...dataCopy.slice(i * 12, i * 12 + 12));
+    }
+    for (let i = 32; i < 80; i += 4) {
+        let data = DATA32_LE(encrypted_data, i) ^ key;
+        encrypted_data[i + 0] = data & 0xFF;
+        encrypted_data[i + 1] = (data >> 8) & 0xFF;
+        encrypted_data[i + 2] = (data >> 16) & 0xFF;
+        encrypted_data[i + 3] = (data >> 24) & 0xFF;
+    }
+    for (let i = 80; i < 100; i++) {
+        encrypted_data[i] = containerBytes[i];
+    }
+    return encrypted_data;
+}
+function containerprocessor(container, containerBytes) {
+    let address = 0;
+    if (container.startsWith("player_party_structure_")) {
+        const slotIndex = parseInt(container.substring(23));
+        address = 0x20244EC + (100 * slotIndex);
+    } else {
+        return;
+    }
+    driver.WriteBytes(address, encrypt_pokemon(container, containerBytes));
+}
+
 function preprocessor() {
     variables.reload_addresses = true;
     const gamestate = getGamestate();
@@ -443,4 +504,4 @@ function preprocessor() {
 }
 
 globalThis.decryptItemQuantity = decryptItemQuantity;
-export { decryptItemQuantity, preprocessor };
+export { decryptItemQuantity, containerprocessor, preprocessor };

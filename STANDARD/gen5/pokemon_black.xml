@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.4"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.5"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -1004,6 +1004,7 @@
             	<property name="battle_header_generic_2" type="int" address="0x226D274" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
             	<property name="battle_header_generic_3" type="int" address="0x226D278" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
             	<property name="battle_header_generic_4" type="int" address="0x226D27C" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
+            	<property name="outcome_flags_offset"    type="int" address="{outcome_flags_offset}" length="4" />
             	<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE" length="1" />
             	<property name="battle_end"              type="int" address="0x226D25C" length="4" />
             	<property name="player_lock"             type="int" address="0x224F77D" length="1" />
@@ -1011,6 +1012,7 @@
             	<property name="to_battle_pointer_1"     type="int" address="0x224F760" length="4" />
             	<property name="to_battle_pointer_2"     type="int" address="0x224F764" length="4" />
             	<property name="battle_state_ready"      type="int" address="{outcome_flags_offset} + 0x38" length="4" />
+            	<property name="battle_state_ready_wild" type="int" address="0x226E7C8" length="4" />
             	<property name="battle"                  type="int" address="0x226D260" length="4" />
             	<!-- <property name="outcome_flags_1"         type="int" address="{outcome_flags_offset} + 0xDE" length="1" /> -->
             	<!-- <property name="outcome_flags_offset_value" type="int" /> -->

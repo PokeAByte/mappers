@@ -1,3 +1,4 @@
+const driver = __driver;
 // @ts-ignore
 const variables = __variables;
 // @ts-ignore
@@ -201,6 +202,81 @@ function hiddenPower(path) {
         power: power
     };
 }
+function encrypt_pokemon(array) {
+    const decryptedData = new Uint8Array(array);
+
+    function prngNext(prngSeed) {
+        const newSeed = (0x41C64E6D * prngSeed + 0x6073) >>> 0;
+        const value = (newSeed >>> 16) & 0xFFFF;
+        return { newSeed, value };
+    }
+
+    let encryptedData = new Uint8Array(236);
+    let dataView = new DataView(encryptedData.buffer);
+
+    let pid = (decryptedData[0] |
+            (decryptedData[1] << 8) |
+            (decryptedData[2] << 16) |
+            (decryptedData[3] << 24)) >>> 0;
+
+    // Copy unencrypted first 8 bytes
+    for (let i = 0; i < 8; i++) {
+        encryptedData[i] = decryptedData[i];
+    }
+
+    // Shuffle the blocks FORWARD
+    const shuffleId = ((pid & 0x3E000) >> 0xD) % 24;
+    let shuffleOrder = shuffleOrders[shuffleId];
+    let dataCopy = decryptedData.slice(0x08, 0x88);
+    let checksum = 0
+    for (let i = 0x08; i < 0x88; i += 2) {
+        checksum += (decryptedData[i] | (decryptedData[i + 1] << 8)) & 0xFFFF
+    }
+    checksum = checksum & 0xFFFF
+    encryptedData[0x06] = checksum & 0xFF
+    encryptedData[0x07] = (checksum >> 8) & 0xFF
+
+    for (let i = 0; i < 4; i++) {
+        encryptedData.set(
+            dataCopy.slice(i * 0x20, i * 0x20 + 0x20),
+            0x08 + shuffleOrder[i] * 0x20
+        );
+    }
+
+    // Encrypt block data (XOR with PRNG seeded by checksum)
+    let prngSeed = checksum
+    for (let i = 0x08; i < 0x88; i += 2) {
+        let prngFunction = prngNext(prngSeed);
+        let key = prngFunction.value;
+        prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+
+        let data = (encryptedData[i] | (encryptedData[i + 1] << 8)) ^ key;
+        dataView.setUint16(i, data, true);
+    }
+
+    // Encrypt battle stats (XOR with PRNG seeded by PID)
+    prngSeed = pid;
+    for (let i = 0x88; i < 0xEB; i += 2) {
+        let prngFunction = prngNext(prngSeed);
+        let key = prngFunction.value;
+        prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+
+        let data = (decryptedData[i] | (decryptedData[i + 1] << 8)) ^ key;
+        dataView.setUint16(i, data, true);
+    }
+    return encryptedData;
+}
+function containerprocessor(container, containerBytes) {
+    let address = 0;
+    if (container.startsWith("player_party_structure_")) {
+        const slotIndex = parseInt(container.substring(23));
+        // address = 0x2271138 + 0xD094 + (236 * slotIndex);
+        address = memory.defaultNamespace.get_uint32_le(0x2106FAC) + 0xD2AC + (236 * slotIndex);  // probably the wrong address
+    } else {
+        return;
+    }
+    driver.WriteBytes(address, encrypt_pokemon(containerBytes, true));
+}
 // Preprocessor runs every loop (everytime pokeabyte updates)
 let original_base_ptr = 0x0;
 function preprocessor() {
@@ -234,7 +310,108 @@ function preprocessor() {
     setValue('overworld.encounter_rate', getEncounterRate());
     setValue('player.party_position', getPlayerPartyPosition());
     // Decryption?
-
+    // const party_position_overworld = getPlayerPartyPosition()
+    // const party_position_battle = getValue('battle.player.party_position')
+    // if (gamestate === 'Battle') {
+    //     copyProperties(`player.team.${party_position_battle}`, 'player.active_pokemon')
+    //     copyProperties('battle.player.active_pokemon', 'player.active_pokemon')
+    // } else {
+    //     setProperty('player.active_pokemon.modifiers.attack', { address: null, value: 0 })
+    //     setProperty('player.active_pokemon.modifiers.defense', { address: null, value: 0 })
+    //     setProperty('player.active_pokemon.modifiers.speed', { address: null, value: 0 })
+    //     setProperty('player.active_pokemon.modifiers.special_attack', { address: null, value: 0 })
+    //     setProperty('player.active_pokemon.modifiers.special_defense', { address: null, value: 0 })
+    //     setProperty('player.active_pokemon.modifiers.accuracy', { address: null, value: 0 })
+    //     setProperty('player.active_pokemon.modifiers.evasion', { address: null, value: 0 })
+    //     copyProperties(`player.team.${party_position_overworld}`, 'player.active_pokemon')
+    // }
+    // Loop through various party-structures to decrypt the Pokemon data
+    const partyStructures = [
+        "player", 
+        "static_wild",
+        // "static_player", 
+        // "static_opponent", 
+        // "static_ally", 
+        // "static_opponent_2",
+        "dynamic_player", 
+        "dynamic_opponent", 
+        "dynamic_ally", 
+        "dynamic_opponent_2",
+    ];
+    for (let i = 0; i < partyStructures.length; i++) {
+        let user = partyStructures[i];
+        // Determine the offset from the base_ptr (global_pointer) - only run once per party-structure loop
+        // Updating structures start offset from the global_pointer by 0x5888C; they are 0x5B0 bytes long
+        // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
+        const offsets = {
+            player            : 0xD2AC,
+            static_player     : 0x597D8 + (0x5B0 * 0),
+            static_wild       : 0x597D8 + (0x5B0 * 1),
+            static_opponent   : 0x597D8 + (0x5B0 * 1),
+            static_ally       : 0x597D8 + (0x5B0 * 2),
+            static_opponent_2 : 0x597D8 + (0x5B0 * 3),
+            dynamic_player    : 0x597D8 + (0x5B0 * 0),
+            dynamic_opponent  : 0x597D8 + (0x5B0 * 1),
+            dynamic_ally      : 0x597D8 + (0x5B0 * 2),         // TODO: Requires testing
+            dynamic_opponent_2: 0x597D8 + (0x5B0 * 3),         // TODO: Requires testing
+        };
+        let baseAddress = (user === "static_opponent" || user === "static_ally" || user === "static_opponent_2") ? enemy_ptr : base_ptr;
+        // Loop through each party-slot within the given party-structure
+        for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+            // Initialize an empty array to store the decrypted data
+            let decryptedData = new Array(236).fill(0x00);
+            // base_ptr and enemy_ptr is sometimes zero, after a game reset.
+            // We don't want to process these if that's the case.
+            if (baseAddress == 0 || baseAddress < 0x2000000 || baseAddress >= 1717986918) ;
+            else {
+                let startingAddress = baseAddress + offsets[user] + (236 * slotIndex);
+                let encryptedData = memory.defaultNamespace.get_bytes(startingAddress, 236); // Read the Pokemon's data (236-bytes)
+                let pid = encryptedData.get_uint32_le(); // PID = Personality Value
+                let checksum = encryptedData.get_uint16_le(6); // Used to initialize the prngSeed
+                // Transfer the unencrypted data to the decrypted data array
+                for (let i = 0; i < 8; i++) {
+                    decryptedData[i] = encryptedData.get_byte(i);
+                }
+                // Begin the decryption process for the block data
+                // Initialized the prngSeed as the checksum
+                let prngSeed = checksum;
+                for (let i = 0x08; i < 0x88; i += 2) {
+                    let prngFunction = prngNext(prngSeed); // Seed prng calculation
+                    let key = prngFunction.value; // retrieve the upper 16-bits as the key for decryption
+                    prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn); // retrieve the next seed value and write it back to the prngSeed
+                    let data = encryptedData.get_uint16_le(i) ^ key; // XOR the data with the key to decrypt it
+                    decryptedData[i + 0] = data & 0xFF; // isolate the lower 8-bits of the decrypted data and write it to the decryptedData array (1 byte)
+                    decryptedData[i + 1] = data >> 8; // isolate the upper 8-bits of the decrypted data and write it to the decryptedData array (1 byte)
+                }
+                // Determine how the block data is shuffled   
+                const shuffleId = ((pid & 0x3E000) >> 0xD) % 24; // Determine the shuffle order index
+                let shuffleOrder = shuffleOrders[shuffleId]; // Recall the shuffle order
+                if (!shuffleOrder) {
+                    throw new Error("The PID returned an unknown substructure order.");
+                }
+                let dataCopy = decryptedData.slice(0x08, 0x88); // Initialize a copy of the decrypted data
+                // Unshuffle the block data
+                for (let i = 0; i < 4; i++) {
+                    // Copy the shuffled blocks into the decryptedData
+                    decryptedData.splice(0x08 + i * 0x20, 0x20, ...dataCopy.slice(shuffleOrder[i] * 0x20, shuffleOrder[i] * 0x20 + 0x20));
+                }
+                // Decrypting the battle stats
+                prngSeed = pid; // The seed is the pid this time
+                for (let i = 0x88; i < 0xEB; i += 2) {
+                    // this covers the remainder of the 236 byte structure
+                    let prngFunction = prngNext(prngSeed); // as before
+                    let key = prngFunction.value;
+                    // Number and BigInt are required so Javascript stores the prngSeed as an accurate value (it is very large)
+                    prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+                    let data = encryptedData.get_uint16_le(i) ^ key;
+                    decryptedData[i + 0] = data & 0xFF;
+                    decryptedData[i + 1] = (data >> 8) & 0xFF;
+                }
+            }
+            // Fills the memory contains for the mapper's class to interpret
+            memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decryptedData);
+        }
+    }
     // for (let i = 0; i < 6; i++) {
     //     setValue(`player.team.${i}.hidden_power.power`, hiddenPower(`player.team.${i}`).power);
     //     setValue(`player.team.${i}.hidden_power.type`, hiddenPower(`player.team.${i}`).type);
@@ -249,4 +426,4 @@ function preprocessor() {
     // }
 }
 
-export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor };
+export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, containerprocessor, preprocessor };

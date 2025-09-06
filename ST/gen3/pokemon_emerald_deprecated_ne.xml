@@ -51,6 +51,7 @@
             <property name="ability"           type="bool" address="{address}+72" length="4" bits="31"/>
             <property name="int_isEgg"         type="int"  address="{address}+72" length="4" bits="30"/>
             <property name="int_ability"       type="int"  address="{address}+72" length="4" bits="31"/>
+            <property name="fateful_encounter" type="int"  address="{address}+76" length="4" bits="31"/>
             <property name="evHp"              type="int"  address="{address}+56"/>
             <property name="evAttack"          type="int"  address="{address}+57"/>
             <property name="evDefense"         type="int"  address="{address}+58"/>

@@ -1,3 +1,4 @@
+const driver = __driver;
 // @ts-ignore
 const variables = __variables;
 // @ts-ignore
@@ -206,6 +207,81 @@ function hiddenPower(path) {
         power: power
     };
 }
+function encrypt_pokemon(array) {
+    const decryptedData = new Uint8Array(array);
+
+    function prngNext(prngSeed) {
+        const newSeed = (0x41C64E6D * prngSeed + 0x6073) >>> 0;
+        const value = (newSeed >>> 16) & 0xFFFF;
+        return { newSeed, value };
+    }
+
+    let encryptedData = new Uint8Array(236);
+    let dataView = new DataView(encryptedData.buffer);
+
+    let pid = (decryptedData[0] |
+            (decryptedData[1] << 8) |
+            (decryptedData[2] << 16) |
+            (decryptedData[3] << 24)) >>> 0;
+
+    // Copy unencrypted first 8 bytes
+    for (let i = 0; i < 8; i++) {
+        encryptedData[i] = decryptedData[i];
+    }
+
+    // Shuffle the blocks FORWARD
+    const shuffleId = ((pid & 0x3E000) >> 0xD) % 24;
+    let shuffleOrder = shuffleOrders[shuffleId];
+    let dataCopy = decryptedData.slice(0x08, 0x88);
+    let checksum = 0
+    for (let i = 0x08; i < 0x88; i += 2) {
+        checksum += (decryptedData[i] | (decryptedData[i + 1] << 8)) & 0xFFFF
+    }
+    checksum = checksum & 0xFFFF
+    encryptedData[0x06] = checksum & 0xFF
+    encryptedData[0x07] = (checksum >> 8) & 0xFF
+
+    for (let i = 0; i < 4; i++) {
+        encryptedData.set(
+            dataCopy.slice(i * 0x20, i * 0x20 + 0x20),
+            0x08 + shuffleOrder[i] * 0x20
+        );
+    }
+
+    // Encrypt block data (XOR with PRNG seeded by checksum)
+    let prngSeed = checksum
+    for (let i = 0x08; i < 0x88; i += 2) {
+        let prngFunction = prngNext(prngSeed);
+        let key = prngFunction.value;
+        prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+
+        let data = (encryptedData[i] | (encryptedData[i + 1] << 8)) ^ key;
+        dataView.setUint16(i, data, true);
+    }
+
+    // Encrypt battle stats (XOR with PRNG seeded by PID)
+    prngSeed = pid;
+    for (let i = 0x88; i < 0xEB; i += 2) {
+        let prngFunction = prngNext(prngSeed);
+        let key = prngFunction.value;
+        prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+
+        let data = (decryptedData[i] | (decryptedData[i + 1] << 8)) ^ key;
+        dataView.setUint16(i, data, true);
+    }
+    return encryptedData;
+}
+function containerprocessor(container, containerBytes) {
+    let address = 0;
+    if (container.startsWith("player_party_structure_")) {
+        const slotIndex = parseInt(container.substring(23));
+        // address = 0x2271138 + 0xD094 + (236 * slotIndex);
+        address = memory.defaultNamespace.get_uint32_le(0x211186C) + 0xD088 + (236 * slotIndex);
+    } else {
+        return;
+    }
+    driver.WriteBytes(address, encrypt_pokemon(containerBytes, true));
+}
 // Preprocessor runs every loop (everytime pokeabyte updates)
 function preprocessor() {
     variables.reload_addresses = true;
@@ -249,9 +325,16 @@ function preprocessor() {
     // }
     // Loop through various party-structures to decrypt the Pokemon data
     const partyStructures = [
-        "player", "static_wild",
-        // "static_player", "static_opponent", "static_ally", "static_opponent_2",
-        "dynamic_player", "dynamic_opponent", "dynamic_ally", "dynamic_opponent_2",
+        "player", 
+        "static_wild",
+        // "static_player",
+        // "static_opponent",
+        //  "static_ally",
+        //  "static_opponent_2",
+        "dynamic_player",
+        "dynamic_opponent", 
+        "dynamic_ally", 
+        "dynamic_opponent_2",
     ];
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
@@ -341,4 +424,4 @@ function preprocessor() {
     // }
 }
 
-export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor };
+export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, containerprocessor, preprocessor };

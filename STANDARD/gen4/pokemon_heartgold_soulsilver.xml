@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="c55dbc2b-40fb-4b3e-b164-66869a07e9e7" name="Pokemon HeartGold and SoulSilver - Beta" platform="NDS" version="0.3.1"
+<mapper id="c55dbc2b-40fb-4b3e-b164-66869a07e9e7" name="Pokemon HeartGold and SoulSilver - Beta" platform="NDS" version="0.3.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
