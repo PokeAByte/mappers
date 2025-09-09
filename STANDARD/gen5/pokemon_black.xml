@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.5"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.6"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -256,6 +256,7 @@
 			<!-- <property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="defaultCharacterMap" /> -->
 			<property name="pointer_address_1"  address="{address} + 16 + 0"  type="int" length="4" />
 			<property name="pointer_address_2"  address="{address} + 16 + 4"  type="int" length="4" />
+			<property name="illusion_pointer"   address="{address} + 56"      type="int" length="4" />
 			
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
