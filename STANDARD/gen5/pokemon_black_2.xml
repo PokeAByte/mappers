@@ -12,7 +12,7 @@
 			- Double and triple battles need testing to see how the battle ram allocates space for those fights
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.7.7"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.7.8"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -236,18 +236,18 @@
 		</pokemon_moves>
 
 		<battle_move>
-			<property name="move"           type="int" address="{address}" length="2" reference="moves"/>
-			<property name="pp_1"           type="int" address="{address} + 2" />
-			<property name="pp_2"           type="int" address="{address} + 3" />
-			<property name="unknown_1"      type="int" address="{address} + 4" />
-			<property name="unknown_2"      type="int" address="{address} + 5" />
-			<property name="copy_move"      type="int" address="{address}" length="6" />
-			<property name="copy_pp_1"      type="int" address="{address} + 8" />
-			<property name="copy_pp_2"      type="int" address="{address} + 9" />
-			<property name="copy_unknown_1" type="int" address="{address} + 10" />
-			<property name="copy_unknown_2" type="int" address="{address} + 11" />
-			<property name="flag_1"         type="int" address="{address} + 12" />
-			<property name="flag_2"         type="int" address="{address} + 13" />
+			<property name="move"           type="int" address="{moveAddress}" length="2" reference="moves"/>
+			<property name="pp_1"           type="int" address="{moveAddress} + 2" />
+			<property name="pp_2"           type="int" address="{moveAddress} + 3" />
+			<property name="unknown_1"      type="int" address="{moveAddress} + 4" />
+			<property name="unknown_2"      type="int" address="{moveAddress} + 5" />
+			<property name="copy_move"      type="int" address="{moveAddress}" length="6" />
+			<property name="copy_pp_1"      type="int" address="{moveAddress} + 8" />
+			<property name="copy_pp_2"      type="int" address="{moveAddress} + 9" />
+			<property name="copy_unknown_1" type="int" address="{moveAddress} + 10" />
+			<property name="copy_unknown_2" type="int" address="{moveAddress} + 11" />
+			<property name="flag_1"         type="int" address="{moveAddress} + 12" />
+			<property name="flag_2"         type="int" address="{moveAddress} + 13" />
 		</battle_move>
 
 		<battle_structure>
@@ -275,6 +275,10 @@
 
 			-->
 			<moves>
+				<class name="0" type="battle_move" var:moveAddress="{address} + 312" />
+				<class name="1" type="battle_move" var:moveAddress="{address} + 326" />
+				<class name="2" type="battle_move" var:moveAddress="{address} + 340" />
+				<class name="3" type="battle_move" var:moveAddress="{address} + 354" />
 				<move1>
 					<property name="move"           type="int" address="{address} + 312" length="2" reference="moves"/>
 					<property name="pp"             type="int" address="{address} + 312 + 2" />
@@ -350,6 +354,11 @@
 				<property name="accuracy"        address="{address} + 309" type="int" reference="stage_modifiers" />
 				<property name="evasion"         address="{address} + 310" type="int" reference="stage_modifiers" />
 			</modifiers>
+			<pointers>
+				<property name="pointer_address_1" address="{address} + 16 + 0" type="int" length="4" />
+				<property name="pointer_address_2" address="{address} + 16 + 4" type="int" length="4" />
+				<property name="illusion_pointer"  address="{address} + 56"     type="int" length="4" />
+			</pointers>
 			<flags>
 				<property name="identified"         address="{address} + 152" type="bool" />
 				<property name="identified_unknown" address="{address} + 152 + 1" type="int" />
@@ -925,33 +934,6 @@
             	<property name="battle"                  type="int" address="0x225ADE0 - 0x40" length="4" />
 			</other>
 		</battle>
-		<screen>
-			<menu>
-				<!--
-					WaielAl wrote:
-					"So as I thought the data is on the heap but luckely its relative to the global pointer. 
-					The data can be at one of 2 locations. 
-					It always starts at loc1 but if you open the pokemon overview it switches to loc2 if you open the item bag it switches back to loc1.
-
-					Below are the offsets to the global pointer. All values are 1 byte in size.
-					In battle cursor on is either 0 or 1. cursor x/y are self-explanatory. 
-					The scene variable seems to correlate to the current scene displayed on the bottom screen. 
-					At least when the move scene is active the value is always 11."
-					
-					.            loc1       loc2
-					cursor on   0x62d10   0x632c0
-					cursor x    0x62d12   0x632c2
-					cursor y    0x62d11   0x632c1
-					scene       0x62cbf   0x6326f
-				-->
-				<!-- <property name="scene"   type="int" address="" /> -->
-				<cursor>
-					<!-- <property name="flag" type="int" address="" /> -->
-					<!-- <property name="x"    type="int" address="" /> -->
-					<!-- <property name="y"    type="int" address="" /> -->
-				</cursor>
-			</menu>
-		</screen>
 		<options>
 			<property name="text_speed"     type="int"  address="0x221E9E4" bits="0-1" reference="text_speeds" />
 			<property name="animations"     type="bool" address="0x221E9E4" bits="7" />
