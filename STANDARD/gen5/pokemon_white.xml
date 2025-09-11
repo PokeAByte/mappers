@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.7.4"
+<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.7.7"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -77,7 +77,6 @@
 			</flags>
 			<internals>
 				<property name="personality_value" type="uint" address="0"  memoryContainer="{memoryContainer}" length="4" />
-				<!-- <property name="shuffle_order"     type="uint" address="0"  memoryContainer="{memoryContainer}" length="4" after-read-value-expression="((pid & 0x3E000) >> 0xD) % 24" /> -->
 				<property name="pid_gender"        type="int"  address="0"  memoryContainer="{memoryContainer}" length="1" />
 				<property name="pid_ability_flag"  type="bool" address="2"  memoryContainer="{memoryContainer}" length="1" bits="0"/>
 				<property name="checksum"          type="uint" address="6"  memoryContainer="{memoryContainer}" length="2" />
@@ -233,8 +232,7 @@
 		</pokemon_moves>
 
 		<battle_move>
-			<!-- <property name="move"   type="int" address="{address}"  reference="moves" length="2" /> -->
-			<property name="move"           type="int" address="{address}" length="2" />
+			<property name="move"           type="int" address="{address}" length="2" reference="moves"/>
 			<property name="pp_1"           type="int" address="{address} + 2" />
 			<property name="pp_2"           type="int" address="{address} + 3" />
 			<property name="unknown_1"      type="int" address="{address} + 4" />
@@ -246,16 +244,12 @@
 			<property name="copy_unknown_2" type="int" address="{address} + 11" />
 			<property name="flag_1"         type="int" address="{address} + 12" />
 			<property name="flag_2"         type="int" address="{address} + 13" />
-			<!-- <property name="pp_max" type="int" address="{address} + {ppOffset} + 1" /> -->
 		</battle_move>
 
 		<battle_structure>
-			<!-- Likely not loaded into battle ram -->
-			<!-- <property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="defaultCharacterMap" /> -->
-			<!-- <property name="nature"           address="{address} + 104"  type="uint"   length="4" after-read-value-expression="x % 25" reference="natures" /> -->
-			<!-- <property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="defaultCharacterMap" /> -->
 			<property name="pointer_address_1"  address="{address} + 16 + 0"  type="int" length="4" />
 			<property name="pointer_address_2"  address="{address} + 16 + 4"  type="int" length="4" />
+			<property name="illusion_pointer"   address="{address} + 56"      type="int" length="4" />
 						
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
@@ -384,7 +378,6 @@
 			<property name="decrypted_mon_0" type="string" address="0x22349B4 + 0x20" length="220" />
 			<property name="decrypted_mon_1" type="string" address="0x2268594 + 0x20" length="220" />
 			<!-- <property name="party_position" type="int" /> -->
-			<!-- <class name="active_pokemon" type="player_active_pokemon" /> -->
 			<team>
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
 				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
@@ -821,75 +814,7 @@
 				<property name="opponent_party_position_5" type="int" />
 				<property name="opponent_party_position_6" type="int" />
 			</TESTING>
-			<TEAM_TESTING>
-				<!-- <team1>
-					<class name="0" type="party_pokemon" var:memoryContainer="player1_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player1_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player1_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player1_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player1_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player1_party_structure_5" />
-				</team1>
-				<team2>
-					<class name="0" type="party_pokemon" var:memoryContainer="player2_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player2_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player2_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player2_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player2_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player2_party_structure_5" />
-				</team2>
-				<team3>
-					<class name="0" type="party_pokemon" var:memoryContainer="player3_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player3_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player3_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player3_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player3_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player3_party_structure_5" />
-				</team3>
-				<team4>
-					<class name="0" type="party_pokemon" var:memoryContainer="player4_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player4_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player4_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player4_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player4_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player4_party_structure_5" />
-				</team4>
-				<team5>
-					<class name="0" type="party_pokemon" var:memoryContainer="player5_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player5_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player5_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player5_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player5_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player5_party_structure_5" />
-				</team5>
-				<team6>
-					<class name="0" type="party_pokemon" var:memoryContainer="player6_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player6_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player6_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player6_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player6_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player6_party_structure_5" />
-				</team6>
-				<team7>
-					<class name="0" type="party_pokemon" var:memoryContainer="player7_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player7_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player7_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player7_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player7_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player7_party_structure_5" />
-				</team7>
-				<team8>
-					<class name="0" type="party_pokemon" var:memoryContainer="player8_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="player8_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="player8_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="player8_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="player8_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="player8_party_structure_5" />
-				</team8> -->
-			</TEAM_TESTING>
 			<player>
-				<!-- <property name="party_position"   type="int" address="0x226EBD7 + 0x20"/> -->
-				<!-- <property name="party_position_2" type="int" address=""/> -->
 				<property name="party_position"   type="int" address="0x2269838 + 0x20 + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x20)) / 548" />
 				<property name="team_count"    type="int" address="0x22349B4 - 0x20 + 4" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
@@ -915,11 +840,6 @@
 				<class name="1" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_1" />
 			</wild>
 			<ally>
-				<!-- <property name="name"    type="int" address="" length="2" reference="trainers" /> -->
-				<!-- <property name="trainer" type="int" address="" length="2" reference="trainers" /> -->
-				<!-- <property name="id"      type="int" address="" length="2" /> -->
-				<!-- <property name="party_position" type="int" address=""/> -->
-				<!-- <class name="active_pokemon" type="battle_structure" var:address="" /> -->
 				<property name="team_count" type="int" address="0x226A220 + (0x560 * 5) + 0x20 + 0x14 - 4" /> <!-- This is correct -->
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_0" />
@@ -931,12 +851,8 @@
 				</team>
 			</ally>
 			<opponent>
-				<!-- <property name="name"    type="int" address="" length="2" reference="trainers" /> -->
-				<!-- <property name="trainer" type="int" address="" length="2" reference="trainers" /> -->
 				<property name="trainer" type="int" address="0x22697BE + 0x20" length="2" reference="trainers" />
 				<property name="id" type="int" address="0x22697BE + 0x20" length="2" />
-				<!-- <property name="id"      type="int" address="" length="2" />  -->
-				<!-- <property name="enemy_bar_synced_hp" type="int" address="" length="2" /> -->
 				<property name="team_count" type="int" address="0x226ACF4 + 0x20 - 4" /> <!-- This is correct -->
 				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
@@ -969,18 +885,6 @@
 					<class name="4" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_4" />
 					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_5" />
 				</team>
-				<!-- <property name="trainer" type="int" address="" length="2" reference="trainers" /> -->
-				<!-- <property name="party_position" type="int" address=""/> -->
-				<!-- <property name="team_count" type="int" address="" /> -->
-				<!-- <class name="active_pokemon" type="battle_structure" var:headerAddress="0x226DD1C" var:address="0x226DDFE" /> -->
-				<!-- <team>
-					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_0" />
-					<class name="1" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_1" />
-					<class name="2" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_2" />
-					<class name="3" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_3" />
-					<class name="4" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_4" />
-					<class name="5" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_5" />
-				</team> -->
 			</opponent_2>
 			<opponent_3>
 			</opponent_3>
@@ -995,16 +899,16 @@
             	<property name="battle_header_generic_2" type="int" address="0x226D274 + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
             	<property name="battle_header_generic_3" type="int" address="0x226D278 + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
             	<property name="battle_header_generic_4" type="int" address="0x226D27C + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
-            	<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE" length="1" />
+            	<property name="outcome_flags_offset"    type="int" address="{outcome_flags_offset}+ 0x20" length="4" />
+				<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE + 0x20" length="1" />
 				<property name="battle_end"              type="int" address="0x226D25C + 0x20" length="4" />
             	<property name="player_lock"             type="int" address="0x224F77D + 0x20" length="1" />
             	<property name="to_battle_pointer"       type="int" address="0x224F764 + 0x20" length="4" />
             	<property name="to_battle_pointer_1"     type="int" address="0x224F760 + 0x20" length="4" />
             	<property name="to_battle_pointer_2"     type="int" address="0x224F764 + 0x20" length="4" />
             	<property name="battle_state_ready"      type="int" address="{outcome_flags_offset} + 0x38 + 0x20" length="4" />
+				<property name="battle_state_ready_wild" type="int" address="0x226E7C8 + 0x20" length="4" />
             	<property name="battle"                  type="int" address="0x226D260 + 0x20" length="4" />
-            	<!-- <property name="outcome_flags_1"         type="int" address="{outcome_flags_offset} + 0xDE + 0x20" length="1" /> -->
-            	<!-- <property name="outcome_flags_offset_value" type="int" /> -->
 			</other>
 		</battle>
 		<screen>
@@ -1054,7 +958,6 @@
 			<property name="game_name"  type="string" value="White" />
 			<property name="game_type"  type="string" value="Originals" />
 			<property name="state"      type="string" />
-			<!-- <property name="state_enemy" type="string" /> -->
 		</meta>
 	</properties>
 

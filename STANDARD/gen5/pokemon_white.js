@@ -301,8 +301,8 @@ function preprocessor() {
     // based on the number of Pokemon in the player's party
     const player_team_count           = getValue('player.team_count');
     const opponent_team_count         = getValue('battle.opponent.team_count');
-    const ally_team_count             = getValue('battle.ally.team_count');
-    const opponent_2_team_count       = getValue('battle.opponent_2.team_count');
+    let ally_team_count               = getValue('battle.ally.team_count');
+    let opponent_2_team_count         = getValue('battle.opponent_2.team_count');
     const pkmn_ram_allocation         = 0x224
     const battle_ram_starting_address = 0x226D670 + white_version_offset
     const null_data_address           = 0x226D290 + white_version_offset
@@ -312,6 +312,12 @@ function preprocessor() {
     variables.battle_ram_opponent_0   = enemy_battle_ram_start
         
     let additional_offset = 0;
+    if (ally_team_count > 6) {
+        ally_team_count = 0
+    }
+    if (opponent_2_team_count > 6) {
+        opponent_2_team_count = 0
+    }
     if (ally_team_count && opponent_2_team_count) {
         additional_offset = 0x158
     }

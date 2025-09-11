@@ -1306,13 +1306,13 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 			<entry key="0xA3" value="SLASH" />
 			<entry key="0xA4" value="SUBSTITUTE" />
 			<entry key="0xA5" value="STRUGGLE" /> <!-- BACKPORT_MOVE_1 -->
-			<entry key="0xA6" />
-			<entry key="0xA7" />
-			<entry key="0xA8" />
-			<entry key="0xA9" />
-			<entry key="0xB0" />
-			<entry key="0xB1" />
-			<entry key="0xB1" />
+			<entry key="0xA6" value="STRUGGLE" />
+			<entry key="0xA7" value="STRUGGLE" />
+			<entry key="0xA8" value="STRUGGLE" />
+			<entry key="0xA9" value="STRUGGLE" />
+			<entry key="0xB0" value="STRUGGLE" />
+			<entry key="0xB1" value="STRUGGLE" />
+			<entry key="0xB1" value="STRUGGLE" />
 		</moves>	
 		<items>
 			<entry key="0x00" />
