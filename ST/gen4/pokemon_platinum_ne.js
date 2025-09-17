@@ -217,6 +217,7 @@ function preprocessor() {
     // Pointer History:
         // 0x2101D6C
     const base_ptr = memory.defaultNamespace.get_uint32_le(0x210200C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D6C); // Spinner global pointer
     if (base_ptr === 0) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
