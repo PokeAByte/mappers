@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.1.1"
+<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.1.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -6125,7 +6125,7 @@
 			<entry key="0x006D" value="Dawn Stone" />
 			<entry key="0x006E" value="Oval Stone" />
 			<entry key="0x006F" value="Odd Keystone" />
-			<entry key="0x0070" value="Griseous Orb" />
+			<entry key="0x0070" value="Link Cable" />
 			<entry key="0x0071" value="unknown" />
 			<entry key="0x0072" value="unknown" />
 			<entry key="0x0073" value="unknown" />
