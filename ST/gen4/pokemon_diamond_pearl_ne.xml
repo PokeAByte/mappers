@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.1.0"
+<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.1.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
