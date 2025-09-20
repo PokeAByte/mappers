@@ -705,11 +705,11 @@
 		</bag>
 		<overworld>
 			<!-- I think these properties are in DMA in Black2 & White2 (around 0x226803C) -->
-			<!-- <property name="map_name"  type="int" address="0x224F90C" length="4"/>
-			<property name="map_index" type="int" address="0x224F90C" length="4"/>
+			<property name="map_name"  type="int" address="0x224684A" length="1" reference="maps"/>
+			<property name="map_index" type="int" address="0x224684A" length="1"/>
 			<property name="x" type="int" length="4" address="0x224F910" /> 
             <property name="y" type="int" length="4" address="0x224F918" /> 
-            <property name="z" type="int" length="4" address="0x224F914" />  -->
+            <property name="z" type="int" length="4" address="0x224F914" /> 
             <!-- REQUIRE ADDITIONAL PROPERTIES AND A FUNCTION TO CALCULATE THE CURRENT RATE 
 				Need to know the state of the player (Walking, surfing, fishing, etc.) and then
 				dynamically assign the encounter rate based on this
@@ -836,6 +836,78 @@
 				<property name="opponent_party_position_4" type="int" />
 				<property name="opponent_party_position_5" type="int" />
 				<property name="opponent_party_position_6" type="int" />
+				<team1>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk1_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk1_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk1_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk1_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk1_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk1_party_structure_5" />
+				</team1>
+				<team2>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk2_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk2_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk2_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk2_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk2_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk2_party_structure_5" />
+				</team2>
+				<team3>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk3_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk3_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk3_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk3_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk3_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk3_party_structure_5" />
+				</team3>
+				<team4>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk4_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk4_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk4_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk4_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk4_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk4_party_structure_5" />
+				</team4>
+				<team5>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk5_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk5_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk5_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk5_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk5_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk5_party_structure_5" />
+				</team5>
+				<team6>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk6_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk6_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk6_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk6_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk6_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk6_party_structure_5" />
+				</team6>
+				<team7>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk7_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk7_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk7_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk7_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk7_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk7_party_structure_5" />
+				</team7>
+				<team8>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk8_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk8_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk8_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk8_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk8_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk8_party_structure_5" />
+				</team8>
+				<team9>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk9_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk9_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk9_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk9_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk9_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk9_party_structure_5" />
+				</team9>
 			</TESTING>
 			<player>
 				<property name="party_position"   type="int" address="0x2257494 + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
@@ -874,8 +946,10 @@
 				</team>
 			</ally>
 			<opponent>
-				<property name="trainer" type="int" address="0x2257332" length="2" reference="trainers" />
-				<property name="id" type="int" address="0x2257332" length="2" />
+				<property name="trainer" type="int" address="0x224C844" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x224C844" length="2" />
+				<property name="test_trainer" type="int" address="0x224C3EC" length="2" reference="trainers" />
+				<property name="test_id" type="int" address="0x224C3EC" length="2" />
 				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 1) + 0x14 - 4" />
 				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />

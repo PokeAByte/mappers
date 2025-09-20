@@ -347,6 +347,15 @@ function preprocessor() {
         // "player6",
         // "player7",
         // "player8",
+        "unk1",
+        "unk2",
+        "unk3",
+        "unk4",
+        "unk5",
+        "unk6",
+        "unk7",
+        "unk8",
+        "unk9",
     ];
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
@@ -364,7 +373,7 @@ function preprocessor() {
             // unknown_1         : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
             // unknown_2         : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
 
-            player1    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // player
+            player1    : 0x2257DA0 + (0x560 * 0) + 0x14 - black2_version_offset, // player
             player2    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // player
             player3    : 0x2257DA0 + (0x560 * 2) + 0x14 - black2_version_offset, // opponent_1
             player4    : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // opponent_1
@@ -372,6 +381,18 @@ function preprocessor() {
             player6    : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // ally
             player7    : 0x2257DA0 + (0x560 * 6) + 0x14 - black2_version_offset, // opponent_2
             player8    : 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // opponent_2
+
+            // Starting addresses for these structures are variable - I don't know how to determine them yet
+            // They need to be mapped because following these structures is where the trainer ID gets stored
+            unk1: 0x224B688 + (0x560 * 0) + 0x14,
+            unk2: 0x224B688 + (0x560 * 1) + 0x14,
+            unk3: 0x224B688 + (0x560 * 2) + 0x14,
+            unk4: 0x224B688 + (0x560 * 3) + 0x14,
+            unk5: 0x224B688 + (0x560 * 4) + 0x14,
+            unk6: 0x224B688 + (0x560 * 5) + 0x14,
+            unk7: 0x224B688 + (0x560 * 6) + 0x14,
+            unk8: 0x224B688 + (0x560 * 7) + 0x14,
+            unk9: 0x224B688 + (0x560 * 8) + 0x14,
         };
         // Loop through each party-slot within the given party-structure
         for (let slotIndex = 0; slotIndex < 6; slotIndex++) {

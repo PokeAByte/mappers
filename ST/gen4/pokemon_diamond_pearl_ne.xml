@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.1.2"
+<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.1.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -784,6 +784,13 @@
 			<property name="minutes" type="int" address="{global_pointer} + 0xD29C" />
 			<property name="seconds" type="int" address="{global_pointer} + 0xD29D" />
 		</game_time>
+		<patch>
+			<!-- <property name="stpStarterSpecies"  type="int" address="0x21C3A38 + (0 * 4)" length="4" reference="species" /> -->
+			<!-- <property name="stpStarterPosition" type="int" address="0x21C3A38 + (1 * 4)" length="4" /> -->
+			<property name="stpStarterSpecies"  type="int" address="0x21C5B80 + (0 * 4)" length="4" reference="species" />
+			<!-- <property name="FLAG_STP_CATCH_RATE" type="int" address="{global_pointer} + 0x372" length="1" bits="1" /> -->
+			<!-- <property name="stpCatchRate" type="int" address="{global_pointer} + 0x372" length="1" /> -->
+		</patch>
 		<meta>
 			<property name="generation"     type="int" value="4" />
 			<property name="game_name"      type="string" value="Diamond and Pearl" />

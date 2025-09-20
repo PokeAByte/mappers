@@ -705,8 +705,8 @@
 		</bag>
 		<overworld>
 			<!-- I think these properties are in DMA in Black2 & White2 (around 0x226803C) -->
-			<property name="map_name"  type="int" address="0x224F90C" length="4"/>
-			<property name="map_index" type="int" address="0x224F90C" length="4"/>
+			<property name="map_name"  type="int" address="0x224684A - 0x40" length="1"/>
+			<property name="map_index" type="int" address="0x224684A - 0x40" length="1"/>
 			<property name="x" type="int" length="4" address="0x2148DA6" /> 
             <property name="y" type="int" length="4" address="0x2148DAE" /> 
             <!-- <property name="z" type="int" length="4" address="" />  -->
@@ -874,8 +874,8 @@
 				</team>
 			</ally>
 			<opponent>
-				<property name="trainer" type="int" address="0x2257332 - 0x40" length="2" reference="trainers" />
-				<property name="id" type="int" address="0x2257332 - 0x40" length="2" />
+				<property name="trainer" type="int" address="0x224C844 - 0x40" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x224C844 - 0x40" length="2" />
 				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 1) + 0x14 - 4 - 0x40" />
 				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
