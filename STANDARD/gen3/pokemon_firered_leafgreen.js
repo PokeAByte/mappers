@@ -8,22 +8,10 @@ const memory = __memory;
 const mapper = __mapper;
 // @ts-ignore
 __console;
-function getValue(path) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
-    }
-    return property.value;
-}
-function setValue(path, value) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
-    }
-    property.value = value;
-}
+const getValue = mapper.get_property_value;
+const setValue = mapper.set_property_value;
+const copyProperties = mapper.copy_properties;
+
 function getProperty(path) {
     // @ts-ignore
     const property = mapper.properties[path];
@@ -51,19 +39,6 @@ function setProperty(path, values) {
     if (values.value !== undefined)
         property.value = values.value;
 }
-
-function copyProperties(sourcePath, destinationPath) {
-	const destPathLength = destinationPath.length;
-	Object.keys(mapper.properties)
-		.filter(key => key.startsWith(destinationPath))
-		.forEach((key) => {
-			const source = mapper.properties[`${sourcePath}${key.slice(destPathLength)}`];
-			if (source) {
-				setProperty(key, source);
-			}
-		});
-}
-
 
 // //Decryption Functions
 // //16-bit and 32-bit data access functions
