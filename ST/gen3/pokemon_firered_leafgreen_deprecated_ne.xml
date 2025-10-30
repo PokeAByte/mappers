@@ -250,8 +250,8 @@
                 <property name="badge8" type="bool" address="{dma_a} + 3958" description="rainbadge"    bits="7" />
             </badges>
             <vsSeeker>
-                <property name="stepsUntilUse"     type="uint" bits="0" address="{dma_a} + 1592" />
-                <property name="stepsUntilCharged" type="uint" bits="0" address="{dma_a} + 1593" />
+                <property name="stepsUntilUse"     type="int" length="1" address="{dma_a} + 1592" />
+                <property name="stepsUntilCharged" type="int" length="1" address="{dma_a} + 1593" />
             </vsSeeker>
             <bag>
                 <property name="quantityDecyptionKey" type="int" length="2" address="{dma_b} + 3872" />
