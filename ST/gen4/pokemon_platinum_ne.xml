@@ -848,6 +848,7 @@
 			</opponent>
 			<opponent_2>
 				<property name="trainer" type="int" address="{global_pointer} + 0x4E882" length="2" reference="trainers" />
+				<property name="id" type="int" address="{global_pointer} + 0x4E882" length="2"/>
 				<property name="party_position" type="int" address="{global_pointer} + 0x54598 + 0x3FE"/>
 				<property name="enemy_bar_synced_hp" type="int" address="{global_pointer} + 0x54764" length="2" />
 				<property name="team_count" type="int" address="{global_pointer} + 0x54598 + 0x4E50" />
@@ -901,6 +902,10 @@
 				</cursor>
 			</menu>
 		</screen>
+		<audio>
+			<property name="soundEffect1" type="int" value="0" />
+			<property name="soundEffect2" type="int" value="0" />
+		</audio>
 		<game_time>
 			<property name="hours"   type="int" address="{global_pointer} + 0xD07E" length="2" />
 			<property name="minutes" type="int" address="{global_pointer} + 0xD080" />
