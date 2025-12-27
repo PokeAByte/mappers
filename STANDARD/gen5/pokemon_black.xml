@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.9"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.7.10"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -237,7 +237,7 @@
 			<property name="pp_2"           type="int" address="{moveAddress} + 3" />
 			<property name="unknown_1"      type="int" address="{moveAddress} + 4" />
 			<property name="unknown_2"      type="int" address="{moveAddress} + 5" />
-			<property name="copy_move"      type="int" address="{moveAddress}" length="6" />
+			<property name="copy_move"      type="int" address="{moveAddress} + 6" />
 			<property name="copy_pp_1"      type="int" address="{moveAddress} + 8" />
 			<property name="copy_pp_2"      type="int" address="{moveAddress} + 9" />
 			<property name="copy_unknown_1" type="int" address="{moveAddress} + 10" />
