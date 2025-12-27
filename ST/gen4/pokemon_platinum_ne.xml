@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.6"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.7"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -903,8 +903,10 @@
 			</menu>
 		</screen>
 		<audio>
-			<property name="soundEffect1" type="int" value="0" />
-			<property name="soundEffect2" type="int" value="0" />
+			<property name="save_sound" type="int" address="{global_pointer} + 0x358" length="4"/> <!-- Address used to be: 22717C0 (22A8938) -->
+			<property name="heal_sound" type="int" address="{global_pointer} + 0x358" length="4"/> <!-- Address used to be: 22717C0 (22A7018) -->
+			<property name="soundEffect1" type="int" address="0x20057D4" length="4"/>
+			<property name="soundEffect2" type="int" address="0x20057D4" length="4"/>
 		</audio>
 		<game_time>
 			<property name="hours"   type="int" address="{global_pointer} + 0xD07E" length="2" />
@@ -918,6 +920,42 @@
 			<property name="FLAG_STP_CATCH_RATE" type="int" address="{global_pointer} + 0x372" length="1" bits="1" />
 			<property name="stpCatchRate" type="int" address="{global_pointer} + 0x372" length="1" />
 		</patch>
+		<printer>
+			<!-- 
+				sTextPrinterTasks exists at 0x021C07C0
+				1. Read pointer at sTextPrinterTasks (0x021C07C0)
+				- If pointer is 0 then the printer is inactive
+				- If non-zero, it's a pointer to a SysTask
+				2. For each active SysTask pointer
+					- Read value at SysTask + 0x10 - this is a pointer to TextPrinter*
+					- Read the value at TextPrinter + 0x00 - this is the charcode_t* text pointer
+
+				When saving, sTextPrinterTasks_0 becomes active with a pointer value of 0x23AE6E0
+				At 0x23AE6E0, offsets 0x10 and 0x14 become active
+				0x10 holds: 22717C0
+				0x14 holds: 201D97D
+
+				When healing at the center, sTextPrinterTasks_0 becomes active with a pointer value of 0x23AE698
+				At 0x23AE698, offsets 0x10 and 0x14 become active
+				0x10 holds: 2271778
+				0x14 holds: 201D97D
+
+
+				2271778 holds 22A7018 on heal
+
+			-->
+			<property name="sTextPrinterTasks_0_pointed" type="int" address="0x23AE6E0" length="4"/>
+			<property name="sTextPrinterTasks_0_textPrinter0" type="int" address="0x23AE6E0 + 0x10" length="4"/>
+			<property name="sTextPrinterTasks_0_textPrinter1" type="int" address="0x23AE6E0 + 0x14" length="4"/>
+			<property name="sTextPrinterTasks_0" type="int" address="0x21C07C0 + (4 * 0)" length="4"/>
+			<property name="sTextPrinterTasks_1" type="int" address="0x21C07C0 + (4 * 1)" length="4"/>
+			<property name="sTextPrinterTasks_2" type="int" address="0x21C07C0 + (4 * 2)" length="4"/>
+			<property name="sTextPrinterTasks_3" type="int" address="0x21C07C0 + (4 * 3)" length="4"/>
+			<property name="sTextPrinterTasks_4" type="int" address="0x21C07C0 + (4 * 4)" length="4"/>
+			<property name="sTextPrinterTasks_5" type="int" address="0x21C07C0 + (4 * 5)" length="4"/>
+			<property name="sTextPrinterTasks_6" type="int" address="0x21C07C0 + (4 * 6)" length="4"/>
+			<property name="sTextPrinterTasks_7" type="int" address="0x21C07C0 + (4 * 7)" length="4"/>
+		</printer>
 		<meta>
 			<property name="generation"     type="int" value="4" />
 			<property name="game_name"      type="string" value="Platinum" />
@@ -925,7 +963,8 @@
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
 			<property name="global_pointer" type="int" address="0x210200C" length="4"/>
-			<!-- <property name="global_pointer" type="int" address="0x2101D2C" length="4"/> -->
+			<property name="sSaveDataPtr"   type="int" address="0x21C0A74" length="4"/>
+			<property name="saves"          type="int" address="{saves_pointer}" length="4"/>
 			<property name="enemy_pointer"  type="int" address="{global_pointer} + 0x352F4" length="4"/>
 		</meta>
 	</properties>

@@ -92,7 +92,7 @@ function getGamestate() {
     const teamPokemonPv             = getValue('player.team.0.internals.personality_value');
     const outcome_flags             = getValue('battle.other.outcome_flags');
     const choosing_starter_variable = getValue('flags.choosing_starter');
-    if (team_count === 0 || choosing_starter_variable < 2) {
+    if (team_count === 0) {
         return 'No Pokemon';
     }
     else if (active_pokemonPv === teamPokemonPv && outcome_flags == 1) {
@@ -217,6 +217,7 @@ function preprocessor() {
     // Pointer History:
         // 0x2101D6C
     const base_ptr = memory.defaultNamespace.get_uint32_le(0x210200C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21C0A74);
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D6C); // Spinner global pointer
     if (base_ptr === 0) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
@@ -228,6 +229,7 @@ function preprocessor() {
         variables.reload_addresses = true;
     }
     variables.global_pointer        = base_ptr;                    // Variable used for mapper addresses, it is the same as "base_ptr"
+    variables.saves_pointer         = sSaveData_pointer + 0x20018;                    // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD094;
     variables.dynamic_player        = base_ptr + 0x5888C + address_offset;
     variables.dynamic_opponent      = base_ptr + 0x58E3C + address_offset;
