@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.7"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.8"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
+    
+	<memory>
+        <!-- Nothing seems to happen below 0x2100000. From there just grab 2mb: -->
+        <read start="0x2100000"  end="0x22E8480"/>
+    </memory>
 
 	<classes>
 		<party_pokemon>
@@ -25,10 +30,10 @@
 				<property name="type"  type="string" />
 			</hidden_power>
 			<moves>
-				<class name="0" type="pokemon_moves" var:moveNumberOffset="{address} + 40" var:ppOffset="{address} + 48" var:ppUpOffset="{address} + 2" />
-				<class name="1" type="pokemon_moves" var:moveNumberOffset="{address} + 42" var:ppOffset="{address} + 49" var:ppUpOffset="{address} + 3" />
-				<class name="2" type="pokemon_moves" var:moveNumberOffset="{address} + 44" var:ppOffset="{address} + 50" var:ppUpOffset="{address} + 4" />
-				<class name="3" type="pokemon_moves" var:moveNumberOffset="{address} + 46" var:ppOffset="{address} + 51" var:ppUpOffset="{address} + 5" />
+				<class name="0" type="pokemon_moves" var:moveNumberOffset="{address} + 40" var:ppOffset="{address} + 48" var:ppUpOffset="{address} + 52" />
+				<class name="1" type="pokemon_moves" var:moveNumberOffset="{address} + 42" var:ppOffset="{address} + 49" var:ppUpOffset="{address} + 53" />
+				<class name="2" type="pokemon_moves" var:moveNumberOffset="{address} + 44" var:ppOffset="{address} + 50" var:ppUpOffset="{address} + 54" />
+				<class name="3" type="pokemon_moves" var:moveNumberOffset="{address} + 46" var:ppOffset="{address} + 51" var:ppUpOffset="{address} + 55" />
 			</moves>
 			<stats>
 				<property name="hp"              type="int" address="{address} + 142" length="2" />
@@ -199,14 +204,14 @@
         </active_pokemon_move>
 
 		<pokemon_moves>
-			<property name="move"  type="int" address="{moveNumberOffset}"  reference="moves" length="2" />
+			<property name="move"  type="int" address="{moveNumberOffset}" reference="moves" length="2" />
 			<property name="pp"    type="int" address="{ppOffset}" after-read-value-expression="x % 64" />
 			<property name="pp_up" type="int" address="{ppUpOffset}" after-read-value-expression="Math.floor(x / 64)" />
 		</pokemon_moves>
 
 		<battle_move>
-			<property name="move"  type="int" address="{address} + moveNumberOffset"  reference="moves" length="2" />
-			<property name="pp"    type="int" address="{address} + ppOffset" after-read-value-expression="x % 64" />
+			<property name="move"  type="int" address="{address} + {moveNumberOffset}"  reference="moves" length="2" />
+			<property name="pp"    type="int" address="{address} + {ppOffset}" after-read-value-expression="x % 64" />
 			<property name="pp_up" type="int" value="null" />
 		</battle_move>
 
@@ -224,10 +229,10 @@
             <property name="held_item"        address="{address} + 120"  type="int" length="2" reference="items" />
 			<property name="status_condition" address="{address} + 108"  type="int" reference="status_conditions" />
 			<moves>
-				<class name="0" address="address" type="battle_move" var:moveNumberOffset="12" var:ppOffset="44" />
-				<class name="1" address="address" type="battle_move" var:moveNumberOffset="14" var:ppOffset="45" />
-				<class name="2" address="address" type="battle_move" var:moveNumberOffset="16" var:ppOffset="46" />
-				<class name="3" address="address" type="battle_move" var:moveNumberOffset="18" var:ppOffset="47" />
+				<class name="0" address="{address}" type="battle_move" var:moveNumberOffset="12" var:ppOffset="44" />
+				<class name="1" address="{address}" type="battle_move" var:moveNumberOffset="14" var:ppOffset="45" />
+				<class name="2" address="{address}" type="battle_move" var:moveNumberOffset="16" var:ppOffset="46" />
+				<class name="3" address="{address}" type="battle_move" var:moveNumberOffset="18" var:ppOffset="47" />
 			</moves>
 			<stats>
 				<property name="hp"              address="{address} + 76" type="int" length="2" />
@@ -847,8 +852,9 @@
 				</team>
 			</opponent>
 			<opponent_2>
+				<property name="name"    type="int" address="{global_pointer} + 0x4E882" length="2" reference="trainers" />
 				<property name="trainer" type="int" address="{global_pointer} + 0x4E882" length="2" reference="trainers" />
-				<property name="id" type="int" address="{global_pointer} + 0x4E882" length="2"/>
+				<property name="id"      type="int" address="{global_pointer} + 0x4E882" length="2"/>
 				<property name="party_position" type="int" address="{global_pointer} + 0x54598 + 0x3FE"/>
 				<property name="enemy_bar_synced_hp" type="int" address="{global_pointer} + 0x54764" length="2" />
 				<property name="team_count" type="int" address="{global_pointer} + 0x54598 + 0x4E50" />
@@ -6427,7 +6433,7 @@
 			<entry key="0x006F" value="Odd Keystone" />
 			<entry key="0x0070" value="Griseous Orb" />
 			<entry key="0x0071" value="Link Cable" />
-			<entry key="0x0072" value="unknown" />
+			<entry key="0x0072" value="Ice Stone" />
 			<entry key="0x0073" value="unknown" />
 			<entry key="0x0074" value="unknown" />
 			<entry key="0x0075" value="unknown" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.1.4"
+<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.2.8"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -262,6 +262,7 @@
 			</ivs>
 			<internals>
 				<property name="personality_value" address="{address} + 104" type="uint" length="4"/>
+				<property name="turn_counter" address="{address} + 124" type="uint" length="1"/>
 			</internals>
 		</battle_structure>
 
@@ -713,7 +714,6 @@
 				<property name="team_count"          type="int" address="{dynamic_ally} - 4" />
 				<property name="party_position" type="int" address="{current_party_indexes} + 12"/>
 				<class name="active_pokemon" type="battle_structure" var:address="{global_pointer} + 0x56DF4 + 384" /> <!-- TODO: verify contents -->
-				<!-- TODO: test that this is in fact the ally's team structure -->
 				<team> 
 					<class name="0" type="party_pokemon" var:address="{dynamic_ally} + (236 * 0)" />
 					<class name="1" type="party_pokemon" var:address="{dynamic_ally} + (236 * 1)" />
@@ -956,6 +956,8 @@
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
 			<property name="global_pointer" type="int" address="0x211182C" length="4"/>
+			<!-- <property name="sSaveDataPtr"   type="int" address="0x21C0A74" length="4"/> -->
+			<!-- <property name="saves"          type="int" address="{saves_pointer}" length="4"/> -->
 			<property name="enemy_pointer"  type="int" address="{global_pointer} + 0x37970" length="4"/>
 		</meta>
 	</properties>
