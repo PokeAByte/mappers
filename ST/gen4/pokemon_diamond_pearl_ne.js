@@ -229,10 +229,10 @@ function preprocessor() {
     variables.global_pointer        = base_ptr;            // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.saves_pointer         = sSaveData_pointer + 0x20218; // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD2AC;
-    variables.dynamic_player        = base_ptr + 0x597D8 + (0x5D0 * 0) + address_offset;
-    variables.dynamic_opponent      = base_ptr + 0x597D8 + (0x5D0 * 1) + address_offset;
-    variables.dynamic_ally          = base_ptr + 0x597D8 + (0x5D0 * 1) + address_offset;
-    variables.dynamic_opponent_2    = base_ptr + 0x597D8 + (0x5D0 * 1) + address_offset;
+    variables.dynamic_player        = base_ptr + 0x597D8 + (0x5B0 * 0) + address_offset;
+    variables.dynamic_opponent      = base_ptr + 0x597D8 + (0x5B0 * 1) + address_offset;
+    variables.dynamic_ally          = base_ptr + 0x597D8 + (0x5B0 * 1) + address_offset;
+    variables.dynamic_opponent_2    = base_ptr + 0x597D8 + (0x5B0 * 1) + address_offset;
     variables.current_party_indexes = base_ptr + 0x5596C;
     // Set property values
     const gamestate = getGamestate();
