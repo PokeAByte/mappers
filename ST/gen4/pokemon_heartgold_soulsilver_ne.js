@@ -238,6 +238,7 @@ function preprocessor() {
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x21117CC); //HGSS pointer prior to 2025-08-07
     const base_ptr = memory.defaultNamespace.get_uint32_le(0x211182C); //HGSS pointer after 2025-08-07
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D21E8);
     if (base_ptr === 0 || base_ptr >= 38438215) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
@@ -247,7 +248,8 @@ function preprocessor() {
         original_base_ptr          = base_ptr;
         variables.reload_addresses = true;
     }
-    variables.global_pointer        = base_ptr;                          // Variable used for mapper addresses, it is the same as "base_ptr"
+    variables.global_pointer        = base_ptr;          // Variable used for mapper addresses, it is the same as "base_ptr"
+    variables.saves_pointer         = sSaveData_pointer + 0x23010; // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD088;
     variables.dynamic_player        = base_ptr + 0x5BA78 + address_offset;
     variables.dynamic_opponent      = base_ptr + 0x5C048 + address_offset;

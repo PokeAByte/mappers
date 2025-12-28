@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.8"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">

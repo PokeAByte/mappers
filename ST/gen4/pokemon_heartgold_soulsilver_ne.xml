@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.2.8"
+<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.2.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -940,6 +940,12 @@
 				</status>
 			</voltorb_flip>
 		</screen>
+		<audio>
+			<property name="save_sound" type="int" address="{global_pointer} + 0x5C8" length="4"/> <!-- Address used to be: 22717C0 (22A8938) -->
+			<property name="heal_sound" type="int" address="{global_pointer} + 0x5C8" length="4"/> <!-- Address used to be: 22717C0 (22A7018) -->
+			<property name="soundEffect1" type="int" address="0x20057D4" length="4"/>
+			<property name="soundEffect2" type="int" address="0x20057D4" length="4"/>
+		</audio>
 		<game_time>
 			<property name="hours"   type="int" address="{global_pointer} + 0xD076" length="2" />
 			<property name="minutes" type="int" address="{global_pointer} + 0xD078" />
@@ -956,8 +962,8 @@
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
 			<property name="global_pointer" type="int" address="0x211182C" length="4"/>
-			<!-- <property name="sSaveDataPtr"   type="int" address="0x21C0A74" length="4"/> -->
-			<!-- <property name="saves"          type="int" address="{saves_pointer}" length="4"/> -->
+			<property name="sSaveDataPtr"   type="int" address="0x21D21E8" length="4"/>
+			<property name="saves"          type="int" address="{saves_pointer}" length="4"/>
 			<property name="enemy_pointer"  type="int" address="{global_pointer} + 0x37970" length="4"/>
 		</meta>
 	</properties>

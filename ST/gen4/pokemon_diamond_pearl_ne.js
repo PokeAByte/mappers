@@ -207,6 +207,8 @@ function preprocessor() {
     variables.reload_addresses = false;
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
     const base_ptr = memory.defaultNamespace.get_uint32_le(0x210706C); // Diamond and Pearl pointer (Test value: 2260300)
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21C5A88); // sSaveDataPtr in arm9.elf.xMAP
+
     if (base_ptr === 0) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
@@ -217,6 +219,7 @@ function preprocessor() {
         variables.reload_addresses = true;
     }
     variables.global_pointer        = base_ptr;            // Variable used for mapper addresses, it is the same as "base_ptr"
+    variables.saves_pointer         = sSaveData_pointer + 0x20214; // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD2AC;
     variables.dynamic_player        = base_ptr + 0x597D8;
     variables.dynamic_opponent      = base_ptr + 0x59D88;
