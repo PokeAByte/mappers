@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.2.9"
+<mapper id="6e8c4a2b-52a8-412f-871f-9e26f9b8e39f" name="STP Pokemon Diamond and Pearl" platform="NDS" version="1.2.10"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -809,7 +809,7 @@
 			<property name="game_type"      type="string" value="Originals" />
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
-			<property name="global_pointer" type="int" address="0x2106FAC" length="4"/>
+			<property name="global_pointer" type="int" address="0x210706C" length="4"/>
 			<property name="sSaveDataPtr"   type="int" address="0x21C5A88" length="4"/>
 			<property name="saves"          type="int" address="{saves_pointer}" length="4"/>
 			<property name="enemy_pointer"  type="int" address="{global_pointer} + 0x364C8" length="4"/>

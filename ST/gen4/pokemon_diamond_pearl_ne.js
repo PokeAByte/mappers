@@ -204,9 +204,17 @@ function hiddenPower(path) {
 // Preprocessor runs every loop (everytime pokeabyte updates)
 let original_base_ptr = 0x0;
 function preprocessor() {
+    let patch_update = false;
+    let address_offset = 0x00; // Patch1
+    // if (patch_update) {
+    //     address_offset = 0x24 // Patch2
+    // }
+    if (patch_update) {
+        address_offset = 0x00 // Patch3
+    }
     variables.reload_addresses = false;
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x210706C); // Diamond and Pearl pointer (Test value: 2260300)
+    const base_ptr = memory.defaultNamespace.get_uint32_le(0x210706C); // Diamond and Pearl pointer (Test value: 2260300) Search arm9 in arm9.elf.xMAP
     const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21C5A88); // sSaveDataPtr in arm9.elf.xMAP
 
     if (base_ptr === 0) {
@@ -219,12 +227,12 @@ function preprocessor() {
         variables.reload_addresses = true;
     }
     variables.global_pointer        = base_ptr;            // Variable used for mapper addresses, it is the same as "base_ptr"
-    variables.saves_pointer         = sSaveData_pointer + 0x20214; // Variable used for mapper addresses, it is the same as "base_ptr"
+    variables.saves_pointer         = sSaveData_pointer + 0x20218; // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD2AC;
-    variables.dynamic_player        = base_ptr + 0x597D8;
-    variables.dynamic_opponent      = base_ptr + 0x59D88;
-    variables.dynamic_ally          = base_ptr + 0x5A338;
-    variables.dynamic_opponent_2    = base_ptr + 0x5A8E8;
+    variables.dynamic_player        = base_ptr + 0x597D8 + (0x5D0 * 0) + address_offset;
+    variables.dynamic_opponent      = base_ptr + 0x597D8 + (0x5D0 * 1) + address_offset;
+    variables.dynamic_ally          = base_ptr + 0x597D8 + (0x5D0 * 1) + address_offset;
+    variables.dynamic_opponent_2    = base_ptr + 0x597D8 + (0x5D0 * 1) + address_offset;
     variables.current_party_indexes = base_ptr + 0x5596C;
     // Set property values
     const gamestate = getGamestate();

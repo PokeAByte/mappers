@@ -237,8 +237,11 @@ function preprocessor() {
     // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x21117CC); //HGSS pointer prior to 2025-08-07
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x211182C); //HGSS pointer after 2025-08-07
-    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D21E8);
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211182C); //HGSS pointer after 2025-08-07
+
+    // To find the global pointer, search from 'main' in the 'main.elf.xMAP' file produced by the disassembly.
+    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 12); //HGSS pointer after 2025-12-27
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D21C8);
     if (base_ptr === 0 || base_ptr >= 38438215) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
@@ -251,8 +254,8 @@ function preprocessor() {
     variables.global_pointer        = base_ptr;          // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.saves_pointer         = sSaveData_pointer + 0x23010; // Variable used for mapper addresses, it is the same as "base_ptr"
     variables.player_party          = base_ptr + 0xD088;
-    variables.dynamic_player        = base_ptr + 0x5BA78 + address_offset;
-    variables.dynamic_opponent      = base_ptr + 0x5C048 + address_offset;
+    variables.dynamic_player        = base_ptr + 0x5BA78 + (0x5D0 * 0) + address_offset;
+    variables.dynamic_opponent      = base_ptr + 0x5BA78 + (0x5D0 * 1) + address_offset;
     variables.dynamic_ally          = base_ptr + 0x5BA78 + (0x5D0 * 2) + address_offset;
     variables.dynamic_opponent_2    = base_ptr + 0x5BA78 + (0x5D0 * 3) + address_offset;
     variables.current_party_indexes = base_ptr + 0x571E0;

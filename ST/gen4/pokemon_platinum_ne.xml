@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.9"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.2.11"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -15,15 +15,15 @@
 			<property name="species"    type="int"    address="{address} + 8"   length="2" reference="species" />
 			<property name="dex_number" type="int"    address="{address} + 8"   length="2" />
 			<property name="nickname"   type="string" address="{address} + 72"  length="22" size="2" />
-			<property name="level"      type="int"    address="{address} + 140"  />
+			<property name="level"      type="int"    address="{address} + 140" />
 			<property name="exp"        type="int"    address="{address} + 16"  length="4" />
 			<property name="ot_name"    type="string" address="{address} + 104" length="16" size="2" />
 			<property name="ot_id"      type="int"    address="{address} + 12"  length="2" />
 			<property name="ability"    type="int"    address="{address} + 21"  reference="abilities" />
 			<property name="nature"     type="uint"   address="{address} + 0"   length="4" reference="natures" after-read-value-expression="x % 25" />
 			<property name="held_item"  type="int"    address="{address} + 10"  length="2" reference="items" />
-			<property name="friendship" type="int"    address="{address} + 20"   />
-			<property name="pokerus"    type="int"    address="{address} + 130"  />
+			<property name="friendship" type="int"    address="{address} + 20"  />
+			<property name="pokerus"    type="int"    address="{address} + 130" />
 			<property name="status_condition" type="int" address="{address} + 136" reference="status_conditions" />
 			<hidden_power>
 				<property name="power" type="int" />
@@ -923,8 +923,8 @@
 			<!-- <property name="stpStarterSpecies"  type="int" address="0x21C3A38 + (0 * 4)" length="4" reference="species" /> -->
 			<!-- <property name="stpStarterPosition" type="int" address="0x21C3A38 + (1 * 4)" length="4" /> -->
 			<property name="stpStarterSpecies"  type="int" address="0x21C3D18 + (0 * 4)" length="4" reference="species" />
-			<property name="FLAG_STP_CATCH_RATE" type="int" address="{global_pointer} + 0x372" length="1" bits="1" />
-			<property name="stpCatchRate" type="int" address="{global_pointer} + 0x372" length="1" />
+			<property name="FLAG_STP_CATCH_RATE" type="bool" address="{global_pointer} + 0xDE00 + 2" length="1" bits="1" />
+			<property name="stpCatchRate" type="int" address="{global_pointer} + 0xDE00 + 2" length="1" />
 		</patch>
 		<printer>
 			<!-- 
@@ -968,7 +968,7 @@
 			<property name="game_type"      type="string" value="Third Version" />
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
-			<property name="global_pointer" type="int" address="0x210200C" length="4"/>
+			<property name="global_pointer" type="int" address="0x2102000 + 12" length="4"/>
 			<property name="sSaveDataPtr"   type="int" address="0x21C0A74" length="4"/>
 			<property name="saves"          type="int" address="{saves_pointer}" length="4"/>
 			<property name="enemy_pointer"  type="int" address="{global_pointer} + 0x352F4" length="4"/>

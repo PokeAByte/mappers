@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.2.9"
+<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.2.10"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -953,7 +953,7 @@
 		</game_time>
 		<patch>
 			<property name="stpStarterSpecies" type="int" length="4" address="0x21D4378" reference="species" />
-			<property name="stpCatchRate" type="int" length="4" address="0x21D437C" />
+			<property name="stpCatchRate" type="int" length="4" address="0x21D435C" />
 		</patch>
 		<meta>
 			<property name="generation"     type="int" value="4" />
