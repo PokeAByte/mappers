@@ -224,6 +224,10 @@ function preprocessor() {
         variables.global_pointer = null;
         return;
     }
+    if (sSaveData_pointer === 0) {
+        variables.saves_pointer = null;
+        return;
+    }
     if (original_base_ptr !== base_ptr) {
         original_base_ptr          = base_ptr;
         variables.reload_addresses = true;
