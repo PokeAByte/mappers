@@ -276,7 +276,7 @@
 		    <property name="level_low"   type="int" address="{address}"/> <!-- this is the lowest/only level it can be -->
 		    <property name="level_high"   type="int" address="{address} + 1"/> <!-- This is the highest level it can be. pokemon by fishing or surfing are a range and the game uses rng to decide it -->
             <property name="species" type="int" address="{address} + 4" length="4" reference="species" />
-            <property name="dex_number" type="int" address="{address} + 4" length="4" reference="dex_numbers" />
+            <!-- <property name="dex_number" type="int" address="{address} + 4" length="4" reference="dex_numbers" /> -->
 		</wild_encounter>
 	</classes>
 

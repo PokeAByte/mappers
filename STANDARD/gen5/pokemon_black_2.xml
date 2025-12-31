@@ -12,7 +12,7 @@
 			- Double and triple battles need testing to see how the battle ram allocates space for those fights
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.7.9"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.7.11"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -964,7 +964,7 @@
 			<entry key="0x02" value="Fast"/>	
 		</text_speeds>		
 		<defaultCharacterMap>
-			<entry key="0x00FF"	/>	
+			<entry key="0xFFFF"	/>	
 			<entry key="0x0000"	/>	
 			<entry key="0x0020"	value=" " />
 			<entry key="0x0021"	value="!" />	
