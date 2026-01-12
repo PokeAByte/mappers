@@ -10,6 +10,7 @@ const mapper = __mapper;
 __console;
 const getValue = mapper.get_property_value;
 const setValue = mapper.set_property_value;
+const copyProperties = mapper.copy_properties;
 
 function getProperty(path) {
     // @ts-ignore
@@ -37,18 +38,6 @@ function setProperty(path, values) {
         property.bytes = values.bytes;
     if (values.value !== undefined)
         property.value = values.value;
-}
-
-function copyProperties(sourcePath, destinationPath) {
-	const destPathLength = destinationPath.length;
-	Object.keys(mapper.properties)
-		.filter(key => key.startsWith(destinationPath))
-		.forEach((key) => {
-			const source = mapper.properties[`${sourcePath}${key.slice(destPathLength)}`];
-			if (source) {
-				setProperty(key, source);
-			}
-		});
 }
 
 /** Generate a nibble from each IV's respective bit */
