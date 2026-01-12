@@ -12,7 +12,6 @@ __console;
 const getValue = mapper.get_property_value;
 const setValue = mapper.set_property_value;
 
-
 //notable addresses:
 // 0x22349B4 - likely the player's key items
 // 0x2234786 - medicine pocket starting address
