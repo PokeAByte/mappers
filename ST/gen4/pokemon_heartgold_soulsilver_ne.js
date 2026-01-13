@@ -238,10 +238,15 @@ function preprocessor() {
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x21117CC); //HGSS pointer prior to 2025-08-07
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211182C); //HGSS pointer after 2025-08-07
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 12); //HGSS pointer after 2025-12-27 v0.2.0
 
     // To find the global pointer, search from 'main' in the 'main.elf.xMAP' file produced by the disassembly.
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 12); //HGSS pointer after 2025-12-27
-    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D21C8);
+    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111B20 + 12); //HGSS pointer after 2025-12-27
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 0x40 + 12); //HGSS pointer after 2025-12-27
+    
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D24E8);
+    // const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D2208);
+    
     if (base_ptr === 0 || base_ptr >= 38438215) {
         // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
