@@ -1,3 +1,4 @@
+import { pokemon } from "game_functions";
 const driver = __driver;
 // @ts-ignore
 const variables = __variables;
@@ -47,13 +48,6 @@ function DATA16_LE(data, offset) {
     let val = (data[offset] << 0) | (data[offset + 1] << 8);
     return val & 0xFFFF;
 }
-function DATA32_LE(data, offset) {
-    let val = (data[offset] << 0)
-        | (data[offset + 1] << 8)
-        | (data[offset + 2] << 16)
-        | (data[offset + 3] << 24);
-    return val >>> 0;
-}
 function getTotalgame_time() {
     return ((216000 * memory.defaultNamespace.get_byte(variables.dma_b + 14)) +
         (3600 * memory.defaultNamespace.get_byte(variables.dma_b + 16)) +
@@ -64,47 +58,7 @@ function decryptItemQuantity(x) {
     let quantity_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 0xAC);
     return x ^ quantity_key;
 }
-function equalArrays(a1, a2) {
-    if (a1 === undefined || a2 === undefined)
-        return a1 == a2;
-    if (a1.length != a2.length)
-        return false;
-    for (let i = 0; i < a1.length; i++) {
-        if (a1[i] != a2[i])
-            return false;
-    }
-    return true;
-}
-// Block shuffling orders - used for Party structure encryption and decryption
-// Once a Pokemon's data has been generated it is assigned a PID which determines the order of the blocks
-// As the Pokemon's PID never changes, the order of the blocks always remains the same for that Pokemon
-// Each individial Pokemon receives its own unique shuffle order
-const shuffleOrders = {
-    0:  [0, 1, 2, 3],
-    1:  [0, 1, 3, 2],
-    2:  [0, 2, 1, 3],
-    3:  [0, 3, 1, 2],
-    4:  [0, 2, 3, 1],
-    5:  [0, 3, 2, 1],
-    6:  [1, 0, 2, 3],
-    7:  [1, 0, 3, 2],
-    8:  [2, 0, 1, 3],
-    9:  [3, 0, 1, 2],
-    10: [2, 0, 3, 1],
-    11: [3, 0, 2, 1],
-    12: [1, 2, 0, 3],
-    13: [1, 3, 0, 2],
-    14: [2, 1, 0, 3],
-    15: [3, 1, 0, 2],
-    16: [2, 3, 0, 1],
-    17: [3, 2, 0, 1],
-    18: [1, 2, 3, 0],
-    19: [1, 3, 2, 0],
-    20: [2, 1, 3, 0],
-    21: [3, 1, 2, 0],
-    22: [2, 3, 1, 0],
-    23: [3, 2, 1, 0]
-};
+
 const hidden_power_types = {
     0 : "Fighting",
     1 : "Flying",
@@ -212,42 +166,6 @@ function calculateChecksum(data) {
     return checkSum & 0xFFFF;
 }
 
-function encrypt_pokemon(container, containerBytes) {
-    const pid = (containerBytes[0] | (containerBytes[1] << 8) | (containerBytes[2] << 16) | (containerBytes[3] << 24)) >>> 0;
-    const ot_id = (containerBytes[4] | (containerBytes[5] << 8) | (containerBytes[6] << 16) | (containerBytes[7] << 24)) >>> 0;
-    var encrypted_data = [];
-    for (let i = 0; i < 100; i++) {
-        encrypted_data[i] = containerBytes[i];
-    }
-
-    const checksum = calculateChecksum(encrypted_data);
-    encrypted_data[28] = checksum & 0xFF;
-    encrypted_data[29] = (checksum >> 8) & 0xFF;
-
-    let key = ot_id ^ pid;
-    const shuffleId = pid % 24;
-    let shuffleOrder = shuffleOrders[shuffleId];
-    if (!shuffleOrder) {
-        throw new Error("The PID returned an unknown substructure order.");
-    }
-    let dataCopy = Array.from(encrypted_data);
-    encrypted_data = Array.from(encrypted_data);
-    dataCopy = dataCopy.splice(32, 48);
-    for (let i = 0; i < 4; i++) {
-        encrypted_data.splice(32 + shuffleOrder[i] * 12, 12, ...dataCopy.slice(i * 12, i * 12 + 12));
-    }
-    for (let i = 32; i < 80; i += 4) {
-        let data = DATA32_LE(encrypted_data, i) ^ key;
-        encrypted_data[i + 0] = data & 0xFF;
-        encrypted_data[i + 1] = (data >> 8) & 0xFF;
-        encrypted_data[i + 2] = (data >> 16) & 0xFF;
-        encrypted_data[i + 3] = (data >> 24) & 0xFF;
-    }
-    for (let i = 80; i < 100; i++) {
-        encrypted_data[i] = containerBytes[i];
-    }
-    return encrypted_data;
-}
 function containerprocessor(container, containerBytes) {
     let address = 0;
     if (container.startsWith("player_party_structure_")) {
@@ -256,7 +174,10 @@ function containerprocessor(container, containerBytes) {
     } else {
         return;
     }
-    driver.WriteBytes(address, encrypt_pokemon(container, containerBytes));
+    const checksum = calculateChecksum(containerBytes);
+    containerBytes[28] = checksum & 0xFF;
+    containerBytes[29] = (checksum >> 8) & 0xFF;
+    driver.WriteBytes(address, pokemon.Encrypt(3, containerBytes));
 }
 
 function preprocessor() {
@@ -388,8 +309,8 @@ function preprocessor() {
     const partyStructures = ["player", "opponent"];
     if (state.cached_pokemon === undefined) {
         state.cached_pokemon = {
-            "player": { 0: { raw_data: "", decrypted_data: "" }, 1: { raw_data: "", decrypted_data: "" }, 2: { raw_data: "", decrypted_data: "" }, 3: { raw_data: "", decrypted_data: "" }, 4: { raw_data: "", decrypted_data: "" }, 5: { raw_data: "", decrypted_data: "" } },
-            "opponent": { 0: { raw_data: "", decrypted_data: "" }, 1: { raw_data: "", decrypted_data: "" }, 2: { raw_data: "", decrypted_data: "" }, 3: { raw_data: "", decrypted_data: "" }, 4: { raw_data: "", decrypted_data: "" }, 5: { key: "", decrypted_data: "" } },
+            "player": { 0: { decrypted_data: "" }, 1: { decrypted_data: "" }, 2: { decrypted_data: "" }, 3: { decrypted_data: "" }, 4: { decrypted_data: "" }, 5: { decrypted_data: "" } },
+            "opponent": { 0: { decrypted_data: "" }, 1: { decrypted_data: "" }, 2: { decrypted_data: "" }, 3: { decrypted_data: "" }, 4: { decrypted_data: "" }, 5: { key: "", decrypted_data: "" } },
         };
         state.blank_pokemon = new Array(100).fill(0x00);
     }
@@ -409,43 +330,8 @@ function preprocessor() {
                 startingAddress = 0x2024744 + (100 * slotIndex);
             }
             let pokemonData = memory.defaultNamespace.get_bytes(startingAddress, 100);
-            // Compare the raw data against the cached raw data. Skip decryption and rely on cache if identical
-            if (equalArrays(state.cached_pokemon[user][slotIndex]["raw_data"], pokemonData.data)) {
-                memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, state.cached_pokemon[user][slotIndex]["decrypted_data"]);
-                continue;
-            }
-            let pid = pokemonData.get_uint32_le();
-            let ot_id = pokemonData.get_uint32_le(4);
-            let decrypted_data = [];
-            for (let i = 0; i < 100; i++) { //Transfer the first 32-bytes of unencrypted data to the decrypted data array
-                decrypted_data[i] = pokemonData.data[i];
-            }
-            //Begin the decryption process for the block data
-            let key = ot_id ^ pid; //Calculate the encryption key using the Oritinal Trainer ID XODed with the PID
-            for (let i = 32; i < 80; i += 4) {
-                let data = DATA32_LE(pokemonData.data, i) ^ key; //XOR the data with the key
-                decrypted_data[i + 0] = data & 0xFF; // Isolates the least significant byte
-                decrypted_data[i + 1] = (data >> 8) & 0xFF; // Isolates the 2nd least significant byte
-                decrypted_data[i + 2] = (data >> 16) & 0xFF; // Isolates the 3rd least significant byte
-                decrypted_data[i + 3] = (data >> 24) & 0xFF; // Isolates the most significant byte
-            }
-            //Determine how the block data is shuffled   
-            const shuffleId = pid % 24; //Determine the shuffle order index
-            let shuffleOrder = shuffleOrders[shuffleId]; //Recall the shuffle order
-            if (!shuffleOrder) {
-                throw new Error("The PID returned an unknown substructure order.");
-            }
-            let dataCopy = Array.from(decrypted_data);
-            decrypted_data = Array.from(decrypted_data);
-            dataCopy = dataCopy.splice(32, 48);
-            //Unshuffle the block data
-            for (let i = 0; i < 4; i++) { // Copy the shuffled blocks into the decrypted_data
-                decrypted_data.splice(32 + i * 12, 12, ...dataCopy.slice(shuffleOrder[i] * 12, shuffleOrder[i] * 12 + 12));
-            }
-            //Transfer the remaining 20-bytes of unencrypted data to the decrypted data array
-            for (let i = 80; i < 100; i++) {
-                decrypted_data[i] = pokemonData.data[i];
-            }
+            const decrypted_data = pokemon.Decrypt(3, pokemonData.data);
+            
             // special case: if the solo mon species gets set to an invalid id, we probably don't want this update
             // 2 bytes at 32 offset are the species value, and there are only 414 pokemon
             // NOTE: this can still fail if the player's species gets randomly set to a value under 414. However, this should be very rare
@@ -454,7 +340,6 @@ function preprocessor() {
                 state.blocked_last_frame = true;
                 return false;
             }
-            state.cached_pokemon[user][slotIndex]["raw_data"] = pokemonData.data;
             state.cached_pokemon[user][slotIndex]["decrypted_data"] = decrypted_data;
             memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decrypted_data);
         }
