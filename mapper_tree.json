@@ -10,15 +10,15 @@
     "display_name": "pokemon_red_blue_deprecated.xml",
     "path": "DEPRECATED/gen1/pokemon_red_blue_deprecated.xml",
     "date_created": "2026-01-07T00:02:17.0428632+00:00",
-    "date_updated": "2026-01-14T11:25:22.4607882+00:00",
-    "version": "1.1.6"
+    "date_updated": "2026-01-14T12:55:23.7290254+00:00",
+    "version": "1.1.5"
   },
   {
     "display_name": "pokemon_yellow_deprecated.xml",
     "path": "DEPRECATED/gen1/pokemon_yellow_deprecated.xml",
     "date_created": "2026-01-07T00:02:17.0453794+00:00",
-    "date_updated": "2026-01-14T11:25:22.4607882+00:00",
-    "version": "1.2.29"
+    "date_updated": "2026-01-14T12:55:23.7290254+00:00",
+    "version": "1.2.7"
   },
   {
     "display_name": "pokemon_crystal_deprecated.xml",
@@ -73,8 +73,8 @@
     "display_name": "pokemon_emerald_deprecated_ne.xml",
     "path": "ST/gen3/pokemon_emerald_deprecated_ne.xml",
     "date_created": "2026-01-07T00:02:17.1330309+00:00",
-    "date_updated": "2026-01-14T11:25:22.4607882+00:00",
-    "version": "1.3.37"
+    "date_updated": "2026-01-14T12:55:23.7290254+00:00",
+    "version": "1.3.12"
   },
   {
     "display_name": "pokemon_firered_leafgreen_deprecated_ne.xml",
@@ -192,8 +192,8 @@
     "display_name": "pokemon_black.xml",
     "path": "STANDARD/gen5/pokemon_black.xml",
     "date_created": "2026-01-07T00:02:17.1500557+00:00",
-    "date_updated": "2026-01-14T11:25:22.4607882+00:00",
-    "version": "0.8.2"
+    "date_updated": "2026-01-14T12:55:23.7290254+00:00",
+    "version": "0.8.1"
   },
   {
     "display_name": "pokemon_black_2.xml",
