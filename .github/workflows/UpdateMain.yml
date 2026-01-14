@@ -1,0 +1,21 @@
+
+name: Update main on version changes.
+
+on:
+  push:
+    branches: [development]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.x"
+      - name: Run UpdateMain.cs
+        run: dotnet run UpdateMain.cs
+        working-directory: ${{ github.workspace }}/.github/workflows/scripts
