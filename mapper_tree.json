@@ -215,5 +215,12 @@
     "date_created": "2026-01-07T00:02:17.1530561+00:00",
     "date_updated": null,
     "version": "0.7.10"
+  },
+  {
+    "display_name": "pokemon_yellow_precated.xml",
+    "path": "DEPRECATED/gen1/pokemon_yellow_precated.xml",
+    "date_created": "2026-01-14T11:28:32.1158752+00:00",
+    "date_updated": "2026-01-14T11:28:32.1158752+00:00",
+    "version": "0.1.0"
   }
 ]
