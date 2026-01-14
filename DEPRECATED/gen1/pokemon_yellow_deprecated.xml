@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_yellow.xml'
 -->
 
-<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.2.7"
+<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.2.29"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
