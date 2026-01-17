@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.9"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.4.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -645,8 +645,8 @@
         <flags>
             <property name="national_dex" type="bool" bits="0" address="{dma_a} + 4072" />
         </flags>
-        <!-- <screen>
-            <menu>
+        <screen>
+            <!-- <menu>
                 <property name="itemsMenu" type="int" address="0x0203ce60" length="2" />
                 <property name="itemsOffset" type="int" address="0x0203ce6a" length="2" />
                 <property name="ballsMenu" type="int" address="0x0203ce62" length="2" />
@@ -729,8 +729,27 @@
                     <property name="62" address="0x020216e6" type="bool" bits="0" />
                     <property name="63" address="0x0202172a" type="bool" bits="0" />
                 </spriteInUse>
-            </enemy_sprite>
-        </screen> -->
+            </enemy_sprite> -->
+            <property name="gStringVar1" type="string" address="0x2021cd0" length="32" />
+            <property name="gStringVar2" type="string" address="0x2021cf0" length="32" />
+            <property name="gStringVar3" type="string" address="0x2021d04" length="32" />
+            <property name="gStringVar4" type="string" address="0x2021d18" length="32" />
+            <!-- <property name="hall_of_fame_0" type="int"  address="0x20204bc + 0" length="1" /> -->
+            <!-- <property name="hall_of_fame_1" type="int"  address="0x20204bc + 1" length="1" /> -->
+            <!-- <property name="hall_of_fame_2" type="int"  address="0x20204bc + 2" length="1" /> -->
+            <!-- <property name="hall_of_fame_3" type="int"  address="0x20204bc + 3" length="1" /> -->
+            <property name="hall_of_fame_4" type="int"  address="0x20204bc + 4" length="1" />
+            <!-- <property name="hall_of_fame_5" type="int"  address="0x20204bc + 5" length="1" /> -->
+            <!-- <property name="hall_of_fame_6" type="int"  address="0x20204bc + 6" length="1" /> -->
+            <!-- <property name="hall_of_fame_7" type="int"  address="0x20204bc + 7" length="1" /> -->
+            <!-- <property name="hall_of_fame_8" type="int"  address="0x20204bc + 8" length="1" /> -->
+            <!-- <property name="hall_of_fame_9" type="int"  address="0x20204bc + 9" length="1" /> -->
+            <!-- <property name="hall_of_fame_10" type="int" address="0x20204bc + 1" length="1" /> -->
+            <!-- <property name="hall_of_fame_11" type="int" address="0x20204bc + 11" length="1" /> -->
+            <!-- <property name="hall_of_fame_12" type="int" address="0x20204bc + 12" length="1" /> -->
+            <!-- <property name="hall_of_fame_13" type="int" address="0x20204bc + 13" length="1" /> -->
+            <!-- <property name="hall_of_fame_14" type="int" address="0x20204bc + 14" length="1" /> -->
+        </screen>
         <options>
             <property name="textSpeed"   type="int" address="{dma_b} + 20" bits="0-1" />
             <property name="battleAnim"  type="int" address="{dma_b} + 21" bits="2" />
