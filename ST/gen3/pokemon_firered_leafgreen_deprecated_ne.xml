@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.8"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.3.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -639,7 +639,7 @@
                 <property name="stp_pidgey_on_route_1"     type="bool" address="{dma_a} + 4090" bits="0" />
                 <property name="stp_rattata_on_route_1"    type="bool" address="{dma_a} + 4090" bits="1" />
                 <property name="stp_itemfinder_obtainaBLE" type="bool" address="{dma_a} + 4090" bits="2" />
-                <property name="stp_allow-evolution"       type="bool" address="{dma_a} + 4090" bits="3" />
+                <property name="stp_allow_evolution"       type="bool" address="{dma_a} + 4090" bits="3" />
             </stp_flags>
         </patch>
         <flags>
