@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="005fdd01-8921-468c-aca3-d4fa864d5909" name="Pokemon FireRed and LeafGreen" platform="GBA" version="1.1.0"
+<mapper id="005fdd01-8921-468c-aca3-d4fa864d5909" name="Pokemon FireRed and LeafGreen" platform="GBA" version="1.1.1" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
