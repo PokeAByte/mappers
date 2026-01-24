@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<mapper id="03df12cd-aa9f-422a-bc99-58593841b1ef" name="Pokemon Platinum" platform="NDS" version="1.1.1"
+<mapper id="03df12cd-aa9f-422a-bc99-58593841b1ef" name="Pokemon Platinum" platform="NDS" version="1.1.2" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">

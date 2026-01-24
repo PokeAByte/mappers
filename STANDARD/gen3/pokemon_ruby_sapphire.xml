@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="0ccf4618-3439-4cf7-84f8-4c2de3a89349" name="Pokemon Ruby and Sapphire" platform="GBA" version="1.1.0"
+<mapper id="0ccf4618-3439-4cf7-84f8-4c2de3a89349" name="Pokemon Ruby and Sapphire" platform="GBA" version="1.1.1" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
