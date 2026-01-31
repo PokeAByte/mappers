@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.8.2" syntax="4"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.9.2" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -785,6 +785,7 @@
         </overworld>
 		<flags>
 			<property name="new_game" type="bool" address="0x2234EE0" length="1" bits="0"/>
+			<property name="0x4030" type="int" address="0x223BD0C" length="2" />
 			<!--
 				Where are the Black/White flags located?
 
@@ -933,6 +934,16 @@
 		<misc>
 			<property name="step_counter" type="int" address="0x22395AC" length="4" />
 		</misc>
+		<patch>
+			<property name="stpStarterSpecies"    type="int" address="0x223BD16" length="2" reference="species" />
+			<property name="encounter_woobat"     type="int" address="0x223BD0E + (2 * 0)" length="2" />
+			<property name="encounter_roggenrola" type="int" address="0x223BD0E + (2 * 1)" length="2" />
+			<property name="encounter_tympole"    type="int" address="0x223BD0E + (2 * 2)" length="2" />
+			<property name="encounter_timburr"    type="int" address="0x223BD0E + (2 * 3)" length="2" />
+			<property name="encounter_pidove"     type="int" address="0x223BD0E + (2 * 5)" length="2" />
+			<!-- <property name="encounter_pidove"     type="bool" address="0x0223BD06 + (4 * 5)" length="2" /> -->
+			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
+		</patch>
 		<meta>
 			<property name="generation" type="int" value="5" />
 			<property name="game_name"  type="string" value="Black" />
