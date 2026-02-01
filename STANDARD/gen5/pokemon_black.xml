@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.9.2" syntax="4"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.9.3" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -785,7 +785,32 @@
         </overworld>
 		<flags>
 			<property name="new_game" type="bool" address="0x2234EE0" length="1" bits="0"/>
-			<property name="0x4030" type="int" address="0x223BD0C" length="2" />
+			<property name="0x4030" type="int" address="0x223BD0C + (2 * 0)" length="2" />
+			<property name="0x4031" type="int" address="0x223BD0C + (2 * 1)" length="2" />
+			<property name="0x4032" type="int" address="0x223BD0C + (2 * 2)" length="2" />
+			<property name="0x4033" type="int" address="0x223BD0C + (2 * 3)" length="2" />
+			<property name="0x4034" type="int" address="0x223BD0C + (2 * 4)" length="2" />
+			<property name="0x4035" type="int" address="0x223BD0C + (2 * 5)" length="2" />
+			<property name="0x4036" type="int" address="0x223BD0C + (2 * 6)" length="2" />
+			<property name="0x4037" type="int" address="0x223BD0C + (2 * 7)" length="2" />
+			<property name="0x4038" type="int" address="0x223BD0C + (2 * 8)" length="2" />
+			<property name="0x4039" type="int" address="0x223BD0C + (2 * 9)" length="2" />
+			<property name="0x403A" type="int" address="0x223BD0C + (2 * 10)" length="2" />
+			<property name="0x403B" type="int" address="0x223BD0C + (2 * 11)" length="2" />
+			<property name="0x403C" type="int" address="0x223BD0C + (2 * 12)" length="2" />
+			<property name="0x403D" type="int" address="0x223BD0C + (2 * 13)" length="2" />
+			<property name="0x403E" type="int" address="0x223BD0C + (2 * 14)" length="2" />
+			<property name="0x403F" type="int" address="0x223BD0C + (2 * 15)" length="2" />
+			<property name="0x4040" type="int" address="0x223BD0C + (2 * 16)" length="2" />
+			<property name="0x4041" type="int" address="0x223BD0C + (2 * 17)" length="2" />
+			<property name="0x4042" type="int" address="0x223BD0C + (2 * 18)" length="2" />
+			<property name="0x4043" type="int" address="0x223BD0C + (2 * 19)" length="2" />
+			<property name="0x4044" type="int" address="0x223BD0C + (2 * 20)" length="2" />
+			<property name="0x4045" type="int" address="0x223BD0C + (2 * 21)" length="2" />
+			<property name="0x4046" type="int" address="0x223BD0C + (2 * 22)" length="2" />
+			<property name="0x4047" type="int" address="0x223BD0C + (2 * 23)" length="2" />
+			<property name="0x4048" type="int" address="0x223BD0C + (2 * 24)" length="2" />
+			<property name="0x4049" type="int" address="0x223BD0C + (2 * 25)" length="2" />
 			<!--
 				Where are the Black/White flags located?
 
@@ -935,12 +960,12 @@
 			<property name="step_counter" type="int" address="0x22395AC" length="4" />
 		</misc>
 		<patch>
-			<property name="stpStarterSpecies"    type="int" address="0x223BD16" length="2" reference="species" />
-			<property name="encounter_woobat"     type="int" address="0x223BD0E + (2 * 0)" length="2" />
-			<property name="encounter_roggenrola" type="int" address="0x223BD0E + (2 * 1)" length="2" />
-			<property name="encounter_tympole"    type="int" address="0x223BD0E + (2 * 2)" length="2" />
-			<property name="encounter_timburr"    type="int" address="0x223BD0E + (2 * 3)" length="2" />
-			<property name="encounter_pidove"     type="int" address="0x223BD0E + (2 * 5)" length="2" />
+			<property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21)" length="2" reference="species" />
+			<property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16)" length="2" />
+			<property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17)" length="2" />
+			<property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18)" length="2" />
+			<property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19)" length="2" />
+			<property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20)" length="2" />
 			<!-- <property name="encounter_pidove"     type="bool" address="0x0223BD06 + (4 * 5)" length="2" /> -->
 			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
 		</patch>
