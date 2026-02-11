@@ -194,7 +194,15 @@ function preprocessor() {
     variables.dynamic_ally          = base_ptr + 0x593EC;
     variables.dynamic_opponent_2    = base_ptr + 0x5999C;
     variables.current_party_indexes = base_ptr + 0x54598 + 0x3EC;
-    const enemy_ptr = memory.defaultNamespace.get_uint32_le(base_ptr + 0x352F4); // Only needs to be calculated once per loop
+    // Safely read enemy_ptr - may be invalid during game reset
+    let enemy_ptr = 0;
+    try {
+        enemy_ptr = memory.defaultNamespace.get_uint32_le(base_ptr + 0x352F4); // Only needs to be calculated once per loop
+    } catch (e) {
+        // During game reset, base_ptr + 0x352F4 may point to invalid memory
+        // Set to 0 and let the existing validation on line 261 handle it
+        enemy_ptr = 0;
+    }
     // Set property values
     const gamestate = getGamestate();
     const battle_outcomes = getValue('battle.outcome');
