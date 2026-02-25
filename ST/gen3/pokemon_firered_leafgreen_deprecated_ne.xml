@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.4.9"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.5.2"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -636,14 +636,28 @@
             <property name="STP_CHOSEN_STARTER" type="int" address="0x0203f468 + (4 * 2)" length="4" reference="pokemonSpecies"/>
             <property name="STP_CATCH_RATE"     type="int" address="0x0203f468 + (4 * 3)" length="4"/>
             <stp_flags>
-                <property name="stp_pidgey_on_route_1"     type="bool" address="{dma_a} + 4090" bits="0" />
-                <property name="stp_rattata_on_route_1"    type="bool" address="{dma_a} + 4090" bits="1" />
-                <property name="stp_itemfinder_obtainaBLE" type="bool" address="{dma_a} + 4090" bits="2" />
-                <property name="stp_allow_evolution"       type="bool" address="{dma_a} + 4090" bits="3" />
+                <property name="stp_pidgey_on_route_1"      type="bool" address="{dma_a} + 4090" bits="0" />
+                <property name="stp_rattata_on_route_1"     type="bool" address="{dma_a} + 4090" bits="1" />
+                <property name="stp_itemfinder_obtainaBLE"  type="bool" address="{dma_a} + 4090" bits="2" />
+                <property name="stp_allow_evolution"        type="bool" address="{dma_a} + 4090" bits="3" />
+                <property name="stp_hm05_obtainable"        type="bool" address="{dma_a} + 4090" bits="4" />
+                <property name="stp_everstone_obtainable"   type="bool" address="{dma_a} + 4090" bits="5" />
+                <property name="stp_amulet_coin_obtainable" type="bool" address="{dma_a} + 4090" bits="6" />
+                <property name="stp_exp_share_obtainable"   type="bool" address="{dma_a} + 4090" bits="7" />
             </stp_flags>
         </patch>
         <flags>
             <property name="national_dex" type="bool" bits="0" address="{dma_a} + 4072" />
+            <hm_use_flags>
+                <property name="FLAG_BADGE01_GET" type="bool" address="{dma_a} + 0x0FE4" bits="0" />
+                <property name="FLAG_BADGE02_GET" type="bool" address="{dma_a} + 0x0FE4" bits="1" />
+                <property name="FLAG_BADGE03_GET" type="bool" address="{dma_a} + 0x0FE4" bits="2" />
+                <property name="FLAG_BADGE04_GET" type="bool" address="{dma_a} + 0x0FE4" bits="3" />
+                <property name="FLAG_BADGE05_GET" type="bool" address="{dma_a} + 0x0FE4" bits="4" />
+                <property name="FLAG_BADGE06_GET" type="bool" address="{dma_a} + 0x0FE4" bits="5" />
+                <property name="FLAG_BADGE07_GET" type="bool" address="{dma_a} + 0x0FE4" bits="6" />
+                <property name="FLAG_BADGE08_GET" type="bool" address="{dma_a} + 0x0FE4" bits="7" />
+            </hm_use_flags>
         </flags>
         <screen>
             <!-- <menu>
@@ -762,6 +776,7 @@
             <property name="soundEffect1" type="int" address="0x03007340" length="4" />
             <property name="soundEffect2" type="int" address="0x03007380" length="4" />
             <property name="musicID"      type="int" address="0x03000fc0" length="4" />
+            <property name="ch1"      type="int" address="0x03000fc0" length="4" />
         </audio>
         <gameTime>
             <property name="hours"   type="int" address="{dma_b} + 14" />
@@ -777,9 +792,23 @@
             <property name="callback2"     type="int"  length="4" address="0x30030f4" />
             <property name="sStpCallback1" type="int"  length="4" address="0x203f478" reference="stp_callback1" />
             <property name="sStpCallback2" type="int"  length="4" address="0x203f47c" reference="stp_callback2" />
+            <property name="sStpTracking"  type="int"  length="4" address="0x203f480" reference="stp_tracking" />
         </pointers>
+        <meta>
+            <property name="generation" type="int" value="3" />
+            <property name="gameName"   type="string" value="Pokemon FireRed and LeafGreen" />
+            <property name="gameType"   type="string" value="Remakes" />
+            <property name="mapperType" type="string" value="Deprecated" />
+            <property name="state"      type="string" />
+            <!-- <property name="state_enemy" type="string" /> -->
+        </meta>
     </properties>
     <references>
+        <stp_tracking>
+            <entry key="0" />
+            <entry key="1" value="HEAL"/>
+            <entry key="2" value="SAVE"/>
+        </stp_tracking>
         <palette>
             <entry key="411332407" value="MAIN MENU"/>
             <entry key="1744306176" value="NEW GAME"/>

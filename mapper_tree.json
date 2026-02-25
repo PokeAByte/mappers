@@ -73,15 +73,15 @@
     "display_name": "pokemon_emerald_deprecated_ne.xml",
     "path": "ST/gen3/pokemon_emerald_deprecated_ne.xml",
     "date_created": "2026-01-07T00:02:17.1330309+00:00",
-    "date_updated": "2026-01-13T18:37:01.9905867+00:00",
-    "version": "1.3.12"
+    "date_updated": "2026-02-25T17:42:56.3272347+00:00",
+    "version": "1.5.0"
   },
   {
     "display_name": "pokemon_firered_leafgreen_deprecated_ne.xml",
     "path": "ST/gen3/pokemon_firered_leafgreen_deprecated_ne.xml",
     "date_created": "2026-01-07T00:02:17.1345382+00:00",
-    "date_updated": "2026-01-17T19:17:42.769747+00:00",
-    "version": "1.4.9"
+    "date_updated": "2026-02-25T17:42:56.3272347+00:00",
+    "version": "1.5.2"
   },
   {
     "display_name": "pokemon_diamond_pearl_ne.xml",
