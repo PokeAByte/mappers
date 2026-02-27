@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.5.2"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.5.3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -855,7 +855,7 @@
             <entry key="134712241" value="Title Screen" />
         </subState>
         <stp_callback1>
-            <entry key="0" value="null" />
+            <entry key="0" />
             <entry key="1" value="BattleMainCB1" />
             <entry key="2" value="CB1_Overworld" />
             <entry key="3" value="CB1_UpdateLink" />
@@ -864,7 +864,7 @@
             <entry key="6" value="DoCB1_Overworld_QuestLogPlayback" />
         </stp_callback1>
         <stp_callback2>
-            <entry key="0"   value="null" />
+            <entry key="0"   />
             <entry key="1"   value="BattleMainCB2" />
             <entry key="2"   value="CB2_BagMenuFromBattle" />
             <entry key="3"   value="CB2_BagMenuFromStartMenu" />
