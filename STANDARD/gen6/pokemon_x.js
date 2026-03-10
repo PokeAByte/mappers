@@ -26,7 +26,7 @@ function setValue(path, value) {
 
 // PRNG function used for PK7 decryption (Gen 6/7 CryptArray)
 function prngNext(prngSeed) {
-    const newSeed = (0x41C64E6D * prngSeed + 0x6073) >>> 0;
+    const newSeed = Number((0x41C64E6Dn * BigInt(prngSeed) + 0x6073n) & 0xFFFFFFFFn);
     const value = (newSeed >>> 16) & 0xFFFF;
     return { newSeed, value };
 }
@@ -101,22 +101,19 @@ function preprocessor() {
 
         // Confirmed party base addresses for USUM (verified via PKHeX LiveHeX)
         const offsets = {
-            player: 0x330128E4,
-            party_pokemon_live: 0x33F7FA44,
+            player: 0x08CE1CE8,
+            // party_pokemon_live: 0x33F7FA44,
         };
 
-        // Live party uses 484-byte stride; save buffer uses 260-byte stride
-        const SLOT_SIZE   = user === 'party_pokemon_live' ? 484 : 260;
-        const BLOCK_SIZE  = 56;         // Gen 6/7 block size = 0x38
-        const HEADER_SIZE = 8;          // Unencrypted header (EC + sanity + checksum)
-        const BLOCK_DATA_END = 0xE8;    // 4 blocks × 56 bytes + 8-byte header
-        const STATS_END   = 0x104;      // End of party stats section
+        const SLOT_SIZE      = 484;    // live party slot stride
+        const BLOCK_SIZE     = 56;     // Gen 6/7 block size = 0x38
+        const HEADER_SIZE    = 8;      // Unencrypted header (EC + sanity + checksum)
+        const BLOCK_DATA_END = 0xE8;   // 4 blocks × 56 bytes + 8-byte header
+        const STATS_END      = 0x104;  // End of party stats section
 
-        const PK7_SIZE = 260;  // always decrypt into a 260-byte container
-        // Live party stats are at slot offset 0x158 (not 0xE8); read enough bytes to reach them
-        const READ_SIZE = user === 'party_pokemon_live' ? 0x174 : PK7_SIZE;
-        // Offset within the raw slot where the party stats are encrypted
-        const STATS_SRC = user === 'party_pokemon_live' ? 0x158 : 0xE8;
+        const PK7_SIZE  = 260;   // always decrypt into a 260-byte container
+        const READ_SIZE = 0x174; // must reach live party stats block at 0x158
+        const STATS_SRC = 0x158; // live party stats offset within slot
 
         for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
             const decryptedData = new Array(PK7_SIZE).fill(0x00);

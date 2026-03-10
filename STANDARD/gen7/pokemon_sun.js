@@ -101,8 +101,8 @@ function preprocessor() {
 
         // Confirmed party base addresses for USUM (verified via PKHeX LiveHeX)
         const offsets = {
-            player: 0x330128E4,
-            party_pokemon_live: 0x33F7FA44,
+            player: 0x34195E10,
+            party_pokemon_live: 0x34195E10,
         };
 
         // Live party uses 484-byte stride; save buffer uses 260-byte stride
