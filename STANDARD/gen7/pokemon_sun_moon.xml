@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="d8946dca-d851-478a-98b0-6e6e742910f0" name="Pokemon Ultra Sun" platform="N3DS" version="0.0.1"
+<mapper id="2cffbbd7-0f60-4c33-b13b-8add9b49984d" name="Pokemon Sun and Moon" platform="N3DS" version="0.0.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -8,11 +8,11 @@
 	<memory>
 		<!-- Player party: 6 slots × 260 bytes (PK7 SIZE_6PARTY = 0x104) -->
 		<!-- JS preprocessor reads this range, decrypts each slot, and writes to named containers -->
-		<read start="0x330128E4" end="0x33012EFC" />
-		<read start="0x33F7FA44" end="0x33F8059C" />
+		<read start="0x34195E10" end="0x34196E10" />
+		<!-- <read start="0x33F7FA44" end="0x33F8059C" /> -->
 		<!-- Battle structs: player active at 0x30002774, opponent at 0x30009928 (stride 0x69E8) -->
 		<!-- Range covers both slots plus all confirmed field offsets (last: opponent +0x21D = 0x30009B45) -->
-		<read start="0x30002774" end="0x30009B50" />
+		<!-- <read start="0x30002774" end="0x30009B50" /> -->
 	</memory>
 
 	<classes>
@@ -413,7 +413,7 @@
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_0" />
-				<!-- <class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" /> -->
+				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
 				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
 				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
 				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
@@ -422,14 +422,14 @@
 		</test>
 		<battle>
 			<!-- Player's active Pokemon: confirmed base 0x30002774 (USUM, found via species=725+HP/ability/move scan) -->
-			<class name="player_active" type="battle_pokemon" var:address="0x30002774" />
+			<!-- <class name="player_active" type="battle_pokemon" var:address="0x30002774" /> -->
 			<!-- Opponent's active Pokemon: confirmed base 0x30009928 (stride 0x69E8 from player base) -->
-			<class name="opponent_active" type="battle_pokemon" var:address="0x30009928" />
+			<!-- <class name="opponent_active" type="battle_pokemon" var:address="0x30009928" /> -->
 		</battle>
 		<meta>
 			<property name="generation"     type="int"    value="7" />
-			<property name="game_name"      type="string" value="Ultra Moon" />
-			<property name="game_type"      type="string" value="Sequel Version" />
+			<property name="game_name"      type="string" value="Sun and Moon" />
+			<property name="game_type"      type="string" value="Originals" />
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
 			<!-- <property name="global_pointer" type="int" address="0x2101D2C" length="4"/> -->

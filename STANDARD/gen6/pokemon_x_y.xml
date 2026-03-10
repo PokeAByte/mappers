@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="bcbc68ac-a933-441d-a2c4-78b0dbb71072" name="Pokemon Moon" platform="N3DS" version="0.0.1"
+<mapper id="b508407b-0c0b-4988-ab84-f8e35cf9f157" name="Pokemon X and Y" platform="N3DS" version="0.0.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
+
+	<!-- https://github.com/drgoku282/PKMN-NTR/blob/master/PKMN-NTR/Helpers/LookupTable.cs -->
 	<memory>
-		<!-- Player party: 6 slots × 260 bytes (PK7 SIZE_6PARTY = 0x104) -->
+		<!-- Player party: 6 slots × 484 bytes stride, reading 0x174 bytes each -->
+		<!-- Slot 0: 0x08CE1CE8, Slot 5 ends at 0x08CE27D0 -->
 		<!-- JS preprocessor reads this range, decrypts each slot, and writes to named containers -->
-		<read start="0x330128E4" end="0x33012EFC" />
-		<read start="0x33F7FA44" end="0x33F8059C" />
-		<!-- Battle structs: player active at 0x30002774, opponent at 0x30009928 (stride 0x69E8) -->
-		<!-- Range covers both slots plus all confirmed field offsets (last: opponent +0x21D = 0x30009B45) -->
-		<read start="0x30002774" end="0x30009B50" />
+		<read start="0x08CE1CE8" end="0x08CE27FF" />
 	</memory>
 
 	<classes>
-		<!--
+			<!--
 			PK7 decrypted layout (all offsets from byte 0 of the 260-byte decrypted struct):
 
 			Header (unencrypted):
@@ -71,7 +70,7 @@
 			  0xF8 (248): Speed                     (u16)
 			  0xFA (250): Sp. Attack                (u16)
 			  0xFC (252): Sp. Defense               (u16)
-		-->
+			-->
 		<party_pokemon>
 			<!-- Block A -->
 			<property name="species"    type="int"    address="8"   memoryContainer="{memoryContainer}" length="2" reference="species" />
@@ -339,51 +338,51 @@
 		  +0x21A (538): move4_id, +0x21C: move4_pp_cur, +0x21D: move4_pp_max
 		  Confirmed: Scratch(10)/35pp, Ember(52)/25pp w/ 11 remaining, Growl(45)/40pp w/ 37 remaining
 	-->
-	<battle_pokemon>
-		<property name="species"  address="{address} + 0"   type="int"  length="2" reference="species" />
-		<property name="hp_max"   address="{address} + 2"   type="int"  length="2" />
-		<property name="hp"       address="{address} + 4"   type="int"  length="2" />
-		<property name="ability"  address="{address} + 10"  type="int"  length="2" reference="abilities" />
-		<property name="level"    address="{address} + 12"  type="int"  length="2" />
-		<stats>
-			<property name="attack"          address="{address} + 462" type="int" length="2" />
-			<property name="defense"         address="{address} + 464" type="int" length="2" />
-			<property name="special_attack"  address="{address} + 466" type="int" length="2" />
-			<property name="special_defense" address="{address} + 468" type="int" length="2" />
-			<property name="speed"           address="{address} + 470" type="int" length="2" />
-		</stats>
-		<modifiers>
-			<property name="attack"          address="{address} + 478" type="int" reference="stage_modifiers" />
-			<property name="defense"         address="{address} + 479" type="int" reference="stage_modifiers" />
-			<property name="special_attack"  address="{address} + 480" type="int" reference="stage_modifiers" />
-			<property name="special_defense" address="{address} + 481" type="int" reference="stage_modifiers" />
-			<property name="speed"           address="{address} + 482" type="int" reference="stage_modifiers" />
-			<property name="accuracy"        address="{address} + 483" type="int" reference="stage_modifiers" />
-			<property name="evasion"         address="{address} + 484" type="int" reference="stage_modifiers" />
-		</modifiers>
-		<move_0>
-			<property name="id"     type="int" address="{address} + 496" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 498" />
-			<property name="pp_max" type="int" address="{address} + 499" />
-		</move_0>
-		<move_1>
-			<property name="id"     type="int" address="{address} + 510" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 512" />
-			<property name="pp_max" type="int" address="{address} + 513" />
-		</move_1>
-		<move_2>
-			<property name="id"     type="int" address="{address} + 524" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 526" />
-			<property name="pp_max" type="int" address="{address} + 527" />
-		</move_2>
-		<move_3>
-			<property name="id"     type="int" address="{address} + 538" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 540" />
-			<property name="pp_max" type="int" address="{address} + 541" />
-		</move_3>
-	</battle_pokemon>
+		<battle_pokemon>
+			<property name="species"  address="{address} + 0"   type="int"  length="2" reference="species" />
+			<property name="hp_max"   address="{address} + 2"   type="int"  length="2" />
+			<property name="hp"       address="{address} + 4"   type="int"  length="2" />
+			<property name="ability"  address="{address} + 10"  type="int"  length="2" reference="abilities" />
+			<property name="level"    address="{address} + 12"  type="int"  length="2" />
+			<stats>
+				<property name="attack"          address="{address} + 462" type="int" length="2" />
+				<property name="defense"         address="{address} + 464" type="int" length="2" />
+				<property name="special_attack"  address="{address} + 466" type="int" length="2" />
+				<property name="special_defense" address="{address} + 468" type="int" length="2" />
+				<property name="speed"           address="{address} + 470" type="int" length="2" />
+			</stats>
+			<modifiers>
+				<property name="attack"          address="{address} + 478" type="int" reference="stage_modifiers" />
+				<property name="defense"         address="{address} + 479" type="int" reference="stage_modifiers" />
+				<property name="special_attack"  address="{address} + 480" type="int" reference="stage_modifiers" />
+				<property name="special_defense" address="{address} + 481" type="int" reference="stage_modifiers" />
+				<property name="speed"           address="{address} + 482" type="int" reference="stage_modifiers" />
+				<property name="accuracy"        address="{address} + 483" type="int" reference="stage_modifiers" />
+				<property name="evasion"         address="{address} + 484" type="int" reference="stage_modifiers" />
+			</modifiers>
+			<move_0>
+				<property name="id"     type="int" address="{address} + 496" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 498" />
+				<property name="pp_max" type="int" address="{address} + 499" />
+			</move_0>
+			<move_1>
+				<property name="id"     type="int" address="{address} + 510" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 512" />
+				<property name="pp_max" type="int" address="{address} + 513" />
+			</move_1>
+			<move_2>
+				<property name="id"     type="int" address="{address} + 524" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 526" />
+				<property name="pp_max" type="int" address="{address} + 527" />
+			</move_2>
+			<move_3>
+				<property name="id"     type="int" address="{address} + 538" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 540" />
+				<property name="pp_max" type="int" address="{address} + 541" />
+			</move_3>
+		</battle_pokemon>
 
-	<player_item>
+		<player_item>
             <property name="item"     address="{address}" type="int" length="2" reference="items" />
             <property name="quantity" address="{address} + 2" type="int" length="2" />
         </player_item>
@@ -402,34 +401,36 @@
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
-				<!-- <class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" /> -->
-				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
-				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
-				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
-				<!-- <class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" /> -->
+				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
+				<class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" />
+				<class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" />
+				<class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" />
+				<class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" />
 			</team>
 		</player>
-		<test>
-			<team>
-				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
-				<class name="0" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_0" />
-				<!-- <class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" /> -->
-				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
-				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
-				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
-				<!-- <class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" /> -->
-			</team>
-		</test>
 		<battle>
 			<!-- Player's active Pokemon: confirmed base 0x30002774 (USUM, found via species=725+HP/ability/move scan) -->
-			<class name="player_active" type="battle_pokemon" var:address="0x30002774" />
+			<!-- <class name="player_active" type="battle_pokemon" var:address="0x30002774" /> -->
 			<!-- Opponent's active Pokemon: confirmed base 0x30009928 (stride 0x69E8 from player base) -->
-			<class name="opponent_active" type="battle_pokemon" var:address="0x30009928" />
+			<!-- <class name="opponent_active" type="battle_pokemon" var:address="0x30009928" /> -->
 		</battle>
+		<!-- <gametime>
+			<property name="hours1"  type="int" address="0x8CE2814 + (4 * 0)" length="4" />
+			<property name="hours2"  type="int" address="0x8CE2814 + (4 * 1)" length="4" />
+			<property name="hours3"  type="int" address="0x8CE2814 + (4 * 2)" length="4" />
+			<property name="hours4"  type="int" address="0x8CE2814 + (4 * 3)" length="4" />
+			<property name="hours5"  type="int" address="0x8CE2814 + (4 * 4)" length="4" />
+			<property name="hours6"  type="int" address="0x8CE2814 + (4 * 5)" length="4" />
+			<property name="hours7"  type="int" address="0x8CE2814 + (4 * 6)" length="4" />
+			<property name="hours8"  type="int" address="0x8CE2814 + (4 * 7)" length="4" />
+			<property name="hours9"  type="int" address="0x8CE2814 + (4 * 8)" length="4" />
+			<property name="hours10" type="int" address="0x8CE2814 + (4 * 9)" length="4" />
+			<property name="hours11" type="int" address="0x8CE2814 + (4 * 10)" length="4" />
+		</gametime> -->
 		<meta>
-			<property name="generation"     type="int"    value="7" />
-			<property name="game_name"      type="string" value="Ultra Moon" />
-			<property name="game_type"      type="string" value="Sequel Version" />
+			<property name="generation"     type="int"    value="6" />
+			<property name="game_name"      type="string" value="X and Y" />
+			<property name="game_type"      type="string" value="Originals" />
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
 			<!-- <property name="global_pointer" type="int" address="0x2101D2C" length="4"/> -->
