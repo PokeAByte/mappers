@@ -83,10 +83,10 @@
 			<property name="held_item"  type="int"    address="10"  memoryContainer="{memoryContainer}" length="2" reference="items" />
 			<property name="friendship" type="int"    address="40"  memoryContainer="{memoryContainer}" />
 			<property name="pokerus"    type="int"    address="36"  memoryContainer="{memoryContainer}" />
-			<!-- Block B -->
-			<property name="nickname"   type="string" address="88"  memoryContainer="{memoryContainer}" length="26" size="2" />
-			<!-- Block C -->
-			<property name="ot_name"    type="string" address="120" memoryContainer="{memoryContainer}" length="26" size="2" />
+			<!-- Block B: Nickname at 0x40 (24 bytes = 12 UTF-16 chars) -->
+			<property name="nickname"   type="string" address="64"  memoryContainer="{memoryContainer}" length="24" size="2" />
+			<!-- Block D: OT Name at 0xB0 (24 bytes = 12 UTF-16 chars) -->
+			<property name="ot_name"    type="string" address="176" memoryContainer="{memoryContainer}" length="24" size="2" />
 			<hidden_power>
 				<property name="power" type="int" />
 				<property name="type"  type="string" />
@@ -110,13 +110,13 @@
 				<property name="special_defense" type="int" address="252" length="2" memoryContainer="{memoryContainer}" />
 			</stats>
 			<ivs>
-				<!-- IV u32 packed at 0x40 (64): bits 0–4 HP, 5–9 ATK, 10–14 DEF, 15–19 SPE, 20–24 SPA, 25–29 SPD -->
-				<property name="hp"              type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="0-4"   />
-				<property name="attack"          type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="5-9"   />
-				<property name="defense"         type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="10-14" />
-				<property name="speed"           type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="15-19" />
-				<property name="special_attack"  type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="20-24" />
-				<property name="special_defense" type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="25-29" />
+				<!-- IV u32 packed at 0x74 (116): bits 0–4 HP, 5–9 ATK, 10–14 DEF, 15–19 SPE, 20–24 SPA, 25–29 SPD -->
+				<property name="hp"              type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="0-4"   />
+				<property name="attack"          type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="5-9"   />
+				<property name="defense"         type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="10-14" />
+				<property name="speed"           type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="15-19" />
+				<property name="special_attack"  type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="20-24" />
+				<property name="special_defense" type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="25-29" />
 			</ivs>
 			<evs>
 				<property name="hp"              type="int" address="30" memoryContainer="{memoryContainer}" />
@@ -127,8 +127,8 @@
 				<property name="special_defense" type="int" address="35" memoryContainer="{memoryContainer}" />
 			</evs>
 			<flags>
-				<property name="is_egg"       address="64" memoryContainer="{memoryContainer}" type="bool" length="4" bits="30"/>
-				<property name="is_nicknamed" address="64" memoryContainer="{memoryContainer}" type="bool" length="4" bits="31"/>
+				<property name="is_egg"       address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="30"/>
+				<property name="is_nicknamed" address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="31"/>
 			</flags>
 			<internals>
 				<property name="personality_value" address="0"  memoryContainer="{memoryContainer}" type="uint" length="4" />
@@ -261,7 +261,7 @@
 
 		<battle_structure>
 			<property name="species"          address="{address} + 0"    type="int"    length="2"  reference="species" />
-			<property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="defaultCharacterMap" />
+			<property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="gameTextCharacterMap" />
 			<property name="level"            address="{address} + 52"   type="int" />
 			<property name="exp"              address="{address} + 100"  type="uint"   length="4"/>
 			<property name="nature"           address="{address} + 104"  type="uint"   length="4" after-read-value-expression="x % 25" reference="natures" />
@@ -269,7 +269,7 @@
 			<property name="ability"          address="{address} + 39"   type="int" reference="abilities" />
 			<property name="type_1"           address="{address} + 36"   type="int" reference="pokemon_types" />
 			<property name="type_2"           address="{address} + 37"   type="int" reference="pokemon_types" />
-			<property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="defaultCharacterMap" />
+			<property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="gameTextCharacterMap" />
             <property name="held_item"        address="{address} + 120"  type="int" length="2" reference="items" />
 			<property name="status_condition" address="{address} + 108"  type="int" reference="status_conditions" />
 			<moves>
@@ -439,6 +439,94 @@
 
 	<references>
 		<defaultCharacterMap>
+			<entry key="0x0000" />
+			<entry key="0x0020" value=" " />
+			<entry key="0x0021" value="!" />
+			<entry key="0x0022" value='"' />
+			<entry key="0x0023" value="#" />
+			<entry key="0x0024" value="$" />
+			<entry key="0x0025" value="%" />
+			<entry key="0x0026" value="&amp;" />
+			<entry key="0x0027" value="'" />
+			<entry key="0x0028" value="(" />
+			<entry key="0x0029" value=")" />
+			<entry key="0x002A" value="*" />
+			<entry key="0x002B" value="+" />
+			<entry key="0x002C" value="," />
+			<entry key="0x002D" value="-" />
+			<entry key="0x002E" value="." />
+			<entry key="0x002F" value="/" />
+			<entry key="0x0030" value="0" />
+			<entry key="0x0031" value="1" />
+			<entry key="0x0032" value="2" />
+			<entry key="0x0033" value="3" />
+			<entry key="0x0034" value="4" />
+			<entry key="0x0035" value="5" />
+			<entry key="0x0036" value="6" />
+			<entry key="0x0037" value="7" />
+			<entry key="0x0038" value="8" />
+			<entry key="0x0039" value="9" />
+			<entry key="0x003A" value=":" />
+			<entry key="0x003B" value=";" />
+			<entry key="0x003F" value="?" />
+			<entry key="0x0040" value="@" />
+			<entry key="0x0041" value="A" />
+			<entry key="0x0042" value="B" />
+			<entry key="0x0043" value="C" />
+			<entry key="0x0044" value="D" />
+			<entry key="0x0045" value="E" />
+			<entry key="0x0046" value="F" />
+			<entry key="0x0047" value="G" />
+			<entry key="0x0048" value="H" />
+			<entry key="0x0049" value="I" />
+			<entry key="0x004A" value="J" />
+			<entry key="0x004B" value="K" />
+			<entry key="0x004C" value="L" />
+			<entry key="0x004D" value="M" />
+			<entry key="0x004E" value="N" />
+			<entry key="0x004F" value="O" />
+			<entry key="0x0050" value="P" />
+			<entry key="0x0051" value="Q" />
+			<entry key="0x0052" value="R" />
+			<entry key="0x0053" value="S" />
+			<entry key="0x0054" value="T" />
+			<entry key="0x0055" value="U" />
+			<entry key="0x0056" value="V" />
+			<entry key="0x0057" value="W" />
+			<entry key="0x0058" value="X" />
+			<entry key="0x0059" value="Y" />
+			<entry key="0x005A" value="Z" />
+			<entry key="0x0061" value="a" />
+			<entry key="0x0062" value="b" />
+			<entry key="0x0063" value="c" />
+			<entry key="0x0064" value="d" />
+			<entry key="0x0065" value="e" />
+			<entry key="0x0066" value="f" />
+			<entry key="0x0067" value="g" />
+			<entry key="0x0068" value="h" />
+			<entry key="0x0069" value="i" />
+			<entry key="0x006A" value="j" />
+			<entry key="0x006B" value="k" />
+			<entry key="0x006C" value="l" />
+			<entry key="0x006D" value="m" />
+			<entry key="0x006E" value="n" />
+			<entry key="0x006F" value="o" />
+			<entry key="0x0070" value="p" />
+			<entry key="0x0071" value="q" />
+			<entry key="0x0072" value="r" />
+			<entry key="0x0073" value="s" />
+			<entry key="0x0074" value="t" />
+			<entry key="0x0075" value="u" />
+			<entry key="0x0076" value="v" />
+			<entry key="0x0077" value="w" />
+			<entry key="0x0078" value="x" />
+			<entry key="0x0079" value="y" />
+			<entry key="0x007A" value="z" />
+			<entry key="0x007E" value="~" />
+			<entry key="0x2640" value="♀" />
+			<entry key="0x2642" value="♂" />
+		</defaultCharacterMap>
+		<gameTextCharacterMap>
 			<entry key="0xFFFF" />
 			<entry key="0x0002" value="ぁ" />
 			<entry key="0x0003" value="あ" />
@@ -4126,7 +4214,7 @@
 			<entry key="0x0E7F" value="琶" />
 			<entry key="0x0E80" value="锥" />
 			<entry key="0x0E81" value="锹" />
-		</defaultCharacterMap>
+		</gameTextCharacterMap>
 		<map_group>
 			<entry key="0" value="Mystery Zone" />
 			<entry key="1" value="Twinleaf Town" />

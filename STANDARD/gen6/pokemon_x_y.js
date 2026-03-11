@@ -101,7 +101,7 @@ function preprocessor() {
 
         // Confirmed party base addresses for USUM (verified via PKHeX LiveHeX)
         const offsets = {
-            player: 0x08CE1CE8,
+            player: 0x8CE1CF8 - 16,
             // party_pokemon_live: 0x33F7FA44,
         };
 

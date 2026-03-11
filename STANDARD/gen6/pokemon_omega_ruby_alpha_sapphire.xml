@@ -83,10 +83,10 @@
 			<property name="held_item"  type="int"    address="10"  memoryContainer="{memoryContainer}" length="2" reference="items" />
 			<property name="friendship" type="int"    address="40"  memoryContainer="{memoryContainer}" />
 			<property name="pokerus"    type="int"    address="36"  memoryContainer="{memoryContainer}" />
-			<!-- Block B -->
-			<property name="nickname"   type="string" address="88"  memoryContainer="{memoryContainer}" length="26" size="2" />
-			<!-- Block C -->
-			<property name="ot_name"    type="string" address="120" memoryContainer="{memoryContainer}" length="26" size="2" />
+			<!-- Block B: Nickname at 0x40 (24 bytes = 12 UTF-16 chars) -->
+			<property name="nickname"   type="string" address="64"  memoryContainer="{memoryContainer}" length="24" size="2" />
+			<!-- Block D: OT Name at 0xB0 (24 bytes = 12 UTF-16 chars) -->
+			<property name="ot_name"    type="string" address="176" memoryContainer="{memoryContainer}" length="24" size="2" />
 			<hidden_power>
 				<property name="power" type="int" />
 				<property name="type"  type="string" />
@@ -110,13 +110,13 @@
 				<property name="special_defense" type="int" address="252" length="2" memoryContainer="{memoryContainer}" />
 			</stats>
 			<ivs>
-				<!-- IV u32 packed at 0x40 (64): bits 0–4 HP, 5–9 ATK, 10–14 DEF, 15–19 SPE, 20–24 SPA, 25–29 SPD -->
-				<property name="hp"              type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="0-4"   />
-				<property name="attack"          type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="5-9"   />
-				<property name="defense"         type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="10-14" />
-				<property name="speed"           type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="15-19" />
-				<property name="special_attack"  type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="20-24" />
-				<property name="special_defense" type="int" address="64" length="4" memoryContainer="{memoryContainer}" bits="25-29" />
+				<!-- IV u32 packed at 0x74 (116): bits 0–4 HP, 5–9 ATK, 10–14 DEF, 15–19 SPE, 20–24 SPA, 25–29 SPD -->
+				<property name="hp"              type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="0-4"   />
+				<property name="attack"          type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="5-9"   />
+				<property name="defense"         type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="10-14" />
+				<property name="speed"           type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="15-19" />
+				<property name="special_attack"  type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="20-24" />
+				<property name="special_defense" type="int" address="116" length="4" memoryContainer="{memoryContainer}" bits="25-29" />
 			</ivs>
 			<evs>
 				<property name="hp"              type="int" address="30" memoryContainer="{memoryContainer}" />
@@ -127,8 +127,8 @@
 				<property name="special_defense" type="int" address="35" memoryContainer="{memoryContainer}" />
 			</evs>
 			<flags>
-				<property name="is_egg"       address="64" memoryContainer="{memoryContainer}" type="bool" length="4" bits="30"/>
-				<property name="is_nicknamed" address="64" memoryContainer="{memoryContainer}" type="bool" length="4" bits="31"/>
+				<property name="is_egg"       address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="30"/>
+				<property name="is_nicknamed" address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="31"/>
 			</flags>
 			<internals>
 				<property name="personality_value" address="0"  memoryContainer="{memoryContainer}" type="uint" length="4" />
@@ -261,7 +261,7 @@
 
 		<battle_structure>
 			<property name="species"          address="{address} + 0"    type="int"    length="2"  reference="species" />
-			<property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="defaultCharacterMap" />
+			<property name="nickname"         address="{address} + 54"   type="string" length="22" size="2" characterMap="gameTextCharacterMap" />
 			<property name="level"            address="{address} + 52"   type="int" />
 			<property name="exp"              address="{address} + 100"  type="uint"   length="4"/>
 			<property name="nature"           address="{address} + 104"  type="uint"   length="4" after-read-value-expression="x % 25" reference="natures" />
@@ -269,7 +269,7 @@
 			<property name="ability"          address="{address} + 39"   type="int" reference="abilities" />
 			<property name="type_1"           address="{address} + 36"   type="int" reference="pokemon_types" />
 			<property name="type_2"           address="{address} + 37"   type="int" reference="pokemon_types" />
-			<property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="defaultCharacterMap" />
+			<property name="ot_name"          address="{address} + 84"   type="string" length="8"  size="2" characterMap="gameTextCharacterMap" />
             <property name="held_item"        address="{address} + 120"  type="int" length="2" reference="items" />
 			<property name="status_condition" address="{address} + 108"  type="int" reference="status_conditions" />
 			<moves>
@@ -310,80 +310,80 @@
 		</battle_structure>
 
 		<!--
-		battle_pokemon: Confirmed USUM battle struct layout (unencrypted, live-updating)
-		Base addresses: player = 0x30002774, opponent = 0x30009928
+		battle_pokemon: X/Y battle struct layout (unencrypted, live-updating)
+		Base addresses: player = 0x08203ED4, opponent = 0x08204118 (heap, may change between battles)
+		Stride: 0x244 (580 bytes)
 
 		Header section (base + 0x000):
-		  +0x000 (0)  : species   u16   Confirmed: 725 (Litten = 0x02D5)
-		  +0x002 (2)  : hp_max    u16   Confirmed: 24 at lv7 (matches PK7 stat)
-		  +0x004 (4)  : hp_cur    u16   Confirmed live: drops each hit (was 17→14 during battle)
-		  +0x00A (10) : ability   u16   Confirmed: 66 = Blaze
-		  +0x00C (12) : level     u16   Confirmed: 7
+		  +0x000 (0)  : species   u16   Confirmed: 656 (Froakie)
+		  +0x002 (2)  : hp_max    u16   Confirmed: 22
+		  +0x004 (4)  : hp_cur    u16   Confirmed live: 16 (updates each turn)
+		  +0x00A (10) : ability   u16   Confirmed: 67 = Torrent
+		  +0x00C (12) : level     u16   Confirmed: 6
 
-		Sub-struct at +0x1CC (battle stats and move data):
-		  +0x1CE (462): atk       u16   Confirmed: 13 (matches base stat calculation)
-		  +0x1D0 (464): def       u16   Confirmed: 12
-		  +0x1D2 (466): spa       u16   Confirmed: 13
-		  +0x1D4 (468): spd       u16   Confirmed: 12
-		  +0x1D6 (470): spe       u16   Confirmed: 17
+		Battle stats at +0x0EA:
+		  +0x0EA (234): atk       u16   Confirmed: 12
+		  +0x0EC (236): def       u16   Confirmed: 12
+		  +0x0EE (238): spa       u16   Confirmed: 13
+		  +0x0F0 (240): spd       u16   Confirmed: 11
+		  +0x0F2 (242): spe       u16   Confirmed: 12
 
-		Stat stages at +0x1DE (7 consecutive u8, neutral = 6):
-		  +0x1DE (478): stage_atk, +0x1DF: stage_def, +0x1E0: stage_spa
-		  +0x1E1: stage_spd, +0x1E2: stage_spe, +0x1E3: stage_acc, +0x1E4: stage_eva
-		  Confirmed: all 6 (neutral) when no stages applied
+		Stat stages at +0x0F8 (7 consecutive u8, neutral = 6):
+		  +0x0F8 (248): stage_atk, +0x0F9: stage_def, +0x0FA: stage_spa
+		  +0x0FB: stage_spd, +0x0FC: stage_spe, +0x0FD: stage_acc, +0x0FE: stage_eva
 
-		Move data (spaced 0xE bytes apart, id u16 + pp_cur u8 + pp_max u8):
-		  +0x1F0 (496): move1_id, +0x1F2: move1_pp_cur, +0x1F3: move1_pp_max
-		  +0x1FE (510): move2_id, +0x200: move2_pp_cur, +0x201: move2_pp_max
-		  +0x20C (524): move3_id, +0x20E: move3_pp_cur, +0x20F: move3_pp_max
-		  +0x21A (538): move4_id, +0x21C: move4_pp_cur, +0x21D: move4_pp_max
-		  Confirmed: Scratch(10)/35pp, Ember(52)/25pp w/ 11 remaining, Growl(45)/40pp w/ 37 remaining
+		Move data (spaced 0x0E bytes apart, id u16 + pp_cur u8 + pp_max u8):
+		  +0x10A (266): move1_id, +0x10C: move1_pp_cur, +0x10D: move1_pp_max
+		  +0x118 (280): move2_id, +0x11A: move2_pp_cur, +0x11B: move2_pp_max
+		  +0x126 (294): move3_id, +0x128: move3_pp_cur, +0x129: move3_pp_max
+		  +0x134 (308): move4_id, +0x136: move4_pp_cur, +0x137: move4_pp_max
+		  Confirmed: Pound(1)/35pp, Growl(45)/40pp, Bubble(145)/29-30pp
 	-->
-	<battle_pokemon>
-		<property name="species"  address="{address} + 0"   type="int"  length="2" reference="species" />
-		<property name="hp_max"   address="{address} + 2"   type="int"  length="2" />
-		<property name="hp"       address="{address} + 4"   type="int"  length="2" />
-		<property name="ability"  address="{address} + 10"  type="int"  length="2" reference="abilities" />
-		<property name="level"    address="{address} + 12"  type="int"  length="2" />
-		<stats>
-			<property name="attack"          address="{address} + 462" type="int" length="2" />
-			<property name="defense"         address="{address} + 464" type="int" length="2" />
-			<property name="special_attack"  address="{address} + 466" type="int" length="2" />
-			<property name="special_defense" address="{address} + 468" type="int" length="2" />
-			<property name="speed"           address="{address} + 470" type="int" length="2" />
-		</stats>
-		<modifiers>
-			<property name="attack"          address="{address} + 478" type="int" reference="stage_modifiers" />
-			<property name="defense"         address="{address} + 479" type="int" reference="stage_modifiers" />
-			<property name="special_attack"  address="{address} + 480" type="int" reference="stage_modifiers" />
-			<property name="special_defense" address="{address} + 481" type="int" reference="stage_modifiers" />
-			<property name="speed"           address="{address} + 482" type="int" reference="stage_modifiers" />
-			<property name="accuracy"        address="{address} + 483" type="int" reference="stage_modifiers" />
-			<property name="evasion"         address="{address} + 484" type="int" reference="stage_modifiers" />
-		</modifiers>
-		<move_0>
-			<property name="id"     type="int" address="{address} + 496" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 498" />
-			<property name="pp_max" type="int" address="{address} + 499" />
-		</move_0>
-		<move_1>
-			<property name="id"     type="int" address="{address} + 510" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 512" />
-			<property name="pp_max" type="int" address="{address} + 513" />
-		</move_1>
-		<move_2>
-			<property name="id"     type="int" address="{address} + 524" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 526" />
-			<property name="pp_max" type="int" address="{address} + 527" />
-		</move_2>
-		<move_3>
-			<property name="id"     type="int" address="{address} + 538" length="2" reference="moves" />
-			<property name="pp"     type="int" address="{address} + 540" />
-			<property name="pp_max" type="int" address="{address} + 541" />
-		</move_3>
-	</battle_pokemon>
+		<battle_pokemon>
+			<property name="species"  address="{address} + 0"   type="int"  length="2" reference="species" />
+			<property name="hp_max"   address="{address} + 2"   type="int"  length="2" />
+			<property name="hp"       address="{address} + 4"   type="int"  length="2" />
+			<property name="ability"  address="{address} + 10"  type="int"  length="2" reference="abilities" />
+			<property name="level"    address="{address} + 12"  type="int"  length="2" />
+			<stats>
+				<property name="attack"          address="{address} + 234" type="int" length="2" />
+				<property name="defense"         address="{address} + 236" type="int" length="2" />
+				<property name="special_attack"  address="{address} + 238" type="int" length="2" />
+				<property name="special_defense" address="{address} + 240" type="int" length="2" />
+				<property name="speed"           address="{address} + 242" type="int" length="2" />
+			</stats>
+			<modifiers>
+				<property name="attack"          address="{address} + 248" type="int" reference="stage_modifiers" />
+				<property name="defense"         address="{address} + 249" type="int" reference="stage_modifiers" />
+				<property name="special_attack"  address="{address} + 250" type="int" reference="stage_modifiers" />
+				<property name="special_defense" address="{address} + 251" type="int" reference="stage_modifiers" />
+				<property name="speed"           address="{address} + 252" type="int" reference="stage_modifiers" />
+				<property name="accuracy"        address="{address} + 253" type="int" reference="stage_modifiers" />
+				<property name="evasion"         address="{address} + 254" type="int" reference="stage_modifiers" />
+			</modifiers>
+			<move_0>
+				<property name="id"     type="int" address="{address} + 266" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 268" />
+				<property name="pp_max" type="int" address="{address} + 269" />
+			</move_0>
+			<move_1>
+				<property name="id"     type="int" address="{address} + 280" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 282" />
+				<property name="pp_max" type="int" address="{address} + 283" />
+			</move_1>
+			<move_2>
+				<property name="id"     type="int" address="{address} + 294" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 296" />
+				<property name="pp_max" type="int" address="{address} + 297" />
+			</move_2>
+			<move_3>
+				<property name="id"     type="int" address="{address} + 308" length="2" reference="moves" />
+				<property name="pp"     type="int" address="{address} + 310" />
+				<property name="pp_max" type="int" address="{address} + 311" />
+			</move_3>
+		</battle_pokemon>
 
-	<player_item>
+		<player_item>
             <property name="item"     address="{address}" type="int" length="2" reference="items" />
             <property name="quantity" address="{address} + 2" type="int" length="2" />
         </player_item>
@@ -399,14 +399,17 @@
 
 	<properties>
 		<player>
+			<property name="name" type="string" address="0x8C81388 - 16" length="14" size="2" />
+			<property name="tid"  type="int" address="0x8C81340 - 16" length="2" />
+			<property name="sid"  type="int" address="0x8C81342 - 16" length="2" />
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
-				<!-- <class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" /> -->
-				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
-				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
-				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
-				<!-- <class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" /> -->
+				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
+				<class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" />
+				<class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" />
+				<class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" />
+				<class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" />
 			</team>
 		</player>
 		<test>
@@ -439,6 +442,94 @@
 
 	<references>
 		<defaultCharacterMap>
+			<entry key="0x0000" />
+			<entry key="0x0020" value=" " />
+			<entry key="0x0021" value="!" />
+			<entry key="0x0022" value='"' />
+			<entry key="0x0023" value="#" />
+			<entry key="0x0024" value="$" />
+			<entry key="0x0025" value="%" />
+			<entry key="0x0026" value="&amp;" />
+			<entry key="0x0027" value="'" />
+			<entry key="0x0028" value="(" />
+			<entry key="0x0029" value=")" />
+			<entry key="0x002A" value="*" />
+			<entry key="0x002B" value="+" />
+			<entry key="0x002C" value="," />
+			<entry key="0x002D" value="-" />
+			<entry key="0x002E" value="." />
+			<entry key="0x002F" value="/" />
+			<entry key="0x0030" value="0" />
+			<entry key="0x0031" value="1" />
+			<entry key="0x0032" value="2" />
+			<entry key="0x0033" value="3" />
+			<entry key="0x0034" value="4" />
+			<entry key="0x0035" value="5" />
+			<entry key="0x0036" value="6" />
+			<entry key="0x0037" value="7" />
+			<entry key="0x0038" value="8" />
+			<entry key="0x0039" value="9" />
+			<entry key="0x003A" value=":" />
+			<entry key="0x003B" value=";" />
+			<entry key="0x003F" value="?" />
+			<entry key="0x0040" value="@" />
+			<entry key="0x0041" value="A" />
+			<entry key="0x0042" value="B" />
+			<entry key="0x0043" value="C" />
+			<entry key="0x0044" value="D" />
+			<entry key="0x0045" value="E" />
+			<entry key="0x0046" value="F" />
+			<entry key="0x0047" value="G" />
+			<entry key="0x0048" value="H" />
+			<entry key="0x0049" value="I" />
+			<entry key="0x004A" value="J" />
+			<entry key="0x004B" value="K" />
+			<entry key="0x004C" value="L" />
+			<entry key="0x004D" value="M" />
+			<entry key="0x004E" value="N" />
+			<entry key="0x004F" value="O" />
+			<entry key="0x0050" value="P" />
+			<entry key="0x0051" value="Q" />
+			<entry key="0x0052" value="R" />
+			<entry key="0x0053" value="S" />
+			<entry key="0x0054" value="T" />
+			<entry key="0x0055" value="U" />
+			<entry key="0x0056" value="V" />
+			<entry key="0x0057" value="W" />
+			<entry key="0x0058" value="X" />
+			<entry key="0x0059" value="Y" />
+			<entry key="0x005A" value="Z" />
+			<entry key="0x0061" value="a" />
+			<entry key="0x0062" value="b" />
+			<entry key="0x0063" value="c" />
+			<entry key="0x0064" value="d" />
+			<entry key="0x0065" value="e" />
+			<entry key="0x0066" value="f" />
+			<entry key="0x0067" value="g" />
+			<entry key="0x0068" value="h" />
+			<entry key="0x0069" value="i" />
+			<entry key="0x006A" value="j" />
+			<entry key="0x006B" value="k" />
+			<entry key="0x006C" value="l" />
+			<entry key="0x006D" value="m" />
+			<entry key="0x006E" value="n" />
+			<entry key="0x006F" value="o" />
+			<entry key="0x0070" value="p" />
+			<entry key="0x0071" value="q" />
+			<entry key="0x0072" value="r" />
+			<entry key="0x0073" value="s" />
+			<entry key="0x0074" value="t" />
+			<entry key="0x0075" value="u" />
+			<entry key="0x0076" value="v" />
+			<entry key="0x0077" value="w" />
+			<entry key="0x0078" value="x" />
+			<entry key="0x0079" value="y" />
+			<entry key="0x007A" value="z" />
+			<entry key="0x007E" value="~" />
+			<entry key="0x2640" value="♀" />
+			<entry key="0x2642" value="♂" />
+		</defaultCharacterMap>
+		<gameTextCharacterMap>
 			<entry key="0xFFFF" />
 			<entry key="0x0002" value="ぁ" />
 			<entry key="0x0003" value="あ" />
@@ -4126,7 +4217,7 @@
 			<entry key="0x0E7F" value="琶" />
 			<entry key="0x0E80" value="锥" />
 			<entry key="0x0E81" value="锹" />
-		</defaultCharacterMap>
+		</gameTextCharacterMap>
 		<map_group>
 			<entry key="0" value="Mystery Zone" />
 			<entry key="1" value="Twinleaf Town" />
