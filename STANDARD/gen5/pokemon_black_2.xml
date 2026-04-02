@@ -241,7 +241,7 @@
 			<property name="pp_2"           type="int" address="{moveAddress} + 3" />
 			<property name="unknown_1"      type="int" address="{moveAddress} + 4" />
 			<property name="unknown_2"      type="int" address="{moveAddress} + 5" />
-			<property name="copy_move"      type="int" address="{moveAddress}" length="6" />
+			<property name="copy_move"      type="int" address="{moveAddress} + 6" />
 			<property name="copy_pp_1"      type="int" address="{moveAddress} + 8" />
 			<property name="copy_pp_2"      type="int" address="{moveAddress} + 9" />
 			<property name="copy_unknown_1" type="int" address="{moveAddress} + 10" />
