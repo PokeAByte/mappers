@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 	TODO:
-		- All trainer classes need references
-		- All map locations need references
-		- RAM locations required for:
-			- Map locations
-			- Trainer classes
-			- Pointers resposible for determining which Pokemon is currently in battle
-			- Battle outcome flags for state management
-		- Testing
-			- Double and triple battles need testing to see how the battle ram allocates space for those fights
+		- Check if the trainer classes are the same between White and Black
+		- Figure out how Reflect/Safeguard/Light Sceen work
+		- Find where storyline flags are located
+		- Clean up unneeded properties
+		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.7.11"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black 2 - Beta" platform="NDS" version="0.9.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -258,7 +254,8 @@
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
             <property name="held_item"        address="{address} + 70"  type="int" length="2" reference="items" />
-            <property name="held_item_temp"   address="{address} + 372" type="int" length="2" reference="items" />
+            <property name="held_item_temp"   address="{address} + 70" type="int" length="2" reference="items" />
+            <!-- <property name="held_item_temp"   address="{address} + 372" type="int" length="2" reference="items" /> -->
 			<property name="ability"          address="{address} + 74"  type="int" reference="abilities" />
 			<property name="ability_temp"     address="{address} + 368" type="int" reference="abilities" />
 			<property name="level"            address="{address} + 76"  type="int" />
@@ -705,11 +702,11 @@
 		</bag>
 		<overworld>
 			<!-- I think these properties are in DMA in Black2 & White2 (around 0x226803C) -->
-			<property name="map_name"  type="int" address="0x224684A - 0x40" length="1"/>
+			<property name="map_name"  type="int" address="0x224684A - 0x40" length="1" reference="maps"/>
 			<property name="map_index" type="int" address="0x224684A - 0x40" length="1"/>
 			<property name="x" type="int" length="4" address="0x2148DA6" /> 
             <property name="y" type="int" length="4" address="0x2148DAE" /> 
-            <!-- <property name="z" type="int" length="4" address="" />  -->
+            <property name="z" type="int" length="4" address="0x2148DB6" /> 
             <!-- REQUIRE ADDITIONAL PROPERTIES AND A FUNCTION TO CALCULATE THE CURRENT RATE 
 				Need to know the state of the player (Walking, surfing, fishing, etc.) and then
 				dynamically assign the encounter rate based on this
@@ -804,7 +801,6 @@
 				Where are the Black/White flags located?
 
 				It seems like some are at 0x223BCAC - likely counters (0x223BDA4 increments to 0x02 when the cinematic at the end of route 1 triggers)
-
 			-->
 		</flags>
 		<battle>
@@ -836,9 +832,81 @@
 				<property name="opponent_party_position_4" type="int" />
 				<property name="opponent_party_position_5" type="int" />
 				<property name="opponent_party_position_6" type="int" />
+				<team1>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk1_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk1_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk1_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk1_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk1_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk1_party_structure_5" />
+				</team1>
+				<team2>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk2_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk2_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk2_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk2_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk2_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk2_party_structure_5" />
+				</team2>
+				<team3>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk3_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk3_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk3_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk3_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk3_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk3_party_structure_5" />
+				</team3>
+				<team4>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk4_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk4_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk4_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk4_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk4_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk4_party_structure_5" />
+				</team4>
+				<team5>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk5_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk5_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk5_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk5_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk5_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk5_party_structure_5" />
+				</team5>
+				<team6>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk6_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk6_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk6_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk6_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk6_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk6_party_structure_5" />
+				</team6>
+				<team7>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk7_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk7_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk7_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk7_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk7_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk7_party_structure_5" />
+				</team7>
+				<team8>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk8_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk8_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk8_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk8_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk8_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk8_party_structure_5" />
+				</team8>
+				<team9>
+					<class name="0" type="party_pokemon" var:memoryContainer="unk9_party_structure_0" />
+					<class name="1" type="party_pokemon" var:memoryContainer="unk9_party_structure_1" />
+					<class name="2" type="party_pokemon" var:memoryContainer="unk9_party_structure_2" />
+					<class name="3" type="party_pokemon" var:memoryContainer="unk9_party_structure_3" />
+					<class name="4" type="party_pokemon" var:memoryContainer="unk9_party_structure_4" />
+					<class name="5" type="party_pokemon" var:memoryContainer="unk9_party_structure_5" />
+				</team9>
 			</TESTING>
 			<player>
-				<property name="party_position"   type="int" address="0x2257494 + 0x00 + (0 * 4) - 0x40" length="4" after-read-value-expression="(x - (36027608 - 0x40)) / 548" />
+				<property name="party_position"   type="int" address="0x22573AC + 0x00 + (0 * 4) - 0x40" length="4" after-read-value-expression="(x - (36024868 - 0x40)) / 548" />
 				<property name="team_count"    type="int" address="0x2258314 - 4 - 0x40" /> <!-- TODO: confirm this is the correct address -->
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
 				<team>
@@ -874,9 +942,11 @@
 				</team>
 			</ally>
 			<opponent>
-				<property name="trainer" type="int" address="0x224C844 - 0x40" length="2" reference="trainers" />
-				<property name="id" type="int" address="0x224C844 - 0x40" length="2" />
-				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 1) + 0x14 - 4 - 0x40" />
+				<property name="trainer" type="int" address="0x2257332 - 0x40" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x2257332 - 0x40" length="2" />
+				<property name="test_trainer" type="int" address="0x224C3EC - 0x40" length="2" reference="trainers" />
+				<property name="test_id" type="int" address="0x224C3EC - 0x40" length="2" />
+				<property name="team_count" type="int" address="0x2257332 + 0x1536 + 8 - 0x40" />
 				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
 				<team>
@@ -912,8 +982,8 @@
 			<opponent_3>
 			</opponent_3>
 			<field>
-                <!-- <property name="weather" type="int" address="" length="2" reference="weather" /> -->
-                <!-- <property name="weather_count" type="int" address="" /> -->
+                <property name="weather" type="int" address="0x21F63F4 + 0x1248C" length="4" reference="weather" /> <!-- TODO: Find address -->
+                <property name="weather_count" type="int" address="0x21F63F8 + 0x1248C" length="4"/> <!-- TODO: Find address -->
             </field>
 			<other>
 				<property name="battle_party_data_start" type="int" address="0x2258314 - 0x40" length="2"/> 
@@ -947,8 +1017,17 @@
 			<property name="seconds" type="int" address="0x22427DC - 0x40 + 3" />
 		</game_time>
 		<misc>
-			<!-- <property name="step_counter" type="int" address="0x22395AC" length="4" /> -->
+			<property name="step_counter" type="int" address="0x2223024 - 0x40" length="4" />
 		</misc>
+		<patch>
+			<!-- <property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21)" length="2" reference="species" /> -->
+			<!-- <property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16)" length="2" /> -->
+			<!-- <property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17)" length="2" /> -->
+			<!-- <property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18)" length="2" /> -->
+			<!-- <property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19)" length="2" /> -->
+			<!-- <property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20)" length="2" /> -->
+			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
+		</patch>
 		<meta>
 			<property name="generation" type="int" value="5" />
 			<property name="game_name"  type="string" value="Black 2" />

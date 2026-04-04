@@ -218,7 +218,7 @@ function preprocessor() {
         player7    : 0x226A220 + (0x560 * 6) + 0x14 + white_version_offset, // opponent_2
         player8    : 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // opponent_2
     };
-
+    
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
         // Loop through each party-slot within the given party-structure

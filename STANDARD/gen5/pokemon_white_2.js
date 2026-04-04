@@ -29,6 +29,9 @@ function getGamestate() {
     // 3. "Battle": In battle
     // 4. "To Battle": not yet implemented //TODO: Implement the 'To Battle' state, this requires a new property to accurately track it
     // 5. "From Battle": not yet implemented
+    // !TODO: ERROR HERE when entering trainer battle in White2, state does not progress from To Battle to Battle
+    // Only in some locations?
+    
     const state         = getValue('meta.state');
     const team_count    = getValue('player.team_count');
     const header        = getValue('battle.other.battle_header');
@@ -96,6 +99,15 @@ const partyStructures = [
     "dynamic_opponent", 
     "dynamic_ally", 
     "dynamic_opponent_2",
+    "unk1",
+    "unk2",
+    "unk3",
+    "unk4",
+    "unk5",
+    "unk6",
+    "unk7",
+    "unk8",
+    "unk9",
     // "player1",
     // "player2",
     // "player3",
@@ -178,59 +190,83 @@ function preprocessor() {
         dynamic_player: player_team_count,
         dynamic_opponent: opponent_team_count,
         dynamic_ally: ally_team_count,
-        dynamic_opponent_2: opponent_2_team_count,       
+        dynamic_opponent_2: opponent_2_team_count,    
     }
-    // Determine the offset from the base_ptr (global_pointer) - only run once per party-structure loop
-    // Updating structures start offset from the global_pointer by 0x5888C; they are 0x5B0 bytes long
-    // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
-    const offsets = {
-        // An extremely long block of party structures starts at address 0x221BFB0
-        player          : 0x221E42C - black2_version_offset,
+    // const partyStructures = [
+    //     "player", 
+    //     "dynamic_player", 
+    //     "dynamic_opponent", 
+    //     "dynamic_ally", 
+    //     "dynamic_opponent_2",
+    //     // "player1",
+    //     // "player2",
+    //     // "player3",
+    //     // "player4",
+    //     // "player5",
+    //     // "player6",
+    //     // "player7",
+    //     // "player8",
+    //     "unk1",
+    //     "unk2",
+    //     "unk3",
+    //     "unk4",
+    //     "unk5",
+    //     "unk6",
+    //     "unk7",
+    //     "unk8",
+    //     "unk9",
+    // ];
+        // Determine the offset from the base_ptr (global_pointer) - only run once per party-structure loop
+        // Updating structures start offset from the global_pointer by 0x5888C; they are 0x5B0 bytes long
+        // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
+        const offsets = {
+            // An extremely long block of party structures starts at address 0x221BFB0
+            player          : 0x221E42C - black2_version_offset,
 
-        dynamic_player    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // Confirmed as White2 address (party structure length is 0x560)
-        dynamic_opponent  : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // Confirmed as White2 address
-        dynamic_ally      : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-        dynamic_opponent_2: 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-        // unknown_1         : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
-        // unknown_2         : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            dynamic_player    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // Confirmed as White2 address (party structure length is 0x560)
+            dynamic_opponent  : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // Confirmed as White2 address
+            dynamic_ally      : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            dynamic_opponent_2: 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            // unknown_1         : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
+            // unknown_2         : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // Confirmed as White2 address // TODO: what does this party structure correspond to?
 
-        player1    : 0x2257DA0 + (0x560 * 0) + 0x14 - black2_version_offset, // player
-        player2    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // player
-        player3    : 0x2257DA0 + (0x560 * 2) + 0x14 - black2_version_offset, // opponent_1
-        player4    : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // opponent_1
-        player5    : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // ally
-        player6    : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // ally
-        player7    : 0x2257DA0 + (0x560 * 6) + 0x14 - black2_version_offset, // opponent_2
-        player8    : 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // opponent_2
+            player1    : 0x2257DA0 + (0x560 * 0) + 0x14 - black2_version_offset, // player
+            player2    : 0x2257DA0 + (0x560 * 1) + 0x14 - black2_version_offset, // player
+            player3    : 0x2257DA0 + (0x560 * 2) + 0x14 - black2_version_offset, // opponent_1
+            player4    : 0x2257DA0 + (0x560 * 3) + 0x14 - black2_version_offset, // opponent_1
+            player5    : 0x2257DA0 + (0x560 * 4) + 0x14 - black2_version_offset, // ally
+            player6    : 0x2257DA0 + (0x560 * 5) + 0x14 - black2_version_offset, // ally
+            player7    : 0x2257DA0 + (0x560 * 6) + 0x14 - black2_version_offset, // opponent_2
+            player8    : 0x2257DA0 + (0x560 * 7) + 0x14 - black2_version_offset, // opponent_2
 
-        // Starting addresses for these structures are variable - I don't know how to determine them yet
-        // They need to be mapped because following these structures is where the trainer ID gets stored
-        unk1: 0x224B688 + (0x560 * 0) + 0x14,
-        unk2: 0x224B688 + (0x560 * 1) + 0x14,
-        unk3: 0x224B688 + (0x560 * 2) + 0x14,
-        unk4: 0x224B688 + (0x560 * 3) + 0x14,
-        unk5: 0x224B688 + (0x560 * 4) + 0x14,
-        unk6: 0x224B688 + (0x560 * 5) + 0x14,
-        unk7: 0x224B688 + (0x560 * 6) + 0x14,
-        unk8: 0x224B688 + (0x560 * 7) + 0x14,
-        unk9: 0x224B688 + (0x560 * 8) + 0x14,
-    };
-    
-    for (let i = 0; i < partyStructures.length; i++) {
-        let user = partyStructures[i];
-        // Loop through each party-slot within the given party-structure
-        for (let slotIndex = 0; slotIndex < structureSlots[user]; slotIndex++) {
-            // Initialize an empty array to store the decrypted data
-            const startingAddress = offsets[user] + (220 * slotIndex);
-            const encryptedData = memory.defaultNamespace.get_bytes(startingAddress, 220); // Read the Pokemon's data (220-bytes)
-            const decryptedData = pokemon.Decrypt(5, encryptedData.data);
-            // Fills the memory contains for the mapper's class to interpret
-            memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decryptedData);
-            if (slotIndex == 0 && user == "player") {
-                setValue(`player.decrypted_mon_0`, memory[`player_party_structure_0`]);
+            // Starting addresses for these structures are variable - I don't know how to determine them yet
+            // They need to be mapped because following these structures is where the trainer ID gets stored
+            unk1: 0x224B688 + (0x560 * 0) + 0x14,
+            unk2: 0x224B688 + (0x560 * 1) + 0x14,
+            unk3: 0x224B688 + (0x560 * 2) + 0x14,
+            unk4: 0x224B688 + (0x560 * 3) + 0x14,
+            unk5: 0x224B688 + (0x560 * 4) + 0x14,
+            unk6: 0x224B688 + (0x560 * 5) + 0x14,
+            unk7: 0x224B688 + (0x560 * 6) + 0x14,
+            unk8: 0x224B688 + (0x560 * 7) + 0x14,
+            unk9: 0x224B688 + (0x560 * 8) + 0x14,
+        };
+
+        for (let i = 0; i < partyStructures.length; i++) {
+            let user = partyStructures[i];
+            // Loop through each party-slot within the given party-structure
+            for (let slotIndex = 0; slotIndex < structureSlots[user]; slotIndex++) {
+                // Initialize an empty array to store the decrypted data
+                const startingAddress = offsets[user] + (220 * slotIndex);
+                const encryptedData = memory.defaultNamespace.get_bytes(startingAddress, 220); // Read the Pokemon's data (220-bytes)
+                const decryptedData = pokemon.Decrypt(5, encryptedData.data);
+                // Fills the memory contains for the mapper's class to interpret
+                memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decryptedData);
+                if (slotIndex == 0 && user == "player") {
+                    setValue(`player.decrypted_mon_0`, memory[`player_party_structure_0`]);
+                }
             }
         }
     }
-}
-
-export { containerprocessor, preprocessor };
+    
+    export { containerprocessor, preprocessor };

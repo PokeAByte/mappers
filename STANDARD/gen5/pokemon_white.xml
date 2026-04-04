@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.7.12" syntax="4"
+<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.9.4" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -785,6 +785,32 @@
         </overworld>
 		<flags>
 			<property name="new_game" type="bool" address="0x2234EE0 + 0x20" length="1" bits="0"/>
+			<property name="0x4030" type="int" address="0x223BD0C + (2 * 0) + 0x20" length="2" />
+			<property name="0x4031" type="int" address="0x223BD0C + (2 * 1) + 0x20" length="2" />
+			<property name="0x4032" type="int" address="0x223BD0C + (2 * 2) + 0x20" length="2" />
+			<property name="0x4033" type="int" address="0x223BD0C + (2 * 3) + 0x20" length="2" />
+			<property name="0x4034" type="int" address="0x223BD0C + (2 * 4) + 0x20" length="2" />
+			<property name="0x4035" type="int" address="0x223BD0C + (2 * 5) + 0x20" length="2" />
+			<property name="0x4036" type="int" address="0x223BD0C + (2 * 6) + 0x20" length="2" />
+			<property name="0x4037" type="int" address="0x223BD0C + (2 * 7) + 0x20" length="2" />
+			<property name="0x4038" type="int" address="0x223BD0C + (2 * 8) + 0x20" length="2" />
+			<property name="0x4039" type="int" address="0x223BD0C + (2 * 9) + 0x20" length="2" />
+			<property name="0x403A" type="int" address="0x223BD0C + (2 * 10) + 0x20" length="2" />
+			<property name="0x403B" type="int" address="0x223BD0C + (2 * 11) + 0x20" length="2" />
+			<property name="0x403C" type="int" address="0x223BD0C + (2 * 12) + 0x20" length="2" />
+			<property name="0x403D" type="int" address="0x223BD0C + (2 * 13) + 0x20" length="2" />
+			<property name="0x403E" type="int" address="0x223BD0C + (2 * 14) + 0x20" length="2" />
+			<property name="0x403F" type="int" address="0x223BD0C + (2 * 15) + 0x20" length="2" />
+			<property name="0x4040" type="int" address="0x223BD0C + (2 * 16) + 0x20" length="2" />
+			<property name="0x4041" type="int" address="0x223BD0C + (2 * 17) + 0x20" length="2" />
+			<property name="0x4042" type="int" address="0x223BD0C + (2 * 18) + 0x20" length="2" />
+			<property name="0x4043" type="int" address="0x223BD0C + (2 * 19) + 0x20" length="2" />
+			<property name="0x4044" type="int" address="0x223BD0C + (2 * 20) + 0x20" length="2" />
+			<property name="0x4045" type="int" address="0x223BD0C + (2 * 21) + 0x20" length="2" />
+			<property name="0x4046" type="int" address="0x223BD0C + (2 * 22) + 0x20" length="2" />
+			<property name="0x4047" type="int" address="0x223BD0C + (2 * 23) + 0x20" length="2" />
+			<property name="0x4048" type="int" address="0x223BD0C + (2 * 24) + 0x20" length="2" />
+			<property name="0x4049" type="int" address="0x223BD0C + (2 * 25) + 0x20" length="2" />
 			<!--
 				Where are the Black/White flags located?
 
@@ -933,6 +959,16 @@
 		<misc>
 			<property name="step_counter" type="int" address="0x22395AC + 0x20" length="4" />
 		</misc>
+		<patch>
+			<property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21) + 0x20" length="2" reference="species" />
+			<property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16) + 0x20" length="2" />
+			<property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17) + 0x20" length="2" />
+			<property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18) + 0x20" length="2" />
+			<property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19) + 0x20" length="2" />
+			<property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20) + 0x20" length="2" />
+			<!-- <property name="encounter_pidove"     type="bool" address="0x0223BD06 + (4 * 5)" length="2" /> -->
+			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
+		</patch>
 		<meta>
 			<property name="generation" type="int" value="5" />
 			<property name="game_name"  type="string" value="White" />
@@ -2484,7 +2520,7 @@
 			<entry key="0x006E"	value="Oval Stone" />
 			<entry key="0x006F"	value="Odd Keystone" />
 			<entry key="0x0070"	value="Griseous Orb" />
-			<entry key="0x0071"	/>
+			<entry key="0x0071"	value="Link Cable" />
 			<entry key="0x0072"	/>
 			<entry key="0x0073"	/>
 			<entry key="0x0074"	value="Douse Drive" />
