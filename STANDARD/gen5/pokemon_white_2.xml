@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 	TODO:
-		- All trainer classes need references
-		- All map locations need references
-		- RAM locations required for:
-			- Map locations
-			- Trainer classes
-			- Pointers resposible for determining which Pokemon is currently in battle
-			- Battle outcome flags for state management
-		- Testing
-			- Double and triple battles need testing to see how the battle ram allocates space for those fights
+		- Check if the trainer classes are the same between White and Black
+		- Figure out how Reflect/Safeguard/Light Sceen work
+		- Find where storyline flags are located
+		- Clean up unneeded properties
+		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.7.10"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -241,7 +237,7 @@
 			<property name="pp_2"           type="int" address="{moveAddress} + 3" />
 			<property name="unknown_1"      type="int" address="{moveAddress} + 4" />
 			<property name="unknown_2"      type="int" address="{moveAddress} + 5" />
-			<property name="copy_move"      type="int" address="{moveAddress}" length="6" />
+			<property name="copy_move"      type="int" address="{moveAddress} + 6" />
 			<property name="copy_pp_1"      type="int" address="{moveAddress} + 8" />
 			<property name="copy_pp_2"      type="int" address="{moveAddress} + 9" />
 			<property name="copy_unknown_1" type="int" address="{moveAddress} + 10" />
@@ -258,7 +254,8 @@
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
             <property name="held_item"        address="{address} + 70"  type="int" length="2" reference="items" />
-            <property name="held_item_temp"   address="{address} + 372" type="int" length="2" reference="items" />
+            <property name="held_item_temp"   address="{address} + 70" type="int" length="2" reference="items" />
+            <!-- <property name="held_item_temp"   address="{address} + 372" type="int" length="2" reference="items" /> -->
 			<property name="ability"          address="{address} + 74"  type="int" reference="abilities" />
 			<property name="ability_temp"     address="{address} + 368" type="int" reference="abilities" />
 			<property name="level"            address="{address} + 76"  type="int" />
@@ -389,7 +386,7 @@
 			<property name="secret_id"  type="int" address="0x223B4B6" length="2" />
 			<property name="team_count" type="int" address="0x221E42C - 4" />
 			<property name="decrypted_mon_0" type="string" address="0x221E42C" length="220" />
-			<!-- <property name="decrypted_mon_1" type="string" address="0x2268594 + 0x16688" length="220" /> --> <!--  Find address for White2 -->
+			<property name="decrypted_mon_1" type="string" address="0x225200C" length="220" /> <!--  Find address for White2 -->
 			<team>
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
 				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
@@ -804,7 +801,6 @@
 				Where are the Black/White flags located?
 
 				It seems like some are at 0x223BCAC - likely counters (0x223BDA4 increments to 0x02 when the cinematic at the end of route 1 triggers)
-
 			-->
 		</flags>
 		<battle>
@@ -812,18 +808,18 @@
             <!-- <property name="outcome" type="string" /> -->
 			<TESTING>
 				<!-- <property name="enemy_state" type="int" address="0x2140524" length="2" /> -->
-				<property name="player_indirect_1"   type="int" address="0x2257494 + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
-				<property name="player_indirect_2"   type="int" address="0x2257494 + 0x00 + (1 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
-				<property name="player_indirect_3"   type="int" address="0x2257494 + 0x00 + (2 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
-				<property name="player_indirect_4"   type="int" address="0x2257494 + 0x00 + (3 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
-				<property name="player_indirect_5"   type="int" address="0x2257494 + 0x00 + (4 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
-				<property name="player_indirect_6"   type="int" address="0x2257494 + 0x00 + (5 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
-				<property name="opponent_indirect_1" type="int" address="0x2257494 + 0x1C + (0 * 4)" length="4" />
-				<property name="opponent_indirect_2" type="int" address="0x2257494 + 0x1C + (1 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
-				<property name="opponent_indirect_3" type="int" address="0x2257494 + 0x1C + (2 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
-				<property name="opponent_indirect_4" type="int" address="0x2257494 + 0x1C + (3 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
-				<property name="opponent_indirect_5" type="int" address="0x2257494 + 0x1C + (4 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
-				<property name="opponent_indirect_6" type="int" address="0x2257494 + 0x1C + (5 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="player_indirect_1"   type="int" address="0x22573AC + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_2"   type="int" address="0x22573AC + 0x00 + (1 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_3"   type="int" address="0x22573AC + 0x00 + (2 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_4"   type="int" address="0x22573AC + 0x00 + (3 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_5"   type="int" address="0x22573AC + 0x00 + (4 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="player_indirect_6"   type="int" address="0x22573AC + 0x00 + (5 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="opponent_indirect_1" type="int" address="0x22573AC + 0x1C + (0 * 4)" length="4" />
+				<property name="opponent_indirect_2" type="int" address="0x22573AC + 0x1C + (1 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_3" type="int" address="0x22573AC + 0x1C + (2 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_4" type="int" address="0x22573AC + 0x1C + (3 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_5" type="int" address="0x22573AC + 0x1C + (4 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
+				<property name="opponent_indirect_6" type="int" address="0x22573AC + 0x1C + (5 * 4)" length="4" after-read-value-expression="(x - 36025964) / 548" />
 				<property name="player_party_position_1" type="int" />
 				<property name="player_party_position_2" type="int" />
 				<property name="player_party_position_3" type="int" />
@@ -910,7 +906,7 @@
 				</team9>
 			</TESTING>
 			<player>
-				<property name="party_position"   type="int" address="0x2257494 + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36027608) / 548" />
+				<property name="party_position"   type="int" address="0x22573AC + 0x00 + (0 * 4)" length="4" after-read-value-expression="(x - 36024868) / 548" />
 				<property name="team_count"    type="int" address="0x2258314 - 4" /> <!-- TODO: confirm this is the correct address -->
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
 				<team>
@@ -946,11 +942,11 @@
 				</team>
 			</ally>
 			<opponent>
-				<property name="trainer" type="int" address="0x224C844" length="2" reference="trainers" />
-				<property name="id" type="int" address="0x224C844" length="2" />
+				<property name="trainer" type="int" address="0x2257332" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x2257332" length="2" />
 				<property name="test_trainer" type="int" address="0x224C3EC" length="2" reference="trainers" />
 				<property name="test_id" type="int" address="0x224C3EC" length="2" />
-				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 1) + 0x14 - 4" />
+				<property name="team_count" type="int" address="0x2257332 + 0x1536 + 8" />
 				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
 				<team>
@@ -986,8 +982,8 @@
 			<opponent_3>
 			</opponent_3>
 			<field>
-                <!-- <property name="weather" type="int" address="0x21F63F4" length="4" reference="weather" /> -->
-                <!-- <property name="weather_count" type="int" address="0x21F63F8" length="4"/> -->
+                <property name="weather" type="int" address="0x21F63F4 + 0x1248C" length="4" reference="weather" /> <!-- TODO: Find address -->
+                <property name="weather_count" type="int" address="0x21F63F8 + 0x1248C" length="4"/> <!-- TODO: Find address -->
             </field>
 			<other>
 				<property name="battle_party_data_start" type="int" address="0x2258314" length="2"/> 
@@ -1023,6 +1019,15 @@
 		<misc>
 			<property name="step_counter" type="int" address="0x2223024" length="4" />
 		</misc>		
+		<patch>
+			<!-- <property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21)" length="2" reference="species" /> -->
+			<!-- <property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16)" length="2" /> -->
+			<!-- <property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17)" length="2" /> -->
+			<!-- <property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18)" length="2" /> -->
+			<!-- <property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19)" length="2" /> -->
+			<!-- <property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20)" length="2" /> -->
+			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
+		</patch>
 		<meta>
 			<property name="generation" type="int" value="5" />
 			<property name="game_name"  type="string" value="White 2" />

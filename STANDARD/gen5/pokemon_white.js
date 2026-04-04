@@ -24,24 +24,6 @@ const setValue = mapper.set_property_value;
 // battle static: 0x226A234
 // battle dynamic: 0x226A794
 
-const hidden_power_types = {
-    0 : "Fighting",
-    1 : "Flying",
-    2 : "Poison",
-    3 : "Ground",
-    4 : "Rock",
-    5 : "Bug",
-    6 : "Ghost",
-    7 : "Steel",
-    8 : "Fire",
-    9 : "Water",
-    10: "Grass",
-    11: "Electric",
-    12: "Psychic",
-    13: "Ice",
-    14: "Dragon",
-    15: "Dark",
-};
 function getGamestate() {
     // FSM FOR GAMESTATE TRACKING
     // MAIN GAMESTATE: This tracks the three basic states the game can be in.
@@ -90,83 +72,6 @@ function getGamestate() {
     }
     return return_state
 }
-function getMetaEnemyState(state, battle_outcomes, enemyBarSyncedHp) {
-    // ENEMY POKEMON MID-BATTLE STATE: Allows for precise timing during battles
-    if (state === "No Pokemon" || state === "Overworld")
-        return 'N/A';
-    else if (state === "Battle" && battle_outcomes === 1)
-        return 'Battle Finished';
-    else if (state === "Battle" && enemyBarSyncedHp > 0)
-        return 'Pokemon In Battle';
-    else if (state === "Battle" && enemyBarSyncedHp === 0)
-        return 'Pokemon Fainted';
-    return null;
-}
-function getBattleMode(state, opponentTrainer) {
-    if (state === 'Battle') {
-        if (opponentTrainer === null)
-            return 'Wild';
-        else
-            return 'Trainer';
-    }
-    else {
-        return null;
-    }
-}
-function getBattleOutcome() {
-    const outcome_flags = getValue('battle.other.outcome_flags');
-    const state = getGamestate();
-    switch (state) {
-        case 'From Battle':
-            switch (outcome_flags) {
-                case 1:
-                    return 'Win';
-                default:
-                    return null;
-            }
-    }
-    return null;
-}
-/** Calculate the encounter rate based on other variables */
-function getEncounterRate() {
-    const walking = getValue("overworld.encounter_rates.walking");
-    // Need properties to correctly determine which of these to return
-    // const surfing = getValue("overworld.encounter_rates.surfing");
-    // const old_rod = getValue("overworld.encounter_rates.old_rod");
-    // const good_rod = getValue("overworld.encounter_rates.good_rod");
-    // const super_rod = getValue("overworld.encounter_rates.super_rod");
-    return walking;
-}
-function hiddenPower(path) {
-    const hp  = getValue(`${path}.ivs.hp`);
-    const atk = getValue(`${path}.ivs.attack`);
-    const def = getValue(`${path}.ivs.defense`);
-    const spe = getValue(`${path}.ivs.speed`);
-    const spa = getValue(`${path}.ivs.special_attack`);
-    const spd = getValue(`${path}.ivs.special_defense`);
-
-    let ivHpBit   = hp % 2
-    let ivAtkBit  = atk % 2
-    let ivDefBit  = def % 2
-    let ivSpdBit  = spe % 2
-    let ivSpcABit = spa % 2
-    let ivSpcDBit = spd % 2
-    let type = Math.floor(((ivHpBit + (2 * ivAtkBit) + (4 * ivDefBit) + (8 * ivSpdBit) + (16 * ivSpcABit) + (32 * ivSpcDBit)) * 5)/21)
-    type = hidden_power_types[type]
-    
-    ivHpBit   = ((hp & 2)  >> 1)
-    ivAtkBit  = ((atk & 2) >> 1)
-    ivDefBit  = ((def & 2) >> 1)
-    ivSpdBit  = ((spe & 2) >> 1)
-    ivSpcABit = ((spa & 2) >> 1)
-    ivSpcDBit = ((spd & 2) >> 1)
-    let power = Math.floor((((ivHpBit + (2 * ivAtkBit) + (4 * ivDefBit) + (8 * ivSpdBit) + (16 * ivSpcABit) + (32 * ivSpcDBit)) * 40)/63) + 30 )
-
-    return {
-        type: type,
-        power: power
-    };
-}
 
 function containerprocessor(container, containerBytes) {
     let address = 0;
@@ -187,11 +92,43 @@ function containerprocessor(container, containerBytes) {
     containerBytes[0x07] = (checksum >> 8) & 0xFF
     driver.WriteBytes(address, pokemon.Encrypt(5, containerBytes));
 }
+
+const partyStructures = [
+    "player", 
+    "dynamic_player", 
+    "dynamic_opponent", 
+    "dynamic_ally", 
+    "dynamic_opponent_2",
+    // "player1",
+    // "player2",
+    // "player3",
+    // "player4",
+    // "player5",
+    // "player6",
+    // "player7",
+    // "player8",
+];
+
+const initializeContainers = () => {
+    if (__state.initialized === true) {
+        return;
+    }
+    // pre-fill all the slots 
+    const blankData = new Array(220).fill(0x00);
+    for (let i = 0; i < partyStructures.length; i++) {
+        const user = partyStructures[i];
+        for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+            memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, blankData);
+        }
+    }
+    __state.initialized = true;
+}
+
 // Preprocessor runs every loop (everytime pokeabyte updates)
 function preprocessor() {
+    initializeContainers();
     const white_version_offset = 0x20
 
-    variables.reload_addresses = true;
     const gamestate = getGamestate();
     setValue('meta.state', gamestate);
     // We need to assign the start of the battle RAM for the enemy because it is dynamically allocated 
@@ -205,8 +142,6 @@ function preprocessor() {
     const null_data_address           = 0x226D290 + white_version_offset
     const player_structure_size       = player_team_count * pkmn_ram_allocation
     const enemy_battle_ram_start      = battle_ram_starting_address + player_structure_size
-    variables.battle_ram_player_0     = battle_ram_starting_address
-    variables.battle_ram_opponent_0   = enemy_battle_ram_start
         
     let additional_offset = 0;
     if (ally_team_count > 6) {
@@ -218,8 +153,15 @@ function preprocessor() {
     if (ally_team_count && opponent_2_team_count) {
         additional_offset = 0x158
     }
-    let outcome_flags_address = battle_ram_starting_address + (((player_team_count + opponent_team_count + ally_team_count + opponent_2_team_count) * 2) * 0x224) + additional_offset
-    variables.outcome_flags_offset = outcome_flags_address
+    let outcome_flags_address = battle_ram_starting_address + (((player_team_count + opponent_team_count + ally_team_count + opponent_2_team_count) * 2) * 0x224) + additional_offset;
+    
+    variables.reload_addresses = variables.battle_ram_player_0 != battle_ram_starting_address
+        || variables.battle_ram_opponent_0 != enemy_battle_ram_start
+        || variables.outcome_flags_offset   != outcome_flags_address;
+    
+    variables.battle_ram_player_0    = battle_ram_starting_address;
+    variables.battle_ram_opponent_0  = enemy_battle_ram_start;
+    variables.outcome_flags_offset   = outcome_flags_address;
 
 
     const enemy_party_position_address = getValue('battle.TESTING.opponent_indirect_1')
@@ -246,48 +188,41 @@ function preprocessor() {
         variables[`battle_ram_opponent_${i}`] = opponent_team_count > i ? enemy_battle_ram_start + (pkmn_ram_allocation * i) : null_data_address
     }
 
-    const partyStructures = [
-        "player", 
-        "dynamic_player", 
-        "dynamic_opponent", 
-        "dynamic_ally", 
-        "dynamic_opponent_2",
-        // "player1",
-        // "player2",
-        // "player3",
-        // "player4",
-        // "player5",
-        // "player6",
-        // "player7",
-        // "player8",
-    ];
+    const structureSlots = {
+        player: player_team_count,
+        dynamic_player: player_team_count,
+        dynamic_opponent: opponent_team_count,
+        dynamic_ally: ally_team_count,
+        dynamic_opponent_2: opponent_2_team_count,       
+    }
+    // Determine the offset from the base_ptr (global_pointer) - only run once per party-structure loop
+    // Updating structures start offset from the global_pointer by 0x5888C; they are 0x5B0 bytes long
+    // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
+    const offsets = {
+        // An extremely long block of party structures starts at address 0x221BFB0
+        player            : 0x22349B4 + white_version_offset, //party
+
+        dynamic_player    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // 0x226A794,
+        dynamic_opponent  : 0x226A220 + (0x560 * 3) + 0x14 + white_version_offset,
+        dynamic_ally      : 0x226A220 + (0x560 * 5) + 0x14 + white_version_offset, // TODO: Requires testing
+        dynamic_opponent_2: 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // TODO: Requires testing
+        unknown_1         : 0x226BD14 + white_version_offset, // TODO: Requires testing
+        unknown_2         : 0x226C274 + white_version_offset, // TODO: Requires testing
+
+        player1    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // player
+        player2    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // player
+        player3    : 0x226A220 + (0x560 * 2) + 0x14 + white_version_offset, // opponent_1
+        player4    : 0x226A220 + (0x560 * 3) + 0x14 + white_version_offset, // opponent_1
+        player5    : 0x226A220 + (0x560 * 4) + 0x14 + white_version_offset, // ally
+        player6    : 0x226A220 + (0x560 * 5) + 0x14 + white_version_offset, // ally
+        player7    : 0x226A220 + (0x560 * 6) + 0x14 + white_version_offset, // opponent_2
+        player8    : 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // opponent_2
+    };
+    
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
-        // Determine the offset from the base_ptr (global_pointer) - only run once per party-structure loop
-        // Updating structures start offset from the global_pointer by 0x5888C; they are 0x5B0 bytes long
-        // team_count is always offset from the start of the team structure by -0x04 and it's a 1-byte value
-        const offsets = {
-            // An extremely long block of party structures starts at address 0x221BFB0
-            player            : 0x22349B4 + white_version_offset, //party
-
-            dynamic_player    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // 0x226A794,
-            dynamic_opponent  : 0x226A220 + (0x560 * 3) + 0x14 + white_version_offset,
-            dynamic_ally      : 0x226A220 + (0x560 * 5) + 0x14 + white_version_offset, // TODO: Requires testing
-            dynamic_opponent_2: 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // TODO: Requires testing
-            unknown_1         : 0x226BD14 + white_version_offset, // TODO: Requires testing
-            unknown_2         : 0x226C274 + white_version_offset, // TODO: Requires testing
-
-            player1    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // player
-            player2    : 0x226A220 + (0x560 * 1) + 0x14 + white_version_offset, // player
-            player3    : 0x226A220 + (0x560 * 2) + 0x14 + white_version_offset, // opponent_1
-            player4    : 0x226A220 + (0x560 * 3) + 0x14 + white_version_offset, // opponent_1
-            player5    : 0x226A220 + (0x560 * 4) + 0x14 + white_version_offset, // ally
-            player6    : 0x226A220 + (0x560 * 5) + 0x14 + white_version_offset, // ally
-            player7    : 0x226A220 + (0x560 * 6) + 0x14 + white_version_offset, // opponent_2
-            player8    : 0x226A220 + (0x560 * 7) + 0x14 + white_version_offset, // opponent_2
-        };
         // Loop through each party-slot within the given party-structure
-        for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+        for (let slotIndex = 0; slotIndex < structureSlots[user]; slotIndex++) {
             // Initialize an empty array to store the decrypted data
             const startingAddress = offsets[user] + (220 * slotIndex);
             const encryptedData = memory.defaultNamespace.get_bytes(startingAddress, 220); // Read the Pokemon's data (220-bytes)
@@ -301,4 +236,4 @@ function preprocessor() {
     }
 }
 
-export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, containerprocessor, preprocessor };
+export { containerprocessor, preprocessor };
