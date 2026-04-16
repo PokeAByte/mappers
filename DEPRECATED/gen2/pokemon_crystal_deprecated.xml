@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_crystal.xml'
 -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.3.0"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Crystal - Deprecated Mapper" platform="GBC" version="1.3.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -323,6 +323,19 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
         <property name="radio_tower_civilians_after" type="bool" address="0xDB4C" bits="0" />
         <property name="radio_tower_blackbelt_blocks_stairs" type="bool" address="0xDB4C" bits="1" />
       </radio_tower>
+      <rare_candies>
+        <property name="olivine_lighthouse_5f_rare_candy" type="bool" address="0xDB3E" bits="5" />
+        <property name="lake_of_rage_hidden_rare_candy" type="bool" address="0xDA88" bits="6" />
+        <property name="violet_city_rare_candy" type="bool" address="0xDB3A" bits="4" />
+        <property name="route_34_hidden_rare_candy" type="bool" address="0xDA86" bits="7" />
+        <property name="route_27_rare_candy" type="bool" address="0xDB47" bits="4" />
+        <property name="mount_mortar_2f_inside_rare_candy" type="bool" address="0xDB42" bits="1" />
+        <property name="whirl_island_b1f_hidden_rare_candy" type="bool" address="0xDA84" bits="7" />
+        <property name="listened_to_fan_club_president" type="bool" address="0xDA8C" bits="4" />
+        <property name="cinnabar_island_hidden_rare_candy" type="bool" address="0xDA91" bits="6" />
+        <property name="route_28_hidden_rare_candy" type="bool" address="0xDA86" bits="3" />
+        <property name="tin_tower_5f_rare_candy" type="bool" address="0xDB3B" bits="7" />
+      </rare_candies>
     </events>
     <roamers>
       <class name="0" type="roamer" address="0xDFCF" />
