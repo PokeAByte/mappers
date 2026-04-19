@@ -361,13 +361,13 @@
                 <property name="TM50-Nightmare"    type="int" address="0xD88A" />
             </tms>
             <hms>
-                <property name="HM01" type="bool" address="0xD88B" bits="1" />
-                <property name="HM02" type="bool" address="0xD88C" bits="1" />
-                <property name="HM03" type="bool" address="0xD88D" bits="1" />
-                <property name="HM04" type="bool" address="0xD88E" bits="1" />
-                <property name="HM05" type="bool" address="0xD88F" bits="1" />
-                <property name="HM06" type="bool" address="0xD890" bits="1" />
-                <property name="HM07" type="bool" address="0xD891" bits="1" />
+                <property name="HM01" type="bool" address="0xD88B" />
+                <property name="HM02" type="bool" address="0xD88C" />
+                <property name="HM03" type="bool" address="0xD88D" />
+                <property name="HM04" type="bool" address="0xD88E" />
+                <property name="HM05" type="bool" address="0xD88F" />
+                <property name="HM06" type="bool" address="0xD890" />
+                <property name="HM07" type="bool" address="0xD891" />
             </hms>
         </bag>
 
@@ -381,7 +381,8 @@
             <!-- REQUIRE ADDITIONAL PROPERTIES AND A FUNCTION TO CALCULATE THE CURRENT RATE 
 				Need to know the state of the player (Walking vs surfing) to make this fully dynamic
 			-->
-			<property name="encounter_rate" type="int" />
+			<property name="repel_count" type="int" address="0xDCA1" />
+            <property name="encounter_rate" type="int" />
             <encounter_rates>
                 <property name="morning" type="int" address="0xD25A" />
                 <property name="day"     type="int" address="0xD25B" />
