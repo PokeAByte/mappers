@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.5.4"
+<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.5.5"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -528,6 +528,8 @@
             <property name="disabledEncounters" type="int" address="0x020386dc" />
             <property name="stp_pidgey_on_route_1"  type="bool" address="{dma_a} + 4090" bits="0" />
             <property name="stp_rattata_on_route_1" type="bool" address="{dma_a} + 4090" bits="1" />
+            <property name="stp_meowth_on_route_6"   type="bool" bits="0" address="{dma_a} + 4091" />
+            <property name="stp_abra_on_route_24_25" type="bool" bits="1" address="{dma_a} + 4091" />
             <property name="stp_itemfinder"         type="bool" address="{dma_a} + 4090" bits="2" />
         </overworld>
         <battle>
@@ -607,15 +609,17 @@
             </turnInfo>
         </battle>
         <events>
-            <property name="trashCanPuzzle"         type="bool" bits="4" address="{dma_a} + 3884" /> 
-            <property name="beatChampion"           type="bool" bits="4" address="{dma_a} + 3959" />
-            <property name="gameClear"              type="bool" bits="4" address="{dma_a} + 4069" />  
-            <property name="nationalDex"            type="bool" bits="0" address="{dma_a} + 4072" />
-            <property name="enable_dv_display"      type="bool" bits="0" address="{dma_a} + 3883" />
-            <property name="got_vs_seeker"          type="bool" bits="2" address="{dma_a} + 3890" />
-            <property name="sys_vs_seeker_charging" type="bool" bits="1" address="{dma_a} + 4064" />
-            <property name="stp_pidgey_on_route_1"  type="bool" bits="0" address="{dma_a} + 4090" />
-            <property name="stp_rattata_on_route_1" type="bool" bits="1" address="{dma_a} + 4090" />
+            <property name="trashCanPuzzle"          type="bool" bits="4" address="{dma_a} + 3884" /> 
+            <property name="beatChampion"            type="bool" bits="4" address="{dma_a} + 3959" />
+            <property name="gameClear"               type="bool" bits="4" address="{dma_a} + 4069" />  
+            <property name="nationalDex"             type="bool" bits="0" address="{dma_a} + 4072" />
+            <property name="enable_dv_display"       type="bool" bits="0" address="{dma_a} + 3883" />
+            <property name="got_vs_seeker"           type="bool" bits="2" address="{dma_a} + 3890" />
+            <property name="sys_vs_seeker_charging"  type="bool" bits="1" address="{dma_a} + 4064" />
+            <property name="stp_pidgey_on_route_1"   type="bool" bits="0" address="{dma_a} + 4090" />
+            <property name="stp_rattata_on_route_1"  type="bool" bits="1" address="{dma_a} + 4090" />
+            <property name="stp_meowth_on_route_6"   type="bool" bits="0" address="{dma_a} + 4091" />
+            <property name="stp_abra_on_route_24_25" type="bool" bits="1" address="{dma_a} + 4091" />
             <menu>
                 <property name="pokemon" type="bool" bits="0" address="{dma_a} + 4069" />
                 <property name="pokedex" type="bool" bits="1" address="{dma_a} + 4069" />
@@ -646,6 +650,7 @@
                 <property name="stp_exp_share_obtainable"   type="bool" address="{dma_a} + 4090" bits="7" />
                 <property name="stp_meowth_on_route_6"      type="bool" address="{dma_a} + 4091" bits="0" />
                 <property name="stp_abra_on_route_24_25"    type="bool" address="{dma_a} + 4091" bits="1" />
+                <property name="stp_pickup_hidden_power"    type="bool" address="{dma_a} + 4091" bits="2" />
             </stp_flags>
         </patch>
         <flags>
