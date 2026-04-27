@@ -8,22 +8,8 @@ const memory = __memory;
 const mapper = __mapper;
 // @ts-ignore
 __console;
-function getValue(path) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
-    }
-    return property.value;
-}
-function setValue(path, value) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
-    }
-    property.value = value;
-}
+const getValue = mapper.get_property_value;
+const setValue = mapper.set_property_value;
 
 // prng function; used for decryption.
 function prngNext(prngSeed) {
@@ -241,10 +227,12 @@ function preprocessor() {
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 12); //HGSS pointer after 2025-12-27 v0.2.0
 
     // To find the global pointer, search from 'main' in the 'main.elf.xMAP' file produced by the disassembly.
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111B20 + 12); //HGSS pointer after 2025-12-27
+    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111B80 + 12); //HGSS pointer after 2026-04-26
+    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111B20 + 12); //HGSS pointer after 2025-12-27
     // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 0x40 + 12); //HGSS pointer after 2025-12-27
     
-    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D24E8);
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D2548); //HGSS pointer after 2026-04-26
+    // const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D24E8); //HGSS pointer after 2025-12-27
     // const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D2208);
     
     if (base_ptr === 0 || base_ptr >= 38438215) {
