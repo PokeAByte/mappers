@@ -115,6 +115,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
         </roamer>
     </classes>
   <properties>
+    <new_props>
+      <property name="wScriptRunning" type="int" address="0xd438" />
+      <property name="hOAMUpdate" type="int" address="0xffd8" />
+    </new_props>
     <player>
       <property name="playerId"  type="int" address="0xD47B" length="2" description="The active player ID" />
       <property name="name"      type="string" address="0xD47D" length="11"/>
@@ -855,6 +859,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       </catching>
       <property name="movesLearnt"            type="int" length="2" address="0x1023f" />
     </patch>
+    <scripts>
+      <property name="wScriptRunning" type="int" address="0xd438" />
+      <property name="hOAMUpdate" type="int" address="0xffd8" />
+    </scripts>
     <meta>
       <property name="generation" type="int" value="2" />
       <property name="gameName"   type="string" value="Crystal" />
