@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.4.2"
+<mapper id="cb89008f-c76f-4a0c-821a-aff4e7bd29b8" name="STP Pokemon HeartGold and SoulSilver" platform="NDS" version="1.5.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -952,8 +952,21 @@
 			<property name="seconds" type="int" address="{global_pointer} + 0xD079" />
 		</game_time>
 		<patch>
-			<property name="stpStarterSpecies" type="int" length="4" address="0x21D46D8" reference="species" />
-			<property name="stpCatchRate" type="int" length="4" address="0x21D46D8 + 4" />
+			<!-- stpVars = address of stpStarterSpecies; exported per-patch by tools/mapper_export. -->
+			<property name="stpStarterSpecies" type="int" length="4" address="{stpVars}" reference="species" />
+			<property name="stpCatchRate" type="int" length="4" address="{stpVars} + 4" />
+			<property name="FLAG_FORCE_R29_SENTRET"           type="bool" address="{flags_base} + 0x160" length="1" bits="0" />
+			<property name="FLAG_FORCE_R29_RATTATA"           type="bool" address="{flags_base} + 0x160" length="1" bits="1" />
+			<property name="FLAG_FORCE_R29_PIDGEY"            type="bool" address="{flags_base} + 0x160" length="1" bits="2" />
+			<property name="FLAG_FORCE_R30_RATTATA"           type="bool" address="{flags_base} + 0x160" length="1" bits="3" />
+			<property name="FLAG_FORCE_R30_PIDGEY"            type="bool" address="{flags_base} + 0x160" length="1" bits="4" />
+			<property name="FLAG_FORCE_R31_BELLSPROUT"        type="bool" address="{flags_base} + 0x160" length="1" bits="5" />
+			<property name="FLAG_FORCE_R31_RATTATA"           type="bool" address="{flags_base} + 0x160" length="1" bits="6" />
+			<property name="FLAG_FORCE_R31_PIDGEY"            type="bool" address="{flags_base} + 0x160" length="1" bits="7" />
+			<property name="FLAG_FORCE_R32_RATTATA"           type="bool" address="{flags_base} + 0x161" length="1" bits="0" />
+			<property name="FLAG_FORCE_R32_WOOPER"            type="bool" address="{flags_base} + 0x161" length="1" bits="1" />
+			<property name="FLAG_FORCE_UNION_CAVE_SANDSHREW"  type="bool" address="{flags_base} + 0x161" length="1" bits="2" />
+			<property name="FLAG_FORCE_R34_DROWZEE"           type="bool" address="{flags_base} + 0x161" length="1" bits="3" />
 		</patch>
 		<meta>
 			<property name="generation"     type="int" value="4" />

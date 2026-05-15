@@ -7,9 +7,86 @@ const memory = __memory;
 // @ts-ignore
 const mapper = __mapper;
 // @ts-ignore
-__console;
+const console = __console;
 const getValue = mapper.get_property_value;
 const setValue = mapper.set_property_value;
+
+// This block is rewritten by tools/mapper_export/export_mapper_addresses.py
+// every time the ROM is rebuilt. Entries accumulate so old patch versions
+// remain replayable. Bump HEARTGOLD_PATCH_VERSION in include/pm_version.h
+// before releasing a patch whose RAM layout has shifted.
+// === BEGIN PATCH_VERSIONS (auto-generated; do not edit) ===
+const PATCH_VERSIONS = {
+  "patch_magic": "0x48475450",
+  "by_version": {
+    "-1": {
+      "anchor_addr": null,
+      "lookups": {
+        "global_pointer_var": "0x02111B8C",
+        "save_data_pointer": "0x021D2548",
+        "stp_vars": "0x021D46D8"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    },
+    "2": {
+      "anchor_addr": "0x020F59FC",
+      "lookups": {
+        "global_pointer_var": "0x02111B8C",
+        "save_data_pointer": "0x021D2548",
+        "stp_vars": "0x021D46D8"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    },
+    "3": {
+      "anchor_addr": "0x020F5ADC",
+      "lookups": {
+        "global_pointer_var": "0x02111D0C",
+        "save_data_pointer": "0x021D26C8",
+        "stp_vars": "0x021D4858"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    },
+    "4": {
+      "anchor_addr": "0x020F5B00",
+      "lookups": {
+        "global_pointer_var": "0x02111D2C",
+        "save_data_pointer": "0x021D26E8",
+        "stp_vars": "0x021D4878"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    }
+  }
+};
+const PATCH_MAGIC = 0x48475450;
+// === END PATCH_VERSIONS ===
 
 // prng function; used for decryption.
 function prngNext(prngSeed) {
@@ -192,66 +269,153 @@ function hiddenPower(path) {
 }
 // Preprocessor runs every loop (everytime pokeabyte updates)
 let original_base_ptr = 0x0;
-function preprocessor() {
-    
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
-    // This block of code is used to solve the issue of patch differences as I have continued to modify the game. 
-    // Patch1: 2024 to 2025.06.22 (all runs before Rhyperior use this setting)
-    // Offset: 0x00
-    //
-    // Patch2: 2024.06.23 (Rhyperior uses this setting; this patch implements changes to evolution mechanics (Rhyperior patch has an issue with HM08))
-    // Offset: 0x24
-    //
-    // Patch3: Planned (After Rhyperior, fixes spinners and changes how the starters and rival mons are assigned)
-    // Offset: Unknown (currently unreleased)
-    //
-    let patch_update = true;
-    let address_offset = 0x0; // Patch1
-    // if (patch_update) {
-    //     address_offset = 0x24 // Patch2
-    // }
-    if (patch_update) {
-        address_offset = 0x48 // Patch3
+// Main-RAM heap range used to validate that a u32 read looks like a live
+// pointer for legacy (pre-anchor) identification.
+const HEAP_LO = 0x02100000;
+const HEAP_HI = 0x02400000;
+function looksLikeHeapPtr(value) {
+    return value >= HEAP_LO && value < HEAP_HI;
+}
+let _identify_diag_logged = false;
+function identifyPatch() {
+    // First pass: entries with an anchor_addr are identified exactly via the
+    // gPatchVersion magic+version. This is the preferred path for any build
+    // produced after the patch-version system was added.
+    const versions = (PATCH_VERSIONS && PATCH_VERSIONS.by_version) || {};
+    const diag = !_identify_diag_logged ? [] : null;
+    for (const vStr of Object.keys(versions)) {
+        const entry = versions[vStr];
+        if (!entry.anchor_addr) continue;
+        const anchor = parseInt(entry.anchor_addr, 16);
+        const magicSeen = memory.defaultNamespace.get_uint32_le(anchor);
+        const versionSeen = memory.defaultNamespace.get_uint32_le(anchor + 4);
+        if (diag) diag.push("  anchor " + vStr + " @ " + entry.anchor_addr + " magic=0x" + magicSeen.toString(16) + " version=" + versionSeen);
+        if (magicSeen !== PATCH_MAGIC) continue;
+        if (versionSeen !== parseInt(vStr)) continue;
+        if (diag) { console.log("heartgold_soulsilver_ne mapper: identified patch " + vStr + " (anchor)"); _identify_diag_logged = true; }
+        return { version: parseInt(vStr), entry: entry };
     }
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
-
+    // Second pass: legacy entries (pre-gPatchVersion). Accept only when BOTH
+    // lookups dereference into the main-RAM heap range. If multiple legacy
+    // entries match, refuse to dispatch and log all candidates -- the user
+    // must disambiguate manually (e.g., by deleting the stale entry).
+    const legacyMatches = [];
+    for (const vStr of Object.keys(versions)) {
+        const entry = versions[vStr];
+        if (entry.anchor_addr) continue;
+        const gpAddr = parseInt(entry.lookups.global_pointer_var, 16);
+        const svAddr = parseInt(entry.lookups.save_data_pointer, 16);
+        const gpVal = memory.defaultNamespace.get_uint32_le(gpAddr);
+        const svVal = memory.defaultNamespace.get_uint32_le(svAddr);
+        const gpOk = looksLikeHeapPtr(gpVal);
+        const svOk = looksLikeHeapPtr(svVal);
+        if (diag) diag.push("  legacy " + vStr + ": gp@" + entry.lookups.global_pointer_var + "=0x" + gpVal.toString(16) + (gpOk?" OK":" FAIL") + ", sv@" + entry.lookups.save_data_pointer + "=0x" + svVal.toString(16) + (svOk?" OK":" FAIL"));
+        if (gpOk && svOk) {
+            legacyMatches.push({ version: parseInt(vStr), entry: entry });
+        }
+    }
+    if (legacyMatches.length === 1) {
+        if (diag) { console.log("heartgold_soulsilver_ne mapper: identified patch " + legacyMatches[0].version + " (legacy):\n" + diag.join("\n")); _identify_diag_logged = true; }
+        return legacyMatches[0];
+    }
+    if (legacyMatches.length > 1) {
+        const versionList = legacyMatches.map(m => m.version).join(", ");
+        console.log(
+            "heartgold_soulsilver_ne mapper: refusing to dispatch -- multiple legacy " +
+            "patch_versions.json entries match the running ROM (versions: " +
+            versionList + "). Remove the stale entries from patch_versions.json " +
+            "so only one matches."
+        );
+    }
+    if (diag) { console.log("heartgold_soulsilver_ne mapper: NO patch identified. Diagnostics:\n" + diag.join("\n")); _identify_diag_logged = true; }
+    return null;
+}
+function preprocessor() {
     variables.reload_addresses = false;
-    // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x21117CC); //HGSS pointer prior to 2025-08-07
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x211182C); //HGSS pointer after 2025-08-07
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 12); //HGSS pointer after 2025-12-27 v0.2.0
 
-    // To find the global pointer, search from 'main' in the 'main.elf.xMAP' file produced by the disassembly.
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111B80 + 12); //HGSS pointer after 2026-04-26
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111B20 + 12); //HGSS pointer after 2025-12-27
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2111800 + 0x40 + 12); //HGSS pointer after 2025-12-27
-    
-    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D2548); //HGSS pointer after 2026-04-26
-    // const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D24E8); //HGSS pointer after 2025-12-27
-    // const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21D2208);
-    
-    if (base_ptr === 0 || base_ptr >= 38438215) {
-        // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
+    // Identify the running patch once; invalidate if the anchor stops matching
+    // (handles ROM swap or cart reset mid-session). For legacy entries
+    // (anchor_addr=null) we re-validate by re-checking the lookups still point
+    // into the heap range.
+    if (variables.detected_patch_entry != null) {
+        const cached = variables.detected_patch_entry;
+        let stillValid;
+        if (cached.anchor_addr) {
+            const a = parseInt(cached.anchor_addr, 16);
+            stillValid = memory.defaultNamespace.get_uint32_le(a) === PATCH_MAGIC;
+        } else {
+            const gpAddr = parseInt(cached.lookups.global_pointer_var, 16);
+            const svAddr = parseInt(cached.lookups.save_data_pointer, 16);
+            stillValid =
+                looksLikeHeapPtr(memory.defaultNamespace.get_uint32_le(gpAddr))
+                && looksLikeHeapPtr(memory.defaultNamespace.get_uint32_le(svAddr));
+        }
+        if (!stillValid) {
+            variables.detected_patch_entry = null;
+            variables.detected_patch_version = null;
+        }
+    }
+    if (variables.detected_patch_entry == null) {
+        const found = identifyPatch();
+        if (!found) {
+            variables.global_pointer = null;
+            variables.saves_pointer = null;
+            return;
+        }
+        variables.detected_patch_entry = found.entry;
+        variables.detected_patch_version = found.version;
+        original_base_ptr = 0x0;
+    }
+    const entry = variables.detected_patch_entry;
+    const off = entry.base_offsets;
+    const address_offset = off.address_offset | 0;
+
+    const base_ptr = memory.defaultNamespace.get_uint32_le(parseInt(entry.lookups.global_pointer_var, 16));
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(parseInt(entry.lookups.save_data_pointer, 16));
+    if (base_ptr === 0 || !looksLikeHeapPtr(base_ptr)) {
+        // Ends logic if the base_ptr is 0/invalid -- prevents errors during
+        // reset and getting on a bike.
         variables.global_pointer = null;
+        return;
+    }
+    if (sSaveData_pointer === 0) {
+        variables.saves_pointer = null;
         return;
     }
     if (original_base_ptr !== base_ptr) {
         original_base_ptr          = base_ptr;
         variables.reload_addresses = true;
     }
-    variables.global_pointer        = base_ptr;          // Variable used for mapper addresses, it is the same as "base_ptr"
-    variables.saves_pointer         = sSaveData_pointer + 0x23010; // Variable used for mapper addresses, it is the same as "base_ptr"
-    variables.player_party          = base_ptr + 0xD088;
-    variables.dynamic_player        = base_ptr + 0x5BA78 + (0x5D0 * 0) + address_offset;
-    variables.dynamic_opponent      = base_ptr + 0x5BA78 + (0x5D0 * 1) + address_offset;
-    variables.dynamic_ally          = base_ptr + 0x5BA78 + (0x5D0 * 2) + address_offset;
-    variables.dynamic_opponent_2    = base_ptr + 0x5BA78 + (0x5D0 * 3) + address_offset;
-    variables.current_party_indexes = base_ptr + 0x571E0;
+    variables.global_pointer        = base_ptr;
+    variables.saves_pointer         = sSaveData_pointer + off.saves_pointer_offset;
+
+    // stpVars is the address of the stpStarterSpecies block; it shifts per
+    // patch so the exporter writes it into entry.lookups.stp_vars. Older
+    // patch_versions.json entries may lack this field -- leave the variable
+    // null in that case so XML properties referencing {stpVars} fail loudly
+    // rather than silently dereferencing a stale address.
+    variables.stpVars = entry.lookups.stp_vars
+        ? parseInt(entry.lookups.stp_vars, 16)
+        : null;
+
+    // Vars/Flags region inside SaveData. HG layout:
+    //   +0x10                                 SaveData.dynamic_region[]
+    //   +0x23054 + 8                          SaveData.arrayHeaders[SAVE_FLAGS=4].offset (u32)
+    //   dynamic_region + offset               start of SaveVarsFlags
+    //   + 0x2E0                               SaveVarsFlags.flags[]   (0x2E0 = NUM_VARS * sizeof(u16))
+    const SAVEDATA_PAGEINFO_VARS_FLAGS_OFFSET = 0x2305C;
+    const SAVEDATA_BODY_OFFSET = 0x10;
+    const VARSFLAGS_FLAGS_OFFSET = 0x2E0;
+    const vars_flags_location = memory.defaultNamespace.get_uint32_le(sSaveData_pointer + SAVEDATA_PAGEINFO_VARS_FLAGS_OFFSET);
+    variables.vars_base  = sSaveData_pointer + SAVEDATA_BODY_OFFSET + vars_flags_location;
+    variables.flags_base = sSaveData_pointer + SAVEDATA_BODY_OFFSET + vars_flags_location + VARSFLAGS_FLAGS_OFFSET;
+
+    variables.player_party          = base_ptr + off.player_party;
+    variables.dynamic_player        = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 0) + address_offset;
+    variables.dynamic_opponent      = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 1) + address_offset;
+    variables.dynamic_ally          = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 2) + address_offset;
+    variables.dynamic_opponent_2    = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 3) + address_offset;
+    variables.current_party_indexes = base_ptr + off.current_party_indexes;
     // Set property values
     const gamestate = getGamestate();
     const battle_outcomes = getValue('battle.outcome');

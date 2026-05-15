@@ -1,35 +1,68 @@
 {
-  "patch_magic": "0x504C5450",
+  "patch_magic": "0x48475450",
   "by_version": {
     "-1": {
       "anchor_addr": null,
       "lookups": {
-        "global_pointer_var": "0x0210200C",
-        "save_data_pointer": "0x021C0A74"
+        "global_pointer_var": "0x02111B8C",
+        "save_data_pointer": "0x021D2548",
+        "stp_vars": "0x021D46D8"
       },
       "base_offsets": {
-        "player_party": 53396,
-        "dynamic_player_base": 362636,
-        "dynamic_party_stride": 1456,
-        "current_party_indexes": 346500,
-        "saves_pointer_offset": 131096,
-        "address_offset": 36
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
       }
     },
-    "5": {
-      "anchor_addr": "0x020E5014",
+    "2": {
+      "anchor_addr": "0x020F59FC",
       "lookups": {
-        "global_pointer_var": "0x0210214C",
-        "save_data_pointer": "0x021C0BB4",
-        "stp_vars": "0x021C3E58"
+        "global_pointer_var": "0x02111B8C",
+        "save_data_pointer": "0x021D2548",
+        "stp_vars": "0x021D46D8"
       },
       "base_offsets": {
-        "player_party": 53396,
-        "dynamic_player_base": 362636,
-        "dynamic_party_stride": 1456,
-        "current_party_indexes": 346500,
-        "saves_pointer_offset": 131096,
-        "address_offset": 36
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    },
+    "3": {
+      "anchor_addr": "0x020F5ADC",
+      "lookups": {
+        "global_pointer_var": "0x02111D0C",
+        "save_data_pointer": "0x021D26C8",
+        "stp_vars": "0x021D4858"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    },
+    "4": {
+      "anchor_addr": "0x020F5B00",
+      "lookups": {
+        "global_pointer_var": "0x02111D2C",
+        "save_data_pointer": "0x021D26E8",
+        "stp_vars": "0x021D4878"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
       }
     }
   }

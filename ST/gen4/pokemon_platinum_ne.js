@@ -242,6 +242,40 @@ function looksLikeHeapPtr(value) {
     return value >= HEAP_LO && value < HEAP_HI;
 }
 let _identify_diag_logged = false;
+let _layout_diag_logged = false;
+function _hex(n, width) {
+    let s = (n >>> 0).toString(16).toUpperCase();
+    while (s.length < (width || 8)) s = "0" + s;
+    return "0x" + s;
+}
+function _dumpRange(label, addr, byteLen) {
+    const words = [];
+    for (let i = 0; i < byteLen; i += 4) {
+        words.push(_hex(memory.defaultNamespace.get_uint32_le(addr + i), 8));
+    }
+    return label + " @ " + _hex(addr, 8) + ": " + words.join(" ");
+}
+function logLayoutDiag(base_ptr, sSaveData_pointer, entry) {
+    if (_layout_diag_logged) return;
+    _layout_diag_logged = true;
+    const off = entry.base_offsets;
+    const lines = [];
+    lines.push("platinum_ne mapper: LAYOUT DIAGNOSTIC for patch " + (entry.anchor_addr ? "anchor" : "legacy"));
+    lines.push("  base_ptr           = " + _hex(base_ptr, 8));
+    lines.push("  sSaveData_pointer  = " + _hex(sSaveData_pointer, 8));
+    lines.push("  off.player_party   = " + _hex(off.player_party, 8) + "  -> " + _hex(base_ptr + off.player_party, 8));
+    lines.push("  off.dynamic_player = " + _hex(off.dynamic_player_base, 8) + "  -> " + _hex(base_ptr + off.dynamic_player_base + off.address_offset, 8));
+    lines.push("  off.cur_party_idx  = " + _hex(off.current_party_indexes, 8) + "  -> " + _hex(base_ptr + off.current_party_indexes, 8));
+    lines.push("  saves_pointer_off  = " + _hex(off.saves_pointer_offset, 8) + "  -> " + _hex(sSaveData_pointer + off.saves_pointer_offset, 8));
+    lines.push(_dumpRange("  SaveData[+0..32]   ", sSaveData_pointer, 32));
+    const vfLoc = memory.defaultNamespace.get_uint32_le(sSaveData_pointer + 0x2006C);
+    lines.push("  pageInfo[VARS_FLAGS].location @ +0x2006C = " + _hex(vfLoc, 8) + "  (expect small offset within body)");
+    lines.push(_dumpRange("  base_ptr[+0..32]   ", base_ptr, 32));
+    lines.push(_dumpRange("  party[+0..32]      ", base_ptr + off.player_party, 32));
+    lines.push(_dumpRange("  party[+0x80..0xA0] ", base_ptr + off.player_party + 0x80, 32));
+    lines.push(_dumpRange("  saves[+0..32]      ", sSaveData_pointer + off.saves_pointer_offset, 32));
+    console.log(lines.join("\n"));
+}
 function identifyPatch() {
     // First pass: entries with an anchor_addr are identified exactly via the
     // gPatchVersion magic+version. This is the preferred path for any build
@@ -352,6 +386,7 @@ function preprocessor() {
 
     variables.global_pointer        = base_ptr;
     variables.saves_pointer         = sSaveData_pointer + off.saves_pointer_offset;
+    logLayoutDiag(base_ptr, sSaveData_pointer, entry);
 
     // Vars/Flags region inside SaveData. SaveData layout:
     //   +0x14                                  body[]
@@ -371,9 +406,13 @@ function preprocessor() {
     // patch_versions.json entries may lack this field -- leave the variable
     // null in that case so XML properties referencing {stpVars} fail loudly
     // rather than silently dereferencing a stale address.
+    // For legacy patches that predate the stpVars block, point at a benign
+    // in-range sentinel (start of main RAM). The 5 stp* XML properties will
+    // read junk, but the reads stay inside the XML <memory> range so they
+    // don't poison neighboring properties or fail the connection.
     variables.stpVars = entry.lookups.stp_vars
         ? parseInt(entry.lookups.stp_vars, 16)
-        : null;
+        : 0x02000000;
 
     variables.player_party          = base_ptr + off.player_party;
     variables.dynamic_player        = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 0) + address_offset;
