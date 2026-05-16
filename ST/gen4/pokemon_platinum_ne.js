@@ -7,23 +7,54 @@ const memory = __memory;
 // @ts-ignore
 const mapper = __mapper;
 // @ts-ignore
-__console;
-function getValue(path) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
+const console = __console;
+const getValue = mapper.get_property_value;
+const setValue = mapper.set_property_value;
+
+// This block is rewritten by tools/mapper_export/export_mapper_addresses.py
+// every time the ROM is rebuilt. Entries accumulate so old patch versions
+// remain replayable. Bump POKEPLATINUM_PATCH_VERSION in
+// include/global/pm_version.h before releasing a patch whose RAM layout
+// has shifted.
+// === BEGIN PATCH_VERSIONS (auto-generated; do not edit) ===
+const PATCH_VERSIONS = {
+  "patch_magic": "0x504C5450",
+  "by_version": {
+    "-1": {
+      "anchor_addr": null,
+      "lookups": {
+        "global_pointer_var": "0x0210200C",
+        "save_data_pointer": "0x021C0A74"
+      },
+      "base_offsets": {
+        "player_party": 53396,
+        "dynamic_player_base": 362636,
+        "dynamic_party_stride": 1456,
+        "current_party_indexes": 346500,
+        "saves_pointer_offset": 131096,
+        "address_offset": 36
+      }
+    },
+    "5": {
+      "anchor_addr": "0x020E5014",
+      "lookups": {
+        "global_pointer_var": "0x0210214C",
+        "save_data_pointer": "0x021C0BB4",
+        "stp_vars": "0x021C3E58"
+      },
+      "base_offsets": {
+        "player_party": 53396,
+        "dynamic_player_base": 362636,
+        "dynamic_party_stride": 1456,
+        "current_party_indexes": 346500,
+        "saves_pointer_offset": 131096,
+        "address_offset": 36
+      }
     }
-    return property.value;
-}
-function setValue(path, value) {
-    // @ts-ignore
-    const property = mapper.properties[path];
-    if (!property) {
-        throw new Error(`${path} is not defined in properties.`);
-    }
-    property.value = value;
-}
+  }
+};
+const PATCH_MAGIC = 0x504C5450;
+// === END PATCH_VERSIONS ===
 
 // prng function; used for decryption.
 function prngNext(prngSeed) {
@@ -203,24 +234,144 @@ function hiddenPower(path) {
 }
 // Preprocessor runs every loop (everytime pokeabyte updates)
 let original_base_ptr = 0x0;
+// Main-RAM heap range used to validate that a u32 read looks like a live
+// pointer for legacy (pre-anchor) identification.
+const HEAP_LO = 0x02100000;
+const HEAP_HI = 0x02400000;
+function looksLikeHeapPtr(value) {
+    return value >= HEAP_LO && value < HEAP_HI;
+}
+let _identify_diag_logged = false;
+let _layout_diag_logged = false;
+function _hex(n, width) {
+    let s = (n >>> 0).toString(16).toUpperCase();
+    while (s.length < (width || 8)) s = "0" + s;
+    return "0x" + s;
+}
+function _dumpRange(label, addr, byteLen) {
+    const words = [];
+    for (let i = 0; i < byteLen; i += 4) {
+        words.push(_hex(memory.defaultNamespace.get_uint32_le(addr + i), 8));
+    }
+    return label + " @ " + _hex(addr, 8) + ": " + words.join(" ");
+}
+function logLayoutDiag(base_ptr, sSaveData_pointer, entry) {
+    if (_layout_diag_logged) return;
+    _layout_diag_logged = true;
+    const off = entry.base_offsets;
+    const lines = [];
+    lines.push("platinum_ne mapper: LAYOUT DIAGNOSTIC for patch " + (entry.anchor_addr ? "anchor" : "legacy"));
+    lines.push("  base_ptr           = " + _hex(base_ptr, 8));
+    lines.push("  sSaveData_pointer  = " + _hex(sSaveData_pointer, 8));
+    lines.push("  off.player_party   = " + _hex(off.player_party, 8) + "  -> " + _hex(base_ptr + off.player_party, 8));
+    lines.push("  off.dynamic_player = " + _hex(off.dynamic_player_base, 8) + "  -> " + _hex(base_ptr + off.dynamic_player_base + off.address_offset, 8));
+    lines.push("  off.cur_party_idx  = " + _hex(off.current_party_indexes, 8) + "  -> " + _hex(base_ptr + off.current_party_indexes, 8));
+    lines.push("  saves_pointer_off  = " + _hex(off.saves_pointer_offset, 8) + "  -> " + _hex(sSaveData_pointer + off.saves_pointer_offset, 8));
+    lines.push(_dumpRange("  SaveData[+0..32]   ", sSaveData_pointer, 32));
+    const vfLoc = memory.defaultNamespace.get_uint32_le(sSaveData_pointer + 0x2006C);
+    lines.push("  pageInfo[VARS_FLAGS].location @ +0x2006C = " + _hex(vfLoc, 8) + "  (expect small offset within body)");
+    lines.push(_dumpRange("  base_ptr[+0..32]   ", base_ptr, 32));
+    lines.push(_dumpRange("  party[+0..32]      ", base_ptr + off.player_party, 32));
+    lines.push(_dumpRange("  party[+0x80..0xA0] ", base_ptr + off.player_party + 0x80, 32));
+    lines.push(_dumpRange("  saves[+0..32]      ", sSaveData_pointer + off.saves_pointer_offset, 32));
+    console.log(lines.join("\n"));
+}
+function identifyPatch() {
+    // First pass: entries with an anchor_addr are identified exactly via the
+    // gPatchVersion magic+version. This is the preferred path for any build
+    // produced after the patch-version system was added.
+    const versions = (PATCH_VERSIONS && PATCH_VERSIONS.by_version) || {};
+    const diag = !_identify_diag_logged ? [] : null;
+    for (const vStr of Object.keys(versions)) {
+        const entry = versions[vStr];
+        if (!entry.anchor_addr) continue;
+        const anchor = parseInt(entry.anchor_addr, 16);
+        const magicSeen = memory.defaultNamespace.get_uint32_le(anchor);
+        const versionSeen = memory.defaultNamespace.get_uint32_le(anchor + 4);
+        if (diag) diag.push("  anchor " + vStr + " @ " + entry.anchor_addr + " magic=0x" + magicSeen.toString(16) + " version=" + versionSeen);
+        if (magicSeen !== PATCH_MAGIC) continue;
+        if (versionSeen !== parseInt(vStr)) continue;
+        if (diag) { console.log("platinum_ne mapper: identified patch " + vStr + " (anchor)"); _identify_diag_logged = true; }
+        return { version: parseInt(vStr), entry: entry };
+    }
+    // Second pass: legacy entries (pre-gPatchVersion). Accept only when BOTH
+    // lookups dereference into the main-RAM heap range. If multiple legacy
+    // entries match, refuse to dispatch and log all candidates -- the user
+    // must disambiguate manually (e.g., by deleting the stale entry).
+    const legacyMatches = [];
+    for (const vStr of Object.keys(versions)) {
+        const entry = versions[vStr];
+        if (entry.anchor_addr) continue;
+        const gpAddr = parseInt(entry.lookups.global_pointer_var, 16);
+        const svAddr = parseInt(entry.lookups.save_data_pointer, 16);
+        const gpVal = memory.defaultNamespace.get_uint32_le(gpAddr);
+        const svVal = memory.defaultNamespace.get_uint32_le(svAddr);
+        const gpOk = looksLikeHeapPtr(gpVal);
+        const svOk = looksLikeHeapPtr(svVal);
+        if (diag) diag.push("  legacy " + vStr + ": gp@" + entry.lookups.global_pointer_var + "=0x" + gpVal.toString(16) + (gpOk?" OK":" FAIL") + ", sv@" + entry.lookups.save_data_pointer + "=0x" + svVal.toString(16) + (svOk?" OK":" FAIL"));
+        if (gpOk && svOk) {
+            legacyMatches.push({ version: parseInt(vStr), entry: entry });
+        }
+    }
+    if (legacyMatches.length === 1) {
+        if (diag) { console.log("platinum_ne mapper: identified patch " + legacyMatches[0].version + " (legacy):\n" + diag.join("\n")); _identify_diag_logged = true; }
+        return legacyMatches[0];
+    }
+    if (legacyMatches.length > 1) {
+        const versionList = legacyMatches.map(m => m.version).join(", ");
+        console.log(
+            "platinum_ne mapper: refusing to dispatch -- multiple legacy " +
+            "patch_versions.json entries match the running ROM (versions: " +
+            versionList + "). Remove the stale entries from patch_versions.json " +
+            "so only one matches."
+        );
+    }
+    if (diag) { console.log("platinum_ne mapper: NO patch identified. Diagnostics:\n" + diag.join("\n")); _identify_diag_logged = true; }
+    return null;
+}
 function preprocessor() {
     variables.reload_addresses = false;
-    // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D6C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
-    
-    let patch_update = true;
-    let address_offset = 0x0; // Patch1
-    if (patch_update) {
-        address_offset = 0x24 // Patch2
-    }
 
-    // Pointer History:
-        // 0x2101D6C
-    const base_ptr = memory.defaultNamespace.get_uint32_le(0x210200C); // Platinum pointer (Test value: 22711B8) (Pointer prior to starter work: 0x2101D2C)
-    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(0x21C0A74);
-    // const base_ptr = memory.defaultNamespace.get_uint32_le(0x2101D6C); // Spinner global pointer
+    // Identify the running patch once; invalidate if the anchor stops matching
+    // (handles ROM swap or cart reset mid-session). For legacy entries
+    // (anchor_addr=null) we re-validate by re-checking the lookups still point
+    // into the heap range.
+    if (variables.detected_patch_entry != null) {
+        const cached = variables.detected_patch_entry;
+        let stillValid;
+        if (cached.anchor_addr) {
+            const a = parseInt(cached.anchor_addr, 16);
+            stillValid = memory.defaultNamespace.get_uint32_le(a) === PATCH_MAGIC;
+        } else {
+            const gpAddr = parseInt(cached.lookups.global_pointer_var, 16);
+            const svAddr = parseInt(cached.lookups.save_data_pointer, 16);
+            stillValid =
+                looksLikeHeapPtr(memory.defaultNamespace.get_uint32_le(gpAddr))
+                && looksLikeHeapPtr(memory.defaultNamespace.get_uint32_le(svAddr));
+        }
+        if (!stillValid) {
+            variables.detected_patch_entry = null;
+            variables.detected_patch_version = null;
+        }
+    }
+    if (variables.detected_patch_entry == null) {
+        const found = identifyPatch();
+        if (!found) {
+            variables.global_pointer = null;
+            variables.saves_pointer = null;
+            return;
+        }
+        variables.detected_patch_entry = found.entry;
+        variables.detected_patch_version = found.version;
+        original_base_ptr = 0x0;
+    }
+    const entry = variables.detected_patch_entry;
+    const off = entry.base_offsets;
+    const address_offset = off.address_offset | 0;
+
+    const base_ptr = memory.defaultNamespace.get_uint32_le(parseInt(entry.lookups.global_pointer_var, 16));
+    const sSaveData_pointer = memory.defaultNamespace.get_uint32_le(parseInt(entry.lookups.save_data_pointer, 16));
     if (base_ptr === 0) {
-        // Ends logic is the base_ptr is 0, this is to prevent errors during reset and getting on a bike.
         variables.global_pointer = null;
         return;
     }
@@ -232,14 +383,43 @@ function preprocessor() {
         original_base_ptr          = base_ptr;
         variables.reload_addresses = true;
     }
-    variables.global_pointer        = base_ptr;                    // Variable used for mapper addresses, it is the same as "base_ptr"
-    variables.saves_pointer         = sSaveData_pointer + 0x20018; // Variable used for mapper addresses, it is the same as "base_ptr"
-    variables.player_party          = base_ptr + 0xD094;
-    variables.dynamic_player        = base_ptr + 0x5888C + (0x5B0 * 0) + address_offset;
-    variables.dynamic_opponent      = base_ptr + 0x5888C + (0x5B0 * 1) + address_offset;
-    variables.dynamic_ally          = base_ptr + 0x5888C + (0x5B0 * 2) + address_offset;
-    variables.dynamic_opponent_2    = base_ptr + 0x5888C + (0x5B0 * 3) + address_offset;
-    variables.current_party_indexes = base_ptr + 0x54598 + 0x3EC;
+
+    variables.global_pointer        = base_ptr;
+    variables.saves_pointer         = sSaveData_pointer + off.saves_pointer_offset;
+    logLayoutDiag(base_ptr, sSaveData_pointer, entry);
+
+    // Vars/Flags region inside SaveData. SaveData layout:
+    //   +0x14                                  body[]
+    //   +0x2006C                               pageInfo[VARS_FLAGS].location  (u32; runtime-computed)
+    //   +0x14 + location + 0x240               start of VarsFlags.flags[]
+    // Reading pageInfo.location from RAM avoids hand-tracking struct sizes
+    // for System+Player+Party+Bag entries that precede it.
+    const SAVEDATA_PAGEINFO_VARS_FLAGS_LOCATION = 0x2006C;
+    const SAVEDATA_BODY_OFFSET = 0x14;
+    const VARSFLAGS_FLAGS_OFFSET = 0x240;
+    const vars_flags_location = memory.defaultNamespace.get_uint32_le(sSaveData_pointer + SAVEDATA_PAGEINFO_VARS_FLAGS_LOCATION);
+    variables.vars_base  = sSaveData_pointer + SAVEDATA_BODY_OFFSET + vars_flags_location;                          // u16 vars[288]
+    variables.flags_base = sSaveData_pointer + SAVEDATA_BODY_OFFSET + vars_flags_location + VARSFLAGS_FLAGS_OFFSET; // u8  flags[364]
+
+    // stpVars is the address of the stpStarterSpecies block; it shifts per
+    // patch so the exporter writes it into entry.lookups.stp_vars. Older
+    // patch_versions.json entries may lack this field -- leave the variable
+    // null in that case so XML properties referencing {stpVars} fail loudly
+    // rather than silently dereferencing a stale address.
+    // For legacy patches that predate the stpVars block, point at a benign
+    // in-range sentinel (start of main RAM). The 5 stp* XML properties will
+    // read junk, but the reads stay inside the XML <memory> range so they
+    // don't poison neighboring properties or fail the connection.
+    variables.stpVars = entry.lookups.stp_vars
+        ? parseInt(entry.lookups.stp_vars, 16)
+        : 0x02000000;
+
+    variables.player_party          = base_ptr + off.player_party;
+    variables.dynamic_player        = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 0) + address_offset;
+    variables.dynamic_opponent      = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 1) + address_offset;
+    variables.dynamic_ally          = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 2) + address_offset;
+    variables.dynamic_opponent_2    = base_ptr + off.dynamic_player_base + (off.dynamic_party_stride * 3) + address_offset;
+    variables.current_party_indexes = base_ptr + off.current_party_indexes;
     // Set property values
     const gamestate        = getGamestate();
     const battle_outcomes  = getValue('battle.outcome');
