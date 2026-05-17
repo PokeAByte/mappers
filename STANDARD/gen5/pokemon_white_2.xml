@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.1"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -449,7 +449,112 @@
 				<class name="37" type="player_item" var:address="0x221DA24 + 148" />
 				<class name="38" type="player_item" var:address="0x221DA24 + 152" />
 				<class name="39" type="player_item" var:address="0x221DA24 + 156" />
-				<!-- There are more item slots - I have left them out for runtime speed -->
+				<class name="40" type="player_item" var:address="0x221DA24 + 160" />
+				<class name="41" type="player_item" var:address="0x221DA24 + 164" />
+				<class name="42" type="player_item" var:address="0x221DA24 + 168" />
+				<class name="43" type="player_item" var:address="0x221DA24 + 172" />
+				<class name="44" type="player_item" var:address="0x221DA24 + 176" />
+				<class name="45" type="player_item" var:address="0x221DA24 + 180" />
+				<class name="46" type="player_item" var:address="0x221DA24 + 184" />
+				<class name="47" type="player_item" var:address="0x221DA24 + 188" />
+				<class name="48" type="player_item" var:address="0x221DA24 + 192" />
+				<class name="49" type="player_item" var:address="0x221DA24 + 196" />
+				<class name="50" type="player_item" var:address="0x221DA24 + 200" />
+				<class name="51" type="player_item" var:address="0x221DA24 + 204" />
+				<class name="52" type="player_item" var:address="0x221DA24 + 208" />
+				<class name="53" type="player_item" var:address="0x221DA24 + 212" />
+				<class name="54" type="player_item" var:address="0x221DA24 + 216" />
+				<class name="55" type="player_item" var:address="0x221DA24 + 220" />
+				<class name="56" type="player_item" var:address="0x221DA24 + 224" />
+				<class name="57" type="player_item" var:address="0x221DA24 + 228" />
+				<class name="58" type="player_item" var:address="0x221DA24 + 232" />
+				<class name="59" type="player_item" var:address="0x221DA24 + 236" />
+				<class name="60" type="player_item" var:address="0x221DA24 + 240" />
+				<class name="61" type="player_item" var:address="0x221DA24 + 244" />
+				<class name="62" type="player_item" var:address="0x221DA24 + 248" />
+				<class name="63" type="player_item" var:address="0x221DA24 + 252" />
+				<class name="64" type="player_item" var:address="0x221DA24 + 256" />
+				<class name="65" type="player_item" var:address="0x221DA24 + 260" />
+				<class name="66" type="player_item" var:address="0x221DA24 + 264" />
+				<class name="67" type="player_item" var:address="0x221DA24 + 268" />
+				<class name="68" type="player_item" var:address="0x221DA24 + 272" />
+				<class name="69" type="player_item" var:address="0x221DA24 + 276" />
+				<class name="70" type="player_item" var:address="0x221DA24 + 280" />
+				<class name="71" type="player_item" var:address="0x221DA24 + 284" />
+				<class name="72" type="player_item" var:address="0x221DA24 + 288" />
+				<class name="73" type="player_item" var:address="0x221DA24 + 292" />
+				<class name="74" type="player_item" var:address="0x221DA24 + 296" />
+				<class name="75" type="player_item" var:address="0x221DA24 + 300" />
+				<class name="76" type="player_item" var:address="0x221DA24 + 304" />
+				<class name="77" type="player_item" var:address="0x221DA24 + 308" />
+				<class name="78" type="player_item" var:address="0x221DA24 + 312" />
+				<class name="79" type="player_item" var:address="0x221DA24 + 316" />
+				<class name="80" type="player_item" var:address="0x221DA24 + 320" />
+				<class name="81" type="player_item" var:address="0x221DA24 + 324" />
+				<class name="82" type="player_item" var:address="0x221DA24 + 328" />
+				<class name="83" type="player_item" var:address="0x221DA24 + 332" />
+				<class name="84" type="player_item" var:address="0x221DA24 + 336" />
+				<class name="85" type="player_item" var:address="0x221DA24 + 340" />
+				<class name="86" type="player_item" var:address="0x221DA24 + 344" />
+				<class name="87" type="player_item" var:address="0x221DA24 + 348" />
+				<class name="88" type="player_item" var:address="0x221DA24 + 352" />
+				<class name="89" type="player_item" var:address="0x221DA24 + 356" />
+				<class name="90" type="player_item" var:address="0x221DA24 + 360" />
+				<class name="91" type="player_item" var:address="0x221DA24 + 364" />
+				<class name="92" type="player_item" var:address="0x221DA24 + 368" />
+				<class name="93" type="player_item" var:address="0x221DA24 + 372" />
+				<class name="94" type="player_item" var:address="0x221DA24 + 376" />
+				<class name="95" type="player_item" var:address="0x221DA24 + 380" />
+				<class name="96" type="player_item" var:address="0x221DA24 + 384" />
+				<class name="97" type="player_item" var:address="0x221DA24 + 388" />
+				<class name="98" type="player_item" var:address="0x221DA24 + 392" />
+				<class name="99" type="player_item" var:address="0x221DA24 + 396" />
+				<class name="100" type="player_item" var:address="0x221DA24 + 400" />
+				<class name="101" type="player_item" var:address="0x221DA24 + 404" />
+				<class name="102" type="player_item" var:address="0x221DA24 + 408" />
+				<class name="103" type="player_item" var:address="0x221DA24 + 412" />
+				<class name="104" type="player_item" var:address="0x221DA24 + 416" />
+				<class name="105" type="player_item" var:address="0x221DA24 + 420" />
+				<class name="106" type="player_item" var:address="0x221DA24 + 424" />
+				<class name="107" type="player_item" var:address="0x221DA24 + 428" />
+				<class name="108" type="player_item" var:address="0x221DA24 + 432" />
+				<class name="109" type="player_item" var:address="0x221DA24 + 436" />
+				<class name="110" type="player_item" var:address="0x221DA24 + 440" />
+				<class name="111" type="player_item" var:address="0x221DA24 + 444" />
+				<class name="112" type="player_item" var:address="0x221DA24 + 448" />
+				<class name="113" type="player_item" var:address="0x221DA24 + 452" />
+				<class name="114" type="player_item" var:address="0x221DA24 + 456" />
+				<class name="115" type="player_item" var:address="0x221DA24 + 460" />
+				<class name="116" type="player_item" var:address="0x221DA24 + 464" />
+				<class name="117" type="player_item" var:address="0x221DA24 + 468" />
+				<class name="118" type="player_item" var:address="0x221DA24 + 472" />
+				<class name="119" type="player_item" var:address="0x221DA24 + 476" />
+				<class name="120" type="player_item" var:address="0x221DA24 + 480" />
+				<class name="121" type="player_item" var:address="0x221DA24 + 484" />
+				<class name="122" type="player_item" var:address="0x221DA24 + 488" />
+				<class name="123" type="player_item" var:address="0x221DA24 + 492" />
+				<class name="124" type="player_item" var:address="0x221DA24 + 496" />
+				<class name="125" type="player_item" var:address="0x221DA24 + 500" />
+				<class name="126" type="player_item" var:address="0x221DA24 + 504" />
+				<class name="127" type="player_item" var:address="0x221DA24 + 508" />
+				<class name="128" type="player_item" var:address="0x221DA24 + 512" />
+				<class name="129" type="player_item" var:address="0x221DA24 + 516" />
+				<class name="130" type="player_item" var:address="0x221DA24 + 520" />
+				<class name="131" type="player_item" var:address="0x221DA24 + 524" />
+				<class name="132" type="player_item" var:address="0x221DA24 + 528" />
+				<class name="133" type="player_item" var:address="0x221DA24 + 532" />
+				<class name="134" type="player_item" var:address="0x221DA24 + 536" />
+				<class name="135" type="player_item" var:address="0x221DA24 + 540" />
+				<class name="136" type="player_item" var:address="0x221DA24 + 544" />
+				<class name="137" type="player_item" var:address="0x221DA24 + 548" />
+				<class name="138" type="player_item" var:address="0x221DA24 + 552" />
+				<class name="139" type="player_item" var:address="0x221DA24 + 556" />
+				<class name="140" type="player_item" var:address="0x221DA24 + 560" />
+				<class name="141" type="player_item" var:address="0x221DA24 + 564" />
+				<class name="142" type="player_item" var:address="0x221DA24 + 568" />
+				<class name="143" type="player_item" var:address="0x221DA24 + 572" />
+				<class name="144" type="player_item" var:address="0x221DA24 + 576" />
+				<class name="145" type="player_item" var:address="0x221DA24 + 580" />
 			</items>
 			<medicine>
 				<class name="0"  type="player_item" var:address="0x221E1FC + 0" /> 
@@ -665,6 +770,10 @@
 				<class name="27" type="player_item" var:address="0x221E2BC + 108" />
 				<class name="28" type="player_item" var:address="0x221E2BC + 112" />
 				<class name="29" type="player_item" var:address="0x221E2BC + 116" />
+				<class name="30" type="player_item" var:address="0x221E2BC + 120" />
+				<class name="31" type="player_item" var:address="0x221E2BC + 124" />
+				<class name="32" type="player_item" var:address="0x221E2BC + 128" />
+				<class name="33" type="player_item" var:address="0x221E2BC + 132" />
 			</berries>
 			<!-- I'm not sure how this pocket works yet -->
 			<!-- <free_space>
