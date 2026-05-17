@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.0"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -1020,13 +1020,36 @@
 			<property name="step_counter" type="int" address="0x2223024" length="4" />
 		</misc>		
 		<patch>
-			<!-- <property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21)" length="2" reference="species" /> -->
-			<!-- <property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16)" length="2" /> -->
-			<!-- <property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17)" length="2" /> -->
-			<!-- <property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18)" length="2" /> -->
-			<!-- <property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19)" length="2" /> -->
-			<!-- <property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20)" length="2" /> -->
-			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
+			<!-- Var Base 0x2225524 -->
+			<property name="stpStarterSpecies"  type="int" address="0x2225524 + (2 * 0x55)" length="2" reference="species" />
+
+			<property name="stpRoute5BerryGirl" type="int" address="0x2225524 + (2 * 0x53)" length="2" reference="stp_route_5_berry_girls" />
+			<property name="stpPWTShards"       type="int" address="0x2225524 + (2 * 0x54)" length="2" reference="stp_pwt_shards" />
+
+			<property name="encounter_psyduck"  type="int" address="0x2225524 + (2 * 0x50)" length="2" />
+			<property name="encounter_pidove"   type="int" address="0x2225524 + (2 * 0x51)" length="2" />
+			<!-- <property name="flag_encounter_psyduck"  type="bool" address="0x2225524 + (2 * 0x50)" length="2" /> -->
+			<!-- <property name="flag_encounter_pidove"   type="bool" address="0x2225524 + (2 * 0x51)" length="2" /> -->
+
+			<!-- 
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x00)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x01)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x02)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x03)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x04)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x05)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x06)" length="2" />
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x07)" length="2" />
+
+			continue...
+
+			<property name="var_4050" type="int" address="0x2225524 + (2 * 0x50)" length="2" />
+			<property name="var_4051" type="int" address="0x2225524 + (2 * 0x51)" length="2" />
+			<property name="var_4052" type="int" address="0x2225524 + (2 * 0x52)" length="2" />
+			<property name="var_4053" type="int" address="0x2225524 + (2 * 0x53)" length="2" />
+			<property name="var_4054" type="int" address="0x2225524 + (2 * 0x54)" length="2" />
+			<property name="var_4055" type="int" address="0x2225524 + (2 * 0x55)" length="2" /> 
+			-->
 		</patch>
 		<meta>
 			<property name="generation" type="int" value="5" />
@@ -1037,6 +1060,22 @@
 	</properties>
 
 	<references>
+		<stp_pwt_shards>
+			<entry key="0x00" value="Random" />
+			<entry key="0x01" value="Red Shard" />
+			<entry key="0x02" value="Blue Shard" />
+			<entry key="0x03" value="Yellow Shard" />
+			<entry key="0x04" value="Green Shard" />
+		</stp_pwt_shards>
+		<stp_route_5_berry_girls>
+			<entry key="0x00" value="Random" />
+			<entry key="0x01" value="Pomeg" />
+			<entry key="0x02" value="Kelpsey" />
+			<entry key="0x03" value="Qualot" />
+			<entry key="0x04" value="Hondew" />
+			<entry key="0x05" value="Grepa" />
+			<entry key="0x06" value="Tamato" />
+		</stp_route_5_berry_girls>
 		<text_speeds>
 			<entry key="0x00" value="Slow"/>	
 			<entry key="0x01" value="Mid" />	
