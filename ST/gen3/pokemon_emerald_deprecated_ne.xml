@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.5.0"
+<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald - Deprecated Mapper" platform="GBA" version="1.6.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -690,6 +690,13 @@
             <property name="STP_VAR_BLACKOUTS" type="int"  address="0x0203cf64 + (1 * 4)" length="4" />
             <property name="STP_CATCH_RATE"    type="int"  address="0x0203cf64 + (2 * 4)" length="4" />
             <property name="STP_SPINNER_LOGIC" type="bool" address="0x0203cf64 + (3 * 4)" length="4" />
+            <property name="STP_FLOWER_SHOP_BERRY"        type="int" address="0x0203cf64 + (4 * 4)"  length="4" reference="stp_flower_shop_berry" />
+            <property name="STP_ROUTE_114_BERRY"          type="int" address="0x0203cf64 + (5 * 4)"  length="4" reference="stp_route_114_berry" />
+            <property name="STP_BERRY_MASTER_BERRY_1"     type="int" address="0x0203cf64 + (6 * 4)"  length="4" reference="stp_berry_master_berry_1" />
+            <property name="STP_BERRY_MASTER_BERRY_2"     type="int" address="0x0203cf64 + (7 * 4)"  length="4" reference="stp_berry_master_berry_2" />
+            <property name="STP_BERRY_MASTERS_WIFE_BERRY" type="int" address="0x0203cf64 + (8 * 4)"  length="4" reference="stp_berry_masters_wife_berry" />
+            <property name="STP_KIRI_BERRY_1"             type="int" address="0x0203cf64 + (9 * 4)"  length="4" reference="stp_kiri_berry_1" />
+            <property name="STP_KIRI_BERRY_2"             type="int" address="0x0203cf64 + (10 * 4)" length="4" reference="stp_kiri_berry_2" />
         </stp_vars>
         <events>
             <property name="received_running_shoes" type="bool" address="{dma_a} + 4754" bits="2"/>
@@ -5168,5 +5175,81 @@
         <soundId>
             <entry key="143641484" value="143641472" />
         </soundId>
+        <stp_flower_shop_berry>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Cheri" />
+            <entry key="2" value="Chesto" />
+            <entry key="3" value="Pecha" />
+            <entry key="4" value="Rawst" />
+            <entry key="5" value="Aspear" />
+            <entry key="6" value="Leppa" />
+            <entry key="7" value="Oran" />
+            <entry key="8" value="Persim" />
+        </stp_flower_shop_berry>
+        <stp_route_114_berry>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Razz" />
+            <entry key="2" value="Bluk" />
+            <entry key="3" value="Nanab" />
+            <entry key="4" value="Wepear" />
+            <entry key="5" value="Pinap" />
+        </stp_route_114_berry>
+        <stp_berry_master_berry_1>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Pomeg" />
+            <entry key="2" value="Kelpsy" />
+            <entry key="3" value="Qualot" />
+            <entry key="4" value="Hondew" />
+            <entry key="5" value="Grepa" />
+            <entry key="6" value="Tamato" />
+            <entry key="7" value="Cornn" />
+            <entry key="8" value="Magost" />
+            <entry key="9" value="Rabuta" />
+            <entry key="10" value="Nomel" />
+        </stp_berry_master_berry_1>
+        <stp_berry_master_berry_2>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Pomeg" />
+            <entry key="2" value="Kelpsy" />
+            <entry key="3" value="Qualot" />
+            <entry key="4" value="Hondew" />
+            <entry key="5" value="Grepa" />
+            <entry key="6" value="Tamato" />
+            <entry key="7" value="Cornn" />
+            <entry key="8" value="Magost" />
+            <entry key="9" value="Rabuta" />
+            <entry key="10" value="Nomel" />
+        </stp_berry_master_berry_2>
+        <stp_berry_masters_wife_berry>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Cheri" />
+            <entry key="2" value="Chesto" />
+            <entry key="3" value="Pecha" />
+            <entry key="4" value="Rawst" />
+            <entry key="5" value="Aspear" />
+            <entry key="6" value="Leppa" />
+            <entry key="7" value="Oran" />
+            <entry key="8" value="Persim" />
+            <entry key="9" value="Lum" />
+            <entry key="10" value="Sitrus" />
+        </stp_berry_masters_wife_berry>
+        <stp_kiri_berry_1>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Pomeg" />
+            <entry key="2" value="Kelpsy" />
+            <entry key="3" value="Qualot" />
+            <entry key="4" value="Hondew" />
+            <entry key="5" value="Grepa" />
+            <entry key="6" value="Tamato" />
+            <entry key="7" value="Cornn" />
+            <entry key="8" value="Magost" />
+            <entry key="9" value="Rabuta" />
+            <entry key="10" value="Nomel" />
+        </stp_kiri_berry_1>
+        <stp_kiri_berry_2>
+            <entry key="0" value="Random" />
+            <entry key="1" value="Figy" />
+            <entry key="2" value="Iapapa" />
+        </stp_kiri_berry_2>
     </references>
 </mapper>
