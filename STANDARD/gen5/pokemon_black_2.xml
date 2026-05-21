@@ -770,6 +770,10 @@
 				<class name="27" type="player_item" var:address="0x221E2BC - 0x40 + 108" />
 				<class name="28" type="player_item" var:address="0x221E2BC - 0x40 + 112" />
 				<class name="29" type="player_item" var:address="0x221E2BC - 0x40 + 116" /> 
+				<class name="30" type="player_item" var:address="0x221E2BC - 0x40 + 120" /> 
+				<class name="31" type="player_item" var:address="0x221E2BC - 0x40 + 124" /> 
+				<class name="32" type="player_item" var:address="0x221E2BC - 0x40 + 128" /> 
+				<class name="33" type="player_item" var:address="0x221E2BC - 0x40 + 132" /> 
 			</berries>
 			<!-- I'm not sure how this pocket works yet -->
 			<!-- <free_space>
