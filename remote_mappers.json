@@ -52,7 +52,7 @@
   {
     "display_name": "pokemon_emerald_deprecated_ne.xml",
     "path": "ST/gen3/pokemon_emerald_deprecated_ne.xml",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   {
     "display_name": "pokemon_firered_leafgreen_deprecated_ne.xml",
@@ -147,7 +147,7 @@
   {
     "display_name": "pokemon_white.xml",
     "path": "STANDARD/gen5/pokemon_white.xml",
-    "version": "0.9.4"
+    "version": "0.9.6"
   },
   {
     "display_name": "pokemon_white_2.xml",

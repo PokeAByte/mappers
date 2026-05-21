@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.2"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -1119,6 +1119,7 @@
 			<property name="battle_style"   type="bool" address="0x221EA24" bits="6" />
 			<property name="sound"          type="bool" address="0x221EA24" bits="4" />
 			<property name="save_before_ir" type="bool" address="0x221EA25" bits="1" />
+			<property name="difficulty_keys" type="int" address="0x2010504" length="2" reference="difficulty_keys_list" />
 		</options>
 		<game_time>
 			<property name="hours"   type="int" address="0x22427DC + 0" length="2" />
@@ -1169,6 +1170,11 @@
 	</properties>
 
 	<references>
+		<difficulty_keys_list>
+			<entry key="0" />
+			<entry key="53505" value="Locked" />
+			<entry key="18112" value="Unlocked" />
+		</difficulty_keys_list>
 		<stp_pwt_shards>
 			<entry key="0x00" value="Random" />
 			<entry key="0x01" value="Red Shard" />
