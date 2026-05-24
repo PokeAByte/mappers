@@ -50,6 +50,22 @@ const PATCH_VERSIONS = {
         "saves_pointer_offset": 131096,
         "address_offset": 36
       }
+    },
+    "6": {
+      "anchor_addr": "0x020E5014",
+      "lookups": {
+        "global_pointer_var": "0x0210214C",
+        "save_data_pointer": "0x021C0BB4",
+        "stp_vars": "0x021C3E58"
+      },
+      "base_offsets": {
+        "player_party": 53396,
+        "dynamic_player_base": 362636,
+        "dynamic_party_stride": 1456,
+        "current_party_indexes": 346500,
+        "saves_pointer_offset": 131096,
+        "address_offset": 36
+      }
     }
   }
 };
