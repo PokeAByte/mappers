@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.4.0"
+<mapper id="be2d42be-6167-424e-890a-2de0fdd06ecd" name="STP Pokemon Platinum" platform="NDS" version="1.4.1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -61,11 +61,15 @@
 				<property name="special_defense" type="int" address="{address} + 29" />
 			</evs>
 			<flags>
-				<property name="is_egg"          address="{address} + 56" type="bool" length="4" bits="30"/>
-				<property name="is_nicknamed"    address="{address} + 56" type="bool" length="4" bits="31"/>
-				<property name="skip_checksum_1" address="{address} + 4"  type="bool" bits="0"/>
-				<property name="skip_checksum_2" address="{address} + 4"  type="bool" bits="1"/>
-				<property name="is_bad_egg"      address="{address} + 4"  type="bool" bits="2"/>
+				<property name="is_egg"            address="{address} + 56" type="bool" length="4" bits="30"/>
+				<property name="is_nicknamed"      address="{address} + 56" type="bool" length="4" bits="31"/>
+				<property name="fateful_encounter" address="{address} + 64" type="bool" length="1" bits="0"/>
+				<property name="gender"            address="{address} + 64" type="bool" length="1" bits="1"/>
+				<property name="gender_unknown"    address="{address} + 64" type="bool" length="1" bits="2"/>
+				<property name="alternate_forms"   address="{address} + 64" type="int"  length="1" bits="3-7"/>
+				<property name="skip_checksum_1"   address="{address} + 4"  type="bool" bits="0"/>
+				<property name="skip_checksum_2"   address="{address} + 4"  type="bool" bits="1"/>
+				<property name="is_bad_egg"        address="{address} + 4"  type="bool" bits="2"/>
 			</flags>
 			<internals>
 				<property name="personality_value" address="{address} + 0"  type="uint" length="4" />
