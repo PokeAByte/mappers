@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.9.6" syntax="4"
+<mapper id="d85071bb-6151-44a0-b15e-f593f2d17e17" name="Pokemon White - Beta" platform="NDS" version="0.10.0" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -254,7 +254,6 @@
 			<property name="species"          address="{address} + 64"  type="int" length="2"  reference="species" />
 			<property name="exp"              address="{address} + 60"  type="int" length="4"/>
             <property name="held_item"        address="{address} + 70"  type="int" length="2" reference="items" />
-            <property name="held_item_temp"   address="{address} + 372" type="int" length="2" reference="items" />
 			<property name="ability"          address="{address} + 74"  type="int" reference="abilities" />
 			<property name="ability_temp"     address="{address} + 368" type="int" reference="abilities" />
 			<property name="level"            address="{address} + 76"  type="int" />
@@ -379,13 +378,13 @@
 
 	<properties>
 		<player>
-			<property name="name"       type="string" address="0x2234FB0 + 0x20" length="14" size="2" />
-			<property name="gender"     type="int" address="0x2234FCD + 0x20" reference="genders" />
-			<property name="player_id"  type="int" address="0x2234FC0 + 0x20" length="2" />
-			<property name="secret_id"  type="int" address="0x2234FC2 + 0x20" length="2" />
-			<property name="team_count" type="int" address="0x22349B4 + 0x20 - 4" />
-			<property name="decrypted_mon_0" type="string" address="0x22349B4 + 0x20" length="220" />
-			<property name="decrypted_mon_1" type="string" address="0x2268594 + 0x20" length="220" />
+			<property name="name"       type="string" address="0x2234FB0 + {version_offset}" length="14" size="2" />
+			<property name="gender"     type="int" address="0x2234FCD + {version_offset}" reference="genders" />
+			<property name="player_id"  type="int" address="0x2234FC0 + {version_offset}" length="2" />
+			<property name="secret_id"  type="int" address="0x2234FC2 + {version_offset}" length="2" />
+			<property name="team_count" type="int" address="0x22349B4 - 4 + {version_offset}" />
+			<property name="decrypted_mon_0" type="string" address="0x22349B4 + {version_offset}" length="220" />
+			<property name="decrypted_mon_1" type="string" address="0x2268594 + {version_offset}" length="220" />
 			<team>
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
 				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
@@ -395,422 +394,422 @@
 				<class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" />
 			</team>
 			<badges>
-				<property name="0" type="bool" address="0x223CDB0 + 0x20" bits="0" description="triobadge" />
-                <property name="1" type="bool" address="0x223CDB0 + 0x20" bits="1" description="basicbadge" />
-                <property name="2" type="bool" address="0x223CDB0 + 0x20" bits="2" description="insectbadge" />
-                <property name="3" type="bool" address="0x223CDB0 + 0x20" bits="3" description="boltbadge" />
-                <property name="4" type="bool" address="0x223CDB0 + 0x20" bits="4" description="quakebadge" />
-                <property name="5" type="bool" address="0x223CDB0 + 0x20" bits="5" description="jetbadge" />
-                <property name="6" type="bool" address="0x223CDB0 + 0x20" bits="6" description="freezebadge" />
-                <property name="7" type="bool" address="0x223CDB0 + 0x20" bits="7" description="legendbadge" />
+				<property name="0" type="bool" address="0x223CDB0 + {version_offset}" bits="0" description="triobadge" />
+                <property name="1" type="bool" address="0x223CDB0 + {version_offset}" bits="1" description="basicbadge" />
+                <property name="2" type="bool" address="0x223CDB0 + {version_offset}" bits="2" description="insectbadge" />
+                <property name="3" type="bool" address="0x223CDB0 + {version_offset}" bits="3" description="boltbadge" />
+                <property name="4" type="bool" address="0x223CDB0 + {version_offset}" bits="4" description="quakebadge" />
+                <property name="5" type="bool" address="0x223CDB0 + {version_offset}" bits="5" description="jetbadge" />
+                <property name="6" type="bool" address="0x223CDB0 + {version_offset}" bits="6" description="freezebadge" />
+                <property name="7" type="bool" address="0x223CDB0 + {version_offset}" bits="7" description="legendbadge" />
 			</badges>
 		</player>
 		<bag>
-            <property name="money" type="int" address="0x223CDAC + 0x20" length="4" />
+            <property name="money" type="int" address="0x223CDAC + {version_offset}" length="4" />
 			<items>
-				<class name="0"  type="player_item" var:address="0x2233FAC + 0x20 + 0" />
-				<class name="1"  type="player_item" var:address="0x2233FAC + 0x20 + 4" />
-				<class name="2"  type="player_item" var:address="0x2233FAC + 0x20 + 8" />
-				<class name="3"  type="player_item" var:address="0x2233FAC + 0x20 + 12" />
-				<class name="4"  type="player_item" var:address="0x2233FAC + 0x20 + 16" />
-				<class name="5"  type="player_item" var:address="0x2233FAC + 0x20 + 20" />
-				<class name="6"  type="player_item" var:address="0x2233FAC + 0x20 + 24" />
-				<class name="7"  type="player_item" var:address="0x2233FAC + 0x20 + 28" />
-				<class name="8"  type="player_item" var:address="0x2233FAC + 0x20 + 32" />
-				<class name="9"  type="player_item" var:address="0x2233FAC + 0x20 + 36" />
-				<class name="10" type="player_item" var:address="0x2233FAC + 0x20 + 40" />
-				<class name="11" type="player_item" var:address="0x2233FAC + 0x20 + 44" />
-				<class name="12" type="player_item" var:address="0x2233FAC + 0x20 + 48" />
-				<class name="13" type="player_item" var:address="0x2233FAC + 0x20 + 52" />
-				<class name="14" type="player_item" var:address="0x2233FAC + 0x20 + 56" />
-				<class name="15" type="player_item" var:address="0x2233FAC + 0x20 + 60" />
-				<class name="16" type="player_item" var:address="0x2233FAC + 0x20 + 64" />
-				<class name="17" type="player_item" var:address="0x2233FAC + 0x20 + 68" />
-				<class name="18" type="player_item" var:address="0x2233FAC + 0x20 + 72" />
-				<class name="19" type="player_item" var:address="0x2233FAC + 0x20 + 76" />
-				<class name="20" type="player_item" var:address="0x2233FAC + 0x20 + 80" />
-				<class name="21" type="player_item" var:address="0x2233FAC + 0x20 + 84" />
-				<class name="22" type="player_item" var:address="0x2233FAC + 0x20 + 88" />
-				<class name="23" type="player_item" var:address="0x2233FAC + 0x20 + 92" />
-				<class name="24" type="player_item" var:address="0x2233FAC + 0x20 + 96" />
-				<class name="25" type="player_item" var:address="0x2233FAC + 0x20 + 100" />
-				<class name="26" type="player_item" var:address="0x2233FAC + 0x20 + 104" />
-				<class name="27" type="player_item" var:address="0x2233FAC + 0x20 + 108" />
-				<class name="28" type="player_item" var:address="0x2233FAC + 0x20 + 112" />
-				<class name="29" type="player_item" var:address="0x2233FAC + 0x20 + 116" />
-				<class name="30" type="player_item" var:address="0x2233FAC + 0x20 + 120" />
-				<class name="31" type="player_item" var:address="0x2233FAC + 0x20 + 124" />
-				<class name="32" type="player_item" var:address="0x2233FAC + 0x20 + 128" />
-				<class name="33" type="player_item" var:address="0x2233FAC + 0x20 + 132" />
-				<class name="34" type="player_item" var:address="0x2233FAC + 0x20 + 136" />
-				<class name="35" type="player_item" var:address="0x2233FAC + 0x20 + 140" />
-				<class name="36" type="player_item" var:address="0x2233FAC + 0x20 + 144" />
-				<class name="37" type="player_item" var:address="0x2233FAC + 0x20 + 148" />
-				<class name="38" type="player_item" var:address="0x2233FAC + 0x20 + 152" />
-				<class name="39" type="player_item" var:address="0x2233FAC + 0x20 + 156" />
+				<class name="0"  type="player_item" var:address="0x2233FAC  + {version_offset} + 0" />
+				<class name="1"  type="player_item" var:address="0x2233FAC  + {version_offset} + 4" />
+				<class name="2"  type="player_item" var:address="0x2233FAC  + {version_offset} + 8" />
+				<class name="3"  type="player_item" var:address="0x2233FAC  + {version_offset} + 12" />
+				<class name="4"  type="player_item" var:address="0x2233FAC  + {version_offset} + 16" />
+				<class name="5"  type="player_item" var:address="0x2233FAC  + {version_offset} + 20" />
+				<class name="6"  type="player_item" var:address="0x2233FAC  + {version_offset} + 24" />
+				<class name="7"  type="player_item" var:address="0x2233FAC  + {version_offset} + 28" />
+				<class name="8"  type="player_item" var:address="0x2233FAC  + {version_offset} + 32" />
+				<class name="9"  type="player_item" var:address="0x2233FAC  + {version_offset} + 36" />
+				<class name="10" type="player_item" var:address="0x2233FAC  + {version_offset} + 40" />
+				<class name="11" type="player_item" var:address="0x2233FAC  + {version_offset} + 44" />
+				<class name="12" type="player_item" var:address="0x2233FAC  + {version_offset} + 48" />
+				<class name="13" type="player_item" var:address="0x2233FAC  + {version_offset} + 52" />
+				<class name="14" type="player_item" var:address="0x2233FAC  + {version_offset} + 56" />
+				<class name="15" type="player_item" var:address="0x2233FAC  + {version_offset} + 60" />
+				<class name="16" type="player_item" var:address="0x2233FAC  + {version_offset} + 64" />
+				<class name="17" type="player_item" var:address="0x2233FAC  + {version_offset} + 68" />
+				<class name="18" type="player_item" var:address="0x2233FAC  + {version_offset} + 72" />
+				<class name="19" type="player_item" var:address="0x2233FAC  + {version_offset} + 76" />
+				<class name="20" type="player_item" var:address="0x2233FAC  + {version_offset} + 80" />
+				<class name="21" type="player_item" var:address="0x2233FAC  + {version_offset} + 84" />
+				<class name="22" type="player_item" var:address="0x2233FAC  + {version_offset} + 88" />
+				<class name="23" type="player_item" var:address="0x2233FAC  + {version_offset} + 92" />
+				<class name="24" type="player_item" var:address="0x2233FAC  + {version_offset} + 96" />
+				<class name="25" type="player_item" var:address="0x2233FAC  + {version_offset} + 100" />
+				<class name="26" type="player_item" var:address="0x2233FAC  + {version_offset} + 104" />
+				<class name="27" type="player_item" var:address="0x2233FAC  + {version_offset} + 108" />
+				<class name="28" type="player_item" var:address="0x2233FAC  + {version_offset} + 112" />
+				<class name="29" type="player_item" var:address="0x2233FAC  + {version_offset} + 116" />
+				<class name="30" type="player_item" var:address="0x2233FAC  + {version_offset} + 120" />
+				<class name="31" type="player_item" var:address="0x2233FAC  + {version_offset} + 124" />
+				<class name="32" type="player_item" var:address="0x2233FAC  + {version_offset} + 128" />
+				<class name="33" type="player_item" var:address="0x2233FAC  + {version_offset} + 132" />
+				<class name="34" type="player_item" var:address="0x2233FAC  + {version_offset} + 136" />
+				<class name="35" type="player_item" var:address="0x2233FAC  + {version_offset} + 140" />
+				<class name="36" type="player_item" var:address="0x2233FAC  + {version_offset} + 144" />
+				<class name="37" type="player_item" var:address="0x2233FAC  + {version_offset} + 148" />
+				<class name="38" type="player_item" var:address="0x2233FAC  + {version_offset} + 152" />
+				<class name="39" type="player_item" var:address="0x2233FAC  + {version_offset} + 156" />
 				<!-- There are more item slots - I have left them out for runtime speed -->
 			</items>
 			<medicine>
-				<class name="0"  type="player_item" var:address="0x2234784 + 0x20 + 0" />
-				<class name="1"  type="player_item" var:address="0x2234784 + 0x20 + 4" />
-				<class name="2"  type="player_item" var:address="0x2234784 + 0x20 + 8" />
-				<class name="3"  type="player_item" var:address="0x2234784 + 0x20 + 12" />
-				<class name="4"  type="player_item" var:address="0x2234784 + 0x20 + 16" />
-				<class name="5"  type="player_item" var:address="0x2234784 + 0x20 + 20" />
-				<class name="6"  type="player_item" var:address="0x2234784 + 0x20 + 24" />
-				<class name="7"  type="player_item" var:address="0x2234784 + 0x20 + 28" />
-				<class name="8"  type="player_item" var:address="0x2234784 + 0x20 + 32" />
-				<class name="9"  type="player_item" var:address="0x2234784 + 0x20 + 36" />
-				<class name="10" type="player_item" var:address="0x2234784 + 0x20 + 40" />
-				<class name="11" type="player_item" var:address="0x2234784 + 0x20 + 44" />
-				<class name="12" type="player_item" var:address="0x2234784 + 0x20 + 48" />
-				<class name="13" type="player_item" var:address="0x2234784 + 0x20 + 52" />
-				<class name="14" type="player_item" var:address="0x2234784 + 0x20 + 56" />
-				<class name="15" type="player_item" var:address="0x2234784 + 0x20 + 60" />
-				<class name="16" type="player_item" var:address="0x2234784 + 0x20 + 64" />
-				<class name="17" type="player_item" var:address="0x2234784 + 0x20 + 68" />
-				<class name="18" type="player_item" var:address="0x2234784 + 0x20 + 72" />
-				<class name="19" type="player_item" var:address="0x2234784 + 0x20 + 76" />
-				<class name="20" type="player_item" var:address="0x2234784 + 0x20 + 80" />
-				<class name="21" type="player_item" var:address="0x2234784 + 0x20 + 84" />
-				<class name="22" type="player_item" var:address="0x2234784 + 0x20 + 88" />
-				<class name="23" type="player_item" var:address="0x2234784 + 0x20 + 92" />
-				<class name="24" type="player_item" var:address="0x2234784 + 0x20 + 96" />
-				<class name="25" type="player_item" var:address="0x2234784 + 0x20 + 100" />
-				<class name="26" type="player_item" var:address="0x2234784 + 0x20 + 104" />
-				<class name="27" type="player_item" var:address="0x2234784 + 0x20 + 108" />
-				<class name="28" type="player_item" var:address="0x2234784 + 0x20 + 112" />
-				<class name="29" type="player_item" var:address="0x2234784 + 0x20 + 116" />
-				<class name="30" type="player_item" var:address="0x2234784 + 0x20 + 120" />
-				<class name="31" type="player_item" var:address="0x2234784 + 0x20 + 124" />
-				<class name="32" type="player_item" var:address="0x2234784 + 0x20 + 128" />
-				<class name="33" type="player_item" var:address="0x2234784 + 0x20 + 132" />
-				<class name="34" type="player_item" var:address="0x2234784 + 0x20 + 136" />
-				<class name="35" type="player_item" var:address="0x2234784 + 0x20 + 140" />
-				<class name="36" type="player_item" var:address="0x2234784 + 0x20 + 144" />
-				<class name="37" type="player_item" var:address="0x2234784 + 0x20 + 148" />
-				<class name="38" type="player_item" var:address="0x2234784 + 0x20 + 152" />
-				<class name="39" type="player_item" var:address="0x2234784 + 0x20 + 156" />
-				<class name="40" type="player_item" var:address="0x2234784 + 0x20 + 160" />
-				<class name="41" type="player_item" var:address="0x2234784 + 0x20 + 164" />
-				<class name="42" type="player_item" var:address="0x2234784 + 0x20 + 168" />
-				<class name="43" type="player_item" var:address="0x2234784 + 0x20 + 172" />
-				<class name="44" type="player_item" var:address="0x2234784 + 0x20 + 176" />
-				<class name="45" type="player_item" var:address="0x2234784 + 0x20 + 180" />
-				<class name="46" type="player_item" var:address="0x2234784 + 0x20 + 184" />
-				<class name="47" type="player_item" var:address="0x2234784 + 0x20 + 188" />
+				<class name="0"  type="player_item" var:address="0x2234784 + {version_offset} + 0" />
+				<class name="1"  type="player_item" var:address="0x2234784 + {version_offset} + 4" />
+				<class name="2"  type="player_item" var:address="0x2234784 + {version_offset} + 8" />
+				<class name="3"  type="player_item" var:address="0x2234784 + {version_offset} + 12" />
+				<class name="4"  type="player_item" var:address="0x2234784 + {version_offset} + 16" />
+				<class name="5"  type="player_item" var:address="0x2234784 + {version_offset} + 20" />
+				<class name="6"  type="player_item" var:address="0x2234784 + {version_offset} + 24" />
+				<class name="7"  type="player_item" var:address="0x2234784 + {version_offset} + 28" />
+				<class name="8"  type="player_item" var:address="0x2234784 + {version_offset} + 32" />
+				<class name="9"  type="player_item" var:address="0x2234784 + {version_offset} + 36" />
+				<class name="10" type="player_item" var:address="0x2234784 + {version_offset} + 40" />
+				<class name="11" type="player_item" var:address="0x2234784 + {version_offset} + 44" />
+				<class name="12" type="player_item" var:address="0x2234784 + {version_offset} + 48" />
+				<class name="13" type="player_item" var:address="0x2234784 + {version_offset} + 52" />
+				<class name="14" type="player_item" var:address="0x2234784 + {version_offset} + 56" />
+				<class name="15" type="player_item" var:address="0x2234784 + {version_offset} + 60" />
+				<class name="16" type="player_item" var:address="0x2234784 + {version_offset} + 64" />
+				<class name="17" type="player_item" var:address="0x2234784 + {version_offset} + 68" />
+				<class name="18" type="player_item" var:address="0x2234784 + {version_offset} + 72" />
+				<class name="19" type="player_item" var:address="0x2234784 + {version_offset} + 76" />
+				<class name="20" type="player_item" var:address="0x2234784 + {version_offset} + 80" />
+				<class name="21" type="player_item" var:address="0x2234784 + {version_offset} + 84" />
+				<class name="22" type="player_item" var:address="0x2234784 + {version_offset} + 88" />
+				<class name="23" type="player_item" var:address="0x2234784 + {version_offset} + 92" />
+				<class name="24" type="player_item" var:address="0x2234784 + {version_offset} + 96" />
+				<class name="25" type="player_item" var:address="0x2234784 + {version_offset} + 100" />
+				<class name="26" type="player_item" var:address="0x2234784 + {version_offset} + 104" />
+				<class name="27" type="player_item" var:address="0x2234784 + {version_offset} + 108" />
+				<class name="28" type="player_item" var:address="0x2234784 + {version_offset} + 112" />
+				<class name="29" type="player_item" var:address="0x2234784 + {version_offset} + 116" />
+				<class name="30" type="player_item" var:address="0x2234784 + {version_offset} + 120" />
+				<class name="31" type="player_item" var:address="0x2234784 + {version_offset} + 124" />
+				<class name="32" type="player_item" var:address="0x2234784 + {version_offset} + 128" />
+				<class name="33" type="player_item" var:address="0x2234784 + {version_offset} + 132" />
+				<class name="34" type="player_item" var:address="0x2234784 + {version_offset} + 136" />
+				<class name="35" type="player_item" var:address="0x2234784 + {version_offset} + 140" />
+				<class name="36" type="player_item" var:address="0x2234784 + {version_offset} + 144" />
+				<class name="37" type="player_item" var:address="0x2234784 + {version_offset} + 148" />
+				<class name="38" type="player_item" var:address="0x2234784 + {version_offset} + 152" />
+				<class name="39" type="player_item" var:address="0x2234784 + {version_offset} + 156" />
+				<class name="40" type="player_item" var:address="0x2234784 + {version_offset} + 160" />
+				<class name="41" type="player_item" var:address="0x2234784 + {version_offset} + 164" />
+				<class name="42" type="player_item" var:address="0x2234784 + {version_offset} + 168" />
+				<class name="43" type="player_item" var:address="0x2234784 + {version_offset} + 172" />
+				<class name="44" type="player_item" var:address="0x2234784 + {version_offset} + 176" />
+				<class name="45" type="player_item" var:address="0x2234784 + {version_offset} + 180" />
+				<class name="46" type="player_item" var:address="0x2234784 + {version_offset} + 184" />
+				<class name="47" type="player_item" var:address="0x2234784 + {version_offset} + 188" />
 				<!-- There are more item slots - I have left them out for runtime speed -->
 			</medicine>
 			<key_items> <!-- There are a total of 14 key items -->
-				<class name="0"  type="player_item" var:address="0x2234484 + 0x20 + 0" />
-				<class name="1"  type="player_item" var:address="0x2234484 + 0x20 + 4" />
-				<class name="2"  type="player_item" var:address="0x2234484 + 0x20 + 8" />
-				<class name="3"  type="player_item" var:address="0x2234484 + 0x20 + 12" />
-				<class name="4"  type="player_item" var:address="0x2234484 + 0x20 + 16" />
-				<class name="5"  type="player_item" var:address="0x2234484 + 0x20 + 20" />
-				<class name="6"  type="player_item" var:address="0x2234484 + 0x20 + 24" />
-				<class name="7"  type="player_item" var:address="0x2234484 + 0x20 + 28" />
-				<class name="8"  type="player_item" var:address="0x2234484 + 0x20 + 32" />
-				<class name="9"  type="player_item" var:address="0x2234484 + 0x20 + 36" />
-				<class name="10" type="player_item" var:address="0x2234484 + 0x20 + 40" />
-				<class name="11" type="player_item" var:address="0x2234484 + 0x20 + 44" />
-				<class name="12" type="player_item" var:address="0x2234484 + 0x20 + 48" />
-				<class name="13" type="player_item" var:address="0x2234484 + 0x20 + 52" />
+				<class name="0"  type="player_item" var:address="0x2234484 + {version_offset} + 0" />
+				<class name="1"  type="player_item" var:address="0x2234484 + {version_offset} + 4" />
+				<class name="2"  type="player_item" var:address="0x2234484 + {version_offset} + 8" />
+				<class name="3"  type="player_item" var:address="0x2234484 + {version_offset} + 12" />
+				<class name="4"  type="player_item" var:address="0x2234484 + {version_offset} + 16" />
+				<class name="5"  type="player_item" var:address="0x2234484 + {version_offset} + 20" />
+				<class name="6"  type="player_item" var:address="0x2234484 + {version_offset} + 24" />
+				<class name="7"  type="player_item" var:address="0x2234484 + {version_offset} + 28" />
+				<class name="8"  type="player_item" var:address="0x2234484 + {version_offset} + 32" />
+				<class name="9"  type="player_item" var:address="0x2234484 + {version_offset} + 36" />
+				<class name="10" type="player_item" var:address="0x2234484 + {version_offset} + 40" />
+				<class name="11" type="player_item" var:address="0x2234484 + {version_offset} + 44" />
+				<class name="12" type="player_item" var:address="0x2234484 + {version_offset} + 48" />
+				<class name="13" type="player_item" var:address="0x2234484 + {version_offset} + 52" />
 			</key_items>
 			<tmhm>
-				<class name="0"  type="player_item" var:address="0x22345D0 + 0x20 + 0" />
-				<class name="1"  type="player_item" var:address="0x22345D0 + 0x20 + 4" />
-				<class name="2"  type="player_item" var:address="0x22345D0 + 0x20 + 8" />
-				<class name="3"  type="player_item" var:address="0x22345D0 + 0x20 + 12" />
-				<class name="4"  type="player_item" var:address="0x22345D0 + 0x20 + 16" />
-				<class name="5"  type="player_item" var:address="0x22345D0 + 0x20 + 20" />
-				<class name="6"  type="player_item" var:address="0x22345D0 + 0x20 + 24" />
-				<class name="7"  type="player_item" var:address="0x22345D0 + 0x20 + 28" />
-				<class name="8"  type="player_item" var:address="0x22345D0 + 0x20 + 32" />
-				<class name="9"  type="player_item" var:address="0x22345D0 + 0x20 + 36" />
-				<class name="10" type="player_item" var:address="0x22345D0 + 0x20 + 40" />
-				<class name="11" type="player_item" var:address="0x22345D0 + 0x20 + 44" />
-				<class name="12" type="player_item" var:address="0x22345D0 + 0x20 + 48" />
-				<class name="13" type="player_item" var:address="0x22345D0 + 0x20 + 52" />
-				<class name="14" type="player_item" var:address="0x22345D0 + 0x20 + 56" />
-				<class name="15" type="player_item" var:address="0x22345D0 + 0x20 + 60" />
-				<class name="16" type="player_item" var:address="0x22345D0 + 0x20 + 64" />
-				<class name="17" type="player_item" var:address="0x22345D0 + 0x20 + 68" />
-				<class name="18" type="player_item" var:address="0x22345D0 + 0x20 + 72" />
-				<class name="19" type="player_item" var:address="0x22345D0 + 0x20 + 76" />
-				<class name="20" type="player_item" var:address="0x22345D0 + 0x20 + 80" />
-				<class name="21" type="player_item" var:address="0x22345D0 + 0x20 + 84" />
-				<class name="22" type="player_item" var:address="0x22345D0 + 0x20 + 88" />
-				<class name="23" type="player_item" var:address="0x22345D0 + 0x20 + 92" />
-				<class name="24" type="player_item" var:address="0x22345D0 + 0x20 + 96" />
-				<class name="25" type="player_item" var:address="0x22345D0 + 0x20 + 100" />
-				<class name="26" type="player_item" var:address="0x22345D0 + 0x20 + 104" />
-				<class name="27" type="player_item" var:address="0x22345D0 + 0x20 + 108" />
-				<class name="28" type="player_item" var:address="0x22345D0 + 0x20 + 112" />
-				<class name="29" type="player_item" var:address="0x22345D0 + 0x20 + 116" />
-				<class name="30" type="player_item" var:address="0x22345D0 + 0x20 + 120" />
-				<class name="31" type="player_item" var:address="0x22345D0 + 0x20 + 124" />
-				<class name="32" type="player_item" var:address="0x22345D0 + 0x20 + 128" />
-				<class name="33" type="player_item" var:address="0x22345D0 + 0x20 + 132" />
-				<class name="34" type="player_item" var:address="0x22345D0 + 0x20 + 136" />
-				<class name="35" type="player_item" var:address="0x22345D0 + 0x20 + 140" />
-				<class name="36" type="player_item" var:address="0x22345D0 + 0x20 + 144" />
-				<class name="37" type="player_item" var:address="0x22345D0 + 0x20 + 148" />
-				<class name="38" type="player_item" var:address="0x22345D0 + 0x20 + 152" />
-				<class name="39" type="player_item" var:address="0x22345D0 + 0x20 + 156" />
-				<class name="40" type="player_item" var:address="0x22345D0 + 0x20 + 160" />
-				<class name="41" type="player_item" var:address="0x22345D0 + 0x20 + 164" />
-				<class name="42" type="player_item" var:address="0x22345D0 + 0x20 + 168" />
-				<class name="43" type="player_item" var:address="0x22345D0 + 0x20 + 172" />
-				<class name="44" type="player_item" var:address="0x22345D0 + 0x20 + 176" />
-				<class name="45" type="player_item" var:address="0x22345D0 + 0x20 + 180" />
-				<class name="46" type="player_item" var:address="0x22345D0 + 0x20 + 184" />
-				<class name="47" type="player_item" var:address="0x22345D0 + 0x20 + 188" />
-				<class name="48" type="player_item" var:address="0x22345D0 + 0x20 + 192" />
-				<class name="49" type="player_item" var:address="0x22345D0 + 0x20 + 196" />
-				<class name="50" type="player_item" var:address="0x22345D0 + 0x20 + 200" />
-				<class name="51" type="player_item" var:address="0x22345D0 + 0x20 + 204" />
-				<class name="52" type="player_item" var:address="0x22345D0 + 0x20 + 208" />
-				<class name="53" type="player_item" var:address="0x22345D0 + 0x20 + 212" />
-				<class name="54" type="player_item" var:address="0x22345D0 + 0x20 + 216" />
-				<class name="55" type="player_item" var:address="0x22345D0 + 0x20 + 220" />
-				<class name="56" type="player_item" var:address="0x22345D0 + 0x20 + 224" />
-				<class name="57" type="player_item" var:address="0x22345D0 + 0x20 + 228" />
-				<class name="58" type="player_item" var:address="0x22345D0 + 0x20 + 232" />
-				<class name="59" type="player_item" var:address="0x22345D0 + 0x20 + 236" />
-				<class name="60" type="player_item" var:address="0x22345D0 + 0x20 + 240" />
-				<class name="61" type="player_item" var:address="0x22345D0 + 0x20 + 244" />
-				<class name="62" type="player_item" var:address="0x22345D0 + 0x20 + 248" />
-				<class name="63" type="player_item" var:address="0x22345D0 + 0x20 + 252" />
-				<class name="64" type="player_item" var:address="0x22345D0 + 0x20 + 256" />
-				<class name="65" type="player_item" var:address="0x22345D0 + 0x20 + 260" />
-				<class name="66" type="player_item" var:address="0x22345D0 + 0x20 + 264" />
-				<class name="67" type="player_item" var:address="0x22345D0 + 0x20 + 268" />
-				<class name="68" type="player_item" var:address="0x22345D0 + 0x20 + 272" />
-				<class name="69" type="player_item" var:address="0x22345D0 + 0x20 + 276" />
-				<class name="70" type="player_item" var:address="0x22345D0 + 0x20 + 280" />
-				<class name="71" type="player_item" var:address="0x22345D0 + 0x20 + 284" />
-				<class name="72" type="player_item" var:address="0x22345D0 + 0x20 + 288" />
-				<class name="73" type="player_item" var:address="0x22345D0 + 0x20 + 292" />
-				<class name="74" type="player_item" var:address="0x22345D0 + 0x20 + 296" />
-				<class name="75" type="player_item" var:address="0x22345D0 + 0x20 + 300" />
-				<class name="76" type="player_item" var:address="0x22345D0 + 0x20 + 304" />
-				<class name="77" type="player_item" var:address="0x22345D0 + 0x20 + 308" />
-				<class name="78" type="player_item" var:address="0x22345D0 + 0x20 + 312" />
-				<class name="79" type="player_item" var:address="0x22345D0 + 0x20 + 316" />
-				<class name="80" type="player_item" var:address="0x22345D0 + 0x20 + 320" />
-				<class name="81" type="player_item" var:address="0x22345D0 + 0x20 + 324" />
-				<class name="82" type="player_item" var:address="0x22345D0 + 0x20 + 328" />
-				<class name="83" type="player_item" var:address="0x22345D0 + 0x20 + 332" />
-				<class name="84" type="player_item" var:address="0x22345D0 + 0x20 + 336" />
-				<class name="85" type="player_item" var:address="0x22345D0 + 0x20 + 340" />
-				<class name="86" type="player_item" var:address="0x22345D0 + 0x20 + 344" />
-				<class name="87" type="player_item" var:address="0x22345D0 + 0x20 + 348" />
-				<class name="88" type="player_item" var:address="0x22345D0 + 0x20 + 352" />
-				<class name="89" type="player_item" var:address="0x22345D0 + 0x20 + 356" />
-				<class name="90" type="player_item" var:address="0x22345D0 + 0x20 + 360" />
-				<class name="91" type="player_item" var:address="0x22345D0 + 0x20 + 364" />
-				<class name="92" type="player_item" var:address="0x22345D0 + 0x20 + 368" />
-				<class name="93" type="player_item" var:address="0x22345D0 + 0x20 + 372" />
-				<class name="94" type="player_item" var:address="0x22345D0 + 0x20 + 376" />
-				<class name="95" type="player_item" var:address="0x22345D0 + 0x20 + 380" />
-				<class name="96" type="player_item" var:address="0x22345D0 + 0x20 + 384" />
-				<class name="97" type="player_item" var:address="0x22345D0 + 0x20 + 388" />
-				<class name="98" type="player_item" var:address="0x22345D0 + 0x20 + 392" />
-				<class name="99" type="player_item" var:address="0x22345D0 + 0x20 + 396" />
-				<class name="100" type="player_item" var:address="0x22345D0 + 0x20 + 400" />
-				<class name="101" type="player_item" var:address="0x22345D0 + 0x20 + 404" />
+				<class name="0"  type="player_item" var:address="0x22345D0 + {version_offset} + 0" />
+				<class name="1"  type="player_item" var:address="0x22345D0 + {version_offset} + 4" />
+				<class name="2"  type="player_item" var:address="0x22345D0 + {version_offset} + 8" />
+				<class name="3"  type="player_item" var:address="0x22345D0 + {version_offset} + 12" />
+				<class name="4"  type="player_item" var:address="0x22345D0 + {version_offset} + 16" />
+				<class name="5"  type="player_item" var:address="0x22345D0 + {version_offset} + 20" />
+				<class name="6"  type="player_item" var:address="0x22345D0 + {version_offset} + 24" />
+				<class name="7"  type="player_item" var:address="0x22345D0 + {version_offset} + 28" />
+				<class name="8"  type="player_item" var:address="0x22345D0 + {version_offset} + 32" />
+				<class name="9"  type="player_item" var:address="0x22345D0 + {version_offset} + 36" />
+				<class name="10" type="player_item" var:address="0x22345D0 + {version_offset} + 40" />
+				<class name="11" type="player_item" var:address="0x22345D0 + {version_offset} + 44" />
+				<class name="12" type="player_item" var:address="0x22345D0 + {version_offset} + 48" />
+				<class name="13" type="player_item" var:address="0x22345D0 + {version_offset} + 52" />
+				<class name="14" type="player_item" var:address="0x22345D0 + {version_offset} + 56" />
+				<class name="15" type="player_item" var:address="0x22345D0 + {version_offset} + 60" />
+				<class name="16" type="player_item" var:address="0x22345D0 + {version_offset} + 64" />
+				<class name="17" type="player_item" var:address="0x22345D0 + {version_offset} + 68" />
+				<class name="18" type="player_item" var:address="0x22345D0 + {version_offset} + 72" />
+				<class name="19" type="player_item" var:address="0x22345D0 + {version_offset} + 76" />
+				<class name="20" type="player_item" var:address="0x22345D0 + {version_offset} + 80" />
+				<class name="21" type="player_item" var:address="0x22345D0 + {version_offset} + 84" />
+				<class name="22" type="player_item" var:address="0x22345D0 + {version_offset} + 88" />
+				<class name="23" type="player_item" var:address="0x22345D0 + {version_offset} + 92" />
+				<class name="24" type="player_item" var:address="0x22345D0 + {version_offset} + 96" />
+				<class name="25" type="player_item" var:address="0x22345D0 + {version_offset} + 100" />
+				<class name="26" type="player_item" var:address="0x22345D0 + {version_offset} + 104" />
+				<class name="27" type="player_item" var:address="0x22345D0 + {version_offset} + 108" />
+				<class name="28" type="player_item" var:address="0x22345D0 + {version_offset} + 112" />
+				<class name="29" type="player_item" var:address="0x22345D0 + {version_offset} + 116" />
+				<class name="30" type="player_item" var:address="0x22345D0 + {version_offset} + 120" />
+				<class name="31" type="player_item" var:address="0x22345D0 + {version_offset} + 124" />
+				<class name="32" type="player_item" var:address="0x22345D0 + {version_offset} + 128" />
+				<class name="33" type="player_item" var:address="0x22345D0 + {version_offset} + 132" />
+				<class name="34" type="player_item" var:address="0x22345D0 + {version_offset} + 136" />
+				<class name="35" type="player_item" var:address="0x22345D0 + {version_offset} + 140" />
+				<class name="36" type="player_item" var:address="0x22345D0 + {version_offset} + 144" />
+				<class name="37" type="player_item" var:address="0x22345D0 + {version_offset} + 148" />
+				<class name="38" type="player_item" var:address="0x22345D0 + {version_offset} + 152" />
+				<class name="39" type="player_item" var:address="0x22345D0 + {version_offset} + 156" />
+				<class name="40" type="player_item" var:address="0x22345D0 + {version_offset} + 160" />
+				<class name="41" type="player_item" var:address="0x22345D0 + {version_offset} + 164" />
+				<class name="42" type="player_item" var:address="0x22345D0 + {version_offset} + 168" />
+				<class name="43" type="player_item" var:address="0x22345D0 + {version_offset} + 172" />
+				<class name="44" type="player_item" var:address="0x22345D0 + {version_offset} + 176" />
+				<class name="45" type="player_item" var:address="0x22345D0 + {version_offset} + 180" />
+				<class name="46" type="player_item" var:address="0x22345D0 + {version_offset} + 184" />
+				<class name="47" type="player_item" var:address="0x22345D0 + {version_offset} + 188" />
+				<class name="48" type="player_item" var:address="0x22345D0 + {version_offset} + 192" />
+				<class name="49" type="player_item" var:address="0x22345D0 + {version_offset} + 196" />
+				<class name="50" type="player_item" var:address="0x22345D0 + {version_offset} + 200" />
+				<class name="51" type="player_item" var:address="0x22345D0 + {version_offset} + 204" />
+				<class name="52" type="player_item" var:address="0x22345D0 + {version_offset} + 208" />
+				<class name="53" type="player_item" var:address="0x22345D0 + {version_offset} + 212" />
+				<class name="54" type="player_item" var:address="0x22345D0 + {version_offset} + 216" />
+				<class name="55" type="player_item" var:address="0x22345D0 + {version_offset} + 220" />
+				<class name="56" type="player_item" var:address="0x22345D0 + {version_offset} + 224" />
+				<class name="57" type="player_item" var:address="0x22345D0 + {version_offset} + 228" />
+				<class name="58" type="player_item" var:address="0x22345D0 + {version_offset} + 232" />
+				<class name="59" type="player_item" var:address="0x22345D0 + {version_offset} + 236" />
+				<class name="60" type="player_item" var:address="0x22345D0 + {version_offset} + 240" />
+				<class name="61" type="player_item" var:address="0x22345D0 + {version_offset} + 244" />
+				<class name="62" type="player_item" var:address="0x22345D0 + {version_offset} + 248" />
+				<class name="63" type="player_item" var:address="0x22345D0 + {version_offset} + 252" />
+				<class name="64" type="player_item" var:address="0x22345D0 + {version_offset} + 256" />
+				<class name="65" type="player_item" var:address="0x22345D0 + {version_offset} + 260" />
+				<class name="66" type="player_item" var:address="0x22345D0 + {version_offset} + 264" />
+				<class name="67" type="player_item" var:address="0x22345D0 + {version_offset} + 268" />
+				<class name="68" type="player_item" var:address="0x22345D0 + {version_offset} + 272" />
+				<class name="69" type="player_item" var:address="0x22345D0 + {version_offset} + 276" />
+				<class name="70" type="player_item" var:address="0x22345D0 + {version_offset} + 280" />
+				<class name="71" type="player_item" var:address="0x22345D0 + {version_offset} + 284" />
+				<class name="72" type="player_item" var:address="0x22345D0 + {version_offset} + 288" />
+				<class name="73" type="player_item" var:address="0x22345D0 + {version_offset} + 292" />
+				<class name="74" type="player_item" var:address="0x22345D0 + {version_offset} + 296" />
+				<class name="75" type="player_item" var:address="0x22345D0 + {version_offset} + 300" />
+				<class name="76" type="player_item" var:address="0x22345D0 + {version_offset} + 304" />
+				<class name="77" type="player_item" var:address="0x22345D0 + {version_offset} + 308" />
+				<class name="78" type="player_item" var:address="0x22345D0 + {version_offset} + 312" />
+				<class name="79" type="player_item" var:address="0x22345D0 + {version_offset} + 316" />
+				<class name="80" type="player_item" var:address="0x22345D0 + {version_offset} + 320" />
+				<class name="81" type="player_item" var:address="0x22345D0 + {version_offset} + 324" />
+				<class name="82" type="player_item" var:address="0x22345D0 + {version_offset} + 328" />
+				<class name="83" type="player_item" var:address="0x22345D0 + {version_offset} + 332" />
+				<class name="84" type="player_item" var:address="0x22345D0 + {version_offset} + 336" />
+				<class name="85" type="player_item" var:address="0x22345D0 + {version_offset} + 340" />
+				<class name="86" type="player_item" var:address="0x22345D0 + {version_offset} + 344" />
+				<class name="87" type="player_item" var:address="0x22345D0 + {version_offset} + 348" />
+				<class name="88" type="player_item" var:address="0x22345D0 + {version_offset} + 352" />
+				<class name="89" type="player_item" var:address="0x22345D0 + {version_offset} + 356" />
+				<class name="90" type="player_item" var:address="0x22345D0 + {version_offset} + 360" />
+				<class name="91" type="player_item" var:address="0x22345D0 + {version_offset} + 364" />
+				<class name="92" type="player_item" var:address="0x22345D0 + {version_offset} + 368" />
+				<class name="93" type="player_item" var:address="0x22345D0 + {version_offset} + 372" />
+				<class name="94" type="player_item" var:address="0x22345D0 + {version_offset} + 376" />
+				<class name="95" type="player_item" var:address="0x22345D0 + {version_offset} + 380" />
+				<class name="96" type="player_item" var:address="0x22345D0 + {version_offset} + 384" />
+				<class name="97" type="player_item" var:address="0x22345D0 + {version_offset} + 388" />
+				<class name="98" type="player_item" var:address="0x22345D0 + {version_offset} + 392" />
+				<class name="99" type="player_item" var:address="0x22345D0 + {version_offset} + 396" />
+				<class name="100" type="player_item" var:address="0x22345D0 + {version_offset} + 400" />
+				<class name="101" type="player_item" var:address="0x22345D0 + {version_offset} + 404" />
 			</tmhm>
 			<berries>
-				<class name="0"  type="player_item" var:address="0x2234844 + 0x20 + 0" />
-				<class name="1"  type="player_item" var:address="0x2234844 + 0x20 + 4" />
-				<class name="2"  type="player_item" var:address="0x2234844 + 0x20 + 8" />
-				<class name="3"  type="player_item" var:address="0x2234844 + 0x20 + 12" />
-				<class name="4"  type="player_item" var:address="0x2234844 + 0x20 + 16" />
-				<class name="5"  type="player_item" var:address="0x2234844 + 0x20 + 20" />
-				<class name="6"  type="player_item" var:address="0x2234844 + 0x20 + 24" />
-				<class name="7"  type="player_item" var:address="0x2234844 + 0x20 + 28" />
-				<class name="8"  type="player_item" var:address="0x2234844 + 0x20 + 32" />
-				<class name="9"  type="player_item" var:address="0x2234844 + 0x20 + 36" />
-				<class name="10" type="player_item" var:address="0x2234844 + 0x20 + 40" />
-				<class name="11" type="player_item" var:address="0x2234844 + 0x20 + 44" />
-				<class name="12" type="player_item" var:address="0x2234844 + 0x20 + 48" />
-				<class name="13" type="player_item" var:address="0x2234844 + 0x20 + 52" />
-				<class name="14" type="player_item" var:address="0x2234844 + 0x20 + 56" />
-				<class name="15" type="player_item" var:address="0x2234844 + 0x20 + 60" />
-				<class name="16" type="player_item" var:address="0x2234844 + 0x20 + 64" />
-				<class name="17" type="player_item" var:address="0x2234844 + 0x20 + 68" />
-				<class name="18" type="player_item" var:address="0x2234844 + 0x20 + 72" />
-				<class name="19" type="player_item" var:address="0x2234844 + 0x20 + 76" />
-				<class name="20" type="player_item" var:address="0x2234844 + 0x20 + 80" />
-				<class name="21" type="player_item" var:address="0x2234844 + 0x20 + 84" />
-				<class name="22" type="player_item" var:address="0x2234844 + 0x20 + 88" />
-				<class name="23" type="player_item" var:address="0x2234844 + 0x20 + 92" />
-				<class name="24" type="player_item" var:address="0x2234844 + 0x20 + 96" />
-				<class name="25" type="player_item" var:address="0x2234844 + 0x20 + 100" />
-				<class name="26" type="player_item" var:address="0x2234844 + 0x20 + 104" />
-				<class name="27" type="player_item" var:address="0x2234844 + 0x20 + 108" />
-				<class name="28" type="player_item" var:address="0x2234844 + 0x20 + 112" />
-				<class name="29" type="player_item" var:address="0x2234844 + 0x20 + 116" />
+				<class name="0"  type="player_item" var:address="0x2234844 + {version_offset} + 0" />
+				<class name="1"  type="player_item" var:address="0x2234844 + {version_offset} + 4" />
+				<class name="2"  type="player_item" var:address="0x2234844 + {version_offset} + 8" />
+				<class name="3"  type="player_item" var:address="0x2234844 + {version_offset} + 12" />
+				<class name="4"  type="player_item" var:address="0x2234844 + {version_offset} + 16" />
+				<class name="5"  type="player_item" var:address="0x2234844 + {version_offset} + 20" />
+				<class name="6"  type="player_item" var:address="0x2234844 + {version_offset} + 24" />
+				<class name="7"  type="player_item" var:address="0x2234844 + {version_offset} + 28" />
+				<class name="8"  type="player_item" var:address="0x2234844 + {version_offset} + 32" />
+				<class name="9"  type="player_item" var:address="0x2234844 + {version_offset} + 36" />
+				<class name="10" type="player_item" var:address="0x2234844 + {version_offset} + 40" />
+				<class name="11" type="player_item" var:address="0x2234844 + {version_offset} + 44" />
+				<class name="12" type="player_item" var:address="0x2234844 + {version_offset} + 48" />
+				<class name="13" type="player_item" var:address="0x2234844 + {version_offset} + 52" />
+				<class name="14" type="player_item" var:address="0x2234844 + {version_offset} + 56" />
+				<class name="15" type="player_item" var:address="0x2234844 + {version_offset} + 60" />
+				<class name="16" type="player_item" var:address="0x2234844 + {version_offset} + 64" />
+				<class name="17" type="player_item" var:address="0x2234844 + {version_offset} + 68" />
+				<class name="18" type="player_item" var:address="0x2234844 + {version_offset} + 72" />
+				<class name="19" type="player_item" var:address="0x2234844 + {version_offset} + 76" />
+				<class name="20" type="player_item" var:address="0x2234844 + {version_offset} + 80" />
+				<class name="21" type="player_item" var:address="0x2234844 + {version_offset} + 84" />
+				<class name="22" type="player_item" var:address="0x2234844 + {version_offset} + 88" />
+				<class name="23" type="player_item" var:address="0x2234844 + {version_offset} + 92" />
+				<class name="24" type="player_item" var:address="0x2234844 + {version_offset} + 96" />
+				<class name="25" type="player_item" var:address="0x2234844 + {version_offset} + 100" />
+				<class name="26" type="player_item" var:address="0x2234844 + {version_offset} + 104" />
+				<class name="27" type="player_item" var:address="0x2234844 + {version_offset} + 108" />
+				<class name="28" type="player_item" var:address="0x2234844 + {version_offset} + 112" />
+				<class name="29" type="player_item" var:address="0x2234844 + {version_offset} + 116" />
 			</berries>
 			<!-- I'm not sure how this pocket works yet -->
 			<!-- <free_space>
-				<class name="0"  type="player_item" var:address="0x221DB94 + 0" />
-				<class name="1"  type="player_item" var:address="0x221DB94 + 4" />
-				<class name="2"  type="player_item" var:address="0x221DB94 + 8" />
-				<class name="3"  type="player_item" var:address="0x221DB94 + 12" />
-				<class name="4"  type="player_item" var:address="0x221DB94 + 16" />
-				<class name="5"  type="player_item" var:address="0x221DB94 + 20" />
-				<class name="6"  type="player_item" var:address="0x221DB94 + 24" />
-				<class name="7"  type="player_item" var:address="0x221DB94 + 28" />
-				<class name="8"  type="player_item" var:address="0x221DB94 + 32" />
-				<class name="9"  type="player_item" var:address="0x221DB94 + 36" />
-				<class name="10" type="player_item" var:address="0x221DB94 + 40" />
-				<class name="11" type="player_item" var:address="0x221DB94 + 44" />
-				<class name="12" type="player_item" var:address="0x221DB94 + 48" />
-				<class name="13" type="player_item" var:address="0x221DB94 + 52" />
-				<class name="14" type="player_item" var:address="0x221DB94 + 56" />
-				<class name="15" type="player_item" var:address="0x221DB94 + 60" />
-				<class name="16" type="player_item" var:address="0x221DB94 + 64" />
-				<class name="17" type="player_item" var:address="0x221DB94 + 68" />
-				<class name="18" type="player_item" var:address="0x221DB94 + 72" />
-				<class name="19" type="player_item" var:address="0x221DB94 + 76" />
-				<class name="20" type="player_item" var:address="0x221DB94 + 80" />
-				<class name="21" type="player_item" var:address="0x221DB94 + 84" />
-				<class name="22" type="player_item" var:address="0x221DB94 + 88" />
-				<class name="23" type="player_item" var:address="0x221DB94 + 92" />
-				<class name="24" type="player_item" var:address="0x221DB94 + 96" />
-				<class name="25" type="player_item" var:address="0x221DB94 + 100" />
-				<class name="26" type="player_item" var:address="0x221DB94 + 104" />
-				<class name="27" type="player_item" var:address="0x221DB94 + 108" />
-				<class name="28" type="player_item" var:address="0x221DB94 + 112" />
-				<class name="29" type="player_item" var:address="0x221DB94 + 116" />
+				<class name="0"  type="player_item" var:address="0x221DB94 + {version_offset} + 0" />
+				<class name="1"  type="player_item" var:address="0x221DB94 + {version_offset} + 4" />
+				<class name="2"  type="player_item" var:address="0x221DB94 + {version_offset} + 8" />
+				<class name="3"  type="player_item" var:address="0x221DB94 + {version_offset} + 12" />
+				<class name="4"  type="player_item" var:address="0x221DB94 + {version_offset} + 16" />
+				<class name="5"  type="player_item" var:address="0x221DB94 + {version_offset} + 20" />
+				<class name="6"  type="player_item" var:address="0x221DB94 + {version_offset} + 24" />
+				<class name="7"  type="player_item" var:address="0x221DB94 + {version_offset} + 28" />
+				<class name="8"  type="player_item" var:address="0x221DB94 + {version_offset} + 32" />
+				<class name="9"  type="player_item" var:address="0x221DB94 + {version_offset} + 36" />
+				<class name="10" type="player_item" var:address="0x221DB94 + {version_offset} + 40" />
+				<class name="11" type="player_item" var:address="0x221DB94 + {version_offset} + 44" />
+				<class name="12" type="player_item" var:address="0x221DB94 + {version_offset} + 48" />
+				<class name="13" type="player_item" var:address="0x221DB94 + {version_offset} + 52" />
+				<class name="14" type="player_item" var:address="0x221DB94 + {version_offset} + 56" />
+				<class name="15" type="player_item" var:address="0x221DB94 + {version_offset} + 60" />
+				<class name="16" type="player_item" var:address="0x221DB94 + {version_offset} + 64" />
+				<class name="17" type="player_item" var:address="0x221DB94 + {version_offset} + 68" />
+				<class name="18" type="player_item" var:address="0x221DB94 + {version_offset} + 72" />
+				<class name="19" type="player_item" var:address="0x221DB94 + {version_offset} + 76" />
+				<class name="20" type="player_item" var:address="0x221DB94 + {version_offset} + 80" />
+				<class name="21" type="player_item" var:address="0x221DB94 + {version_offset} + 84" />
+				<class name="22" type="player_item" var:address="0x221DB94 + {version_offset} + 88" />
+				<class name="23" type="player_item" var:address="0x221DB94 + {version_offset} + 92" />
+				<class name="24" type="player_item" var:address="0x221DB94 + {version_offset} + 96" />
+				<class name="25" type="player_item" var:address="0x221DB94 + {version_offset} + 100" />
+				<class name="26" type="player_item" var:address="0x221DB94 + {version_offset} + 104" />
+				<class name="27" type="player_item" var:address="0x221DB94 + {version_offset} + 108" />
+				<class name="28" type="player_item" var:address="0x221DB94 + {version_offset} + 112" />
+				<class name="29" type="player_item" var:address="0x221DB94 + {version_offset} + 116" />
 			</free_space> -->
 		</bag>
 		<overworld>
-			<property name="map_name"  type="int" address="0x224F90C + 0x20" length="4"/>
-			<property name="map_index" type="int" address="0x224F90C + 0x20" length="4"/>
-			<property name="x" type="int" length="4" address="0x224F910 + 0x20" />
-            <property name="y" type="int" length="4" address="0x224F918 + 0x20" />
-			<property name="z" type="int" length="4" address="0x224F914 + 0x20" /> 
+			<property name="map_name"  type="int" address="0x224F90C + {version_offset}" length="4" reference="maps" />
+			<property name="map_index" type="int" address="0x224F90C + {version_offset}" length="4"/>
+			<property name="x" type="int" length="4" address="0x224F910 + {version_offset}" />
+            <property name="y" type="int" length="4" address="0x224F918 + {version_offset}" />
+			<property name="z" type="int" length="4" address="0x224F914 + {version_offset}" /> 
 		    <!-- REQUIRE ADDITIONAL PROPERTIES AND A FUNCTION TO CALCULATE THE CURRENT RATE 
 				Need to know the state of the player (Walking, surfing, fishing, etc.) and then
 				dynamically assign the encounter rate based on this
 			-->
 			<property name="encounter_rate" type="int" />
-			<property name="encounters_enabled" type="bool" address="0x225000F + 0x20" bits="7"/>
-			<property name="encounters_enabled_regular_grass" type="bool" address="0x2250008 + 0x20" bits="3"/>
-			<property name="encounters_enabled_dark_grass"    type="bool" address="0x2250009 + 0x20" bits="3"/>
+			<property name="encounters_enabled" type="bool" address="0x225000F + {version_offset}" bits="7"/>
+			<property name="encounters_enabled_regular_grass" type="bool" address="0x2250008 + {version_offset}" bits="3"/>
+			<property name="encounters_enabled_dark_grass"    type="bool" address="0x2250009 + {version_offset}" bits="3"/>
             <encounter_rates>
-				<property name="regular_grass" type="int" address="0x2250008 + 0x20" />
-				<property name="dark_grass"    type="int" address="0x2250009 + 0x20" />
-				<property name="super_rod"     type="int" address="0x225000D + 0x20" />
-				<property name="encounter_rate_flag_unknown_1" type="int" address="0x225000A + 0x20" />
-				<property name="encounter_rate_flag_unknown_2" type="int" address="0x225000B + 0x20" />
-				<property name="encounter_rate_flag_unknown_3" type="int" address="0x225000C + 0x20" />
-				<property name="encounter_rate_flag_unknown_5" type="int" address="0x225000E + 0x20" />
+				<property name="regular_grass" type="int" address="0x2250008 + {version_offset}" />
+				<property name="dark_grass"    type="int" address="0x2250009 + {version_offset}" />
+				<property name="super_rod"     type="int" address="0x225000D + {version_offset}" />
+				<property name="encounter_rate_flag_unknown_1" type="int" address="0x225000A + {version_offset}" />
+				<property name="encounter_rate_flag_unknown_2" type="int" address="0x225000B + {version_offset}" />
+				<property name="encounter_rate_flag_unknown_3" type="int" address="0x225000C + {version_offset}" />
+				<property name="encounter_rate_flag_unknown_5" type="int" address="0x225000E + {version_offset}" />
 			</encounter_rates>
 			<encounter_tables>
 				<regular_grass>
-					<class name="0"  type="wild_encounter" var:address="0x2250010 + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x2250010 + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x2250010 + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x2250010 + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x2250010 + 0x20 + 16" />
-					<class name="5"  type="wild_encounter" var:address="0x2250010 + 0x20 + 20" />
-					<class name="6"  type="wild_encounter" var:address="0x2250010 + 0x20 + 24" />
-					<class name="7"  type="wild_encounter" var:address="0x2250010 + 0x20 + 28" />
-					<class name="8"  type="wild_encounter" var:address="0x2250010 + 0x20 + 32" />
-					<class name="9"  type="wild_encounter" var:address="0x2250010 + 0x20 + 36" />
-					<class name="10" type="wild_encounter" var:address="0x2250010 + 0x20 + 40" />
-					<class name="11" type="wild_encounter" var:address="0x2250010 + 0x20 + 44" />
+					<class name="0"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 16" />
+					<class name="5"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 20" />
+					<class name="6"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 24" />
+					<class name="7"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 28" />
+					<class name="8"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 32" />
+					<class name="9"  type="wild_encounter" var:address="0x2250010 + {version_offset} + 36" />
+					<class name="10" type="wild_encounter" var:address="0x2250010 + {version_offset} + 40" />
+					<class name="11" type="wild_encounter" var:address="0x2250010 + {version_offset} + 44" />
 				</regular_grass>
 				<dark_grass>
-					<class name="0"  type="wild_encounter" var:address="0x2250040 + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x2250040 + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x2250040 + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x2250040 + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x2250040 + 0x20 + 16" />
-					<class name="5"  type="wild_encounter" var:address="0x2250040 + 0x20 + 20" />
-					<class name="6"  type="wild_encounter" var:address="0x2250040 + 0x20 + 24" />
-					<class name="7"  type="wild_encounter" var:address="0x2250040 + 0x20 + 28" />
-					<class name="8"  type="wild_encounter" var:address="0x2250040 + 0x20 + 32" />
-					<class name="9"  type="wild_encounter" var:address="0x2250040 + 0x20 + 36" />
-					<class name="10" type="wild_encounter" var:address="0x2250040 + 0x20 + 40" />
-					<class name="11" type="wild_encounter" var:address="0x2250040 + 0x20 + 44" />
+					<class name="0"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 16" />
+					<class name="5"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 20" />
+					<class name="6"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 24" />
+					<class name="7"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 28" />
+					<class name="8"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 32" />
+					<class name="9"  type="wild_encounter" var:address="0x2250040 + {version_offset} + 36" />
+					<class name="10" type="wild_encounter" var:address="0x2250040 + {version_offset} + 40" />
+					<class name="11" type="wild_encounter" var:address="0x2250040 + {version_offset} + 44" />
 				</dark_grass>
 				<shaking_grass>
-					<class name="0"  type="wild_encounter" var:address="0x2250070 + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x2250070 + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x2250070 + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x2250070 + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x2250070 + 0x20 + 16" />
-					<class name="5"  type="wild_encounter" var:address="0x2250070 + 0x20 + 20" />
-					<class name="6"  type="wild_encounter" var:address="0x2250070 + 0x20 + 24" />
-					<class name="7"  type="wild_encounter" var:address="0x2250070 + 0x20 + 28" />
-					<class name="8"  type="wild_encounter" var:address="0x2250070 + 0x20 + 32" />
-					<class name="9"  type="wild_encounter" var:address="0x2250070 + 0x20 + 36" />
-					<class name="10" type="wild_encounter" var:address="0x2250070 + 0x20 + 40" />
-					<class name="11" type="wild_encounter" var:address="0x2250070 + 0x20 + 44" />
+					<class name="0"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 16" />
+					<class name="5"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 20" />
+					<class name="6"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 24" />
+					<class name="7"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 28" />
+					<class name="8"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 32" />
+					<class name="9"  type="wild_encounter" var:address="0x2250070 + {version_offset} + 36" />
+					<class name="10" type="wild_encounter" var:address="0x2250070 + {version_offset} + 40" />
+					<class name="11" type="wild_encounter" var:address="0x2250070 + {version_offset} + 44" />
 				</shaking_grass>
 				<surfing>
-					<class name="0"  type="wild_encounter" var:address="0x22500A0 + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x22500A0 + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x22500A0 + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x22500A0 + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x22500A0 + 0x20 + 16" />
+					<class name="0"  type="wild_encounter" var:address="0x22500A0 + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x22500A0 + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x22500A0 + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x22500A0 + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x22500A0 + {version_offset} + 16" />
 				</surfing>
 				<bubbles>
-					<class name="0"  type="wild_encounter" var:address="0x22500B4 + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x22500B4 + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x22500B4 + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x22500B4 + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x22500B4 + 0x20 + 16" />
+					<class name="0"  type="wild_encounter" var:address="0x22500B4 + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x22500B4 + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x22500B4 + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x22500B4 + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x22500B4 + {version_offset} + 16" />
 				</bubbles>
 				<fishing>
-					<class name="0"  type="wild_encounter" var:address="0x22500C8 + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x22500C8 + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x22500C8 + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x22500C8 + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x22500C8 + 0x20 + 16" />
+					<class name="0"  type="wild_encounter" var:address="0x22500C8 + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x22500C8 + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x22500C8 + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x22500C8 + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x22500C8 + {version_offset} + 16" />
 				</fishing>
 				<fishing_bubble>
-					<class name="0"  type="wild_encounter" var:address="0x22500DC + 0x20 + 0"  />
-					<class name="1"  type="wild_encounter" var:address="0x22500DC + 0x20 + 4"  />
-					<class name="2"  type="wild_encounter" var:address="0x22500DC + 0x20 + 8"  />
-					<class name="3"  type="wild_encounter" var:address="0x22500DC + 0x20 + 12" />
-					<class name="4"  type="wild_encounter" var:address="0x22500DC + 0x20 + 16" />
+					<class name="0"  type="wild_encounter" var:address="0x22500DC + {version_offset} + 0"  />
+					<class name="1"  type="wild_encounter" var:address="0x22500DC + {version_offset} + 4"  />
+					<class name="2"  type="wild_encounter" var:address="0x22500DC + {version_offset} + 8"  />
+					<class name="3"  type="wild_encounter" var:address="0x22500DC + {version_offset} + 12" />
+					<class name="4"  type="wild_encounter" var:address="0x22500DC + {version_offset} + 16" />
 				</fishing_bubble>
 			</encounter_tables>
         </overworld>
 		<flags>
-			<property name="new_game" type="bool" address="0x2234EE0 + 0x20" length="1" bits="0"/>
-			<property name="0x4030" type="int" address="0x223BD0C + (2 * 0) + 0x20" length="2" />
-			<property name="0x4031" type="int" address="0x223BD0C + (2 * 1) + 0x20" length="2" />
-			<property name="0x4032" type="int" address="0x223BD0C + (2 * 2) + 0x20" length="2" />
-			<property name="0x4033" type="int" address="0x223BD0C + (2 * 3) + 0x20" length="2" />
-			<property name="0x4034" type="int" address="0x223BD0C + (2 * 4) + 0x20" length="2" />
-			<property name="0x4035" type="int" address="0x223BD0C + (2 * 5) + 0x20" length="2" />
-			<property name="0x4036" type="int" address="0x223BD0C + (2 * 6) + 0x20" length="2" />
-			<property name="0x4037" type="int" address="0x223BD0C + (2 * 7) + 0x20" length="2" />
-			<property name="0x4038" type="int" address="0x223BD0C + (2 * 8) + 0x20" length="2" />
-			<property name="0x4039" type="int" address="0x223BD0C + (2 * 9) + 0x20" length="2" />
-			<property name="0x403A" type="int" address="0x223BD0C + (2 * 10) + 0x20" length="2" />
-			<property name="0x403B" type="int" address="0x223BD0C + (2 * 11) + 0x20" length="2" />
-			<property name="0x403C" type="int" address="0x223BD0C + (2 * 12) + 0x20" length="2" />
-			<property name="0x403D" type="int" address="0x223BD0C + (2 * 13) + 0x20" length="2" />
-			<property name="0x403E" type="int" address="0x223BD0C + (2 * 14) + 0x20" length="2" />
-			<property name="0x403F" type="int" address="0x223BD0C + (2 * 15) + 0x20" length="2" />
-			<property name="0x4040" type="int" address="0x223BD0C + (2 * 16) + 0x20" length="2" />
-			<property name="0x4041" type="int" address="0x223BD0C + (2 * 17) + 0x20" length="2" />
-			<property name="0x4042" type="int" address="0x223BD0C + (2 * 18) + 0x20" length="2" />
-			<property name="0x4043" type="int" address="0x223BD0C + (2 * 19) + 0x20" length="2" />
-			<property name="0x4044" type="int" address="0x223BD0C + (2 * 20) + 0x20" length="2" />
-			<property name="0x4045" type="int" address="0x223BD0C + (2 * 21) + 0x20" length="2" />
-			<property name="0x4046" type="int" address="0x223BD0C + (2 * 22) + 0x20" length="2" />
-			<property name="0x4047" type="int" address="0x223BD0C + (2 * 23) + 0x20" length="2" />
-			<property name="0x4048" type="int" address="0x223BD0C + (2 * 24) + 0x20" length="2" />
-			<property name="0x4049" type="int" address="0x223BD0C + (2 * 25) + 0x20" length="2" />
+			<property name="new_game" type="bool" address="0x2234EE0 + {version_offset}" length="1" bits="0"/>
+			<property name="0x4030" type="int" address="0x223BD0C + (2 * 0) + {version_offset}"  length="2" />
+			<property name="0x4031" type="int" address="0x223BD0C + (2 * 1) + {version_offset}"  length="2" />
+			<property name="0x4032" type="int" address="0x223BD0C + (2 * 2) + {version_offset}"  length="2" />
+			<property name="0x4033" type="int" address="0x223BD0C + (2 * 3) + {version_offset}"  length="2" />
+			<property name="0x4034" type="int" address="0x223BD0C + (2 * 4) + {version_offset}"  length="2" />
+			<property name="0x4035" type="int" address="0x223BD0C + (2 * 5) + {version_offset}"  length="2" />
+			<property name="0x4036" type="int" address="0x223BD0C + (2 * 6) + {version_offset}"  length="2" />
+			<property name="0x4037" type="int" address="0x223BD0C + (2 * 7) + {version_offset}"  length="2" />
+			<property name="0x4038" type="int" address="0x223BD0C + (2 * 8) + {version_offset}"  length="2" />
+			<property name="0x4039" type="int" address="0x223BD0C + (2 * 9) + {version_offset}"  length="2" />
+			<property name="0x403A" type="int" address="0x223BD0C + (2 * 10) + {version_offset}" length="2" />
+			<property name="0x403B" type="int" address="0x223BD0C + (2 * 11) + {version_offset}" length="2" />
+			<property name="0x403C" type="int" address="0x223BD0C + (2 * 12) + {version_offset}" length="2" />
+			<property name="0x403D" type="int" address="0x223BD0C + (2 * 13) + {version_offset}" length="2" />
+			<property name="0x403E" type="int" address="0x223BD0C + (2 * 14) + {version_offset}" length="2" />
+			<property name="0x403F" type="int" address="0x223BD0C + (2 * 15) + {version_offset}" length="2" />
+			<property name="0x4040" type="int" address="0x223BD0C + (2 * 16) + {version_offset}" length="2" />
+			<property name="0x4041" type="int" address="0x223BD0C + (2 * 17) + {version_offset}" length="2" />
+			<property name="0x4042" type="int" address="0x223BD0C + (2 * 18) + {version_offset}" length="2" />
+			<property name="0x4043" type="int" address="0x223BD0C + (2 * 19) + {version_offset}" length="2" />
+			<property name="0x4044" type="int" address="0x223BD0C + (2 * 20) + {version_offset}" length="2" />
+			<property name="0x4045" type="int" address="0x223BD0C + (2 * 21) + {version_offset}" length="2" />
+			<property name="0x4046" type="int" address="0x223BD0C + (2 * 22) + {version_offset}" length="2" />
+			<property name="0x4047" type="int" address="0x223BD0C + (2 * 23) + {version_offset}" length="2" />
+			<property name="0x4048" type="int" address="0x223BD0C + (2 * 24) + {version_offset}" length="2" />
+			<property name="0x4049" type="int" address="0x223BD0C + (2 * 25) + {version_offset}" length="2" />
 			<!--
 				Where are the Black/White flags located?
 
@@ -822,18 +821,18 @@
             <!-- <property name="outcome" type="string" /> -->
 			<TESTING>
 				<property name="enemy_state" type="int" address="0x2140524" length="2" />
-				<property name="player_indirect_1"   type="int" address="0x2269838 + (0 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_2"   type="int" address="0x2269838 + (1 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_3"   type="int" address="0x2269838 + (2 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_4"   type="int" address="0x2269838 + (3 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_5"   type="int" address="0x2269838 + (4 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="player_indirect_6"   type="int" address="0x2269838 + (5 * 4)" length="4" after-read-value-expression="(x - 36099748) / 548" />
-				<property name="opponent_indirect_1" type="int" address="0x2269854 + (0 * 4)" length="4" />
-				<property name="opponent_indirect_2" type="int" address="0x2269854 + (1 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_3" type="int" address="0x2269854 + (2 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_4" type="int" address="0x2269854 + (3 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_5" type="int" address="0x2269854 + (4 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
-				<property name="opponent_indirect_6" type="int" address="0x2269854 + (5 * 4)" length="4" after-read-value-expression="(x - 36101392) / 548" />
+				<property name="player_indirect_1"   type="int" address="0x2269838 + {version_offset} + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="player_indirect_2"   type="int" address="0x2269838 + {version_offset} + (1 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="player_indirect_3"   type="int" address="0x2269838 + {version_offset} + (2 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="player_indirect_4"   type="int" address="0x2269838 + {version_offset} + (3 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="player_indirect_5"   type="int" address="0x2269838 + {version_offset} + (4 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="player_indirect_6"   type="int" address="0x2269838 + {version_offset} + (5 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="opponent_indirect_1" type="int" address="0x2269854 + {version_offset} + (0 * 4)" length="4" />
+				<property name="opponent_indirect_2" type="int" address="0x2269854 + {version_offset} + (1 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
+				<property name="opponent_indirect_3" type="int" address="0x2269854 + {version_offset} + (2 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
+				<property name="opponent_indirect_4" type="int" address="0x2269854 + {version_offset} + (3 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
+				<property name="opponent_indirect_5" type="int" address="0x2269854 + {version_offset} + (4 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
+				<property name="opponent_indirect_6" type="int" address="0x2269854 + {version_offset} + (5 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
 				<property name="player_party_position_1" type="int" />
 				<property name="player_party_position_2" type="int" />
 				<property name="player_party_position_3" type="int" />
@@ -848,8 +847,8 @@
 				<property name="opponent_party_position_6" type="int" />
 			</TESTING>
 			<player>
-				<property name="party_position"   type="int" address="0x2269838 + 0x20 + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x20)) / 548" />
-				<property name="team_count"    type="int" address="0x22349B4 - 0x20 + 4" />
+				<property name="party_position"   type="int" address="0x2269838 + {version_offset} + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="team_count"    type="int" address="0x22349B4 + {version_offset} - 4" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_player_party_structure_0" />
@@ -873,7 +872,7 @@
 				<class name="1" type="party_pokemon" var:memoryContainer="dynamic_opponent_party_structure_1" />
 			</wild>
 			<ally>
-				<property name="team_count" type="int" address="0x226A220 + (0x560 * 5) + 0x20 + 0x14 - 4" /> <!-- This is correct -->
+				<property name="team_count" type="int" address="0x2257DA0 + (0x560 * 5) + {version_offset} + 0x14 - 4" />
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_0" />
 					<class name="1" type="party_pokemon" var:memoryContainer="dynamic_ally_party_structure_1" />
@@ -884,9 +883,9 @@
 				</team>
 			</ally>
 			<opponent>
-				<property name="trainer" type="int" address="0x22697BE + 0x20" length="2" reference="trainers" />
-				<property name="id" type="int" address="0x22697BE + 0x20" length="2" />
-				<property name="team_count" type="int" address="0x226ACF4 + 0x20 - 4" /> <!-- This is correct -->
+				<property name="trainer" type="int" address="0x22697BE + {version_offset}" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x22697BE + {version_offset}" length="2" />
+				<property name="team_count" type="int" address="0x226ACF4 + {version_offset} - 4" />
 				<property name="party_position" type="int" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_opponent_0}" />
 				<team>
@@ -907,9 +906,9 @@
 				</pkmn_ram>
 			</opponent>
 			<opponent_2>
-				<property name="trainer" type="int" address="0x22697BE + 0x50 + 0x20" length="2" reference="trainers" />
-				<property name="id" type="int" address="0x22697BE + 0x50 + 0x20" length="2" />
-				<property name="team_count" type="int" address="0x226A220 + (0x560 * 7) + 0x14 - 4 + 0x20" /> <!-- This is correct -->
+				<property name="trainer" type="int" address="0x22697BE + 0x50 + {version_offset}" length="2" reference="trainers" />
+				<property name="id" type="int" address="0x22697BE + 0x50 + {version_offset}" length="2" />
+				<property name="team_count" type="int" address="0x226A220 + (0x560 * 7) + 0x14 - 4 + {version_offset}" />
 				<team>
 					<class name="0" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_0" />
 					<class name="1" type="party_pokemon" var:memoryContainer="dynamic_opponent_2_party_structure_1" />
@@ -922,50 +921,50 @@
 			<opponent_3>
 			</opponent_3>
             <field>
-                <property name="weather" type="int" address="0x21F63F4 + 0x20" length="4" reference="weather" />
-                <property name="weather_count" type="int" address="0x21F63F8 + 0x20" length="4"/>
+                <property name="weather" type="int" address="0x21F63F4 + {version_offset}" length="4" reference="weather" />
+                <property name="weather_count" type="int" address="0x21F63F8 + {version_offset}" length="4"/>
             </field>
 			<other>
-				<property name="battle_party_data_start" type="int" address="0x226A200 + 0x20" length="2"/> <!-- This value is used within each section of the battle ram and it is never updated -->
-				<property name="battle_header"           type="int" address="0x226D286 + 0x20" /> <!-- I have no idea what this is, it is set to 0x57 when in battle -->
-            	<property name="battle_header_generic_1" type="int" address="0x226D270 + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
-            	<property name="battle_header_generic_2" type="int" address="0x226D274 + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
-            	<property name="battle_header_generic_3" type="int" address="0x226D278 + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
-            	<property name="battle_header_generic_4" type="int" address="0x226D27C + 0x20" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
-            	<property name="outcome_flags_offset"    type="int" address="{outcome_flags_offset}+ 0x20" length="4" />
-				<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE + 0x20" length="1" />
-				<property name="battle_end"              type="int" address="0x226D25C + 0x20" length="4" />
-            	<property name="player_lock"             type="int" address="0x224F77D + 0x20" length="1" />
-            	<property name="to_battle_pointer"       type="int" address="0x224F764 + 0x20" length="4" />
-            	<property name="to_battle_pointer_1"     type="int" address="0x224F760 + 0x20" length="4" />
-            	<property name="to_battle_pointer_2"     type="int" address="0x224F764 + 0x20" length="4" />
-            	<property name="battle_state_ready"      type="int" address="{outcome_flags_offset} + 0x38 + 0x20" length="4" />
-				<property name="battle_state_ready_wild" type="int" address="0x226E7C8 + 0x20" length="4" />
-            	<property name="battle"                  type="int" address="0x226D260 + 0x20" length="4" />
+				<property name="battle_party_data_start" type="int" address="0x226A200 + {version_offset}" length="2"/> <!-- This value is used within each section of the battle ram and it is never updated -->
+				<property name="battle_header"           type="int" address="0x226D286 + {version_offset}" /> <!-- I have no idea what this is, it is set to 0x57 when in battle -->
+            	<property name="battle_header_generic_1" type="int" address="0x226D270 + {version_offset}" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
+            	<property name="battle_header_generic_2" type="int" address="0x226D274 + {version_offset}" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
+            	<property name="battle_header_generic_3" type="int" address="0x226D278 + {version_offset}" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
+            	<property name="battle_header_generic_4" type="int" address="0x226D27C + {version_offset}" length="4" /> <!-- This is encrypted party data that can be used to check if this ram location is populated, which is only the case in battle -->
+            	<property name="outcome_flags_offset"    type="int" address="{outcome_flags_offset}" length="4" />
+				<property name="outcome_flags"           type="int" address="{outcome_flags_offset} + 0xDE" length="1" />
+				<property name="battle_end"              type="int" address="0x226D25C + {version_offset}" length="4" />
+            	<property name="player_lock"             type="int" address="0x224F77D + {version_offset}" length="1" />
+            	<property name="to_battle_pointer"       type="int" address="0x224F764 + {version_offset}" length="4" />
+            	<property name="to_battle_pointer_1"     type="int" address="0x224F760 + {version_offset}" length="4" />
+            	<property name="to_battle_pointer_2"     type="int" address="0x224F764 + {version_offset}" length="4" />
+            	<property name="battle_state_ready"      type="int" address="{outcome_flags_offset} + 0x38" length="4" />
+				<property name="battle_state_ready_wild" type="int" address="0x226E7C8 + {version_offset}" length="4" />
+            	<property name="battle"                  type="int" address="0x226D260 + {version_offset}" length="4" />
 			</other>
 		</battle>
 		<options>
-			<property name="text_speed"     type="int"  address="0x2234FAC + 0x20" bits="0-1" reference="text_speeds" />
-			<property name="animations"     type="bool" address="0x2234FAC + 0x20" bits="7" />
-			<property name="battle_style"   type="bool" address="0x2234FAC + 0x20" bits="6" />
-			<property name="sound"          type="bool" address="0x2234FAC + 0x20" bits="4" />
-			<property name="save_before_ir" type="bool" address="0x2234FAD + 0x20" bits="1" />
+			<property name="text_speed"     type="int"  address="0x2234FAC + {version_offset}" bits="0-1" reference="text_speeds" />
+			<property name="animations"     type="bool" address="0x2234FAC + {version_offset}" bits="7" />
+			<property name="battle_style"   type="bool" address="0x2234FAC + {version_offset}" bits="6" />
+			<property name="sound"          type="bool" address="0x2234FAC + {version_offset}" bits="4" />
+			<property name="save_before_ir" type="bool" address="0x2234FAD + {version_offset}" bits="1" />
 		</options>
 		<game_time>
-			<property name="hours"   type="int" address="0x22427DC + 0x20 + 0" length="2" />
-			<property name="minutes" type="int" address="0x22427DC + 0x20 + 2" />
-			<property name="seconds" type="int" address="0x22427DC + 0x20 + 3" />
+			<property name="hours"   type="int" address="0x2256FD4 + {version_offset} + 0" length="2" />
+			<property name="minutes" type="int" address="0x2256FD4 + {version_offset} + 2" />
+			<property name="seconds" type="int" address="0x2256FD4 + {version_offset} + 3" />
 		</game_time>
 		<misc>
-			<property name="step_counter" type="int" address="0x22395AC + 0x20" length="4" />
+			<property name="step_counter" type="int" address="0x22395AC + {version_offset}" length="4" />
 		</misc>
 		<patch>
-			<property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21) + 0x20" length="2" reference="species" />
-			<property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16) + 0x20" length="2" />
-			<property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17) + 0x20" length="2" />
-			<property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18) + 0x20" length="2" />
-			<property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19) + 0x20" length="2" />
-			<property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20) + 0x20" length="2" />
+			<property name="stpStarterSpecies"    type="int" address="0x223BD0C + (2 * 21) + {version_offset}" length="2" reference="species" />
+			<property name="encounter_woobat"     type="int" address="0x223BD0C + (2 * 16) + {version_offset}" length="2" />
+			<property name="encounter_roggenrola" type="int" address="0x223BD0C + (2 * 17) + {version_offset}" length="2" />
+			<property name="encounter_tympole"    type="int" address="0x223BD0C + (2 * 18) + {version_offset}" length="2" />
+			<property name="encounter_timburr"    type="int" address="0x223BD0C + (2 * 19) + {version_offset}" length="2" />
+			<property name="encounter_pidove"     type="int" address="0x223BD0C + (2 * 20) + {version_offset}" length="2" />
 			<!-- <property name="encounter_pidove"     type="bool" address="0x0223BD06 + (4 * 5)" length="2" /> -->
 			<!-- <property name="starter" type="int" address="0x0223BD16" length="2" /> -->
 		</patch>

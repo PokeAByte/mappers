@@ -162,7 +162,7 @@ function preprocessor() {
     variables.battle_ram_player_0    = battle_ram_starting_address;
     variables.battle_ram_opponent_0  = enemy_battle_ram_start;
     variables.outcome_flags_offset   = outcome_flags_address;
-
+    variables.version_offset = white_version_offset;
 
     const enemy_party_position_address = getValue('battle.TESTING.opponent_indirect_1')
     const indirect_offset = 0x34
