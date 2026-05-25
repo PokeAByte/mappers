@@ -192,8 +192,8 @@
     "display_name": "pokemon_black.xml",
     "path": "STANDARD/gen5/pokemon_black.xml",
     "date_created": "2026-01-07T00:02:17.1500557+00:00",
-    "date_updated": "2026-05-25T04:17:03.1711355+00:00",
-    "version": "0.10.0"
+    "date_updated": "2026-05-25T20:20:04.4397799+00:00",
+    "version": "0.10.1"
   },
   {
     "display_name": "pokemon_black_2.xml",
@@ -206,8 +206,8 @@
     "display_name": "pokemon_white.xml",
     "path": "STANDARD/gen5/pokemon_white.xml",
     "date_created": "2026-01-07T00:02:17.152056+00:00",
-    "date_updated": "2026-05-25T04:17:03.1711355+00:00",
-    "version": "0.10.0"
+    "date_updated": "2026-05-25T20:20:04.4397799+00:00",
+    "version": "0.10.1"
   },
   {
     "display_name": "pokemon_white_2.xml",
