@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.10.0" syntax="4"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon Black - Beta" platform="NDS" version="0.10.1" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -821,18 +821,18 @@
             <!-- <property name="outcome" type="string" /> -->
 			<TESTING>
 				<property name="enemy_state" type="int" address="0x2140524" length="2" />
-				<property name="player_indirect_1"   type="int" address="0x2269838 + {version_offset} + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
-				<property name="player_indirect_2"   type="int" address="0x2269838 + {version_offset} + (1 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
-				<property name="player_indirect_3"   type="int" address="0x2269838 + {version_offset} + (2 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
-				<property name="player_indirect_4"   type="int" address="0x2269838 + {version_offset} + (3 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
-				<property name="player_indirect_5"   type="int" address="0x2269838 + {version_offset} + (4 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
-				<property name="player_indirect_6"   type="int" address="0x2269838 + {version_offset} + (5 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="player_indirect_1"   type="int" address="0x2269838 + {version_offset} + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
+				<property name="player_indirect_2"   type="int" address="0x2269838 + {version_offset} + (1 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
+				<property name="player_indirect_3"   type="int" address="0x2269838 + {version_offset} + (2 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
+				<property name="player_indirect_4"   type="int" address="0x2269838 + {version_offset} + (3 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
+				<property name="player_indirect_5"   type="int" address="0x2269838 + {version_offset} + (4 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
+				<property name="player_indirect_6"   type="int" address="0x2269838 + {version_offset} + (5 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
 				<property name="opponent_indirect_1" type="int" address="0x2269854 + {version_offset} + (0 * 4)" length="4" />
-				<property name="opponent_indirect_2" type="int" address="0x2269854 + {version_offset} + (1 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
-				<property name="opponent_indirect_3" type="int" address="0x2269854 + {version_offset} + (2 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
-				<property name="opponent_indirect_4" type="int" address="0x2269854 + {version_offset} + (3 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
-				<property name="opponent_indirect_5" type="int" address="0x2269854 + {version_offset} + (4 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
-				<property name="opponent_indirect_6" type="int" address="0x2269854 + {version_offset} + (5 * 4)" length="4" after-read-value-expression="(x - (36101392 + {version_offset})) / 548" />
+				<property name="opponent_indirect_2" type="int" address="0x2269854 + {version_offset} + (1 * 4)" length="4" after-read-value-expression="(x - (36101392 + 0x00)) / 548" />
+				<property name="opponent_indirect_3" type="int" address="0x2269854 + {version_offset} + (2 * 4)" length="4" after-read-value-expression="(x - (36101392 + 0x00)) / 548" />
+				<property name="opponent_indirect_4" type="int" address="0x2269854 + {version_offset} + (3 * 4)" length="4" after-read-value-expression="(x - (36101392 + 0x00)) / 548" />
+				<property name="opponent_indirect_5" type="int" address="0x2269854 + {version_offset} + (4 * 4)" length="4" after-read-value-expression="(x - (36101392 + 0x00)) / 548" />
+				<property name="opponent_indirect_6" type="int" address="0x2269854 + {version_offset} + (5 * 4)" length="4" after-read-value-expression="(x - (36101392 + 0x00)) / 548" />
 				<property name="player_party_position_1" type="int" />
 				<property name="player_party_position_2" type="int" />
 				<property name="player_party_position_3" type="int" />
@@ -847,7 +847,7 @@
 				<property name="opponent_party_position_6" type="int" />
 			</TESTING>
 			<player>
-				<property name="party_position"   type="int" address="0x2269838 + {version_offset} + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + {version_offset})) / 548" />
+				<property name="party_position"   type="int" address="0x2269838 + {version_offset} + (0 * 4)" length="4" after-read-value-expression="(x - (36099748 + 0x00)) / 548" />
 				<property name="team_count"    type="int" address="0x22349B4 + {version_offset} - 4" />
 				<class name="active_pokemon"   type="battle_structure" var:address="{battle_ram_player_0}" />
 				<team>
