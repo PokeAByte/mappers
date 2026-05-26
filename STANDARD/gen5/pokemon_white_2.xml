@@ -8,7 +8,7 @@
 		- Map triple battle and rotation battle teams / trainer indexes
 -->
 
-<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.3"
+<mapper id="16406c08-1e4c-434d-83c6-0ea4f089ffd6" name="Pokemon White 2 - Beta" platform="NDS" version="0.9.4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -3880,7 +3880,7 @@
 			<entry key="0x0205" value="Munna"/>
 			<entry key="0x0206" value="Musharna"/>
 			<entry key="0x0207" value="Pidove"/>
-			<entry key="0x0208" value="Tranquil"/>
+			<entry key="0x0208" value="Tranquill"/>
 			<entry key="0x0209" value="Unfezant"/>
 			<entry key="0x020A" value="Blitzle"/>
 			<entry key="0x020B" value="Zebstrika"/>

@@ -12,7 +12,7 @@
   {
     "display_name": "pokemon_yellow_deprecated.xml",
     "path": "DEPRECATED/gen1/pokemon_yellow_deprecated.xml",
-    "version": "1.2.7"
+    "version": "1.2.8"
   },
   {
     "display_name": "pokemon_crystal_deprecated.xml",
@@ -137,7 +137,7 @@
   {
     "display_name": "pokemon_black.xml",
     "path": "STANDARD/gen5/pokemon_black.xml",
-    "version": "0.10.0"
+    "version": "0.10.1"
   },
   {
     "display_name": "pokemon_black_2.xml",
@@ -147,7 +147,7 @@
   {
     "display_name": "pokemon_white.xml",
     "path": "STANDARD/gen5/pokemon_white.xml",
-    "version": "0.10.0"
+    "version": "0.10.1"
   },
   {
     "display_name": "pokemon_white_2.xml",
