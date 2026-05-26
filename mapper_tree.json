@@ -192,28 +192,28 @@
     "display_name": "pokemon_black.xml",
     "path": "STANDARD/gen5/pokemon_black.xml",
     "date_created": "2026-01-07T00:02:17.1500557+00:00",
-    "date_updated": "2026-05-25T20:20:04.4397799+00:00",
-    "version": "0.10.1"
+    "date_updated": "2026-05-26T19:47:56.1343837+00:00",
+    "version": "0.10.2"
   },
   {
     "display_name": "pokemon_black_2.xml",
     "path": "STANDARD/gen5/pokemon_black_2.xml",
     "date_created": "2026-01-07T00:02:17.151056+00:00",
-    "date_updated": "2026-05-17T19:41:58.7946118+00:00",
-    "version": "0.9.2"
+    "date_updated": "2026-05-26T19:47:56.1343837+00:00",
+    "version": "0.9.4"
   },
   {
     "display_name": "pokemon_white.xml",
     "path": "STANDARD/gen5/pokemon_white.xml",
     "date_created": "2026-01-07T00:02:17.152056+00:00",
-    "date_updated": "2026-05-25T20:20:04.4397799+00:00",
-    "version": "0.10.1"
+    "date_updated": "2026-05-26T19:47:56.1343837+00:00",
+    "version": "0.10.2"
   },
   {
     "display_name": "pokemon_white_2.xml",
     "path": "STANDARD/gen5/pokemon_white_2.xml",
     "date_created": "2026-01-07T00:02:17.1530561+00:00",
-    "date_updated": "2026-05-21T20:58:06.5558457+00:00",
-    "version": "0.9.3"
+    "date_updated": "2026-05-26T19:47:56.1343837+00:00",
+    "version": "0.9.4"
   }
 ]
