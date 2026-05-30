@@ -24,7 +24,8 @@ const PATCH_VERSIONS = {
       "lookups": {
         "global_pointer_var": "0x02111B8C",
         "save_data_pointer": "0x021D2548",
-        "stp_vars": "0x021D46D8"
+        "stp_vars": "0x021D46D8",
+        "stp_catch_rate": "0x021D46DC"
       },
       "base_offsets": {
         "player_party": 53384,
@@ -40,7 +41,8 @@ const PATCH_VERSIONS = {
       "lookups": {
         "global_pointer_var": "0x02111B8C",
         "save_data_pointer": "0x021D2548",
-        "stp_vars": "0x021D46D8"
+        "stp_vars": "0x021D46D8",
+        "stp_catch_rate": "0x021D46DC"
       },
       "base_offsets": {
         "player_party": 53384,
@@ -56,7 +58,8 @@ const PATCH_VERSIONS = {
       "lookups": {
         "global_pointer_var": "0x02111D0C",
         "save_data_pointer": "0x021D26C8",
-        "stp_vars": "0x021D4858"
+        "stp_vars": "0x021D4858",
+        "stp_catch_rate": "0x021D485C"
       },
       "base_offsets": {
         "player_party": 53384,
@@ -72,7 +75,8 @@ const PATCH_VERSIONS = {
       "lookups": {
         "global_pointer_var": "0x02111D2C",
         "save_data_pointer": "0x021D26E8",
-        "stp_vars": "0x021D4878"
+        "stp_vars": "0x021D4878",
+        "stp_catch_rate": "0x021D487C"
       },
       "base_offsets": {
         "player_party": 53384,
@@ -88,7 +92,26 @@ const PATCH_VERSIONS = {
       "lookups": {
         "global_pointer_var": "0x02111DEC",
         "save_data_pointer": "0x021D27A8",
-        "stp_vars": "0x021D4938"
+        "stp_vars": "0x021D4938",
+        "stp_catch_rate": "0x021D493C"
+      },
+      "base_offsets": {
+        "player_party": 53384,
+        "dynamic_player_base": 375416,
+        "dynamic_party_stride": 1488,
+        "current_party_indexes": 356832,
+        "saves_pointer_offset": 143376,
+        "address_offset": 72
+      }
+    },
+    "6": {
+      "anchor_addr": "0x020F5BC8",
+      "lookups": {
+        "global_pointer_var": "0x02111DEC",
+        "save_data_pointer": "0x021D27A8",
+        "stp_vars": "0x021D493C",
+        "stp_catch_rate": "0x021D4938",
+        "stp_encounter_rate": "0x021D4940"
       },
       "base_offsets": {
         "player_party": 53384,
@@ -405,13 +428,21 @@ function preprocessor() {
     variables.global_pointer        = base_ptr;
     variables.saves_pointer         = sSaveData_pointer + off.saves_pointer_offset;
 
-    // stpVars is the address of the stpStarterSpecies block; it shifts per
-    // patch so the exporter writes it into entry.lookups.stp_vars. Older
-    // patch_versions.json entries may lack this field -- leave the variable
-    // null in that case so XML properties referencing {stpVars} fail loudly
-    // rather than silently dereferencing a stale address.
+    // stpVars/stpCatchRate/stpEncounterRate are the absolute addresses of the
+    // src/_stp.c globals. The exporter resolves each as its OWN per-version
+    // symbol (NOT a fixed offset from stpVars) because the compiler reorders
+    // .bss globals and that order is not stable across patches. Older
+    // patch_versions.json entries may lack a field -- leave the variable null
+    // in that case so XML properties referencing it fail loudly rather than
+    // silently dereferencing a stale address.
     variables.stpVars = entry.lookups.stp_vars
         ? parseInt(entry.lookups.stp_vars, 16)
+        : null;
+    variables.stpCatchRate = entry.lookups.stp_catch_rate
+        ? parseInt(entry.lookups.stp_catch_rate, 16)
+        : null;
+    variables.stpEncounterRate = entry.lookups.stp_encounter_rate
+        ? parseInt(entry.lookups.stp_encounter_rate, 16)
         : null;
 
     // Vars/Flags region inside SaveData. HG layout:
@@ -442,6 +473,38 @@ function preprocessor() {
     setValue('meta.state_enemy', getMetaEnemyState(gamestate, battle_outcomes, enemyBarSyncedHp));
     setValue('overworld.encounter_rate', getEncounterRate());
     setValue('player.party_position', getPlayerPartyPosition());
+
+    // meta.menu.app_active / app_overlay_id
+    //
+    // base_ptr is the address of the *main* OVY_MANAGER (the one Main_RunOverlayManager
+    // creates in src/main.c). When the field is running, that manager's `data` field
+    // points at a FieldSystem (allocated via OverlayManager_CreateAndGetData in
+    // FieldSystem_New). The field stores any launched sub-app at
+    // FieldSystem->unk0->unk4 -- a non-NULL pointer there means a full-screen
+    // application (Bag, Party, Pokedex, PokeGear, Save, Options, Mail, Summary,
+    // Trainer Card, ..., and Battle) is currently overlaying the field.
+    //
+    // Struct offsets (verified against decomp headers):
+    //   OVY_MANAGER.data            -> +0x1C   (include/overlay_manager.h)
+    //   FieldSystem.unk0            -> +0x00   (include/field_system.h:113)
+    //   FieldSystemUnkSub0.unk4     -> +0x04   (include/field_system.h:82)
+    //   OVY_MGR_TEMPLATE.ovy_id     -> +0x0C   (also = OVY_MANAGER+0x0C)
+    let menuAppActive = 0;
+    let menuAppOverlayId = 0;
+    const fieldSysPtr = memory.defaultNamespace.get_uint32_le(base_ptr + 0x1C);
+    if (looksLikeHeapPtr(fieldSysPtr)) {
+        const unk0Ptr = memory.defaultNamespace.get_uint32_le(fieldSysPtr + 0x00);
+        if (looksLikeHeapPtr(unk0Ptr)) {
+            const childManPtr = memory.defaultNamespace.get_uint32_le(unk0Ptr + 0x04);
+            if (looksLikeHeapPtr(childManPtr)) {
+                menuAppActive = 1;
+                menuAppOverlayId = memory.defaultNamespace.get_uint32_le(childManPtr + 0x0C);
+            }
+        }
+    }
+    setValue('meta.menu.app_active', menuAppActive);
+    setValue('meta.menu.app_overlay_id', menuAppOverlayId);
+
     for (let i = 0; i < 6; i++) {
         setValue(`player.team.${i}.hidden_power.power`, hiddenPower(`player.team.${i}`).power);
         setValue(`player.team.${i}.hidden_power.type`, hiddenPower(`player.team.${i}`).type);

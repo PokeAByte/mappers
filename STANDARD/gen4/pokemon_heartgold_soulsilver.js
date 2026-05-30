@@ -180,7 +180,7 @@ function containerprocessor(container, containerBytes) {
 // Preprocessor runs every loop (everytime pokeabyte updates)
 function preprocessor() {
     variables.reload_addresses = true;
-    // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code    
+    // This is the same as the global_pointer, it is named "base_ptr" for consistency with the old C# code   
     const base_ptr = memory.defaultNamespace.get_uint32_le(0x211186C); //HGSS pointer (Test value: 226F234)
     if (base_ptr === 0 || base_ptr >= 38438215) { // 226F2BC
         return;

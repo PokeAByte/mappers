@@ -7,7 +7,7 @@ It will not have the same level of functionality as the most up-to-date version:
 This one is provided so that users can continue to use software that was programmed using these property paths
 For all new software, please use the paths within 'pokemon_emerald.xml'
 -->
-<mapper id="97488d50-f177-48ca-b08e-48e2688e0c4d" name="Pokemon FireRed and LeafGreen - Deprecated Mapper" platform="GBA" version="1.1.0"
+<mapper id="97488d50-f177-48ca-b08e-48e2688e0c4d" name="Pokemon FireRed and LeafGreen - Deprecated Mapper" platform="GBA" version="1.2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -459,6 +459,518 @@ For all new software, please use the paths within 'pokemon_emerald.xml'
       <class name="yourSecondPokemon" type="battleStructure" var:address="0x2023C94" var:partyPosAddress="0x02023BD2" />
       <class name="enemyPokemon" type="battleStructure" var:address="0x2023C3C" var:partyPosAddress="0x02023BD0" />
       <class name="enemySecondPokemon" type="battleStructure" var:address="0x2023CEC" var:partyPosAddress="0x02023BD4" />
+      <flags>
+        <!-- ============================================================ -->
+        <!-- Weather + Wish/Future Sight per-battler counters             -->
+        <!-- ============================================================ -->
+        <field>
+            <!-- gBattleWeather (u16) @ 0x02023F1C -->
+            <property name="rain"                type="bool" address="0x02023F1C" length="2" bits="0" />
+            <property name="rain_downpour"       type="bool" address="0x02023F1C" length="2" bits="1" />
+            <property name="rain_permanent"      type="bool" address="0x02023F1C" length="2" bits="2" />
+            <property name="sandstorm"           type="bool" address="0x02023F1C" length="2" bits="3" />
+            <property name="sandstorm_permanent" type="bool" address="0x02023F1C" length="2" bits="4" />
+            <property name="sun"                 type="bool" address="0x02023F1C" length="2" bits="5" />
+            <property name="sun_permanent"       type="bool" address="0x02023F1C" length="2" bits="6" />
+            <property name="hail"                type="bool" address="0x02023F1C" length="2" bits="7" />
+
+            <!-- gWishFutureKnock.weatherDuration @ 0x02023F48 -->
+            <property name="weather_turns"       type="int"  address="0x02023F48" length="1" />
+
+            <!-- gWishFutureKnock.futureSightCounter[b] (u8) @ 0x02023F20 -->
+            <property name="future_sight_turns_player"  type="int" address="0x02023F20" length="1" />
+            <property name="future_sight_turns_enemy"   type="int" address="0x02023F21" length="1" />
+            <property name="future_sight_turns_ally"    type="int" address="0x02023F22" length="1" />
+            <property name="future_sight_turns_enemy_2" type="int" address="0x02023F23" length="1" />
+
+            <!-- gWishFutureKnock.futureSightAttacker[b] (u8) @ 0x02023F24 -->
+            <property name="future_sight_attacker_player"  type="int" address="0x02023F24" length="1" />
+            <property name="future_sight_attacker_enemy"   type="int" address="0x02023F25" length="1" />
+            <property name="future_sight_attacker_ally"    type="int" address="0x02023F26" length="1" />
+            <property name="future_sight_attacker_enemy_2" type="int" address="0x02023F27" length="1" />
+
+            <!-- gWishFutureKnock.futureSightDmg[b] (s32) @ 0x02023F28 -->
+            <property name="future_sight_damage_player"  type="int" address="0x02023F28" length="4" />
+            <property name="future_sight_damage_enemy"   type="int" address="0x02023F2C" length="4" />
+            <property name="future_sight_damage_ally"    type="int" address="0x02023F30" length="4" />
+            <property name="future_sight_damage_enemy_2" type="int" address="0x02023F34" length="4" />
+
+            <!-- gWishFutureKnock.futureSightMove[b] (u16) @ 0x02023F38 -->
+            <property name="future_sight_move_player"  type="int" address="0x02023F38" length="2" reference="moves" />
+            <property name="future_sight_move_enemy"   type="int" address="0x02023F3A" length="2" reference="moves" />
+            <property name="future_sight_move_ally"    type="int" address="0x02023F3C" length="2" reference="moves" />
+            <property name="future_sight_move_enemy_2" type="int" address="0x02023F3E" length="2" reference="moves" />
+
+            <!-- gWishFutureKnock.wishCounter[b] (u8) @ 0x02023F40 -->
+            <property name="wish_turns_player"  type="int" address="0x02023F40" length="1" />
+            <property name="wish_turns_enemy"   type="int" address="0x02023F41" length="1" />
+            <property name="wish_turns_ally"    type="int" address="0x02023F42" length="1" />
+            <property name="wish_turns_enemy_2" type="int" address="0x02023F43" length="1" />
+
+            <!-- gWishFutureKnock.wishMonId[b] (u8) @ 0x02023F44 -->
+            <property name="wish_target_player"  type="int" address="0x02023F44" length="1" />
+            <property name="wish_target_enemy"   type="int" address="0x02023F45" length="1" />
+            <property name="wish_target_ally"    type="int" address="0x02023F46" length="1" />
+            <property name="wish_target_enemy_2" type="int" address="0x02023F47" length="1" />
+
+            <!-- gWishFutureKnock.knockedOffMons[side] (u8) @ 0x02023F49 -->
+            <property name="knocked_off_mask_player_side" type="int" address="0x02023F49" length="1" />
+            <property name="knocked_off_mask_enemy_side"  type="int" address="0x02023F4A" length="1" />
+        </field>
+
+        <!-- ============================================================ -->
+        <!-- gSideStatuses[player] (u16) + gSideTimers[player] (0x0C)     -->
+        <!-- ============================================================ -->
+        <player_side>
+            <!-- gSideStatuses[0] @ 0x02023DDE -->
+            <property name="reflect"             type="bool" address="0x02023DDE" length="2" bits="0" />
+            <property name="light_screen"        type="bool" address="0x02023DDE" length="2" bits="1" />
+            <property name="spikes"              type="bool" address="0x02023DDE" length="2" bits="4" />
+            <property name="safeguard"           type="bool" address="0x02023DDE" length="2" bits="5" />
+            <property name="future_sight"        type="bool" address="0x02023DDE" length="2" bits="6" />
+            <property name="mist"                type="bool" address="0x02023DDE" length="2" bits="8" />
+            <property name="spikes_damaged"      type="bool" address="0x02023DDE" length="2" bits="9" />
+
+            <!-- gSideTimers[0] @ 0x02023DE4 -->
+            <property name="reflect_turns"       type="int" address="0x02023DE4" length="1" />
+            <property name="reflect_user"        type="int" address="0x02023DE5" length="1" />
+            <property name="light_screen_turns"  type="int" address="0x02023DE6" length="1" />
+            <property name="light_screen_user"   type="int" address="0x02023DE7" length="1" />
+            <property name="mist_turns"          type="int" address="0x02023DE8" length="1" />
+            <property name="mist_user"           type="int" address="0x02023DE9" length="1" />
+            <property name="safeguard_turns"     type="int" address="0x02023DEA" length="1" />
+            <property name="safeguard_user"      type="int" address="0x02023DEB" length="1" />
+            <property name="follow_me_turns"     type="int" address="0x02023DEC" length="1" />
+            <property name="follow_me_target"    type="int" address="0x02023DED" length="1" />
+            <property name="spikes_layers"       type="int" address="0x02023DEE" length="1" />
+        </player_side>
+
+        <enemy_side>
+            <!-- gSideStatuses[1] @ 0x02023DE0 -->
+            <property name="reflect"             type="bool" address="0x02023DE0" length="2" bits="0" />
+            <property name="light_screen"        type="bool" address="0x02023DE0" length="2" bits="1" />
+            <property name="spikes"              type="bool" address="0x02023DE0" length="2" bits="4" />
+            <property name="safeguard"           type="bool" address="0x02023DE0" length="2" bits="5" />
+            <property name="future_sight"        type="bool" address="0x02023DE0" length="2" bits="6" />
+            <property name="mist"                type="bool" address="0x02023DE0" length="2" bits="8" />
+            <property name="spikes_damaged"      type="bool" address="0x02023DE0" length="2" bits="9" />
+
+            <!-- gSideTimers[1] @ 0x02023DF0 -->
+            <property name="reflect_turns"       type="int" address="0x02023DF0" length="1" />
+            <property name="reflect_user"        type="int" address="0x02023DF1" length="1" />
+            <property name="light_screen_turns"  type="int" address="0x02023DF2" length="1" />
+            <property name="light_screen_user"   type="int" address="0x02023DF3" length="1" />
+            <property name="mist_turns"          type="int" address="0x02023DF4" length="1" />
+            <property name="mist_user"           type="int" address="0x02023DF5" length="1" />
+            <property name="safeguard_turns"     type="int" address="0x02023DF6" length="1" />
+            <property name="safeguard_user"      type="int" address="0x02023DF7" length="1" />
+            <property name="follow_me_turns"     type="int" address="0x02023DF8" length="1" />
+            <property name="follow_me_target"    type="int" address="0x02023DF9" length="1" />
+            <property name="spikes_layers"       type="int" address="0x02023DFA" length="1" />
+        </enemy_side>
+
+        <!-- ============================================================ -->
+        <!-- Per-battler flags                                            -->
+        <!--                                                              -->
+        <!-- BattleMon       @ 0x02023BE4 + 0x58 * battlerId              -->
+        <!-- gStatuses3      @ 0x02023DFC + 0x04 * battlerId              -->
+        <!-- gDisableStructs @ 0x02023E0C + 0x1C * battlerId              -->
+        <!-- gProtectStructs @ 0x02023E8C + 0x10 * battlerId              -->
+        <!-- gSpecialStatus  @ 0x02023ECC + 0x14 * battlerId              -->
+        <!-- ============================================================ -->
+
+        <!-- ============= Player slot 1 (battler 0) ===================== -->
+        <player_active>
+            <!-- gBattleMons[0].status1 (u32) @ 0x02023C30 -->
+            <property name="sleep_turns"     type="int"  address="0x02023C30" length="4" bits="0-2" />
+            <property name="poison"          type="bool" address="0x02023C30" length="4" bits="3"   />
+            <property name="burn"            type="bool" address="0x02023C30" length="4" bits="4"   />
+            <property name="freeze"          type="bool" address="0x02023C30" length="4" bits="5"   />
+            <property name="paralysis"       type="bool" address="0x02023C30" length="4" bits="6"   />
+            <property name="toxic"           type="bool" address="0x02023C30" length="4" bits="7"   />
+            <property name="toxic_counter"   type="int"  address="0x02023C30" length="4" bits="8-11" />
+
+            <!-- gBattleMons[0].status2 (u32) @ 0x02023C34 -->
+            <property name="confusion_turns"   type="int"  address="0x02023C34" length="4" bits="0-2" />
+            <property name="flinch"            type="bool" address="0x02023C34" length="4" bits="3"  />
+            <property name="uproar_turns"      type="int"  address="0x02023C34" length="4" bits="4-6" />
+            <property name="bide_turns"        type="int"  address="0x02023C34" length="4" bits="8-9" />
+            <property name="lock_confuse_turns" type="int" address="0x02023C34" length="4" bits="10-11" />
+            <property name="multipleturns"     type="bool" address="0x02023C34" length="4" bits="12" />
+            <property name="wrapped_turns"     type="int"  address="0x02023C34" length="4" bits="13-15" />
+            <property name="infatuation_mask"  type="int"  address="0x02023C34" length="4" bits="16-19" />
+            <property name="focus_energy"      type="bool" address="0x02023C34" length="4" bits="20" />
+            <property name="transformed"       type="bool" address="0x02023C34" length="4" bits="21" />
+            <property name="recharge"          type="bool" address="0x02023C34" length="4" bits="22" />
+            <property name="rage"              type="bool" address="0x02023C34" length="4" bits="23" />
+            <property name="substitute"        type="bool" address="0x02023C34" length="4" bits="24" />
+            <property name="destiny_bond"      type="bool" address="0x02023C34" length="4" bits="25" />
+            <property name="escape_prevention" type="bool" address="0x02023C34" length="4" bits="26" />
+            <property name="nightmare"         type="bool" address="0x02023C34" length="4" bits="27" />
+            <property name="cursed"            type="bool" address="0x02023C34" length="4" bits="28" />
+            <property name="foresight"         type="bool" address="0x02023C34" length="4" bits="29" />
+            <property name="defense_curl"      type="bool" address="0x02023C34" length="4" bits="30" />
+            <property name="torment"           type="bool" address="0x02023C34" length="4" bits="31" />
+
+            <!-- gStatuses3[0] (u32) @ 0x02023DFC -->
+            <property name="leech_seed_battler" type="int"  address="0x02023DFC" length="4" bits="0-1" />
+            <property name="leech_seed"         type="bool" address="0x02023DFC" length="4" bits="2"   />
+            <property name="always_hits_turns"  type="int"  address="0x02023DFC" length="4" bits="3-4" />
+            <property name="perish_song"        type="bool" address="0x02023DFC" length="4" bits="5"   />
+            <property name="on_air"             type="bool" address="0x02023DFC" length="4" bits="6"   />
+            <property name="underground"        type="bool" address="0x02023DFC" length="4" bits="7"   />
+            <property name="minimized"          type="bool" address="0x02023DFC" length="4" bits="8"   />
+            <property name="charged_up"         type="bool" address="0x02023DFC" length="4" bits="9"   />
+            <property name="rooted"             type="bool" address="0x02023DFC" length="4" bits="10"  />
+            <property name="yawn_turns"         type="int"  address="0x02023DFC" length="4" bits="11-12" />
+            <property name="imprisoned_others"  type="bool" address="0x02023DFC" length="4" bits="13"  />
+            <property name="grudge"             type="bool" address="0x02023DFC" length="4" bits="14"  />
+            <property name="cant_score_a_crit"  type="bool" address="0x02023DFC" length="4" bits="15"  />
+            <property name="mud_sport"          type="bool" address="0x02023DFC" length="4" bits="16"  />
+            <property name="water_sport"        type="bool" address="0x02023DFC" length="4" bits="17"  />
+            <property name="underwater"         type="bool" address="0x02023DFC" length="4" bits="18"  />
+            <property name="intimidate_pokes"   type="bool" address="0x02023DFC" length="4" bits="19"  />
+            <property name="trace"              type="bool" address="0x02023DFC" length="4" bits="20"  />
+
+            <!-- gDisableStructs[0] @ 0x02023E0C -->
+            <property name="transformed_personality" type="uint" address="0x02023E0C" length="4" />
+            <property name="disabled_move"           type="int"  address="0x02023E10" length="2" reference="moves" />
+            <property name="encored_move"            type="int"  address="0x02023E12" length="2" reference="moves" />
+            <property name="protect_uses"            type="int"  address="0x02023E14" length="1" />
+            <property name="stockpile"               type="int"  address="0x02023E15" length="1" />
+            <property name="substitute_hp"           type="int"  address="0x02023E16" length="1" />
+            <property name="disable_turns"           type="int"  address="0x02023E17" length="1" bits="0-3" />
+            <property name="disable_start"           type="int"  address="0x02023E17" length="1" bits="4-7" />
+            <property name="encore_move_pos"         type="int"  address="0x02023E18" length="1" />
+            <property name="encore_turns"            type="int"  address="0x02023E1A" length="1" bits="0-3" />
+            <property name="encore_start"            type="int"  address="0x02023E1A" length="1" bits="4-7" />
+            <property name="perish_song_turns"       type="int"  address="0x02023E1B" length="1" bits="0-3" />
+            <property name="perish_song_start"       type="int"  address="0x02023E1B" length="1" bits="4-7" />
+            <property name="fury_cutter_count"       type="int"  address="0x02023E1C" length="1" />
+            <property name="rollout_turns"           type="int"  address="0x02023E1D" length="1" bits="0-3" />
+            <property name="rollout_start"           type="int"  address="0x02023E1D" length="1" bits="4-7" />
+            <property name="charge_turns"            type="int"  address="0x02023E1E" length="1" bits="0-3" />
+            <property name="charge_start"            type="int"  address="0x02023E1E" length="1" bits="4-7" />
+            <property name="taunt_turns"             type="int"  address="0x02023E1F" length="1" bits="0-3" />
+            <property name="taunt_turns_2"           type="int"  address="0x02023E1F" length="1" bits="4-7" />
+            <property name="battler_preventing_escape" type="int" address="0x02023E20" length="1" />
+            <property name="battler_with_sure_hit"     type="int" address="0x02023E21" length="1" />
+            <property name="is_first_turn"             type="int" address="0x02023E22" length="1" />
+            <property name="truant_counter"            type="bool" address="0x02023E24" length="1" bits="0" />
+            <property name="mimicked_moves_mask"       type="int"  address="0x02023E24" length="1" bits="4-7" />
+            <property name="recharge_timer"            type="int"  address="0x02023E25" length="1" />
+
+            <!-- gProtectStructs[0] @ 0x02023E8C -->
+            <property name="protected"             type="bool" address="0x02023E8C" length="4" bits="0"  />
+            <property name="endured"               type="bool" address="0x02023E8C" length="4" bits="1"  />
+            <property name="no_valid_moves"        type="bool" address="0x02023E8C" length="4" bits="2"  />
+            <property name="helping_hand"          type="bool" address="0x02023E8C" length="4" bits="3"  />
+            <property name="bounce_move"           type="bool" address="0x02023E8C" length="4" bits="4"  />
+            <property name="steal_move"            type="bool" address="0x02023E8C" length="4" bits="5"  />
+            <property name="prlz_immobility"       type="bool" address="0x02023E8C" length="4" bits="7"  />
+            <property name="confusion_self_damage" type="bool" address="0x02023E8C" length="4" bits="8"  />
+            <property name="target_not_affected"   type="bool" address="0x02023E8C" length="4" bits="9"  />
+            <property name="charging_turn"         type="bool" address="0x02023E8C" length="4" bits="10" />
+            <property name="flee_type"             type="int"  address="0x02023E8C" length="4" bits="11-12" />
+            <property name="used_imprisoned_move"  type="bool" address="0x02023E8C" length="4" bits="13" />
+            <property name="love_immobility"       type="bool" address="0x02023E8C" length="4" bits="14" />
+            <property name="used_disabled_move"    type="bool" address="0x02023E8C" length="4" bits="15" />
+            <property name="used_taunted_move"     type="bool" address="0x02023E8C" length="4" bits="16" />
+            <property name="flinch_immobility"     type="bool" address="0x02023E8C" length="4" bits="18" />
+            <property name="not_first_strike"      type="bool" address="0x02023E8C" length="4" bits="19" />
+            <property name="physical_damage_taken" type="uint" address="0x02023E90" length="4" />
+            <property name="special_damage_taken"  type="uint" address="0x02023E94" length="4" />
+            <property name="physical_attacker_id"  type="int"  address="0x02023E98" length="1" />
+            <property name="special_attacker_id"   type="int"  address="0x02023E99" length="1" />
+
+            <!-- gSpecialStatuses[0] @ 0x02023ECC -->
+            <property name="stat_lowered"          type="bool" address="0x02023ECC" length="1" bits="0" />
+            <property name="lightning_rod"         type="bool" address="0x02023ECC" length="1" bits="1" />
+            <property name="restored_sprite"       type="bool" address="0x02023ECC" length="1" bits="2" />
+            <property name="intimidated_mon"       type="bool" address="0x02023ECC" length="1" bits="3" />
+            <property name="traced"                type="bool" address="0x02023ECC" length="1" bits="4" />
+            <property name="pp_not_pressured"      type="bool" address="0x02023ECC" length="1" bits="5" />
+            <property name="fainted_replacement"   type="bool" address="0x02023ECC" length="1" bits="6" />
+            <property name="focus_banded"          type="bool" address="0x02023ECC" length="1" bits="7" />
+            <property name="last_damage"           type="int"  address="0x02023ED0" length="4" />
+            <property name="self_physical_dmg"     type="int"  address="0x02023ED4" length="4" />
+            <property name="self_special_dmg"      type="int"  address="0x02023ED8" length="4" />
+            <property name="self_physical_attacker" type="int" address="0x02023EDC" length="1" />
+            <property name="self_special_attacker"  type="int" address="0x02023EDD" length="1" />
+        </player_active>
+
+        <!-- ============= Enemy slot 1 (battler 1) ====================== -->
+        <enemy_active>
+            <!-- gBattleMons[1] @ 0x02023C3C; status1 @ 0x02023C88, status2 @ 0x02023C8C -->
+            <property name="sleep_turns"     type="int"  address="0x02023C88" length="4" bits="0-2" />
+            <property name="poison"          type="bool" address="0x02023C88" length="4" bits="3"   />
+            <property name="burn"            type="bool" address="0x02023C88" length="4" bits="4"   />
+            <property name="freeze"          type="bool" address="0x02023C88" length="4" bits="5"   />
+            <property name="paralysis"       type="bool" address="0x02023C88" length="4" bits="6"   />
+            <property name="toxic"           type="bool" address="0x02023C88" length="4" bits="7"   />
+            <property name="toxic_counter"   type="int"  address="0x02023C88" length="4" bits="8-11" />
+
+            <property name="confusion_turns"   type="int"  address="0x02023C8C" length="4" bits="0-2" />
+            <property name="flinch"            type="bool" address="0x02023C8C" length="4" bits="3"  />
+            <property name="uproar_turns"      type="int"  address="0x02023C8C" length="4" bits="4-6" />
+            <property name="bide_turns"        type="int"  address="0x02023C8C" length="4" bits="8-9" />
+            <property name="lock_confuse_turns" type="int" address="0x02023C8C" length="4" bits="10-11" />
+            <property name="multipleturns"     type="bool" address="0x02023C8C" length="4" bits="12" />
+            <property name="wrapped_turns"     type="int"  address="0x02023C8C" length="4" bits="13-15" />
+            <property name="infatuation_mask"  type="int"  address="0x02023C8C" length="4" bits="16-19" />
+            <property name="focus_energy"      type="bool" address="0x02023C8C" length="4" bits="20" />
+            <property name="transformed"       type="bool" address="0x02023C8C" length="4" bits="21" />
+            <property name="recharge"          type="bool" address="0x02023C8C" length="4" bits="22" />
+            <property name="rage"              type="bool" address="0x02023C8C" length="4" bits="23" />
+            <property name="substitute"        type="bool" address="0x02023C8C" length="4" bits="24" />
+            <property name="destiny_bond"      type="bool" address="0x02023C8C" length="4" bits="25" />
+            <property name="escape_prevention" type="bool" address="0x02023C8C" length="4" bits="26" />
+            <property name="nightmare"         type="bool" address="0x02023C8C" length="4" bits="27" />
+            <property name="cursed"            type="bool" address="0x02023C8C" length="4" bits="28" />
+            <property name="foresight"         type="bool" address="0x02023C8C" length="4" bits="29" />
+            <property name="defense_curl"      type="bool" address="0x02023C8C" length="4" bits="30" />
+            <property name="torment"           type="bool" address="0x02023C8C" length="4" bits="31" />
+
+            <!-- gStatuses3[1] @ 0x02023E00 -->
+            <property name="leech_seed_battler" type="int"  address="0x02023E00" length="4" bits="0-1" />
+            <property name="leech_seed"         type="bool" address="0x02023E00" length="4" bits="2"   />
+            <property name="always_hits_turns"  type="int"  address="0x02023E00" length="4" bits="3-4" />
+            <property name="perish_song"        type="bool" address="0x02023E00" length="4" bits="5"   />
+            <property name="on_air"             type="bool" address="0x02023E00" length="4" bits="6"   />
+            <property name="underground"        type="bool" address="0x02023E00" length="4" bits="7"   />
+            <property name="minimized"          type="bool" address="0x02023E00" length="4" bits="8"   />
+            <property name="charged_up"         type="bool" address="0x02023E00" length="4" bits="9"   />
+            <property name="rooted"             type="bool" address="0x02023E00" length="4" bits="10"  />
+            <property name="yawn_turns"         type="int"  address="0x02023E00" length="4" bits="11-12" />
+            <property name="imprisoned_others"  type="bool" address="0x02023E00" length="4" bits="13"  />
+            <property name="grudge"             type="bool" address="0x02023E00" length="4" bits="14"  />
+            <property name="cant_score_a_crit"  type="bool" address="0x02023E00" length="4" bits="15"  />
+            <property name="mud_sport"          type="bool" address="0x02023E00" length="4" bits="16"  />
+            <property name="water_sport"        type="bool" address="0x02023E00" length="4" bits="17"  />
+            <property name="underwater"         type="bool" address="0x02023E00" length="4" bits="18"  />
+            <property name="intimidate_pokes"   type="bool" address="0x02023E00" length="4" bits="19"  />
+            <property name="trace"              type="bool" address="0x02023E00" length="4" bits="20"  />
+
+            <!-- gDisableStructs[1] @ 0x02023E28 -->
+            <property name="transformed_personality" type="uint" address="0x02023E28" length="4" />
+            <property name="disabled_move"           type="int"  address="0x02023E2C" length="2" reference="moves" />
+            <property name="encored_move"            type="int"  address="0x02023E2E" length="2" reference="moves" />
+            <property name="protect_uses"            type="int"  address="0x02023E30" length="1" />
+            <property name="stockpile"               type="int"  address="0x02023E31" length="1" />
+            <property name="substitute_hp"           type="int"  address="0x02023E32" length="1" />
+            <property name="disable_turns"           type="int"  address="0x02023E33" length="1" bits="0-3" />
+            <property name="encore_move_pos"         type="int"  address="0x02023E34" length="1" />
+            <property name="encore_turns"            type="int"  address="0x02023E36" length="1" bits="0-3" />
+            <property name="perish_song_turns"       type="int"  address="0x02023E37" length="1" bits="0-3" />
+            <property name="fury_cutter_count"       type="int"  address="0x02023E38" length="1" />
+            <property name="rollout_turns"           type="int"  address="0x02023E39" length="1" bits="0-3" />
+            <property name="charge_turns"            type="int"  address="0x02023E3A" length="1" bits="0-3" />
+            <property name="taunt_turns"             type="int"  address="0x02023E3B" length="1" bits="0-3" />
+            <property name="taunt_turns_2"           type="int"  address="0x02023E3B" length="1" bits="4-7" />
+            <property name="battler_preventing_escape" type="int" address="0x02023E3C" length="1" />
+            <property name="battler_with_sure_hit"     type="int" address="0x02023E3D" length="1" />
+            <property name="is_first_turn"             type="int" address="0x02023E3E" length="1" />
+            <property name="truant_counter"            type="bool" address="0x02023E40" length="1" bits="0" />
+            <property name="mimicked_moves_mask"       type="int"  address="0x02023E40" length="1" bits="4-7" />
+            <property name="recharge_timer"            type="int"  address="0x02023E41" length="1" />
+
+            <!-- gProtectStructs[1] @ 0x02023E9C -->
+            <property name="protected"             type="bool" address="0x02023E9C" length="4" bits="0"  />
+            <property name="endured"               type="bool" address="0x02023E9C" length="4" bits="1"  />
+            <property name="no_valid_moves"        type="bool" address="0x02023E9C" length="4" bits="2"  />
+            <property name="helping_hand"          type="bool" address="0x02023E9C" length="4" bits="3"  />
+            <property name="bounce_move"           type="bool" address="0x02023E9C" length="4" bits="4"  />
+            <property name="steal_move"            type="bool" address="0x02023E9C" length="4" bits="5"  />
+            <property name="prlz_immobility"       type="bool" address="0x02023E9C" length="4" bits="7"  />
+            <property name="confusion_self_damage" type="bool" address="0x02023E9C" length="4" bits="8"  />
+            <property name="target_not_affected"   type="bool" address="0x02023E9C" length="4" bits="9"  />
+            <property name="charging_turn"         type="bool" address="0x02023E9C" length="4" bits="10" />
+            <property name="flee_type"             type="int"  address="0x02023E9C" length="4" bits="11-12" />
+            <property name="used_imprisoned_move"  type="bool" address="0x02023E9C" length="4" bits="13" />
+            <property name="love_immobility"       type="bool" address="0x02023E9C" length="4" bits="14" />
+            <property name="used_disabled_move"    type="bool" address="0x02023E9C" length="4" bits="15" />
+            <property name="used_taunted_move"     type="bool" address="0x02023E9C" length="4" bits="16" />
+            <property name="flinch_immobility"     type="bool" address="0x02023E9C" length="4" bits="18" />
+            <property name="not_first_strike"      type="bool" address="0x02023E9C" length="4" bits="19" />
+            <property name="physical_damage_taken" type="uint" address="0x02023EA0" length="4" />
+            <property name="special_damage_taken"  type="uint" address="0x02023EA4" length="4" />
+            <property name="physical_attacker_id"  type="int"  address="0x02023EA8" length="1" />
+            <property name="special_attacker_id"   type="int"  address="0x02023EA9" length="1" />
+
+            <!-- gSpecialStatuses[1] @ 0x02023EE0 -->
+            <property name="stat_lowered"          type="bool" address="0x02023EE0" length="1" bits="0" />
+            <property name="lightning_rod"         type="bool" address="0x02023EE0" length="1" bits="1" />
+            <property name="restored_sprite"       type="bool" address="0x02023EE0" length="1" bits="2" />
+            <property name="intimidated_mon"       type="bool" address="0x02023EE0" length="1" bits="3" />
+            <property name="traced"                type="bool" address="0x02023EE0" length="1" bits="4" />
+            <property name="pp_not_pressured"      type="bool" address="0x02023EE0" length="1" bits="5" />
+            <property name="fainted_replacement"   type="bool" address="0x02023EE0" length="1" bits="6" />
+            <property name="focus_banded"          type="bool" address="0x02023EE0" length="1" bits="7" />
+            <property name="last_damage"           type="int"  address="0x02023EE4" length="4" />
+            <property name="self_physical_dmg"     type="int"  address="0x02023EE8" length="4" />
+            <property name="self_special_dmg"      type="int"  address="0x02023EEC" length="4" />
+            <property name="self_physical_attacker" type="int" address="0x02023EF0" length="1" />
+            <property name="self_special_attacker"  type="int" address="0x02023EF1" length="1" />
+        </enemy_active>
+
+        <!-- ============= Player slot 2 / ally (battler 2) =============== -->
+        <!-- BattleMon @ 0x02023C94; status1 @ 0x02023CE0, status2 @ 0x02023CE4 -->
+        <ally_active>
+            <property name="sleep_turns"     type="int"  address="0x02023CE0" length="4" bits="0-2" />
+            <property name="poison"          type="bool" address="0x02023CE0" length="4" bits="3"   />
+            <property name="burn"            type="bool" address="0x02023CE0" length="4" bits="4"   />
+            <property name="freeze"          type="bool" address="0x02023CE0" length="4" bits="5"   />
+            <property name="paralysis"       type="bool" address="0x02023CE0" length="4" bits="6"   />
+            <property name="toxic"           type="bool" address="0x02023CE0" length="4" bits="7"   />
+
+            <property name="confusion_turns" type="int"  address="0x02023CE4" length="4" bits="0-2" />
+            <property name="flinch"          type="bool" address="0x02023CE4" length="4" bits="3"  />
+            <property name="substitute"      type="bool" address="0x02023CE4" length="4" bits="24" />
+            <property name="cursed"          type="bool" address="0x02023CE4" length="4" bits="28" />
+            <property name="defense_curl"    type="bool" address="0x02023CE4" length="4" bits="30" />
+            <property name="torment"         type="bool" address="0x02023CE4" length="4" bits="31" />
+
+            <!-- gStatuses3[2] @ 0x02023E04 -->
+            <property name="leech_seed"      type="bool" address="0x02023E04" length="4" bits="2"  />
+            <property name="perish_song"     type="bool" address="0x02023E04" length="4" bits="5"  />
+            <property name="on_air"          type="bool" address="0x02023E04" length="4" bits="6"  />
+            <property name="underground"     type="bool" address="0x02023E04" length="4" bits="7"  />
+            <property name="charged_up"      type="bool" address="0x02023E04" length="4" bits="9"  />
+            <property name="rooted"          type="bool" address="0x02023E04" length="4" bits="10" />
+            <property name="yawn_turns"      type="int"  address="0x02023E04" length="4" bits="11-12" />
+            <property name="underwater"      type="bool" address="0x02023E04" length="4" bits="18" />
+
+            <!-- gDisableStructs[2] @ 0x02023E44 -->
+            <property name="disabled_move"   type="int"  address="0x02023E48" length="2" reference="moves" />
+            <property name="encored_move"    type="int"  address="0x02023E4A" length="2" reference="moves" />
+            <property name="stockpile"       type="int"  address="0x02023E4D" length="1" />
+            <property name="substitute_hp"   type="int"  address="0x02023E4E" length="1" />
+            <property name="rollout_turns"   type="int"  address="0x02023E55" length="1" bits="0-3" />
+            <property name="charge_turns"    type="int"  address="0x02023E56" length="1" bits="0-3" />
+            <property name="taunt_turns"     type="int"  address="0x02023E57" length="1" bits="0-3" />
+
+            <!-- gProtectStructs[2] @ 0x02023EAC -->
+            <property name="protected"         type="bool" address="0x02023EAC" length="4" bits="0"  />
+            <property name="endured"           type="bool" address="0x02023EAC" length="4" bits="1"  />
+            <property name="helping_hand"      type="bool" address="0x02023EAC" length="4" bits="3"  />
+            <property name="bounce_move"       type="bool" address="0x02023EAC" length="4" bits="4"  />
+            <property name="steal_move"        type="bool" address="0x02023EAC" length="4" bits="5"  />
+            <property name="flinch_immobility" type="bool" address="0x02023EAC" length="4" bits="18" />
+
+            <!-- gSpecialStatuses[2] @ 0x02023EF4 -->
+            <property name="intimidated_mon" type="bool" address="0x02023EF4" length="1" bits="3" />
+            <property name="traced"          type="bool" address="0x02023EF4" length="1" bits="4" />
+            <property name="focus_banded"    type="bool" address="0x02023EF4" length="1" bits="7" />
+        </ally_active>
+
+        <!-- ============= Enemy slot 2 (battler 3) ====================== -->
+        <!-- BattleMon @ 0x02023CEC; status1 @ 0x02023D38, status2 @ 0x02023D3C -->
+        <enemy_2_active>
+            <property name="sleep_turns"     type="int"  address="0x02023D38" length="4" bits="0-2" />
+            <property name="poison"          type="bool" address="0x02023D38" length="4" bits="3"   />
+            <property name="burn"            type="bool" address="0x02023D38" length="4" bits="4"   />
+            <property name="freeze"          type="bool" address="0x02023D38" length="4" bits="5"   />
+            <property name="paralysis"       type="bool" address="0x02023D38" length="4" bits="6"   />
+            <property name="toxic"           type="bool" address="0x02023D38" length="4" bits="7"   />
+
+            <property name="confusion_turns" type="int"  address="0x02023D3C" length="4" bits="0-2" />
+            <property name="flinch"          type="bool" address="0x02023D3C" length="4" bits="3"  />
+            <property name="substitute"      type="bool" address="0x02023D3C" length="4" bits="24" />
+            <property name="cursed"          type="bool" address="0x02023D3C" length="4" bits="28" />
+            <property name="defense_curl"    type="bool" address="0x02023D3C" length="4" bits="30" />
+            <property name="torment"         type="bool" address="0x02023D3C" length="4" bits="31" />
+
+            <!-- gStatuses3[3] @ 0x02023E08 -->
+            <property name="leech_seed"      type="bool" address="0x02023E08" length="4" bits="2"  />
+            <property name="perish_song"     type="bool" address="0x02023E08" length="4" bits="5"  />
+            <property name="on_air"          type="bool" address="0x02023E08" length="4" bits="6"  />
+            <property name="underground"     type="bool" address="0x02023E08" length="4" bits="7"  />
+            <property name="charged_up"      type="bool" address="0x02023E08" length="4" bits="9"  />
+            <property name="rooted"          type="bool" address="0x02023E08" length="4" bits="10" />
+            <property name="yawn_turns"      type="int"  address="0x02023E08" length="4" bits="11-12" />
+            <property name="underwater"      type="bool" address="0x02023E08" length="4" bits="18" />
+
+            <!-- gDisableStructs[3] @ 0x02023E60 -->
+            <property name="disabled_move"   type="int"  address="0x02023E64" length="2" reference="moves" />
+            <property name="encored_move"    type="int"  address="0x02023E66" length="2" reference="moves" />
+            <property name="stockpile"       type="int"  address="0x02023E69" length="1" />
+            <property name="substitute_hp"   type="int"  address="0x02023E6A" length="1" />
+            <property name="rollout_turns"   type="int"  address="0x02023E71" length="1" bits="0-3" />
+            <property name="charge_turns"    type="int"  address="0x02023E72" length="1" bits="0-3" />
+            <property name="taunt_turns"     type="int"  address="0x02023E73" length="1" bits="0-3" />
+
+            <!-- gProtectStructs[3] @ 0x02023EBC -->
+            <property name="protected"         type="bool" address="0x02023EBC" length="4" bits="0"  />
+            <property name="endured"           type="bool" address="0x02023EBC" length="4" bits="1"  />
+            <property name="helping_hand"      type="bool" address="0x02023EBC" length="4" bits="3"  />
+            <property name="bounce_move"       type="bool" address="0x02023EBC" length="4" bits="4"  />
+            <property name="steal_move"        type="bool" address="0x02023EBC" length="4" bits="5"  />
+            <property name="flinch_immobility" type="bool" address="0x02023EBC" length="4" bits="18" />
+
+            <!-- gSpecialStatuses[3] @ 0x02023F08 -->
+            <property name="intimidated_mon" type="bool" address="0x02023F08" length="1" bits="3" />
+            <property name="traced"          type="bool" address="0x02023F08" length="1" bits="4" />
+            <property name="focus_banded"    type="bool" address="0x02023F08" length="1" bits="7" />
+        </enemy_2_active>
+
+        <!-- ============================================================ -->
+        <!-- Battle-wide system flags                                     -->
+        <!-- ============================================================ -->
+        <system>
+            <!-- gHitMarker (u32) @ 0x02023DD0 -->
+            <property name="wake_up_clear"          type="bool" address="0x02023DD0" length="4" bits="4"  />
+            <property name="skip_dmg_track"         type="bool" address="0x02023DD0" length="4" bits="5"  />
+            <property name="destiny_bond_armed"     type="bool" address="0x02023DD0" length="4" bits="6"  />
+            <property name="no_animations"          type="bool" address="0x02023DD0" length="4" bits="7"  />
+            <property name="ignore_substitute"      type="bool" address="0x02023DD0" length="4" bits="8"  />
+            <property name="no_attack_string"       type="bool" address="0x02023DD0" length="4" bits="9"  />
+            <property name="attack_string_printed"  type="bool" address="0x02023DD0" length="4" bits="10" />
+            <property name="no_pp_deduct"           type="bool" address="0x02023DD0" length="4" bits="11" />
+            <property name="swap_attacker_target"   type="bool" address="0x02023DD0" length="4" bits="12" />
+            <property name="ignore_safeguard"       type="bool" address="0x02023DD0" length="4" bits="13" />
+            <property name="synchronise_effect"     type="bool" address="0x02023DD0" length="4" bits="14" />
+            <property name="run"                    type="bool" address="0x02023DD0" length="4" bits="15" />
+            <property name="ignore_on_air"          type="bool" address="0x02023DD0" length="4" bits="16" />
+            <property name="ignore_underground"     type="bool" address="0x02023DD0" length="4" bits="17" />
+            <property name="ignore_underwater"      type="bool" address="0x02023DD0" length="4" bits="18" />
+            <property name="unable_to_use_move"     type="bool" address="0x02023DD0" length="4" bits="19" />
+            <property name="passive_damage"         type="bool" address="0x02023DD0" length="4" bits="20" />
+            <property name="disobedient_move"       type="bool" address="0x02023DD0" length="4" bits="21" />
+            <property name="player_fainted"         type="bool" address="0x02023DD0" length="4" bits="22" />
+            <property name="allow_no_pp"            type="bool" address="0x02023DD0" length="4" bits="23" />
+            <property name="grudge_armed"           type="bool" address="0x02023DD0" length="4" bits="24" />
+            <property name="obeys"                  type="bool" address="0x02023DD0" length="4" bits="25" />
+            <property name="charging"               type="bool" address="0x02023DD0" length="4" bits="27" />
+            <property name="fainted_mask"           type="int"  address="0x02023DD0" length="4" bits="28-31" />
+
+            <!-- gMoveResultFlags (u8) @ 0x02023DCC -->
+            <property name="missed"                 type="bool" address="0x02023DCC" length="1" bits="0" />
+            <property name="super_effective"        type="bool" address="0x02023DCC" length="1" bits="1" />
+            <property name="not_very_effective"     type="bool" address="0x02023DCC" length="1" bits="2" />
+            <property name="doesnt_affect_foe"      type="bool" address="0x02023DCC" length="1" bits="3" />
+            <property name="one_hit_ko"             type="bool" address="0x02023DCC" length="1" bits="4" />
+            <property name="failed"                 type="bool" address="0x02023DCC" length="1" bits="5" />
+            <property name="foe_endured"            type="bool" address="0x02023DCC" length="1" bits="6" />
+            <property name="foe_hung_on"            type="bool" address="0x02023DCC" length="1" bits="7" />
+
+            <!-- Misc -->
+            <property name="payday_money"           type="int"  address="0x02023E7E" length="2" />
+            <property name="battle_outcome"         type="int"  address="0x02023E8A" length="1" />
+            <property name="active_battler"        type="int"  address="0x02023BC4" length="1" />
+            <property name="battlers_count"        type="int"  address="0x02023BCC" length="1" />
+            <property name="battler_attacker"      type="int"  address="0x02023D6B" length="1" />
+            <property name="battler_target"        type="int"  address="0x02023D6C" length="1" />
+            <property name="battler_fainted"       type="int"  address="0x02023D6D" length="1" />
+            <property name="absent_battler_flags"  type="int"  address="0x02023D70" length="1" />
+            <property name="crit_multiplier"       type="int"  address="0x02023D71" length="1" />
+            <property name="multi_hit_counter"     type="int"  address="0x02023D72" length="1" />
+            <property name="current_move"          type="int"  address="0x02023D4A" length="2" reference="moves" />
+            <property name="chosen_move"           type="int"  address="0x02023D4C" length="2" reference="moves" />
+            <property name="last_used_item"        type="int"  address="0x02023D68" length="2" reference="items" />
+            <property name="last_used_ability"     type="int"  address="0x02023D6A" length="1" reference="abilities" />
+            <property name="battle_type_flags"     type="uint" address="0x02022B4C" length="4" />
+        </system>
+      </flags>
       <field>
         <player>
           <property name="statusSafeguard"    type="bool" address="0x02023DDE" length="2" bits="5" />
