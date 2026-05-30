@@ -137,21 +137,21 @@
   {
     "display_name": "pokemon_black.xml",
     "path": "STANDARD/gen5/pokemon_black.xml",
-    "version": "0.10.1"
+    "version": "0.10.2"
   },
   {
     "display_name": "pokemon_black_2.xml",
     "path": "STANDARD/gen5/pokemon_black_2.xml",
-    "version": "0.9.2"
+    "version": "0.9.4"
   },
   {
     "display_name": "pokemon_white.xml",
     "path": "STANDARD/gen5/pokemon_white.xml",
-    "version": "0.10.1"
+    "version": "0.10.2"
   },
   {
     "display_name": "pokemon_white_2.xml",
     "path": "STANDARD/gen5/pokemon_white_2.xml",
-    "version": "0.9.3"
+    "version": "0.9.4"
   }
 ]
