@@ -431,19 +431,26 @@ function preprocessor() {
     // stpVars/stpCatchRate/stpEncounterRate are the absolute addresses of the
     // src/_stp.c globals. The exporter resolves each as its OWN per-version
     // symbol (NOT a fixed offset from stpVars) because the compiler reorders
-    // .bss globals and that order is not stable across patches. Older
-    // patch_versions.json entries may lack a field -- leave the variable null
-    // in that case so XML properties referencing it fail loudly rather than
-    // silently dereferencing a stale address.
+    // .bss globals and that order is not stable across patches.
+    //
+    // Only the newest builds export every symbol; older patch_versions.json
+    // entries predate stp_catch_rate / stp_encounter_rate and so omit them. An
+    // XML property's address MUST resolve to a valid value -- if {stpEncounterRate}
+    // resolves to null the engine throws while computing the address and aborts
+    // the ENTIRE frame update, leaving every property (party, stats, level, ...)
+    // unpopulated. So when a patch lacks one of the optional symbols, fall back
+    // to stpVars (always present, a valid heap address) rather than null. The
+    // readout is meaningless on builds that never had that global, but the rest
+    // of the mapper keeps working for those patches.
     variables.stpVars = entry.lookups.stp_vars
         ? parseInt(entry.lookups.stp_vars, 16)
         : null;
     variables.stpCatchRate = entry.lookups.stp_catch_rate
         ? parseInt(entry.lookups.stp_catch_rate, 16)
-        : null;
+        : variables.stpVars;
     variables.stpEncounterRate = entry.lookups.stp_encounter_rate
         ? parseInt(entry.lookups.stp_encounter_rate, 16)
-        : null;
+        : variables.stpVars;
 
     // Vars/Flags region inside SaveData. HG layout:
     //   +0x10                                 SaveData.dynamic_region[]
