@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald" platform="GBA" version="1.2.0" syntax="4"
+<mapper id="005fdd01-8921-468c-aca3-d4fa864d5911" name="Pokemon Emerald" platform="GBA" version="1.2.1" syntax="4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -271,8 +271,8 @@
 
         <bag>
             <property name="quantity_decryption_key" type="int" length="2" address="{dma_b} + 172" />
-            <property name="money" type="int" length="4" address="{dma_a} + 1168" after-read-value-expression="decryptItemQuantity(x)" />
-            <property name="coins" type="int" length="2" address="{dma_a} + 1172" />
+            <property name="money" type="uint" length="4" address="{dma_a} + 1168" after-read-value-expression="decryptMoney(x)" />
+            <property name="coins" type="int" length="2" address="{dma_a} + 1172" after-read-value-expression="decryptItemQuantity(x)" />
             <items>
                 <class name="0"  type="player_item" var:offset="1376" />
                 <class name="1"  type="player_item" var:offset="1380" />
