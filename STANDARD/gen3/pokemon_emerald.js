@@ -58,6 +58,10 @@ function decryptItemQuantity(x) {
     let quantity_key = memory.defaultNamespace.get_uint16_le(variables.dma_b + 0xAC);
     return x ^ quantity_key;
 }
+function decryptMoney(x) {
+    let key = memory.defaultNamespace.get_uint32_le(variables.dma_b + 0xAC);
+    return (x ^ key) >>> 0;
+}
 
 const hidden_power_types = {
     0 : "Fighting",
@@ -361,4 +365,5 @@ function preprocessor() {
 }
 
 globalThis.decryptItemQuantity = decryptItemQuantity;
-export { decryptItemQuantity, containerprocessor, preprocessor };
+globalThis.decryptMoney = decryptMoney;
+export { decryptItemQuantity, decryptMoney, containerprocessor, preprocessor };
