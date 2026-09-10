@@ -306,6 +306,7 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
       <property name="mapGroupIndex"  type="int" address="0xDCB5" />
       <property name="mapNumber" type="int" address="0xDCB6" />
       <property name="mapName"   type="int" address="0xDCB5" length="2" reference="maps" />
+      <property name="mapIndex"  type="int" address="0xDCB5" length="2" />
       <property name="y" type="int" address="0xDCB7" />
       <property name="x" type="int" address="0xDCB8" />
     </overworld>
@@ -675,6 +676,10 @@ For all new software, please use the paths within 'pokemon_crystal.xml'
           <property name="tile7" type="int" address="0x98CC" />
         </column1>
       </tiles>
+      <vRamState>
+          <property name="text_box" type="bool" address="0xD0ED" bits="6"/>
+          <property name="surfing"  type="bool" address="0xD0ED" bits="7"/>
+      </vRamState>
     </screen>
 
     <!-- Squidgy Custom Properties -->

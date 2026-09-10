@@ -8,7 +8,7 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_yellow.xml'
 -->
 
-<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.2.8"
+<mapper id="79f1392e-deee-4681-8084-096a20991bad" name="Pokemon Yellow - Deprecated Mapper" platform="GB" version="1.2.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -660,6 +660,9 @@ For all new software, please use the paths within 'pokemon_yellow.xml'
 					<property name="tile7" type="int" address="0x9CCC" />
 				</column1>
 			</tiles>
+			<property name="wFontLoaded" type="bool" address="0xCFC3" bits="0"/>
+			<property name="wTextBoxID"  type="int"  address="0xD124" />
+			<property name="hWY"         type="int"  address="0xFFB0" />
 		</screen>
 		<options>
 			<property name="textSpeed"        type="int"  address="0xD354" bits="0-2" description="Fast text speed is set when both 1 and 2 are set to false" />

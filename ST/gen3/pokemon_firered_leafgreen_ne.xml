@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mapper id="6c6c1839-ccc0-4ae9-bf28-15942134ad2c" name="Pokemon FireRed &amp; LeafGreen - Deprecated Mapper" platform="GBA" version="1.6.0"
+<mapper id="bf4b0960-c091-4ec4-86ec-aa88a894865a" name="STP Pokemon FireRed and LeafGreen" platform="GBA" version="1.6.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
         xmlns:var="https://schemas.pokeabyte.io/attributes/var">
@@ -1148,11 +1148,11 @@
             <property name="VAR_CHOSEN_STARTER" type="int" address="{dma_a} + 0x1000 + (0x408C - 0x4000) * 2" length="2" reference="pokemonSpecies"/>
         </variables>
         <patch>
-            <property name="sStpTextBoxOpen"    type="int" address="0x0203f484 + (4 * 0)" length="4"/>
-            <property name="STP_VAR_RESETS"     type="int" address="0x0203f468 + (4 * 0)" length="4"/>
-            <property name="STP_VAR_BLACKOUTS"  type="int" address="0x0203f468 + (4 * 1)" length="4"/>
-            <property name="STP_CHOSEN_STARTER" type="int" address="0x0203f468 + (4 * 2)" length="4" reference="pokemonSpecies"/>
-            <property name="STP_CATCH_RATE"     type="int" address="0x0203f468 + (4 * 3)" length="4"/>
+            <property name="sStpTextBoxOpen"    type="int" address="{stp_textbox_open}" length="4"/>
+            <property name="STP_VAR_RESETS"     type="int" address="{stp_vars} + (4 * 0)" length="4"/>
+            <property name="STP_VAR_BLACKOUTS"  type="int" address="{stp_vars} + (4 * 1)" length="4"/>
+            <property name="STP_CHOSEN_STARTER" type="int" address="{stp_vars} + (4 * 2)" length="4" reference="pokemonSpecies"/>
+            <property name="STP_CATCH_RATE"     type="int" address="{stp_vars} + (4 * 3)" length="4"/>
             <stp_flags>
                 <property name="stp_pidgey_on_route_1"      type="bool" address="{dma_a} + 4090" bits="0" />
                 <property name="stp_rattata_on_route_1"     type="bool" address="{dma_a} + 4090" bits="1" />

@@ -16,7 +16,7 @@
             <property name="nature"     type="uint"   address="0"       memoryContainer="{memoryContainer}" length="4" after-read-value-expression="x % 25" />
             <property name="held_item"  type="int"    address="32 + 2"  memoryContainer="{memoryContainer}" length="2" reference="items" />
             <property name="friendship" type="int"    address="32 + 9"  memoryContainer="{memoryContainer}" />
-            <property name="pokerus"    type="int"    address="85"      memoryContainer="{memoryContainer}" />
+            <property name="pokerus"    type="int"    address="68"      memoryContainer="{memoryContainer}" />
             <property name="status_condition" type="int" address="80"   memoryContainer="{memoryContainer}" reference="status_conditions" />
             <moves>
 				<class name="0" type="pokemon_moves" var:moveNumberOffset="32 + 12" var:ppOffset="32 + 20" var:ppUpOffset="32 + 59" memoryContainer="{memoryContainer}" />

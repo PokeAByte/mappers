@@ -519,6 +519,9 @@
             </encounters>
         </overworld>
         <battle>
+            <working>
+
+            </working>
             <!-- These properties haven't been mapped yet. -->
             <!-- <test>
                 <property address="0x02022fec" type="int" length="1" name="gBattleTypeFlags" />
@@ -642,8 +645,6 @@
                 <property name="opponentB" type="int" length="2" address="0x2038bcc" reference="trainerClasses"/>
                 <property name="opponentBId" type="int" length="2" address="0x2038bcc" />
                 <property name="partnerId" type="int" length="2" address="0x2038bce" reference="trainerClasses"/>
-                <property name="party_position" type="int" length="2" address="0x2024070" />
-                <property name="party_position_2" type="int" length="2" address="0x2024074" />
                 <property name="totalPokemon" type="int" address="0x20244ea" />
                 <team>
                     <class name="0" var:address="0x2024744" type="pokemonInParty"  />
@@ -1330,6 +1331,9 @@
                     <property name="63" address="0x0202172a" type="bool" bits="0" />
                 </spriteInUse>
             </enemy_sprite>
+            <property name="TextPrinting" type="int" address="0x020375BC" />
+            <property name="sLockFieldControls" type="bool" address="0x03000F2C" bits="0" />
+            <property name="TextBoxOrScript" type="int" address="0x03000F2C" />
         </screen>
         <trainers>
             <eliteFour>
@@ -1375,10 +1379,11 @@
             <property name="palette5" type="int" address="0x2037724" length="4" reference="palette"/>
         </misc>
         <patch>
-            <property name="sStpIntroSpecies"     type="int" length="2" address="0x203cf7c" reference="pokemonSpecies" />
-            <property name="sStpStarterSpecies_0" type="int" length="2" address="0x203cf7e" reference="pokemonSpecies" />
-            <property name="sStpStarterSpecies_1" type="int" length="2" address="0x203cf80" reference="pokemonSpecies" />
-            <property name="sStpStarterSpecies_2" type="int" length="2" address="0x203cf82" reference="pokemonSpecies" />
+            <property name="sStpTextBoxOpen"      type="int" length="4" address="0x203cfa4" />
+            <property name="sStpIntroSpecies"     type="int" length="2" address="0x203cf98" reference="pokemonSpecies" />
+            <property name="sStpStarterSpecies_0" type="int" length="2" address="0x203cf9a" reference="pokemonSpecies" />
+            <property name="sStpStarterSpecies_1" type="int" length="2" address="0x203cf9c" reference="pokemonSpecies" />
+            <property name="sStpStarterSpecies_2" type="int" length="2" address="0x203cf9e" reference="pokemonSpecies" />
         </patch>
         <pointers>
             <property name="dma1"          type="uint" length="4" address="0x3005D8C" />
@@ -1386,9 +1391,9 @@
             <property name="dma3"          type="uint" length="4" address="0x3005D94" />
             <property name="callback1"     type="int" length="4" address="0x030022c0" />
             <property name="callback2"     type="int" length="4" address="0x030022c4" />
-            <property name="sStpCallback1" type="int" length="4" address="0x203cf74" reference="stp_callback1" />
-            <property name="sStpCallback2" type="int" length="4" address="0x203cf78" reference="stp_callback2" />
-            <property name="sStpTracking"  type="int" length="4" address="0x203cf84" reference="stp_tracking" />
+            <property name="sStpCallback1" type="int" length="4" address="0x203cf90" reference="stp_callback1" />
+            <property name="sStpCallback2" type="int" length="4" address="0x203cf94" reference="stp_callback2" />
+            <property name="sStpTracking"  type="int" length="4" address="0x203cfa0" reference="stp_tracking" />
         </pointers>
     </properties>
     <references>

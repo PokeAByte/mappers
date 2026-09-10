@@ -1,0 +1,64 @@
+{
+  "patch_magic": "0x46505453",
+  "anchor_addr": "0x0203FFF8",
+  "by_version": {
+    "10601": {
+      "anchored": false,
+      "lookups": {
+        "stp_vars": "0x0203F468",
+        "stp_callback1": "0x0203F478",
+        "stp_callback2": "0x0203F47C",
+        "stp_tracking": "0x0203F480",
+        "stp_textbox_open": "0x0203F484"
+      },
+      "fingerprint": [
+        {
+          "addr": "0x03003540",
+          "value": "0x08000835"
+        },
+        {
+          "addr": "0x03003544",
+          "value": "0x0800086D"
+        },
+        {
+          "addr": "0x03003548",
+          "value": "0x0800B7CD"
+        },
+        {
+          "addr": "0x0300354C",
+          "value": "0x08000805"
+        }
+      ],
+      "legacy_checks": [
+        {
+          "addr": "0x0203F47C",
+          "min": 1,
+          "max": 190,
+          "_comment": "sStpCallback2: written every frame"
+        },
+        {
+          "addr": "0x0203F478",
+          "min": 0,
+          "max": 6,
+          "_comment": "sStpCallback1"
+        },
+        {
+          "addr": "0x0203F484",
+          "min": 0,
+          "max": 1,
+          "_comment": "sStpTextBoxOpen"
+        }
+      ]
+    },
+    "10602": {
+      "anchored": true,
+      "lookups": {
+        "stp_vars": "0x0203F468",
+        "stp_callback1": "0x0203F478",
+        "stp_callback2": "0x0203F47C",
+        "stp_tracking": "0x0203F480",
+        "stp_textbox_open": "0x0203F484"
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ For all new software, please use the paths within 'pokemon_emerald.xml'
       <property name="expPoints"        memoryContainer="{memoryContainer}" address="36" type="uint" length="4" />
       <property name="nature"           memoryContainer="{memoryContainer}" address="0" type="uint" length="4" after-read-value-expression="x % 25" />
       <property name="friendship"       memoryContainer="{memoryContainer}" address="32 + 9" type="int" />
-      <property name="pokerus"          memoryContainer="{memoryContainer}" address="85" type="int" />
+      <property name="pokerus"          memoryContainer="{memoryContainer}" address="68" type="int" />
       <property name="itemHeld"         memoryContainer="{memoryContainer}" address="32 + 2" type="int" length="2" reference="items" />
       <property name="statusCondition"  memoryContainer="{memoryContainer}" address="80" type="int" reference="statusConditions" />
       <!-- #STATS -->

@@ -67,7 +67,7 @@
   {
     "display_name": "pokemon_heartgold_soulsilver_ne.xml",
     "path": "ST/gen4/pokemon_heartgold_soulsilver_ne.xml",
-    "version": "1.6.1"
+    "version": "1.6.2"
   },
   {
     "display_name": "pokemon_platinum_ne.xml",
@@ -107,7 +107,7 @@
   {
     "display_name": "pokemon_emerald.xml",
     "path": "STANDARD/gen3/pokemon_emerald.xml",
-    "version": "1.2.0"
+    "version": "1.2.1"
   },
   {
     "display_name": "pokemon_firered_leafgreen.xml",

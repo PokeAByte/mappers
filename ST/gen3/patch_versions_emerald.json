@@ -1,0 +1,117 @@
+{
+  "patch_magic": "0x45505453",
+  "anchor_addr": "0x0203FFF8",
+  "by_version": {
+    "10502": {
+      "anchored": false,
+      "lookups": {
+        "stp_vars": "0x0203CF64",
+        "stp_callback1": "0x0203CF74",
+        "stp_callback2": "0x0203CF78",
+        "stp_intro_species": "0x0203CF7C",
+        "stp_starter_0": "0x0203CF7E",
+        "stp_starter_1": "0x0203CF80",
+        "stp_starter_2": "0x0203CF82",
+        "stp_tracking": "0x0203CF84"
+      },
+      "fingerprint": [
+        {
+          "addr": "0x03002710",
+          "value": "0x0800086D"
+        },
+        {
+          "addr": "0x03002714",
+          "value": "0x080008A1"
+        },
+        {
+          "addr": "0x03002718",
+          "value": "0x0800BA6D"
+        },
+        {
+          "addr": "0x0300271C",
+          "value": "0x0800083D"
+        }
+      ],
+      "legacy_checks": [
+        {
+          "addr": "0x0203CF78",
+          "min": 1,
+          "max": 72,
+          "_comment": "sStpCallback2"
+        },
+        {
+          "addr": "0x0203CF74",
+          "min": 0,
+          "max": 3,
+          "_comment": "sStpCallback1"
+        }
+      ]
+    },
+    "10601": {
+      "anchored": false,
+      "lookups": {
+        "stp_vars": "0x0203CF64",
+        "stp_callback1": "0x0203CF90",
+        "stp_callback2": "0x0203CF94",
+        "stp_intro_species": "0x0203CF98",
+        "stp_starter_0": "0x0203CF9A",
+        "stp_starter_1": "0x0203CF9C",
+        "stp_starter_2": "0x0203CF9E",
+        "stp_tracking": "0x0203CFA0",
+        "stp_textbox_open": "0x0203CFA4"
+      },
+      "fingerprint": [
+        {
+          "addr": "0x03002710",
+          "value": "0x0800086D"
+        },
+        {
+          "addr": "0x03002714",
+          "value": "0x080008A1"
+        },
+        {
+          "addr": "0x03002718",
+          "value": "0x0800BA6D"
+        },
+        {
+          "addr": "0x0300271C",
+          "value": "0x0800083D"
+        }
+      ],
+      "legacy_checks": [
+        {
+          "addr": "0x0203CF94",
+          "min": 1,
+          "max": 72,
+          "_comment": "sStpCallback2: written every frame; always 0 in v1.5.2 (past its data end)"
+        },
+        {
+          "addr": "0x0203CF90",
+          "min": 0,
+          "max": 3,
+          "_comment": "sStpCallback1"
+        },
+        {
+          "addr": "0x0203CFA4",
+          "min": 0,
+          "max": 1,
+          "_comment": "sStpTextBoxOpen"
+        }
+      ]
+    },
+    "10602": {
+      "anchored": true,
+      "lookups": {
+        "stp_vars": "0x0203CF64",
+        "stp_callback1": "0x0203CF90",
+        "stp_callback2": "0x0203CF94",
+        "stp_intro_species": "0x0203CF98",
+        "stp_starter_0": "0x0203CF9A",
+        "stp_starter_1": "0x0203CF9C",
+        "stp_starter_2": "0x0203CF9E",
+        "stp_tracking": "0x0203CFA0",
+        "stp_textbox_open": "0x0203CFA4"
+      }
+    }
+  }
+}
