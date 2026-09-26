@@ -6,13 +6,12 @@
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
 	<memory>
-		<!-- Player party: 6 slots × 260 bytes (PK7 SIZE_6PARTY = 0x104) -->
-		<!-- JS preprocessor reads this range, decrypts each slot, and writes to named containers -->
-		<read start="0x34195E10" end="0x34196E10" />
-		<!-- <read start="0x33F7FA44" end="0x33F8059C" /> -->
-		<!-- Battle structs: player active at 0x30002774, opponent at 0x30009928 (stride 0x69E8) -->
-		<!-- Range covers both slots plus all confirmed field offsets (last: opponent +0x21D = 0x30009B45) -->
-		<!-- <read start="0x30002774" end="0x30009B50" /> -->
+		<!-- Linear-heap save image. The block can move; JS finds it by trainer-card signature. -->
+		<read start="0x330C0000" end="0x330F0000" />
+		<!-- Linear heap: 6 live party slots (484-byte stride, read 0x174 each) -->
+		<read start="0x34195E10" end="0x34196970" />
+		<!-- Battle field structs (player 0x30002774, enemy 0x30004DB4, stride 0x330). Active object pointer at 0x30000404. -->
+		<read start="0x30000000" end="0x30040000" />
 	</memory>
 
 	<classes>
@@ -344,7 +343,7 @@
 		<property name="hp_max"   address="{address} + 2"   type="int"  length="2" />
 		<property name="hp"       address="{address} + 4"   type="int"  length="2" />
 		<property name="ability"  address="{address} + 10"  type="int"  length="2" reference="abilities" />
-		<property name="level"    address="{address} + 12"  type="int"  length="2" />
+		<property name="level"    address="{address} + 12"  type="int" />
 		<stats>
 			<property name="attack"          address="{address} + 462" type="int" length="2" />
 			<property name="defense"         address="{address} + 464" type="int" length="2" />
@@ -384,8 +383,9 @@
 	</battle_pokemon>
 
 	<player_item>
-            <property name="item"     address="{address}" type="int" length="2" reference="items" />
-            <property name="quantity" address="{address} + 2" type="int" length="2" />
+            <!-- Gen 7 pouch record: u32 LE, bits 0–10 item id, bits 10–19 quantity -->
+            <property name="item"     address="{address}" type="uint" length="4" after-read-value-expression="x &amp; 0x3FF" reference="items" />
+            <property name="quantity" address="{address}" type="uint" length="4" after-read-value-expression="(x >> 10) &amp; 0x3FF" />
         </player_item>
 
 		<wild_encounter>
@@ -399,9 +399,11 @@
 
 	<properties>
 		<player>			
-			<property name="name" type="string" address="0x330D67D0 - 16" length="14" size="2" />
-			<property name="tid"  type="int" address="0x330D6808 - 16" length="2" />
-			<property name="sid"  type="int" address="0x330D67D2 - 16" length="2" />
+			<property name="name" type="string" address="{save_block} + 0x38" length="26" size="2" />
+			<!-- Trainer card "ID No." is Gen 7 DisplayTID: (TID16 | SID16 << 16) % 1_000_000 -->
+			<property name="tid" type="uint" address="{save_block}" length="4" after-read-value-expression="x % 1000000" />
+			<property name="tid16" type="int" address="{save_block}" length="2" />
+			<property name="sid"  type="int" address="{save_block} + 2" length="2" />
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
@@ -412,48 +414,96 @@
 				<class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" />
 			</team>
 			<bag>
-				<property name="money" type="int" address="0x08C6A69C" length="2" />
+				<property name="money" type="int" address="{heap_money}" length="4" />
+				<!-- SM pouches: u16 id + u16 qty. Items at save_block-0xE9C; medicine +0xB48 (PKHeX). 430/64 max. -->
 				<items>
-					<class name="0" type="player_item" var:address="0x08C67554 + (4 * 0)" />
+					<class name="0" type="player_item" var:address="{heap_items} + (4 * 0)" />
+					<class name="1" type="player_item" var:address="{heap_items} + (4 * 1)" />
+					<class name="2" type="player_item" var:address="{heap_items} + (4 * 2)" />
+					<class name="3" type="player_item" var:address="{heap_items} + (4 * 3)" />
+					<class name="4" type="player_item" var:address="{heap_items} + (4 * 4)" />
+					<class name="5" type="player_item" var:address="{heap_items} + (4 * 5)" />
+					<class name="6" type="player_item" var:address="{heap_items} + (4 * 6)" />
+					<class name="7" type="player_item" var:address="{heap_items} + (4 * 7)" />
+					<class name="8" type="player_item" var:address="{heap_items} + (4 * 8)" />
+					<class name="9" type="player_item" var:address="{heap_items} + (4 * 9)" />
+					<class name="10" type="player_item" var:address="{heap_items} + (4 * 10)" />
+					<class name="11" type="player_item" var:address="{heap_items} + (4 * 11)" />
+					<class name="12" type="player_item" var:address="{heap_items} + (4 * 12)" />
+					<class name="13" type="player_item" var:address="{heap_items} + (4 * 13)" />
+					<class name="14" type="player_item" var:address="{heap_items} + (4 * 14)" />
+					<class name="15" type="player_item" var:address="{heap_items} + (4 * 15)" />
+					<class name="16" type="player_item" var:address="{heap_items} + (4 * 16)" />
+					<class name="17" type="player_item" var:address="{heap_items} + (4 * 17)" />
+					<class name="18" type="player_item" var:address="{heap_items} + (4 * 18)" />
+					<class name="19" type="player_item" var:address="{heap_items} + (4 * 19)" />
+					<class name="20" type="player_item" var:address="{heap_items} + (4 * 20)" />
+					<class name="21" type="player_item" var:address="{heap_items} + (4 * 21)" />
+					<class name="22" type="player_item" var:address="{heap_items} + (4 * 22)" />
+					<class name="23" type="player_item" var:address="{heap_items} + (4 * 23)" />
+					<class name="24" type="player_item" var:address="{heap_items} + (4 * 24)" />
+					<class name="25" type="player_item" var:address="{heap_items} + (4 * 25)" />
+					<class name="26" type="player_item" var:address="{heap_items} + (4 * 26)" />
+					<class name="27" type="player_item" var:address="{heap_items} + (4 * 27)" />
+					<class name="28" type="player_item" var:address="{heap_items} + (4 * 28)" />
+					<class name="29" type="player_item" var:address="{heap_items} + (4 * 29)" />
 				</items>
 				<medicine>
-					<class name="0" type="player_item" var:address="0x08C67EBC + (4 * 0)" />
+					<class name="0" type="player_item" var:address="{heap_medicine} + (4 * 0)" />
+					<class name="1" type="player_item" var:address="{heap_medicine} + (4 * 1)" />
+					<class name="2" type="player_item" var:address="{heap_medicine} + (4 * 2)" />
+					<class name="3" type="player_item" var:address="{heap_medicine} + (4 * 3)" />
+					<class name="4" type="player_item" var:address="{heap_medicine} + (4 * 4)" />
+					<class name="5" type="player_item" var:address="{heap_medicine} + (4 * 5)" />
+					<class name="6" type="player_item" var:address="{heap_medicine} + (4 * 6)" />
+					<class name="7" type="player_item" var:address="{heap_medicine} + (4 * 7)" />
+					<class name="8" type="player_item" var:address="{heap_medicine} + (4 * 8)" />
+					<class name="9" type="player_item" var:address="{heap_medicine} + (4 * 9)" />
+					<class name="10" type="player_item" var:address="{heap_medicine} + (4 * 10)" />
+					<class name="11" type="player_item" var:address="{heap_medicine} + (4 * 11)" />
+					<class name="12" type="player_item" var:address="{heap_medicine} + (4 * 12)" />
+					<class name="13" type="player_item" var:address="{heap_medicine} + (4 * 13)" />
+					<class name="14" type="player_item" var:address="{heap_medicine} + (4 * 14)" />
+					<class name="15" type="player_item" var:address="{heap_medicine} + (4 * 15)" />
+					<class name="16" type="player_item" var:address="{heap_medicine} + (4 * 16)" />
+					<class name="17" type="player_item" var:address="{heap_medicine} + (4 * 17)" />
+					<class name="18" type="player_item" var:address="{heap_medicine} + (4 * 18)" />
+					<class name="19" type="player_item" var:address="{heap_medicine} + (4 * 19)" />
 				</medicine>
-				<tm_hm>
-					<!-- <class name="0" type="player_item" var:address="0x08C67D2C + (4 * 0)" /> -->
-				</tm_hm>
-				<berries>
-					<!-- <class name="0" type="player_item" var:address="0x08C67554 + (4 * 0)" /> -->
-				</berries>
-				<key_items>
-					<class name="0" type="player_item" var:address="0x08C67B94 + (4 * 0)" />
-				</key_items>
 			</bag>
 		</player>
-		<test>
-			<team>
-				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
-				<class name="0" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_0" />
-				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
-				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
-				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
-				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
-				<!-- <class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" /> -->
-			</team>
-		</test>
 		<battle>
-			<!-- Player's active Pokemon: confirmed base 0x30002774 (USUM, found via species=725+HP/ability/move scan) -->
-			<!-- <class name="player_active" type="battle_pokemon" var:address="0x30002774" /> -->
-			<!-- Opponent's active Pokemon: confirmed base 0x30009928 (stride 0x69E8 from player base) -->
-			<!-- <class name="opponent_active" type="battle_pokemon" var:address="0x30009928" /> -->
+			<!-- SM field structs: player party at 0x30002774, enemy at +0x2640, slot stride 0x330. -->
+			<!-- Slots do not swap on switch. JS reads the live player object pointer at 0x30000404. -->
+			<property name="in_battle" type="bool" />
+			<property name="party_position" type="int" />
+			<class name="player_active" type="battle_pokemon" var:address="{player_active}" />
+			<class name="opponent_active" type="battle_pokemon" var:address="0x30004DB4" />
+			<player_team>
+				<class name="0" type="battle_pokemon" var:address="0x30002774 + (0x330 * 0)" />
+				<class name="1" type="battle_pokemon" var:address="0x30002774 + (0x330 * 1)" />
+				<class name="2" type="battle_pokemon" var:address="0x30002774 + (0x330 * 2)" />
+				<class name="3" type="battle_pokemon" var:address="0x30002774 + (0x330 * 3)" />
+				<class name="4" type="battle_pokemon" var:address="0x30002774 + (0x330 * 4)" />
+				<class name="5" type="battle_pokemon" var:address="0x30002774 + (0x330 * 5)" />
+			</player_team>
+			<opponent_team>
+				<class name="0" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 0)" />
+				<class name="1" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 1)" />
+				<class name="2" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 2)" />
+				<class name="3" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 3)" />
+				<class name="4" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 4)" />
+				<class name="5" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 5)" />
+			</opponent_team>
 		</battle>
 		<rival>
 			<!-- <property name="name" type="string" address="0x08C6A6A4" length="14" size="2" /> -->
 		</rival>
 		<gametime>
-			<property name="hours"   type="int" address="0x34197648 - 16" length="2" />
-			<property name="minutes" type="int" address="0x34197648 - 16 + 2" />
-			<property name="seconds" type="int" address="0x34197648 - 16 + 3" />
+			<!-- SM play-time address is not mapped yet. Old 0x34197648-16 sits past the party block. -->
+			<!-- <property name="hours"   type="int" address="0x34197648 - 16" length="2" /> -->
+			<!-- <property name="minutes" type="int" address="0x34197648 - 16 + 2" /> -->
+			<!-- <property name="seconds" type="int" address="0x34197648 - 16 + 3" /> -->
 		</gametime>
 		<meta>
 			<property name="generation"     type="int"    value="7" />
@@ -7891,6 +7941,116 @@
 			<entry key="121" value="Multitype" />
 			<entry key="122" value="Flower Gift" />
 			<entry key="123" value="Bad Dreams" />
+			<entry key="124" value="Pickpocket" />
+			<entry key="125" value="Sheer Force" />
+			<entry key="126" value="Contrary" />
+			<entry key="127" value="Unnerve" />
+			<entry key="128" value="Defiant" />
+			<entry key="129" value="Defeatist" />
+			<entry key="130" value="Cursed Body" />
+			<entry key="131" value="Healer" />
+			<entry key="132" value="Friend Guard" />
+			<entry key="133" value="Weak Armor" />
+			<entry key="134" value="Heavy Metal" />
+			<entry key="135" value="Light Metal" />
+			<entry key="136" value="Multiscale" />
+			<entry key="137" value="Toxic Boost" />
+			<entry key="138" value="Flare Boost" />
+			<entry key="139" value="Harvest" />
+			<entry key="140" value="Telepathy" />
+			<entry key="141" value="Moody" />
+			<entry key="142" value="Overcoat" />
+			<entry key="143" value="Poison Touch" />
+			<entry key="144" value="Regenerator" />
+			<entry key="145" value="Big Pecks" />
+			<entry key="146" value="Sand Rush" />
+			<entry key="147" value="Wonder Skin" />
+			<entry key="148" value="Analytic" />
+			<entry key="149" value="Illusion" />
+			<entry key="150" value="Imposter" />
+			<entry key="151" value="Infiltrator" />
+			<entry key="152" value="Mummy" />
+			<entry key="153" value="Moxie" />
+			<entry key="154" value="Justified" />
+			<entry key="155" value="Rattled" />
+			<entry key="156" value="Magic Bounce" />
+			<entry key="157" value="Sap Sipper" />
+			<entry key="158" value="Prankster" />
+			<entry key="159" value="Sand Force" />
+			<entry key="160" value="Iron Barbs" />
+			<entry key="161" value="Zen Mode" />
+			<entry key="162" value="Victory Star" />
+			<entry key="163" value="Turboblaze" />
+			<entry key="164" value="Teravolt" />
+			<entry key="165" value="Aroma Veil" />
+			<entry key="166" value="Flower Veil" />
+			<entry key="167" value="Cheek Pouch" />
+			<entry key="168" value="Protean" />
+			<entry key="169" value="Fur Coat" />
+			<entry key="170" value="Magician" />
+			<entry key="171" value="Bulletproof" />
+			<entry key="172" value="Competitive" />
+			<entry key="173" value="Strong Jaw" />
+			<entry key="174" value="Refrigerate" />
+			<entry key="175" value="Sweet Veil" />
+			<entry key="176" value="Stance Change" />
+			<entry key="177" value="Gale Wings" />
+			<entry key="178" value="Mega Launcher" />
+			<entry key="179" value="Grass Pelt" />
+			<entry key="180" value="Symbiosis" />
+			<entry key="181" value="Tough Claws" />
+			<entry key="182" value="Pixilate" />
+			<entry key="183" value="Gooey" />
+			<entry key="184" value="Aerilate" />
+			<entry key="185" value="Parental Bond" />
+			<entry key="186" value="Dark Aura" />
+			<entry key="187" value="Fairy Aura" />
+			<entry key="188" value="Aura Break" />
+			<entry key="189" value="Primordial Sea" />
+			<entry key="190" value="Desolate Land" />
+			<entry key="191" value="Delta Stream" />
+			<entry key="192" value="Stamina" />
+			<entry key="193" value="Wimp Out" />
+			<entry key="194" value="Emergency Exit" />
+			<entry key="195" value="Water Compaction" />
+			<entry key="196" value="Merciless" />
+			<entry key="197" value="Shields Down" />
+			<entry key="198" value="Stakeout" />
+			<entry key="199" value="Water Bubble" />
+			<entry key="200" value="Steelworker" />
+			<entry key="201" value="Berserk" />
+			<entry key="202" value="Slush Rush" />
+			<entry key="203" value="Long Reach" />
+			<entry key="204" value="Liquid Voice" />
+			<entry key="205" value="Triage" />
+			<entry key="206" value="Galvanize" />
+			<entry key="207" value="Surge Surfer" />
+			<entry key="208" value="Schooling" />
+			<entry key="209" value="Disguise" />
+			<entry key="210" value="Battle Bond" />
+			<entry key="211" value="Power Construct" />
+			<entry key="212" value="Corrosion" />
+			<entry key="213" value="Comatose" />
+			<entry key="214" value="Queenly Majesty" />
+			<entry key="215" value="Innards Out" />
+			<entry key="216" value="Dancer" />
+			<entry key="217" value="Battery" />
+			<entry key="218" value="Fluffy" />
+			<entry key="219" value="Dazzling" />
+			<entry key="220" value="Soul-Heart" />
+			<entry key="221" value="Tangling Hair" />
+			<entry key="222" value="Receiver" />
+			<entry key="223" value="Power of Alchemy" />
+			<entry key="224" value="Beast Boost" />
+			<entry key="225" value="RKS System" />
+			<entry key="226" value="Electric Surge" />
+			<entry key="227" value="Psychic Surge" />
+			<entry key="228" value="Misty Surge" />
+			<entry key="229" value="Grassy Surge" />
+			<entry key="230" value="Full Metal Body" />
+			<entry key="231" value="Shadow Shield" />
+			<entry key="232" value="Prism Armor" />
+			<entry key="233" value="Neuroforce" />
 		</abilities>
 		<stage_modifiers type="number">
 			<entry key="0x00" value="-6" />

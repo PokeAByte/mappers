@@ -26,7 +26,8 @@ function setValue(path, value) {
 
 // PRNG function used for PK7 decryption (Gen 6/7 CryptArray)
 function prngNext(prngSeed) {
-    const newSeed = (0x41C64E6D * prngSeed + 0x6073) >>> 0;
+    // BigInt: the product needs up to 62 bits, more than a double holds exactly.
+    const newSeed = Number((0x41C64E6Dn * BigInt(prngSeed) + 0x6073n) & 0xFFFFFFFFn);
     const value = (newSeed >>> 16) & 0xFFFF;
     return { newSeed, value };
 }
@@ -101,7 +102,8 @@ function preprocessor() {
 
         // Confirmed party base addresses for USUM (verified via PKHeX LiveHeX)
         const offsets = {
-            player: 0x8CFB26C - 16,
+            // ORAS live party (484-byte slots), found by scanning OR and AS saves
+            player: 0x08CF727C,
             // party_pokemon_live: 0x33F7FA44,
         };
 

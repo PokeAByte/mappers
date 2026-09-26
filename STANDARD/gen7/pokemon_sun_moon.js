@@ -26,7 +26,8 @@ function setValue(path, value) {
 
 // PRNG function used for PK7 decryption (Gen 6/7 CryptArray)
 function prngNext(prngSeed) {
-    const newSeed = (0x41C64E6D * prngSeed + 0x6073) >>> 0;
+    // BigInt: the product needs up to 62 bits, more than a double holds exactly.
+    const newSeed = Number((0x41C64E6Dn * BigInt(prngSeed) + 0x6073n) & 0xFFFFFFFFn);
     const value = (newSeed >>> 16) & 0xFFFF;
     return { newSeed, value };
 }
@@ -64,7 +65,13 @@ const hidden_power_types = {
 };
 
 function getGamestate() {
-    return 'Overworld';
+    try {
+        const species = getValue("battle.opponent_active.species");
+        if (species) {
+            return "Battle";
+        }
+    } catch (e) {}
+    return "Overworld";
 }
 
 function getMetaEnemyState(state, battle_outcomes, enemyBarSyncedHp) {
@@ -84,71 +91,117 @@ function getEncounterRate() {
 }
 
 function getPlayerPartyPosition() {
+    try {
+        return getValue("battle.party_position") || 0;
+    } catch (e) {
+        return 0;
+    }
+}
+
+const SAVE_SCAN_START = 0x330C0000;
+const SAVE_SCAN_SIZE = 0x30000;
+const MONEY_FROM_TID = 0x27F0; // Misc money is +0x27F0 from MyStatus TID
+const ITEMS_FROM_TID = -0xE9C; // Items pouch; medicine is +0xB48 from here (PKHeX SM)
+const MEDICINE_FROM_TID = ITEMS_FROM_TID + 0xB48;
+const MAX_MONEY = 9999999;
+
+function readU32(data, offset) {
+    return (
+        data.get_byte(offset) |
+        (data.get_byte(offset + 1) << 8) |
+        (data.get_byte(offset + 2) << 16) |
+        (data.get_byte(offset + 3) << 24)
+    ) >>> 0;
+}
+
+function isTrainerHeader(data, offset) {
+    const id32 = readU32(data, offset);
+    if (id32 === 0) {
+        return false;
+    }
+    const game = data.get_byte(offset + 4);
+    const gender = data.get_byte(offset + 5);
+    // SM: Sun=30, Moon=31. Allow USUM 32/33 in case this image is shared.
+    if (game < 30 || game > 33 || gender > 1) {
+        return false;
+    }
+    const nameUnit = data.get_byte(offset + 0x38) | (data.get_byte(offset + 0x39) << 8);
+    return nameUnit >= 0x20 && nameUnit <= 0xFF;
+}
+
+function isTrainerBlock(data, offset) {
+    if (!isTrainerHeader(data, offset)) {
+        return false;
+    }
+    const money = readU32(data, offset + MONEY_FROM_TID);
+    return money > 0 && money <= MAX_MONEY;
+}
+
+function findSaveBlock() {
+    try {
+        const data = memory.defaultNamespace.get_bytes(SAVE_SCAN_START, SAVE_SCAN_SIZE);
+        for (let i = 0; i + MONEY_FROM_TID + 4 <= SAVE_SCAN_SIZE; i += 4) {
+            if (isTrainerBlock(data, i)) {
+                return SAVE_SCAN_START + i;
+            }
+        }
+    } catch (e) {}
     return 0;
 }
 
-// Preprocessor runs every loop (every time PokeAByte updates)
-function preprocessor() {
-    variables.reload_addresses = true;
+function saveBlockStillValid(address) {
+    if (!address) {
+        return false;
+    }
+    try {
+        const data = memory.defaultNamespace.get_bytes(address, 0x3A);
+        return isTrainerHeader(data, 0);
+    } catch (e) {
+        return false;
+    }
+}
 
-    const partyStructures = [
-        "player",
-        "party_pokemon_live",
-    ];
+const PARTY_BASE = 0x34195E10;
+const SLOT_SIZE = 484;
+const BLOCK_SIZE = 56;
+const HEADER_SIZE = 8;
+const BLOCK_DATA_END = 0xE8;
+const STATS_END = 0x104;
+const PK7_SIZE = 260;
+const READ_SIZE = 0x174;
+const STATS_SRC = 0x158;
+const STATS_LEN = STATS_END - BLOCK_DATA_END;
 
-    for (let i = 0; i < partyStructures.length; i++) {
-        let user = partyStructures[i];
+function fillEmptyParty() {
+    const empty = new Array(PK7_SIZE).fill(0x00);
+    for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+        try {
+            memory.fill(`player_party_structure_${slotIndex}`, 0x00, empty);
+        } catch (e) {}
+    }
+}
 
-        // Confirmed party base addresses for USUM (verified via PKHeX LiveHeX)
-        const offsets = {
-            player: 0x34195E10,
-            party_pokemon_live: 0x34195E10,
-        };
-
-        // Live party uses 484-byte stride; save buffer uses 260-byte stride
-        const SLOT_SIZE   = user === 'party_pokemon_live' ? 484 : 260;
-        const BLOCK_SIZE  = 56;         // Gen 6/7 block size = 0x38
-        const HEADER_SIZE = 8;          // Unencrypted header (EC + sanity + checksum)
-        const BLOCK_DATA_END = 0xE8;    // 4 blocks × 56 bytes + 8-byte header
-        const STATS_END   = 0x104;      // End of party stats section
-
-        const PK7_SIZE = 260;  // always decrypt into a 260-byte container
-        // Live party stats are at slot offset 0x158 (not 0xE8); read enough bytes to reach them
-        const READ_SIZE = user === 'party_pokemon_live' ? 0x174 : PK7_SIZE;
-        // Offset within the raw slot where the party stats are encrypted
-        const STATS_SRC = user === 'party_pokemon_live' ? 0x158 : 0xE8;
-
-        for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
-            const decryptedData = new Array(PK7_SIZE).fill(0x00);
-            const startingAddress = offsets[user] + (SLOT_SIZE * slotIndex);
-            try {
-                // Read enough bytes: 0x174 for live (stats at 0x158), 260 for save
-                const encryptedData = memory.defaultNamespace.get_bytes(startingAddress, READ_SIZE);
-
-                // Bytes 0–3: Encryption Constant (EC) — used as PRNG seed for all decryption
-                const ec = encryptedData.get_uint32_le();
-
-                // Copy unencrypted header (bytes 0–7: EC, sanity, checksum) verbatim
+function decryptLiveParty() {
+    for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+        const decryptedData = new Array(PK7_SIZE).fill(0x00);
+        const startingAddress = PARTY_BASE + (SLOT_SIZE * slotIndex);
+        try {
+            const encryptedData = memory.defaultNamespace.get_bytes(startingAddress, READ_SIZE);
+            const ec = encryptedData.get_uint32_le();
+            if (ec !== 0) {
                 for (let j = 0; j < HEADER_SIZE; j++) {
                     decryptedData[j] = encryptedData.get_byte(j);
                 }
 
-                // ── Step 1: Decrypt block data (bytes 0x08–0xE7) using EC as PRNG seed ──
-                // Mirrors PKHeX CryptArray(data[8..232], ec)
                 let prngSeed = ec;
                 for (let j = HEADER_SIZE; j < BLOCK_DATA_END; j += 2) {
                     const prngResult = prngNext(prngSeed);
-                    const key = prngResult.value;
-                    // Use BigInt to keep full 32-bit precision for the next seed
-                    prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
-                    const word = encryptedData.get_uint16_le(j) ^ key;
-                    decryptedData[j]     = word & 0xFF;
+                    prngSeed = prngResult.newSeed;
+                    const word = encryptedData.get_uint16_le(j) ^ prngResult.value;
+                    decryptedData[j] = word & 0xFF;
                     decryptedData[j + 1] = (word >> 8) & 0xFF;
                 }
 
-                // ── Step 2: Unshuffle the four 56-byte blocks ──
-                // sv = (EC >> 13) & 31 selects the shuffle pattern
-                // Mirrors PKHeX ShuffleArray(ekm, sv, 56)
                 const sv = (ec >> 13) & 31;
                 const dataCopy = decryptedData.slice(HEADER_SIZE, BLOCK_DATA_END);
                 for (let b = 0; b < 4; b++) {
@@ -160,27 +213,105 @@ function preprocessor() {
                     );
                 }
 
-                // ── Step 3: Decrypt party stats with a fresh EC seed ──
-                // Save format: stats at 0xE8–0x103 in the read buffer, output at 0xE8
-                // Live format: stats at 0x158–0x173 in the read buffer, output at 0xE8
                 prngSeed = ec;
-                const STATS_LEN = STATS_END - BLOCK_DATA_END; // 28 bytes
                 for (let k = 0; k < STATS_LEN; k += 2) {
                     const prngResult = prngNext(prngSeed);
-                    const key = prngResult.value;
-                    prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
-                    const word = encryptedData.get_uint16_le(STATS_SRC + k) ^ key;
-                    decryptedData[BLOCK_DATA_END + k]     = word & 0xFF;
+                    prngSeed = prngResult.newSeed;
+                    const word = encryptedData.get_uint16_le(STATS_SRC + k) ^ prngResult.value;
+                    decryptedData[BLOCK_DATA_END + k] = word & 0xFF;
                     decryptedData[BLOCK_DATA_END + k + 1] = (word >> 8) & 0xFF;
                 }
-            } catch (e) {
-                // Slot unreadable or empty — container filled with zeros above
             }
-
-            // Always write the container (zeros for empty/failed slots)
-            memory.fill(`${user}_party_structure_${slotIndex}`, 0x00, decryptedData);
-        }
+        } catch (e) {}
+        memory.fill(`player_party_structure_${slotIndex}`, 0x00, decryptedData);
     }
 }
 
-export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor };
+function bindSaveDerived(found) {
+    variables.save_block = found;
+    variables.heap_money = found + MONEY_FROM_TID;
+    variables.heap_items = found + ITEMS_FROM_TID;
+    variables.heap_medicine = found + MEDICINE_FROM_TID;
+}
+
+function resolveSaveBlock() {
+    const previous = variables.save_block | 0;
+    if (!previous) {
+        bindSaveDerived(0x330D67D0);
+    }
+
+    if (!saveBlockStillValid(variables.save_block)) {
+        const found = findSaveBlock();
+        if (found) {
+            bindSaveDerived(found);
+        }
+    } else if (!variables.heap_items || !variables.heap_medicine) {
+        bindSaveDerived(variables.save_block);
+    }
+
+    const current = variables.save_block | 0;
+    const money = variables.heap_money | 0;
+    const items = variables.heap_items | 0;
+    variables.reload_addresses = !previous || previous !== current || !money || !items;
+}
+
+const BATTLE_PLAYER = 0x30002774;
+const BATTLE_SLOT = 0x330;
+const BATTLE_ACTIVE_PTR = 0x30000404;
+const BATTLE_OBJ_DELTA = 0xC;
+
+function findPlayerFieldIndex() {
+    try {
+        const ptr = memory.defaultNamespace.get_bytes(BATTLE_ACTIVE_PTR, 4).get_uint32_le();
+        const rel = (ptr - (BATTLE_PLAYER - BATTLE_OBJ_DELTA)) >>> 0;
+        if (rel % BATTLE_SLOT === 0) {
+            const idx = rel / BATTLE_SLOT;
+            if (idx >= 0 && idx <= 5) {
+                return idx;
+            }
+        }
+    } catch (e) {}
+    return 0;
+}
+
+function resolvePlayerActive() {
+    const idx = findPlayerFieldIndex();
+    const addr = BATTLE_PLAYER + (idx * BATTLE_SLOT);
+    try { setValue("battle.party_position", idx); } catch (e) {}
+    if (variables.player_active !== addr) {
+        variables.player_active = addr;
+        variables.reload_addresses = true;
+    }
+}
+
+function preprocessor() {
+    try {
+        decryptLiveParty();
+    } catch (e) {
+        fillEmptyParty();
+    }
+    try {
+        resolveSaveBlock();
+    } catch (e) {
+        if (!variables.save_block) {
+            bindSaveDerived(0x330D67D0);
+        }
+        variables.reload_addresses = false;
+    }
+    resolvePlayerActive();
+}
+
+function postprocessor() {
+    try {
+        const species = getValue("battle.opponent_active.species");
+        const inBattle = !!species;
+        setValue("battle.in_battle", inBattle);
+        setValue("meta.state", inBattle ? "Battle" : "Overworld");
+        setValue("meta.state_enemy", inBattle ? "Battle" : null);
+    } catch (e) {
+        try { setValue("battle.in_battle", false); } catch (err) {}
+        try { setValue("meta.state", "Overworld"); } catch (err) {}
+    }
+}
+
+export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor, postprocessor };

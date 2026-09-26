@@ -6,8 +6,8 @@
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
 	<memory>
-		<!-- Player party: 6 slots × 260 bytes (PK7 SIZE_6PARTY = 0x104) -->
-		<!-- JS preprocessor reads this range, decrypts each slot, and writes to named containers -->
+		<!-- Live party: 6 slots × 484 bytes at 0x33F7FA44, stats at +0x158; the JS preprocessor decrypts it into named containers -->
+		<!-- 0x330128E4 is the 260-byte save-buffer party copy (no live battle stats) -->
 		<read start="0x330128E4" end="0x33012EFC" />
 		<read start="0x33F7FA44" end="0x33F8059C" />
 		<!-- Battle structs: player active at 0x30002774, opponent at 0x30009928 (stride 0x69E8) -->
@@ -402,22 +402,22 @@
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
-				<!-- <class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" /> -->
-				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
-				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
-				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
-				<!-- <class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" /> -->
+				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
+				<class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" />
+				<class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" />
+				<class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" />
+				<class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" />
 			</team>
 		</player>
 		<test>
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_0" />
-				<!-- <class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" /> -->
-				<!-- <class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" /> -->
-				<!-- <class name="3" type="party_pokemon" var:memoryContainer="player_party_structure_3" /> -->
-				<!-- <class name="4" type="party_pokemon" var:memoryContainer="player_party_structure_4" /> -->
-				<!-- <class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" /> -->
+				<class name="1" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_1" />
+				<class name="2" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_2" />
+				<class name="3" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_3" />
+				<class name="4" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_4" />
+				<class name="5" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_5" />
 			</team>
 		</test>
 		<battle>

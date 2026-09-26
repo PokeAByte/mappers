@@ -26,7 +26,8 @@ function setValue(path, value) {
 
 // PRNG function used for PK7 decryption (Gen 6/7 CryptArray)
 function prngNext(prngSeed) {
-    const newSeed = (0x41C64E6D * prngSeed + 0x6073) >>> 0;
+    // BigInt: the product needs up to 62 bits, more than a double holds exactly.
+    const newSeed = Number((0x41C64E6Dn * BigInt(prngSeed) + 0x6073n) & 0xFFFFFFFFn);
     const value = (newSeed >>> 16) & 0xFFFF;
     return { newSeed, value };
 }
@@ -99,24 +100,23 @@ function preprocessor() {
     for (let i = 0; i < partyStructures.length; i++) {
         let user = partyStructures[i];
 
-        // Confirmed party base addresses for USUM (verified via PKHeX LiveHeX)
+        // Live party at 0x33F7FA44 (6 × 484-byte slots). First 0xE8 bytes are the
+        // encrypted PK7; battle stats live at +0x158, not the save-format +0xE8.
+        // 0x330128E4 is the 260-byte save-buffer copy and does not have live stats.
         const offsets = {
-            player: 0x330128E4,
+            player: 0x33F7FA44,
             party_pokemon_live: 0x33F7FA44,
         };
 
-        // Live party uses 484-byte stride; save buffer uses 260-byte stride
-        const SLOT_SIZE   = user === 'party_pokemon_live' ? 484 : 260;
-        const BLOCK_SIZE  = 56;         // Gen 6/7 block size = 0x38
-        const HEADER_SIZE = 8;          // Unencrypted header (EC + sanity + checksum)
-        const BLOCK_DATA_END = 0xE8;    // 4 blocks × 56 bytes + 8-byte header
-        const STATS_END   = 0x104;      // End of party stats section
+        const SLOT_SIZE      = 484;    // live party slot stride
+        const BLOCK_SIZE     = 56;     // Gen 6/7 block size = 0x38
+        const HEADER_SIZE    = 8;      // Unencrypted header (EC + sanity + checksum)
+        const BLOCK_DATA_END = 0xE8;   // 4 blocks × 56 bytes + 8-byte header
+        const STATS_END      = 0x104;  // End of party stats section
 
-        const PK7_SIZE = 260;  // always decrypt into a 260-byte container
-        // Live party stats are at slot offset 0x158 (not 0xE8); read enough bytes to reach them
-        const READ_SIZE = user === 'party_pokemon_live' ? 0x174 : PK7_SIZE;
-        // Offset within the raw slot where the party stats are encrypted
-        const STATS_SRC = user === 'party_pokemon_live' ? 0x158 : 0xE8;
+        const PK7_SIZE  = 260;   // always decrypt into a 260-byte container
+        const READ_SIZE = 0x174; // must reach live party stats block at 0x158
+        const STATS_SRC = 0x158; // live party stats offset within slot
 
         for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
             const decryptedData = new Array(PK7_SIZE).fill(0x00);
@@ -139,8 +139,7 @@ function preprocessor() {
                 for (let j = HEADER_SIZE; j < BLOCK_DATA_END; j += 2) {
                     const prngResult = prngNext(prngSeed);
                     const key = prngResult.value;
-                    // Use BigInt to keep full 32-bit precision for the next seed
-                    prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+                    prngSeed = prngResult.newSeed;
                     const word = encryptedData.get_uint16_le(j) ^ key;
                     decryptedData[j]     = word & 0xFF;
                     decryptedData[j + 1] = (word >> 8) & 0xFF;
@@ -168,7 +167,7 @@ function preprocessor() {
                 for (let k = 0; k < STATS_LEN; k += 2) {
                     const prngResult = prngNext(prngSeed);
                     const key = prngResult.value;
-                    prngSeed = Number((0x41c64e6dn * BigInt(prngSeed) + 0x6073n) & 0xffffffffn);
+                    prngSeed = prngResult.newSeed;
                     const word = encryptedData.get_uint16_le(STATS_SRC + k) ^ key;
                     decryptedData[BLOCK_DATA_END + k]     = word & 0xFF;
                     decryptedData[BLOCK_DATA_END + k + 1] = (word >> 8) & 0xFF;

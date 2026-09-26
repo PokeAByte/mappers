@@ -6,12 +6,13 @@
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
 	<memory>
-		<!-- Player party: 6 slots × 260 bytes (PK7 SIZE_6PARTY = 0x104) -->
-		<!-- JS preprocessor reads this range, decrypts each slot, and writes to named containers -->
-		<read start="0x330128E4" end="0x33012EFC" />
-		<read start="0x33F7FA44" end="0x33F8059C" />
-		<!-- Battle structs: player active at 0x30002774, opponent at 0x30009928 (stride 0x69E8) -->
-		<!-- Range covers both slots plus all confirmed field offsets (last: opponent +0x21D = 0x30009B45) -->
+		<!-- ORAS keeps its data in the process heap (0x08000000); 0x30000000+ is USUM's linear heap and is not mapped in ORAS. -->
+		<!-- Addresses found by scanning OR and AS saves for checksum-valid PK6s (identical in both games). -->
+		<!-- Trainer block (TID 0x08C7D350, SID +2, name +0x48) + save-buffer party: 6 slots × 260 bytes at 0x08C7D4CC -->
+		<read start="0x08C7D350" end="0x08C7DB00" />
+		<!-- Live party: 6 slots × 484 bytes at 0x08CF727C, stats at +0x158; the JS preprocessor decrypts it into named containers -->
+		<read start="0x08CF727C" end="0x08CF7D80" />
+		<!-- Battle structs: still USUM's addresses (0x30002774 / 0x30009928), not mapped in ORAS, so this reads as zeros until the ORAS battle struct is found -->
 		<read start="0x30002774" end="0x30009B50" />
 	</memory>
 
@@ -399,9 +400,9 @@
 
 	<properties>
 		<player>
-			<property name="name" type="string" address="0x8C81388 - 16" length="14" size="2" />
-			<property name="tid"  type="int" address="0x8C81340 - 16" length="2" />
-			<property name="sid"  type="int" address="0x8C81342 - 16" length="2" />
+			<property name="name" type="string" address="0x08C7D398" length="14" size="2" />
+			<property name="tid"  type="int" address="0x08C7D350" length="2" />
+			<property name="sid"  type="int" address="0x08C7D352" length="2" />
 			<team>
 				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
