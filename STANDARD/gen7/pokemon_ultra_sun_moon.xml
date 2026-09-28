@@ -12,6 +12,8 @@
 		<read start="0x33F7FA44" end="0x33F81288" />
 		<!-- Battle flag 0x30000400, player 0x30002774, enemy 0x30004DB4 stride 0x330 -->
 		<read start="0x30000000" end="0x30040000" />
+		<!-- Options-menu flag (0x09 closed, 0x0A open); not ConfigSave7 -->
+		<read start="0x301025AA" end="0x301025AB" />
 		<!-- Battle object (pointer 0x32581688 during fights) -->
 		<read start="0x32580000" end="0x32584000" />
 		<!-- Zone id -->
@@ -20,7 +22,7 @@
 
 	<classes>
 		<!--
-			PK7 decrypted layout (all offsets from byte 0 of the 260-byte decrypted struct):
+			PK6/PK7 decrypted layout (offsets from byte 0 of the 260-byte decrypted struct; PKHeX PK6.cs / PK7.cs):
 
 			Header (unencrypted):
 			  0x00 (0)  : Encryption Constant / EC  (u32 LE)
@@ -33,9 +35,9 @@
 			  0x0C (12) : TID                       (u16)
 			  0x0E (14) : SID                       (u16)
 			  0x10 (16) : EXP                       (u32)
-			  0x14 (20) : Ability index             (u8)
-			  0x15 (21) : Ability number            (u8)
-			  0x16 (22) : Mark Value                (u8)
+			  0x14 (20) : Ability                   (u8)
+			  0x15 (21) : Ability number            (u8, bits 0–2)
+			  0x18 (24) : PID                       (u32)
 			  0x1C (28) : Nature                    (u8, 0–24)
 			  0x1E (30) : EV_HP                     (u8)
 			  0x1F (31) : EV_ATK                    (u8)
@@ -43,29 +45,26 @@
 			  0x21 (33) : EV_SPE                    (u8)
 			  0x22 (34) : EV_SPA                    (u8)
 			  0x23 (35) : EV_SPD                    (u8)
-			  0x24 (36) : Pokerus                   (u8)
-			  0x28 (40) : OT Friendship             (u8)
-			  0x30 (48) : Move 1                    (u16)
-			  0x32 (50) : Move 2                    (u16)
-			  0x34 (52) : Move 3                    (u16)
-			  0x36 (54) : Move 4                    (u16)
-			  0x38 (56) : Move 1 PP                 (u8)
-			  0x39 (57) : Move 2 PP                 (u8)
-			  0x3A (58) : Move 3 PP                 (u8)
-			  0x3B (59) : Move 4 PP                 (u8)
-			  0x3C (60) : Move 1 PP-Up              (u8)
-			  0x3D (61) : Move 2 PP-Up              (u8)
-			  0x3E (62) : Move 3 PP-Up              (u8)
-			  0x3F (63) : Move 4 PP-Up              (u8)
+			  0x24 (36) : Contest stats             (6 × u8)
+			  0x2B (43) : Pokerus                   (u8)
 
 			Block B (0x40–0x77):
-			  0x40 (64) : IVs packed                (u32, bits 0–4 HP, 5–9 ATK, 10–14 DEF, 15–19 SPE, 20–24 SPA, 25–29 SPD, 30 IsEgg, 31 IsNicknamed)
-			  0x58 (88) : Nickname                  (13 × u16 UCS-2, 26 bytes)
+			  0x40 (64) : Nickname                  (13 × u16 UCS-2, 26 bytes)
+			  0x5A (90) : Move 1–4                  (4 × u16)
+			  0x62 (98) : Move 1–4 PP               (4 × u8)
+			  0x66 (102): Move 1–4 PP-Up            (4 × u8)
+			  0x6A (106): Relearn move 1–4          (4 × u16)
+			  0x74 (116): IVs packed                (u32, bits 0–4 HP, 5–9 ATK, 10–14 DEF, 15–19 SPE, 20–24 SPA, 25–29 SPD, 30 IsEgg, 31 IsNicknamed)
 
-			Block C (0x78–0xB7):
-			  0x78 (120): OT Name                   (13 × u16 UCS-2, 26 bytes)
+			Block C (0x78–0xAF):
+			  0x93 (147): Current handler           (u8, 0 = OT)
+			  0xA2 (162): HT Friendship             (u8)
 
-			Party stats (0xE8–0x103, after decrypt with fresh EC seed):
+			Block D (0xB0–0xE7):
+			  0xB0 (176): OT Name                   (13 × u16 UCS-2, 26 bytes)
+			  0xCA (202): OT Friendship             (u8)
+
+			Party stats (0xE8–0x103, after decrypt with fresh EC seed; +0x158 in the 484-byte live slot):
 			  0xEC (236): Level                     (u8)
 			  0xF0 (240): Current HP                (u16)
 			  0xF2 (242): Max HP                    (u16)
@@ -341,7 +340,7 @@
 
 		<!--
 		battle_pokemon: Confirmed USUM battle struct layout (unencrypted, live-updating)
-		Base addresses: player = 0x30002774, opponent = 0x30009928
+		Base addresses: player = 0x30002774, opponent = 0x30004DB4
 
 		Header section (base + 0x000):
 		  +0x000 (0)  : species   u16   Confirmed: 725 (Litten = 0x02D5)
@@ -370,12 +369,15 @@
 		  Confirmed: Scratch(10)/35pp, Ember(52)/25pp w/ 11 remaining, Growl(45)/40pp w/ 37 remaining
 	-->
 	<battle_pokemon>
-		<property name="species"  address="{address} + 0"   type="int"  length="2" reference="species" />
-		<property name="hp_max"   address="{address} + 2"   type="int"  length="2" />
-		<property name="hp"       address="{address} + 4"   type="int"  length="2" />
-		<property name="ability"  address="{address} + 10"  type="int"  length="2" reference="abilities" />
-		<property name="level"    address="{address} + 12"  type="int"  length="2" />
+		<property name="species"    address="{address} + 0"   type="int"  length="2" reference="species" />
+		<property name="hp_max"     address="{address} + 2"   type="int"  length="2" />
+		<property name="hp"         address="{address} + 4"   type="int"  length="2" />
+		<property name="held_item"  address="{address} + 6"   type="int"  length="2" reference="items" />
+		<property name="ability"    address="{address} + 10"  type="int"  length="2" reference="abilities" />
+		<property name="level"      address="{address} + 12"  type="int"  length="2" />
 		<stats>
+			<property name="hp"              address="{address} + 4"   type="int" length="2" />
+			<property name="hp_max"          address="{address} + 2"   type="int" length="2" />
 			<property name="attack"          address="{address} + 462" type="int" length="2" />
 			<property name="defense"         address="{address} + 464" type="int" length="2" />
 			<property name="special_attack"  address="{address} + 466" type="int" length="2" />
@@ -1415,6 +1417,12 @@
 			<property name="map_index" type="int" address="0x303A4568" length="4" />
 			<property name="map_name"  type="string" />
 		</overworld>
+		<options>
+			<property name="menu_open"    type="bool" address="0" memoryContainer="options_menu" />
+			<property name="text_speed"   type="int"  address="0" memoryContainer="options_config" reference="text_speeds" />
+			<property name="animations"   type="bool" address="1" memoryContainer="options_config" />
+			<property name="battle_style" type="bool" address="2" memoryContainer="options_config" />
+		</options>
 		<game_time>
 			<property name="hours"   type="int" address="0x33F8127C" length="2" />
 			<property name="minutes" type="int" address="0x33F8127E" />
@@ -8899,6 +8907,11 @@
 			<entry key="0x40" value="Paralyzed" />
 			<entry key="0x80" value="Badly Poisoned" />
 		</status_conditions>
+		<text_speeds>
+			<entry key="0" value="Slow" />
+			<entry key="1" value="Mid" />
+			<entry key="2" value="Fast" />
+		</text_speeds>
 		<weather>
             <entry key="0" />
             <entry key="1"   value="Rain" />

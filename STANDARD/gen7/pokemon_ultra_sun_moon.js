@@ -44,6 +44,10 @@ const SAVE_SCAN_SIZE = 0x180000;
 const MONEY_FROM_TID = 0x29F8;
 const ITEMS_FROM_TID = -0xEE4;
 const MAX_MONEY = 9999999;
+const CONFIG_FROM_TID = 0x2C44;
+const OPTIONS_MENU = 0x301025AA;
+const OPTIONS_MENU_CLOSED = 0x09;
+const OPTIONS_MENU_OPEN = 0x0A;
 
 const PARTY_BASE = 0x33F7FA44;
 const SLOT_SIZE = 484;
@@ -365,6 +369,53 @@ function resolveOverworld() {
     } catch (e) {}
 }
 
+function resolveOptionsMenu() {
+    try {
+        const v = readU8Addr(OPTIONS_MENU);
+        if (v === OPTIONS_MENU_OPEN) {
+            variables.options_menu_open = 1;
+        } else if (v === OPTIONS_MENU_CLOSED) {
+            variables.options_menu_open = 0;
+        }
+        if (variables.options_menu_open === undefined) {
+            return;
+        }
+        memory.fill("options_menu", 0x00, [variables.options_menu_open]);
+    } catch (e) {}
+}
+
+function validConfigSave(v) {
+    if ((v & 3) > 2) {
+        return false;
+    }
+    if (((v >>> 8) & 0x1F) > 14) {
+        return false;
+    }
+    if (((v >>> 13) & 3) > 2) {
+        return false;
+    }
+    return (v >>> 19) === 0 && v !== 0;
+}
+
+function resolveOptions() {
+    try {
+        const save = variables.save_block | 0;
+        if (!save) {
+            return;
+        }
+        const v = readU32Addr(save + CONFIG_FROM_TID) >>> 0;
+        if (!validConfigSave(v)) {
+            return;
+        }
+        const bits = v & 0xF;
+        memory.fill("options_config", 0x00, [
+            bits & 3,
+            ((bits >> 2) & 1) === 0 ? 1 : 0,
+            (bits >> 3) & 1,
+        ]);
+    } catch (e) {}
+}
+
 function preprocessor() {
     if (!variables.player_active) {
         variables.player_active = BATTLE_PLAYER;
@@ -385,6 +436,10 @@ function preprocessor() {
         }
         variables.reload_addresses = false;
     }
+    try {
+        resolveOptionsMenu();
+        resolveOptions();
+    } catch (e) {}
     resolveActiveBattlers();
 }
 

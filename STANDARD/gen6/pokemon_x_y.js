@@ -57,7 +57,10 @@ const BATTLE_SLOT = 0x244;
 const BATTLE_DELTA = 0xC;
 const ZONE_LOC = 0x08CE2840;
 const ZONE_FALLBACK = 0x08C6709E;
-const CONFIG = 0x080440C4;
+const OPTIONS_MENU = 0x080440C4;
+const OPTIONS_MENU_CLOSED = 0x09;
+const OPTIONS_MENU_OPEN = 0x0A;
+const CONFIG_SAVE = 0x08C7B6C4;
 
 // Location name per zd entry (Kalos zonedata table).
 const ZONE_NAMES = [
@@ -287,32 +290,46 @@ function resolveOverworld() {
     } catch (e) {}
 }
 
-function validConfig(v) {
-    return (v >>> 4) === 0 && (v & 3) <= 2;
+function resolveOptionsMenu() {
+    try {
+        const v = readU32Addr(OPTIONS_MENU) >>> 0;
+        if (v === OPTIONS_MENU_OPEN) {
+            variables.options_menu_open = 1;
+        } else if (v === OPTIONS_MENU_CLOSED) {
+            variables.options_menu_open = 0;
+        }
+        if (variables.options_menu_open === undefined) {
+            return;
+        }
+        memory.fill("options_menu", 0x00, [variables.options_menu_open]);
+    } catch (e) {}
+}
+
+function validConfigSave(v) {
+    if ((v & 3) > 2) {
+        return false;
+    }
+    if (((v >>> 8) & 0x1F) > 14) {
+        return false;
+    }
+    if (((v >>> 13) & 3) > 2) {
+        return false;
+    }
+    return (v >>> 19) === 0 && v !== 0;
 }
 
 function resolveOptions() {
     try {
-        const v = readU32Addr(CONFIG);
-        if (!validConfig(v)) {
+        const v = readU32Addr(CONFIG_SAVE) >>> 0;
+        if (!validConfigSave(v)) {
             return;
         }
-        const prev = variables.config_word;
-        if (prev !== undefined && prev !== v) {
-            const changed = (prev ^ v) & 0xF;
-            // Accept a single field change (speed / anim / style). Bag menus
-            // overwrite this word with unrelated nibbles.
-            const speed = (changed & 3) !== 0;
-            const anim = (changed & 4) !== 0;
-            const style = (changed & 8) !== 0;
-            if ((speed + anim + style) !== 1) {
-                return;
-            }
-        }
-        variables.config_word = v;
-        safeSet("options.text_speed", v & 3);
-        safeSet("options.animations", ((v >> 2) & 1) === 0);
-        safeSet("options.battle_style", ((v >> 3) & 1) === 1);
+        const bits = v & 0xF;
+        memory.fill("options_config", 0x00, [
+            bits & 3,
+            ((bits >> 2) & 1) === 0 ? 1 : 0,
+            (bits >> 3) & 1,
+        ]);
     } catch (e) {}
 }
 
@@ -324,6 +341,10 @@ function preprocessor() {
         variables.opponent_active = 0x081FB000 + BATTLE_DELTA + BATTLE_SLOT;
     }
     variables.reload_addresses = true;
+    try {
+        resolveOptionsMenu();
+        resolveOptions();
+    } catch (e) {}
     try {
         decryptLiveParty();
     } catch (e) {
@@ -338,7 +359,6 @@ function postprocessor() {
     } catch (e) {}
     resolveBattle();
     resolveOverworld();
-    resolveOptions();
 }
 
 export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor, postprocessor };
