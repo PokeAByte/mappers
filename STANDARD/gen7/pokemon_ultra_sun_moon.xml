@@ -6,13 +6,16 @@
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
 	<memory>
-		<!-- Live party: 6 slots × 484 bytes at 0x33F7FA44, stats at +0x158; the JS preprocessor decrypts it into named containers -->
-		<!-- 0x330128E4 is the 260-byte save-buffer party copy (no live battle stats) -->
-		<read start="0x330128E4" end="0x33012EFC" />
-		<read start="0x33F7FA44" end="0x33F8059C" />
-		<!-- Battle structs: player active at 0x30002774, opponent at 0x30009928 (stride 0x69E8) -->
-		<!-- Range covers both slots plus all confirmed field offsets (last: opponent +0x21D = 0x30009B45) -->
-		<read start="0x30002774" end="0x30009B50" />
+		<!-- Linear-heap save image. JS finds MyStatus (game 32/33). -->
+		<read start="0x33000000" end="0x33180000" />
+		<!-- Live party: 6 × 484 at 0x33F7FA44; play time at 0x33F8127C -->
+		<read start="0x33F7FA44" end="0x33F81288" />
+		<!-- Battle flag 0x30000400, player 0x30002774, enemy 0x30004DB4 stride 0x330 -->
+		<read start="0x30000000" end="0x30040000" />
+		<!-- Battle object (pointer 0x32581688 during fights) -->
+		<read start="0x32580000" end="0x32584000" />
+		<!-- Zone id -->
+		<read start="0x303A4568" end="0x303A456C" />
 	</memory>
 
 	<classes>
@@ -81,8 +84,10 @@
 			<property name="ability"    type="int"    address="20"  memoryContainer="{memoryContainer}" reference="abilities" />
 			<property name="nature"     type="int"    address="28"  memoryContainer="{memoryContainer}" reference="natures" />
 			<property name="held_item"  type="int"    address="10"  memoryContainer="{memoryContainer}" length="2" reference="items" />
-			<property name="friendship" type="int"    address="40"  memoryContainer="{memoryContainer}" />
-			<property name="pokerus"    type="int"    address="36"  memoryContainer="{memoryContainer}" />
+			<property name="friendship" type="int"    address="202" memoryContainer="{memoryContainer}" />
+			<property name="pokerus"    type="int"    address="43"  memoryContainer="{memoryContainer}" />
+			<property name="gender"     type="bool"   address="29"  memoryContainer="{memoryContainer}" bits="1" />
+			<property name="status_condition" type="int" address="232" memoryContainer="{memoryContainer}" length="4" reference="status_conditions" />
 			<!-- Block B: Nickname at 0x40 (24 bytes = 12 UTF-16 chars) -->
 			<property name="nickname"   type="string" address="64"  memoryContainer="{memoryContainer}" length="24" size="2" />
 			<!-- Block D: OT Name at 0xB0 (24 bytes = 12 UTF-16 chars) -->
@@ -91,13 +96,12 @@
 				<property name="power" type="int" />
 				<property name="type"  type="string" />
 			</hidden_power>
-			<!-- Gen 7: moves, PP, and PP-Ups are stored separately in Block A -->
-			<!-- <moves>
-				<class name="0" type="pokemon_moves" var:moveNumberOffset="48" var:ppOffset="56" var:ppUpOffset="60" memoryContainer="{memoryContainer}" />
-				<class name="1" type="pokemon_moves" var:moveNumberOffset="50" var:ppOffset="57" var:ppUpOffset="61" memoryContainer="{memoryContainer}" />
-				<class name="2" type="pokemon_moves" var:moveNumberOffset="52" var:ppOffset="58" var:ppUpOffset="62" memoryContainer="{memoryContainer}" />
-				<class name="3" type="pokemon_moves" var:moveNumberOffset="54" var:ppOffset="59" var:ppUpOffset="63" memoryContainer="{memoryContainer}" />
-			</moves> -->
+			<moves>
+				<class name="0" type="pokemon_moves" var:moveNumberOffset="90" var:ppOffset="98"  var:ppUpOffset="102" memoryContainer="{memoryContainer}" />
+				<class name="1" type="pokemon_moves" var:moveNumberOffset="92" var:ppOffset="99"  var:ppUpOffset="103" memoryContainer="{memoryContainer}" />
+				<class name="2" type="pokemon_moves" var:moveNumberOffset="94" var:ppOffset="100" var:ppUpOffset="104" memoryContainer="{memoryContainer}" />
+				<class name="3" type="pokemon_moves" var:moveNumberOffset="96" var:ppOffset="101" var:ppUpOffset="105" memoryContainer="{memoryContainer}" />
+			</moves>
 			<!-- Party stats (0xE8+) — valid once the game fills the battle stat section -->
 			<property name="level" type="int" address="236" memoryContainer="{memoryContainer}" />
 			<stats>
@@ -127,14 +131,40 @@
 				<property name="special_defense" type="int" address="35" memoryContainer="{memoryContainer}" />
 			</evs>
 			<flags>
-				<property name="is_egg"       address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="30"/>
-				<property name="is_nicknamed" address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="31"/>
+				<property name="is_egg"           address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="30"/>
+				<property name="is_nicknamed"     address="116" memoryContainer="{memoryContainer}" type="bool" length="4" bits="31"/>
+				<property name="fateful_encounter" address="29" memoryContainer="{memoryContainer}" type="bool" bits="0"/>
+				<property name="alternate_form"   address="29"  memoryContainer="{memoryContainer}" type="int"  bits="2-7"/>
 			</flags>
 			<internals>
-				<property name="personality_value" address="0"  memoryContainer="{memoryContainer}" type="uint" length="4" />
-				<property name="checksum"          address="6"  memoryContainer="{memoryContainer}" type="uint" length="2" />
-				<property name="secret_id"         address="14" memoryContainer="{memoryContainer}" type="int"  length="2" />
+				<property name="encryption_constant" address="0"  memoryContainer="{memoryContainer}" type="uint" length="4" />
+				<property name="personality_value"   address="24" memoryContainer="{memoryContainer}" type="uint" length="4" />
+				<property name="checksum"            address="6"  memoryContainer="{memoryContainer}" type="uint" length="2" />
+				<property name="secret_id"           address="14" memoryContainer="{memoryContainer}" type="int"  length="2" />
+				<property name="ability_number"      address="21" memoryContainer="{memoryContainer}" type="int"  bits="0-2" />
+				<property name="language"            address="227" memoryContainer="{memoryContainer}" type="int" />
+				<property name="origin_game"         address="223" memoryContainer="{memoryContainer}" type="int" />
 			</internals>
+			<misc>
+				<property name="markings" type="int" address="22"  memoryContainer="{memoryContainer}" />
+				<property name="sheen"    type="int" address="41"  memoryContainer="{memoryContainer}" />
+				<met_info>
+					<property name="date_egg_received" type="int"  address="209" memoryContainer="{memoryContainer}" length="3" />
+					<property name="date_met"          type="int"  address="212" memoryContainer="{memoryContainer}" length="3" />
+					<property name="egg_location"      type="int"  address="216" memoryContainer="{memoryContainer}" length="2" />
+					<property name="met_location"      type="int"  address="218" memoryContainer="{memoryContainer}" length="2" />
+					<property name="pokeball"          type="int"  address="220" memoryContainer="{memoryContainer}" />
+					<property name="met_level"         type="int"  address="221" memoryContainer="{memoryContainer}" bits="0-6" />
+					<property name="female_ot_gender"  type="bool" address="221" memoryContainer="{memoryContainer}" bits="7" />
+				</met_info>
+				<contest>
+					<property name="contest_cool"   type="int" address="36" memoryContainer="{memoryContainer}" />
+					<property name="contest_beauty" type="int" address="37" memoryContainer="{memoryContainer}" />
+					<property name="contest_cute"   type="int" address="38" memoryContainer="{memoryContainer}" />
+					<property name="contest_smart"  type="int" address="39" memoryContainer="{memoryContainer}" />
+					<property name="contest_tough"  type="int" address="40" memoryContainer="{memoryContainer}" />
+				</contest>
+			</misc>
 		</party_pokemon>
 		<player_active_pokemon>
 			<property name="species"    type="int" />
@@ -240,10 +270,10 @@
         </active_pokemon_move>
 
 		<pokemon_moves>
-			<!-- Gen 7: PP and PP-Up stored as separate bytes, not packed -->
-			<property name="move"  type="int" address="{moveNumberOffset}" reference="moves" length="2" />
-			<property name="pp"    type="int" address="{ppOffset}" />
-			<property name="pp_up" type="int" address="{ppUpOffset}" />
+			<!-- PK6/PK7: move u16, PP u8, PP-Up u8; all in the decrypted container -->
+			<property name="move"  type="int" address="{moveNumberOffset}" memoryContainer="{memoryContainer}" reference="moves" length="2" />
+			<property name="pp"    type="int" address="{ppOffset}"         memoryContainer="{memoryContainer}" />
+			<property name="pp_up" type="int" address="{ppUpOffset}"       memoryContainer="{memoryContainer}" />
 		</pokemon_moves>
 
 		<battle_move>
@@ -384,8 +414,9 @@
 	</battle_pokemon>
 
 	<player_item>
-            <property name="item"     address="{address}" type="int" length="2" reference="items" />
-            <property name="quantity" address="{address} + 2" type="int" length="2" />
+            <!-- Gen 7 pouch record: u32 LE, bits 0–9 item id, bits 10–19 quantity -->
+            <property name="item"     address="{address}" type="uint" length="4" after-read-value-expression="x &amp; 0x3FF" reference="items" />
+            <property name="quantity" address="{address}" type="uint" length="4" after-read-value-expression="(x >> 10) &amp; 0x3FF" />
         </player_item>
 
 		<wild_encounter>
@@ -399,8 +430,14 @@
 
 	<properties>
 		<player>
+			<property name="name" type="string" address="{save_block} + 0x38" length="26" size="2" />
+			<property name="tid" type="uint" address="{save_block}" length="4" after-read-value-expression="x % 1000000" />
+			<property name="tid16" type="int" address="{save_block}" length="2" />
+			<property name="sid"  type="int" address="{save_block} + 2" length="2" />
+			<property name="gender" type="int" address="{save_block} + 5" />
+			<property name="player_id" type="int" address="{save_block}" length="2" />
+			<property name="team_count" type="int" />
 			<team>
-				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
 				<class name="0" type="party_pokemon" var:memoryContainer="player_party_structure_0" />
 				<class name="1" type="party_pokemon" var:memoryContainer="player_party_structure_1" />
 				<class name="2" type="party_pokemon" var:memoryContainer="player_party_structure_2" />
@@ -409,33 +446,989 @@
 				<class name="5" type="party_pokemon" var:memoryContainer="player_party_structure_5" />
 			</team>
 		</player>
-		<test>
-			<team>
-				<!-- Each slot's decrypted PK7 data is in its own named memory container (filled by JS preprocessor) -->
-				<class name="0" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_0" />
-				<class name="1" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_1" />
-				<class name="2" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_2" />
-				<class name="3" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_3" />
-				<class name="4" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_4" />
-				<class name="5" type="party_pokemon" var:memoryContainer="party_pokemon_live_party_structure_5" />
-			</team>
-		</test>
+		<bag>
+			<property name="money" type="int" address="{heap_money}" length="4" />
+			<!-- Pouches relative to MyItem = MyStatus - 0xEE4 (PKHeX PlayerBag7USUM). Packed u32. -->
+			<items>
+				<class name="0" type="player_item" var:address="{heap_items} + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + (4 * 10)" />
+				<class name="11" type="player_item" var:address="{heap_items} + (4 * 11)" />
+				<class name="12" type="player_item" var:address="{heap_items} + (4 * 12)" />
+				<class name="13" type="player_item" var:address="{heap_items} + (4 * 13)" />
+				<class name="14" type="player_item" var:address="{heap_items} + (4 * 14)" />
+				<class name="15" type="player_item" var:address="{heap_items} + (4 * 15)" />
+				<class name="16" type="player_item" var:address="{heap_items} + (4 * 16)" />
+				<class name="17" type="player_item" var:address="{heap_items} + (4 * 17)" />
+				<class name="18" type="player_item" var:address="{heap_items} + (4 * 18)" />
+				<class name="19" type="player_item" var:address="{heap_items} + (4 * 19)" />
+				<class name="20" type="player_item" var:address="{heap_items} + (4 * 20)" />
+				<class name="21" type="player_item" var:address="{heap_items} + (4 * 21)" />
+				<class name="22" type="player_item" var:address="{heap_items} + (4 * 22)" />
+				<class name="23" type="player_item" var:address="{heap_items} + (4 * 23)" />
+				<class name="24" type="player_item" var:address="{heap_items} + (4 * 24)" />
+				<class name="25" type="player_item" var:address="{heap_items} + (4 * 25)" />
+				<class name="26" type="player_item" var:address="{heap_items} + (4 * 26)" />
+				<class name="27" type="player_item" var:address="{heap_items} + (4 * 27)" />
+				<class name="28" type="player_item" var:address="{heap_items} + (4 * 28)" />
+				<class name="29" type="player_item" var:address="{heap_items} + (4 * 29)" />
+				<class name="30" type="player_item" var:address="{heap_items} + (4 * 30)" />
+				<class name="31" type="player_item" var:address="{heap_items} + (4 * 31)" />
+				<class name="32" type="player_item" var:address="{heap_items} + (4 * 32)" />
+				<class name="33" type="player_item" var:address="{heap_items} + (4 * 33)" />
+				<class name="34" type="player_item" var:address="{heap_items} + (4 * 34)" />
+				<class name="35" type="player_item" var:address="{heap_items} + (4 * 35)" />
+				<class name="36" type="player_item" var:address="{heap_items} + (4 * 36)" />
+				<class name="37" type="player_item" var:address="{heap_items} + (4 * 37)" />
+				<class name="38" type="player_item" var:address="{heap_items} + (4 * 38)" />
+				<class name="39" type="player_item" var:address="{heap_items} + (4 * 39)" />
+				<class name="40" type="player_item" var:address="{heap_items} + (4 * 40)" />
+				<class name="41" type="player_item" var:address="{heap_items} + (4 * 41)" />
+				<class name="42" type="player_item" var:address="{heap_items} + (4 * 42)" />
+				<class name="43" type="player_item" var:address="{heap_items} + (4 * 43)" />
+				<class name="44" type="player_item" var:address="{heap_items} + (4 * 44)" />
+				<class name="45" type="player_item" var:address="{heap_items} + (4 * 45)" />
+				<class name="46" type="player_item" var:address="{heap_items} + (4 * 46)" />
+				<class name="47" type="player_item" var:address="{heap_items} + (4 * 47)" />
+				<class name="48" type="player_item" var:address="{heap_items} + (4 * 48)" />
+				<class name="49" type="player_item" var:address="{heap_items} + (4 * 49)" />
+				<class name="50" type="player_item" var:address="{heap_items} + (4 * 50)" />
+				<class name="51" type="player_item" var:address="{heap_items} + (4 * 51)" />
+				<class name="52" type="player_item" var:address="{heap_items} + (4 * 52)" />
+				<class name="53" type="player_item" var:address="{heap_items} + (4 * 53)" />
+				<class name="54" type="player_item" var:address="{heap_items} + (4 * 54)" />
+				<class name="55" type="player_item" var:address="{heap_items} + (4 * 55)" />
+				<class name="56" type="player_item" var:address="{heap_items} + (4 * 56)" />
+				<class name="57" type="player_item" var:address="{heap_items} + (4 * 57)" />
+				<class name="58" type="player_item" var:address="{heap_items} + (4 * 58)" />
+				<class name="59" type="player_item" var:address="{heap_items} + (4 * 59)" />
+				<class name="60" type="player_item" var:address="{heap_items} + (4 * 60)" />
+				<class name="61" type="player_item" var:address="{heap_items} + (4 * 61)" />
+				<class name="62" type="player_item" var:address="{heap_items} + (4 * 62)" />
+				<class name="63" type="player_item" var:address="{heap_items} + (4 * 63)" />
+				<class name="64" type="player_item" var:address="{heap_items} + (4 * 64)" />
+				<class name="65" type="player_item" var:address="{heap_items} + (4 * 65)" />
+				<class name="66" type="player_item" var:address="{heap_items} + (4 * 66)" />
+				<class name="67" type="player_item" var:address="{heap_items} + (4 * 67)" />
+				<class name="68" type="player_item" var:address="{heap_items} + (4 * 68)" />
+				<class name="69" type="player_item" var:address="{heap_items} + (4 * 69)" />
+				<class name="70" type="player_item" var:address="{heap_items} + (4 * 70)" />
+				<class name="71" type="player_item" var:address="{heap_items} + (4 * 71)" />
+				<class name="72" type="player_item" var:address="{heap_items} + (4 * 72)" />
+				<class name="73" type="player_item" var:address="{heap_items} + (4 * 73)" />
+				<class name="74" type="player_item" var:address="{heap_items} + (4 * 74)" />
+				<class name="75" type="player_item" var:address="{heap_items} + (4 * 75)" />
+				<class name="76" type="player_item" var:address="{heap_items} + (4 * 76)" />
+				<class name="77" type="player_item" var:address="{heap_items} + (4 * 77)" />
+				<class name="78" type="player_item" var:address="{heap_items} + (4 * 78)" />
+				<class name="79" type="player_item" var:address="{heap_items} + (4 * 79)" />
+				<class name="80" type="player_item" var:address="{heap_items} + (4 * 80)" />
+				<class name="81" type="player_item" var:address="{heap_items} + (4 * 81)" />
+				<class name="82" type="player_item" var:address="{heap_items} + (4 * 82)" />
+				<class name="83" type="player_item" var:address="{heap_items} + (4 * 83)" />
+				<class name="84" type="player_item" var:address="{heap_items} + (4 * 84)" />
+				<class name="85" type="player_item" var:address="{heap_items} + (4 * 85)" />
+				<class name="86" type="player_item" var:address="{heap_items} + (4 * 86)" />
+				<class name="87" type="player_item" var:address="{heap_items} + (4 * 87)" />
+				<class name="88" type="player_item" var:address="{heap_items} + (4 * 88)" />
+				<class name="89" type="player_item" var:address="{heap_items} + (4 * 89)" />
+				<class name="90" type="player_item" var:address="{heap_items} + (4 * 90)" />
+				<class name="91" type="player_item" var:address="{heap_items} + (4 * 91)" />
+				<class name="92" type="player_item" var:address="{heap_items} + (4 * 92)" />
+				<class name="93" type="player_item" var:address="{heap_items} + (4 * 93)" />
+				<class name="94" type="player_item" var:address="{heap_items} + (4 * 94)" />
+				<class name="95" type="player_item" var:address="{heap_items} + (4 * 95)" />
+				<class name="96" type="player_item" var:address="{heap_items} + (4 * 96)" />
+				<class name="97" type="player_item" var:address="{heap_items} + (4 * 97)" />
+				<class name="98" type="player_item" var:address="{heap_items} + (4 * 98)" />
+				<class name="99" type="player_item" var:address="{heap_items} + (4 * 99)" />
+				<class name="100" type="player_item" var:address="{heap_items} + (4 * 100)" />
+				<class name="101" type="player_item" var:address="{heap_items} + (4 * 101)" />
+				<class name="102" type="player_item" var:address="{heap_items} + (4 * 102)" />
+				<class name="103" type="player_item" var:address="{heap_items} + (4 * 103)" />
+				<class name="104" type="player_item" var:address="{heap_items} + (4 * 104)" />
+				<class name="105" type="player_item" var:address="{heap_items} + (4 * 105)" />
+				<class name="106" type="player_item" var:address="{heap_items} + (4 * 106)" />
+				<class name="107" type="player_item" var:address="{heap_items} + (4 * 107)" />
+				<class name="108" type="player_item" var:address="{heap_items} + (4 * 108)" />
+				<class name="109" type="player_item" var:address="{heap_items} + (4 * 109)" />
+				<class name="110" type="player_item" var:address="{heap_items} + (4 * 110)" />
+				<class name="111" type="player_item" var:address="{heap_items} + (4 * 111)" />
+				<class name="112" type="player_item" var:address="{heap_items} + (4 * 112)" />
+				<class name="113" type="player_item" var:address="{heap_items} + (4 * 113)" />
+				<class name="114" type="player_item" var:address="{heap_items} + (4 * 114)" />
+				<class name="115" type="player_item" var:address="{heap_items} + (4 * 115)" />
+				<class name="116" type="player_item" var:address="{heap_items} + (4 * 116)" />
+				<class name="117" type="player_item" var:address="{heap_items} + (4 * 117)" />
+				<class name="118" type="player_item" var:address="{heap_items} + (4 * 118)" />
+				<class name="119" type="player_item" var:address="{heap_items} + (4 * 119)" />
+				<class name="120" type="player_item" var:address="{heap_items} + (4 * 120)" />
+				<class name="121" type="player_item" var:address="{heap_items} + (4 * 121)" />
+				<class name="122" type="player_item" var:address="{heap_items} + (4 * 122)" />
+				<class name="123" type="player_item" var:address="{heap_items} + (4 * 123)" />
+				<class name="124" type="player_item" var:address="{heap_items} + (4 * 124)" />
+				<class name="125" type="player_item" var:address="{heap_items} + (4 * 125)" />
+				<class name="126" type="player_item" var:address="{heap_items} + (4 * 126)" />
+				<class name="127" type="player_item" var:address="{heap_items} + (4 * 127)" />
+				<class name="128" type="player_item" var:address="{heap_items} + (4 * 128)" />
+				<class name="129" type="player_item" var:address="{heap_items} + (4 * 129)" />
+				<class name="130" type="player_item" var:address="{heap_items} + (4 * 130)" />
+				<class name="131" type="player_item" var:address="{heap_items} + (4 * 131)" />
+				<class name="132" type="player_item" var:address="{heap_items} + (4 * 132)" />
+				<class name="133" type="player_item" var:address="{heap_items} + (4 * 133)" />
+				<class name="134" type="player_item" var:address="{heap_items} + (4 * 134)" />
+				<class name="135" type="player_item" var:address="{heap_items} + (4 * 135)" />
+				<class name="136" type="player_item" var:address="{heap_items} + (4 * 136)" />
+				<class name="137" type="player_item" var:address="{heap_items} + (4 * 137)" />
+				<class name="138" type="player_item" var:address="{heap_items} + (4 * 138)" />
+				<class name="139" type="player_item" var:address="{heap_items} + (4 * 139)" />
+				<class name="140" type="player_item" var:address="{heap_items} + (4 * 140)" />
+				<class name="141" type="player_item" var:address="{heap_items} + (4 * 141)" />
+				<class name="142" type="player_item" var:address="{heap_items} + (4 * 142)" />
+				<class name="143" type="player_item" var:address="{heap_items} + (4 * 143)" />
+				<class name="144" type="player_item" var:address="{heap_items} + (4 * 144)" />
+				<class name="145" type="player_item" var:address="{heap_items} + (4 * 145)" />
+				<class name="146" type="player_item" var:address="{heap_items} + (4 * 146)" />
+				<class name="147" type="player_item" var:address="{heap_items} + (4 * 147)" />
+				<class name="148" type="player_item" var:address="{heap_items} + (4 * 148)" />
+				<class name="149" type="player_item" var:address="{heap_items} + (4 * 149)" />
+				<class name="150" type="player_item" var:address="{heap_items} + (4 * 150)" />
+				<class name="151" type="player_item" var:address="{heap_items} + (4 * 151)" />
+				<class name="152" type="player_item" var:address="{heap_items} + (4 * 152)" />
+				<class name="153" type="player_item" var:address="{heap_items} + (4 * 153)" />
+				<class name="154" type="player_item" var:address="{heap_items} + (4 * 154)" />
+				<class name="155" type="player_item" var:address="{heap_items} + (4 * 155)" />
+				<class name="156" type="player_item" var:address="{heap_items} + (4 * 156)" />
+				<class name="157" type="player_item" var:address="{heap_items} + (4 * 157)" />
+				<class name="158" type="player_item" var:address="{heap_items} + (4 * 158)" />
+				<class name="159" type="player_item" var:address="{heap_items} + (4 * 159)" />
+				<class name="160" type="player_item" var:address="{heap_items} + (4 * 160)" />
+				<class name="161" type="player_item" var:address="{heap_items} + (4 * 161)" />
+				<class name="162" type="player_item" var:address="{heap_items} + (4 * 162)" />
+				<class name="163" type="player_item" var:address="{heap_items} + (4 * 163)" />
+				<class name="164" type="player_item" var:address="{heap_items} + (4 * 164)" />
+				<class name="165" type="player_item" var:address="{heap_items} + (4 * 165)" />
+				<class name="166" type="player_item" var:address="{heap_items} + (4 * 166)" />
+				<class name="167" type="player_item" var:address="{heap_items} + (4 * 167)" />
+				<class name="168" type="player_item" var:address="{heap_items} + (4 * 168)" />
+				<class name="169" type="player_item" var:address="{heap_items} + (4 * 169)" />
+				<class name="170" type="player_item" var:address="{heap_items} + (4 * 170)" />
+				<class name="171" type="player_item" var:address="{heap_items} + (4 * 171)" />
+				<class name="172" type="player_item" var:address="{heap_items} + (4 * 172)" />
+				<class name="173" type="player_item" var:address="{heap_items} + (4 * 173)" />
+				<class name="174" type="player_item" var:address="{heap_items} + (4 * 174)" />
+				<class name="175" type="player_item" var:address="{heap_items} + (4 * 175)" />
+				<class name="176" type="player_item" var:address="{heap_items} + (4 * 176)" />
+				<class name="177" type="player_item" var:address="{heap_items} + (4 * 177)" />
+				<class name="178" type="player_item" var:address="{heap_items} + (4 * 178)" />
+				<class name="179" type="player_item" var:address="{heap_items} + (4 * 179)" />
+				<class name="180" type="player_item" var:address="{heap_items} + (4 * 180)" />
+				<class name="181" type="player_item" var:address="{heap_items} + (4 * 181)" />
+				<class name="182" type="player_item" var:address="{heap_items} + (4 * 182)" />
+				<class name="183" type="player_item" var:address="{heap_items} + (4 * 183)" />
+				<class name="184" type="player_item" var:address="{heap_items} + (4 * 184)" />
+				<class name="185" type="player_item" var:address="{heap_items} + (4 * 185)" />
+				<class name="186" type="player_item" var:address="{heap_items} + (4 * 186)" />
+				<class name="187" type="player_item" var:address="{heap_items} + (4 * 187)" />
+				<class name="188" type="player_item" var:address="{heap_items} + (4 * 188)" />
+				<class name="189" type="player_item" var:address="{heap_items} + (4 * 189)" />
+				<class name="190" type="player_item" var:address="{heap_items} + (4 * 190)" />
+				<class name="191" type="player_item" var:address="{heap_items} + (4 * 191)" />
+				<class name="192" type="player_item" var:address="{heap_items} + (4 * 192)" />
+				<class name="193" type="player_item" var:address="{heap_items} + (4 * 193)" />
+				<class name="194" type="player_item" var:address="{heap_items} + (4 * 194)" />
+				<class name="195" type="player_item" var:address="{heap_items} + (4 * 195)" />
+				<class name="196" type="player_item" var:address="{heap_items} + (4 * 196)" />
+				<class name="197" type="player_item" var:address="{heap_items} + (4 * 197)" />
+				<class name="198" type="player_item" var:address="{heap_items} + (4 * 198)" />
+				<class name="199" type="player_item" var:address="{heap_items} + (4 * 199)" />
+				<class name="200" type="player_item" var:address="{heap_items} + (4 * 200)" />
+				<class name="201" type="player_item" var:address="{heap_items} + (4 * 201)" />
+				<class name="202" type="player_item" var:address="{heap_items} + (4 * 202)" />
+				<class name="203" type="player_item" var:address="{heap_items} + (4 * 203)" />
+				<class name="204" type="player_item" var:address="{heap_items} + (4 * 204)" />
+				<class name="205" type="player_item" var:address="{heap_items} + (4 * 205)" />
+				<class name="206" type="player_item" var:address="{heap_items} + (4 * 206)" />
+				<class name="207" type="player_item" var:address="{heap_items} + (4 * 207)" />
+				<class name="208" type="player_item" var:address="{heap_items} + (4 * 208)" />
+				<class name="209" type="player_item" var:address="{heap_items} + (4 * 209)" />
+				<class name="210" type="player_item" var:address="{heap_items} + (4 * 210)" />
+				<class name="211" type="player_item" var:address="{heap_items} + (4 * 211)" />
+				<class name="212" type="player_item" var:address="{heap_items} + (4 * 212)" />
+				<class name="213" type="player_item" var:address="{heap_items} + (4 * 213)" />
+				<class name="214" type="player_item" var:address="{heap_items} + (4 * 214)" />
+				<class name="215" type="player_item" var:address="{heap_items} + (4 * 215)" />
+				<class name="216" type="player_item" var:address="{heap_items} + (4 * 216)" />
+				<class name="217" type="player_item" var:address="{heap_items} + (4 * 217)" />
+				<class name="218" type="player_item" var:address="{heap_items} + (4 * 218)" />
+				<class name="219" type="player_item" var:address="{heap_items} + (4 * 219)" />
+				<class name="220" type="player_item" var:address="{heap_items} + (4 * 220)" />
+				<class name="221" type="player_item" var:address="{heap_items} + (4 * 221)" />
+				<class name="222" type="player_item" var:address="{heap_items} + (4 * 222)" />
+				<class name="223" type="player_item" var:address="{heap_items} + (4 * 223)" />
+				<class name="224" type="player_item" var:address="{heap_items} + (4 * 224)" />
+				<class name="225" type="player_item" var:address="{heap_items} + (4 * 225)" />
+				<class name="226" type="player_item" var:address="{heap_items} + (4 * 226)" />
+				<class name="227" type="player_item" var:address="{heap_items} + (4 * 227)" />
+				<class name="228" type="player_item" var:address="{heap_items} + (4 * 228)" />
+				<class name="229" type="player_item" var:address="{heap_items} + (4 * 229)" />
+				<class name="230" type="player_item" var:address="{heap_items} + (4 * 230)" />
+				<class name="231" type="player_item" var:address="{heap_items} + (4 * 231)" />
+				<class name="232" type="player_item" var:address="{heap_items} + (4 * 232)" />
+				<class name="233" type="player_item" var:address="{heap_items} + (4 * 233)" />
+				<class name="234" type="player_item" var:address="{heap_items} + (4 * 234)" />
+				<class name="235" type="player_item" var:address="{heap_items} + (4 * 235)" />
+				<class name="236" type="player_item" var:address="{heap_items} + (4 * 236)" />
+				<class name="237" type="player_item" var:address="{heap_items} + (4 * 237)" />
+				<class name="238" type="player_item" var:address="{heap_items} + (4 * 238)" />
+				<class name="239" type="player_item" var:address="{heap_items} + (4 * 239)" />
+				<class name="240" type="player_item" var:address="{heap_items} + (4 * 240)" />
+				<class name="241" type="player_item" var:address="{heap_items} + (4 * 241)" />
+				<class name="242" type="player_item" var:address="{heap_items} + (4 * 242)" />
+				<class name="243" type="player_item" var:address="{heap_items} + (4 * 243)" />
+				<class name="244" type="player_item" var:address="{heap_items} + (4 * 244)" />
+				<class name="245" type="player_item" var:address="{heap_items} + (4 * 245)" />
+				<class name="246" type="player_item" var:address="{heap_items} + (4 * 246)" />
+				<class name="247" type="player_item" var:address="{heap_items} + (4 * 247)" />
+				<class name="248" type="player_item" var:address="{heap_items} + (4 * 248)" />
+				<class name="249" type="player_item" var:address="{heap_items} + (4 * 249)" />
+				<class name="250" type="player_item" var:address="{heap_items} + (4 * 250)" />
+				<class name="251" type="player_item" var:address="{heap_items} + (4 * 251)" />
+				<class name="252" type="player_item" var:address="{heap_items} + (4 * 252)" />
+				<class name="253" type="player_item" var:address="{heap_items} + (4 * 253)" />
+				<class name="254" type="player_item" var:address="{heap_items} + (4 * 254)" />
+				<class name="255" type="player_item" var:address="{heap_items} + (4 * 255)" />
+				<class name="256" type="player_item" var:address="{heap_items} + (4 * 256)" />
+				<class name="257" type="player_item" var:address="{heap_items} + (4 * 257)" />
+				<class name="258" type="player_item" var:address="{heap_items} + (4 * 258)" />
+				<class name="259" type="player_item" var:address="{heap_items} + (4 * 259)" />
+				<class name="260" type="player_item" var:address="{heap_items} + (4 * 260)" />
+				<class name="261" type="player_item" var:address="{heap_items} + (4 * 261)" />
+				<class name="262" type="player_item" var:address="{heap_items} + (4 * 262)" />
+				<class name="263" type="player_item" var:address="{heap_items} + (4 * 263)" />
+				<class name="264" type="player_item" var:address="{heap_items} + (4 * 264)" />
+				<class name="265" type="player_item" var:address="{heap_items} + (4 * 265)" />
+				<class name="266" type="player_item" var:address="{heap_items} + (4 * 266)" />
+				<class name="267" type="player_item" var:address="{heap_items} + (4 * 267)" />
+				<class name="268" type="player_item" var:address="{heap_items} + (4 * 268)" />
+				<class name="269" type="player_item" var:address="{heap_items} + (4 * 269)" />
+				<class name="270" type="player_item" var:address="{heap_items} + (4 * 270)" />
+				<class name="271" type="player_item" var:address="{heap_items} + (4 * 271)" />
+				<class name="272" type="player_item" var:address="{heap_items} + (4 * 272)" />
+				<class name="273" type="player_item" var:address="{heap_items} + (4 * 273)" />
+				<class name="274" type="player_item" var:address="{heap_items} + (4 * 274)" />
+				<class name="275" type="player_item" var:address="{heap_items} + (4 * 275)" />
+				<class name="276" type="player_item" var:address="{heap_items} + (4 * 276)" />
+				<class name="277" type="player_item" var:address="{heap_items} + (4 * 277)" />
+				<class name="278" type="player_item" var:address="{heap_items} + (4 * 278)" />
+				<class name="279" type="player_item" var:address="{heap_items} + (4 * 279)" />
+				<class name="280" type="player_item" var:address="{heap_items} + (4 * 280)" />
+				<class name="281" type="player_item" var:address="{heap_items} + (4 * 281)" />
+				<class name="282" type="player_item" var:address="{heap_items} + (4 * 282)" />
+				<class name="283" type="player_item" var:address="{heap_items} + (4 * 283)" />
+				<class name="284" type="player_item" var:address="{heap_items} + (4 * 284)" />
+				<class name="285" type="player_item" var:address="{heap_items} + (4 * 285)" />
+				<class name="286" type="player_item" var:address="{heap_items} + (4 * 286)" />
+				<class name="287" type="player_item" var:address="{heap_items} + (4 * 287)" />
+				<class name="288" type="player_item" var:address="{heap_items} + (4 * 288)" />
+				<class name="289" type="player_item" var:address="{heap_items} + (4 * 289)" />
+				<class name="290" type="player_item" var:address="{heap_items} + (4 * 290)" />
+				<class name="291" type="player_item" var:address="{heap_items} + (4 * 291)" />
+				<class name="292" type="player_item" var:address="{heap_items} + (4 * 292)" />
+				<class name="293" type="player_item" var:address="{heap_items} + (4 * 293)" />
+				<class name="294" type="player_item" var:address="{heap_items} + (4 * 294)" />
+				<class name="295" type="player_item" var:address="{heap_items} + (4 * 295)" />
+				<class name="296" type="player_item" var:address="{heap_items} + (4 * 296)" />
+				<class name="297" type="player_item" var:address="{heap_items} + (4 * 297)" />
+				<class name="298" type="player_item" var:address="{heap_items} + (4 * 298)" />
+				<class name="299" type="player_item" var:address="{heap_items} + (4 * 299)" />
+				<class name="300" type="player_item" var:address="{heap_items} + (4 * 300)" />
+				<class name="301" type="player_item" var:address="{heap_items} + (4 * 301)" />
+				<class name="302" type="player_item" var:address="{heap_items} + (4 * 302)" />
+				<class name="303" type="player_item" var:address="{heap_items} + (4 * 303)" />
+				<class name="304" type="player_item" var:address="{heap_items} + (4 * 304)" />
+				<class name="305" type="player_item" var:address="{heap_items} + (4 * 305)" />
+				<class name="306" type="player_item" var:address="{heap_items} + (4 * 306)" />
+				<class name="307" type="player_item" var:address="{heap_items} + (4 * 307)" />
+				<class name="308" type="player_item" var:address="{heap_items} + (4 * 308)" />
+				<class name="309" type="player_item" var:address="{heap_items} + (4 * 309)" />
+				<class name="310" type="player_item" var:address="{heap_items} + (4 * 310)" />
+				<class name="311" type="player_item" var:address="{heap_items} + (4 * 311)" />
+				<class name="312" type="player_item" var:address="{heap_items} + (4 * 312)" />
+				<class name="313" type="player_item" var:address="{heap_items} + (4 * 313)" />
+				<class name="314" type="player_item" var:address="{heap_items} + (4 * 314)" />
+				<class name="315" type="player_item" var:address="{heap_items} + (4 * 315)" />
+				<class name="316" type="player_item" var:address="{heap_items} + (4 * 316)" />
+				<class name="317" type="player_item" var:address="{heap_items} + (4 * 317)" />
+				<class name="318" type="player_item" var:address="{heap_items} + (4 * 318)" />
+				<class name="319" type="player_item" var:address="{heap_items} + (4 * 319)" />
+				<class name="320" type="player_item" var:address="{heap_items} + (4 * 320)" />
+				<class name="321" type="player_item" var:address="{heap_items} + (4 * 321)" />
+				<class name="322" type="player_item" var:address="{heap_items} + (4 * 322)" />
+				<class name="323" type="player_item" var:address="{heap_items} + (4 * 323)" />
+				<class name="324" type="player_item" var:address="{heap_items} + (4 * 324)" />
+				<class name="325" type="player_item" var:address="{heap_items} + (4 * 325)" />
+				<class name="326" type="player_item" var:address="{heap_items} + (4 * 326)" />
+				<class name="327" type="player_item" var:address="{heap_items} + (4 * 327)" />
+				<class name="328" type="player_item" var:address="{heap_items} + (4 * 328)" />
+				<class name="329" type="player_item" var:address="{heap_items} + (4 * 329)" />
+				<class name="330" type="player_item" var:address="{heap_items} + (4 * 330)" />
+				<class name="331" type="player_item" var:address="{heap_items} + (4 * 331)" />
+				<class name="332" type="player_item" var:address="{heap_items} + (4 * 332)" />
+				<class name="333" type="player_item" var:address="{heap_items} + (4 * 333)" />
+				<class name="334" type="player_item" var:address="{heap_items} + (4 * 334)" />
+				<class name="335" type="player_item" var:address="{heap_items} + (4 * 335)" />
+				<class name="336" type="player_item" var:address="{heap_items} + (4 * 336)" />
+				<class name="337" type="player_item" var:address="{heap_items} + (4 * 337)" />
+				<class name="338" type="player_item" var:address="{heap_items} + (4 * 338)" />
+				<class name="339" type="player_item" var:address="{heap_items} + (4 * 339)" />
+				<class name="340" type="player_item" var:address="{heap_items} + (4 * 340)" />
+				<class name="341" type="player_item" var:address="{heap_items} + (4 * 341)" />
+				<class name="342" type="player_item" var:address="{heap_items} + (4 * 342)" />
+				<class name="343" type="player_item" var:address="{heap_items} + (4 * 343)" />
+				<class name="344" type="player_item" var:address="{heap_items} + (4 * 344)" />
+				<class name="345" type="player_item" var:address="{heap_items} + (4 * 345)" />
+				<class name="346" type="player_item" var:address="{heap_items} + (4 * 346)" />
+				<class name="347" type="player_item" var:address="{heap_items} + (4 * 347)" />
+				<class name="348" type="player_item" var:address="{heap_items} + (4 * 348)" />
+				<class name="349" type="player_item" var:address="{heap_items} + (4 * 349)" />
+				<class name="350" type="player_item" var:address="{heap_items} + (4 * 350)" />
+				<class name="351" type="player_item" var:address="{heap_items} + (4 * 351)" />
+				<class name="352" type="player_item" var:address="{heap_items} + (4 * 352)" />
+				<class name="353" type="player_item" var:address="{heap_items} + (4 * 353)" />
+				<class name="354" type="player_item" var:address="{heap_items} + (4 * 354)" />
+				<class name="355" type="player_item" var:address="{heap_items} + (4 * 355)" />
+				<class name="356" type="player_item" var:address="{heap_items} + (4 * 356)" />
+				<class name="357" type="player_item" var:address="{heap_items} + (4 * 357)" />
+				<class name="358" type="player_item" var:address="{heap_items} + (4 * 358)" />
+				<class name="359" type="player_item" var:address="{heap_items} + (4 * 359)" />
+				<class name="360" type="player_item" var:address="{heap_items} + (4 * 360)" />
+				<class name="361" type="player_item" var:address="{heap_items} + (4 * 361)" />
+				<class name="362" type="player_item" var:address="{heap_items} + (4 * 362)" />
+				<class name="363" type="player_item" var:address="{heap_items} + (4 * 363)" />
+				<class name="364" type="player_item" var:address="{heap_items} + (4 * 364)" />
+				<class name="365" type="player_item" var:address="{heap_items} + (4 * 365)" />
+				<class name="366" type="player_item" var:address="{heap_items} + (4 * 366)" />
+				<class name="367" type="player_item" var:address="{heap_items} + (4 * 367)" />
+				<class name="368" type="player_item" var:address="{heap_items} + (4 * 368)" />
+				<class name="369" type="player_item" var:address="{heap_items} + (4 * 369)" />
+				<class name="370" type="player_item" var:address="{heap_items} + (4 * 370)" />
+				<class name="371" type="player_item" var:address="{heap_items} + (4 * 371)" />
+				<class name="372" type="player_item" var:address="{heap_items} + (4 * 372)" />
+				<class name="373" type="player_item" var:address="{heap_items} + (4 * 373)" />
+				<class name="374" type="player_item" var:address="{heap_items} + (4 * 374)" />
+				<class name="375" type="player_item" var:address="{heap_items} + (4 * 375)" />
+				<class name="376" type="player_item" var:address="{heap_items} + (4 * 376)" />
+				<class name="377" type="player_item" var:address="{heap_items} + (4 * 377)" />
+				<class name="378" type="player_item" var:address="{heap_items} + (4 * 378)" />
+				<class name="379" type="player_item" var:address="{heap_items} + (4 * 379)" />
+				<class name="380" type="player_item" var:address="{heap_items} + (4 * 380)" />
+				<class name="381" type="player_item" var:address="{heap_items} + (4 * 381)" />
+				<class name="382" type="player_item" var:address="{heap_items} + (4 * 382)" />
+				<class name="383" type="player_item" var:address="{heap_items} + (4 * 383)" />
+				<class name="384" type="player_item" var:address="{heap_items} + (4 * 384)" />
+				<class name="385" type="player_item" var:address="{heap_items} + (4 * 385)" />
+				<class name="386" type="player_item" var:address="{heap_items} + (4 * 386)" />
+				<class name="387" type="player_item" var:address="{heap_items} + (4 * 387)" />
+				<class name="388" type="player_item" var:address="{heap_items} + (4 * 388)" />
+				<class name="389" type="player_item" var:address="{heap_items} + (4 * 389)" />
+				<class name="390" type="player_item" var:address="{heap_items} + (4 * 390)" />
+				<class name="391" type="player_item" var:address="{heap_items} + (4 * 391)" />
+				<class name="392" type="player_item" var:address="{heap_items} + (4 * 392)" />
+				<class name="393" type="player_item" var:address="{heap_items} + (4 * 393)" />
+				<class name="394" type="player_item" var:address="{heap_items} + (4 * 394)" />
+				<class name="395" type="player_item" var:address="{heap_items} + (4 * 395)" />
+				<class name="396" type="player_item" var:address="{heap_items} + (4 * 396)" />
+				<class name="397" type="player_item" var:address="{heap_items} + (4 * 397)" />
+				<class name="398" type="player_item" var:address="{heap_items} + (4 * 398)" />
+				<class name="399" type="player_item" var:address="{heap_items} + (4 * 399)" />
+				<class name="400" type="player_item" var:address="{heap_items} + (4 * 400)" />
+				<class name="401" type="player_item" var:address="{heap_items} + (4 * 401)" />
+				<class name="402" type="player_item" var:address="{heap_items} + (4 * 402)" />
+				<class name="403" type="player_item" var:address="{heap_items} + (4 * 403)" />
+				<class name="404" type="player_item" var:address="{heap_items} + (4 * 404)" />
+				<class name="405" type="player_item" var:address="{heap_items} + (4 * 405)" />
+				<class name="406" type="player_item" var:address="{heap_items} + (4 * 406)" />
+				<class name="407" type="player_item" var:address="{heap_items} + (4 * 407)" />
+				<class name="408" type="player_item" var:address="{heap_items} + (4 * 408)" />
+				<class name="409" type="player_item" var:address="{heap_items} + (4 * 409)" />
+				<class name="410" type="player_item" var:address="{heap_items} + (4 * 410)" />
+				<class name="411" type="player_item" var:address="{heap_items} + (4 * 411)" />
+				<class name="412" type="player_item" var:address="{heap_items} + (4 * 412)" />
+				<class name="413" type="player_item" var:address="{heap_items} + (4 * 413)" />
+				<class name="414" type="player_item" var:address="{heap_items} + (4 * 414)" />
+				<class name="415" type="player_item" var:address="{heap_items} + (4 * 415)" />
+				<class name="416" type="player_item" var:address="{heap_items} + (4 * 416)" />
+				<class name="417" type="player_item" var:address="{heap_items} + (4 * 417)" />
+				<class name="418" type="player_item" var:address="{heap_items} + (4 * 418)" />
+				<class name="419" type="player_item" var:address="{heap_items} + (4 * 419)" />
+				<class name="420" type="player_item" var:address="{heap_items} + (4 * 420)" />
+				<class name="421" type="player_item" var:address="{heap_items} + (4 * 421)" />
+				<class name="422" type="player_item" var:address="{heap_items} + (4 * 422)" />
+				<class name="423" type="player_item" var:address="{heap_items} + (4 * 423)" />
+				<class name="424" type="player_item" var:address="{heap_items} + (4 * 424)" />
+				<class name="425" type="player_item" var:address="{heap_items} + (4 * 425)" />
+				<class name="426" type="player_item" var:address="{heap_items} + (4 * 426)" />
+			</items>
+			<medicine>
+				<class name="0" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 10)" />
+				<class name="11" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 11)" />
+				<class name="12" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 12)" />
+				<class name="13" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 13)" />
+				<class name="14" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 14)" />
+				<class name="15" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 15)" />
+				<class name="16" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 16)" />
+				<class name="17" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 17)" />
+				<class name="18" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 18)" />
+				<class name="19" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 19)" />
+				<class name="20" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 20)" />
+				<class name="21" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 21)" />
+				<class name="22" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 22)" />
+				<class name="23" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 23)" />
+				<class name="24" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 24)" />
+				<class name="25" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 25)" />
+				<class name="26" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 26)" />
+				<class name="27" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 27)" />
+				<class name="28" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 28)" />
+				<class name="29" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 29)" />
+				<class name="30" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 30)" />
+				<class name="31" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 31)" />
+				<class name="32" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 32)" />
+				<class name="33" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 33)" />
+				<class name="34" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 34)" />
+				<class name="35" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 35)" />
+				<class name="36" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 36)" />
+				<class name="37" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 37)" />
+				<class name="38" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 38)" />
+				<class name="39" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 39)" />
+				<class name="40" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 40)" />
+				<class name="41" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 41)" />
+				<class name="42" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 42)" />
+				<class name="43" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 43)" />
+				<class name="44" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 44)" />
+				<class name="45" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 45)" />
+				<class name="46" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 46)" />
+				<class name="47" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 47)" />
+				<class name="48" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 48)" />
+				<class name="49" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 49)" />
+				<class name="50" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 50)" />
+				<class name="51" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 51)" />
+				<class name="52" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 52)" />
+				<class name="53" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 53)" />
+				<class name="54" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 54)" />
+				<class name="55" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 55)" />
+				<class name="56" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 56)" />
+				<class name="57" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 57)" />
+				<class name="58" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 58)" />
+				<class name="59" type="player_item" var:address="{heap_items} + 0xB74 + (4 * 59)" />
+			</medicine>
+			<tmhm>
+				<class name="0" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 10)" />
+				<class name="11" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 11)" />
+				<class name="12" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 12)" />
+				<class name="13" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 13)" />
+				<class name="14" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 14)" />
+				<class name="15" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 15)" />
+				<class name="16" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 16)" />
+				<class name="17" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 17)" />
+				<class name="18" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 18)" />
+				<class name="19" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 19)" />
+				<class name="20" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 20)" />
+				<class name="21" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 21)" />
+				<class name="22" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 22)" />
+				<class name="23" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 23)" />
+				<class name="24" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 24)" />
+				<class name="25" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 25)" />
+				<class name="26" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 26)" />
+				<class name="27" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 27)" />
+				<class name="28" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 28)" />
+				<class name="29" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 29)" />
+				<class name="30" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 30)" />
+				<class name="31" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 31)" />
+				<class name="32" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 32)" />
+				<class name="33" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 33)" />
+				<class name="34" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 34)" />
+				<class name="35" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 35)" />
+				<class name="36" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 36)" />
+				<class name="37" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 37)" />
+				<class name="38" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 38)" />
+				<class name="39" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 39)" />
+				<class name="40" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 40)" />
+				<class name="41" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 41)" />
+				<class name="42" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 42)" />
+				<class name="43" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 43)" />
+				<class name="44" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 44)" />
+				<class name="45" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 45)" />
+				<class name="46" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 46)" />
+				<class name="47" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 47)" />
+				<class name="48" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 48)" />
+				<class name="49" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 49)" />
+				<class name="50" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 50)" />
+				<class name="51" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 51)" />
+				<class name="52" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 52)" />
+				<class name="53" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 53)" />
+				<class name="54" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 54)" />
+				<class name="55" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 55)" />
+				<class name="56" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 56)" />
+				<class name="57" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 57)" />
+				<class name="58" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 58)" />
+				<class name="59" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 59)" />
+				<class name="60" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 60)" />
+				<class name="61" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 61)" />
+				<class name="62" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 62)" />
+				<class name="63" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 63)" />
+				<class name="64" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 64)" />
+				<class name="65" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 65)" />
+				<class name="66" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 66)" />
+				<class name="67" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 67)" />
+				<class name="68" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 68)" />
+				<class name="69" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 69)" />
+				<class name="70" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 70)" />
+				<class name="71" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 71)" />
+				<class name="72" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 72)" />
+				<class name="73" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 73)" />
+				<class name="74" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 74)" />
+				<class name="75" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 75)" />
+				<class name="76" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 76)" />
+				<class name="77" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 77)" />
+				<class name="78" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 78)" />
+				<class name="79" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 79)" />
+				<class name="80" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 80)" />
+				<class name="81" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 81)" />
+				<class name="82" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 82)" />
+				<class name="83" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 83)" />
+				<class name="84" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 84)" />
+				<class name="85" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 85)" />
+				<class name="86" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 86)" />
+				<class name="87" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 87)" />
+				<class name="88" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 88)" />
+				<class name="89" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 89)" />
+				<class name="90" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 90)" />
+				<class name="91" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 91)" />
+				<class name="92" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 92)" />
+				<class name="93" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 93)" />
+				<class name="94" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 94)" />
+				<class name="95" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 95)" />
+				<class name="96" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 96)" />
+				<class name="97" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 97)" />
+				<class name="98" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 98)" />
+				<class name="99" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 99)" />
+				<class name="100" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 100)" />
+				<class name="101" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 101)" />
+				<class name="102" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 102)" />
+				<class name="103" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 103)" />
+				<class name="104" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 104)" />
+				<class name="105" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 105)" />
+				<class name="106" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 106)" />
+				<class name="107" type="player_item" var:address="{heap_items} + 0x9C4 + (4 * 107)" />
+			</tmhm>
+			<berries>
+				<class name="0" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 10)" />
+				<class name="11" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 11)" />
+				<class name="12" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 12)" />
+				<class name="13" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 13)" />
+				<class name="14" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 14)" />
+				<class name="15" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 15)" />
+				<class name="16" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 16)" />
+				<class name="17" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 17)" />
+				<class name="18" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 18)" />
+				<class name="19" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 19)" />
+				<class name="20" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 20)" />
+				<class name="21" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 21)" />
+				<class name="22" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 22)" />
+				<class name="23" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 23)" />
+				<class name="24" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 24)" />
+				<class name="25" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 25)" />
+				<class name="26" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 26)" />
+				<class name="27" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 27)" />
+				<class name="28" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 28)" />
+				<class name="29" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 29)" />
+				<class name="30" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 30)" />
+				<class name="31" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 31)" />
+				<class name="32" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 32)" />
+				<class name="33" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 33)" />
+				<class name="34" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 34)" />
+				<class name="35" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 35)" />
+				<class name="36" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 36)" />
+				<class name="37" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 37)" />
+				<class name="38" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 38)" />
+				<class name="39" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 39)" />
+				<class name="40" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 40)" />
+				<class name="41" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 41)" />
+				<class name="42" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 42)" />
+				<class name="43" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 43)" />
+				<class name="44" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 44)" />
+				<class name="45" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 45)" />
+				<class name="46" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 46)" />
+				<class name="47" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 47)" />
+				<class name="48" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 48)" />
+				<class name="49" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 49)" />
+				<class name="50" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 50)" />
+				<class name="51" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 51)" />
+				<class name="52" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 52)" />
+				<class name="53" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 53)" />
+				<class name="54" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 54)" />
+				<class name="55" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 55)" />
+				<class name="56" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 56)" />
+				<class name="57" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 57)" />
+				<class name="58" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 58)" />
+				<class name="59" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 59)" />
+				<class name="60" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 60)" />
+				<class name="61" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 61)" />
+				<class name="62" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 62)" />
+				<class name="63" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 63)" />
+				<class name="64" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 64)" />
+				<class name="65" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 65)" />
+				<class name="66" type="player_item" var:address="{heap_items} + 0xC64 + (4 * 66)" />
+			</berries>
+			<key_items>
+				<class name="0" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 10)" />
+				<class name="11" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 11)" />
+				<class name="12" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 12)" />
+				<class name="13" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 13)" />
+				<class name="14" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 14)" />
+				<class name="15" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 15)" />
+				<class name="16" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 16)" />
+				<class name="17" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 17)" />
+				<class name="18" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 18)" />
+				<class name="19" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 19)" />
+				<class name="20" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 20)" />
+				<class name="21" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 21)" />
+				<class name="22" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 22)" />
+				<class name="23" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 23)" />
+				<class name="24" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 24)" />
+				<class name="25" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 25)" />
+				<class name="26" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 26)" />
+				<class name="27" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 27)" />
+				<class name="28" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 28)" />
+				<class name="29" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 29)" />
+				<class name="30" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 30)" />
+				<class name="31" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 31)" />
+				<class name="32" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 32)" />
+				<class name="33" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 33)" />
+				<class name="34" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 34)" />
+				<class name="35" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 35)" />
+				<class name="36" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 36)" />
+				<class name="37" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 37)" />
+				<class name="38" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 38)" />
+				<class name="39" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 39)" />
+				<class name="40" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 40)" />
+				<class name="41" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 41)" />
+				<class name="42" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 42)" />
+				<class name="43" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 43)" />
+				<class name="44" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 44)" />
+				<class name="45" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 45)" />
+				<class name="46" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 46)" />
+				<class name="47" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 47)" />
+				<class name="48" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 48)" />
+				<class name="49" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 49)" />
+				<class name="50" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 50)" />
+				<class name="51" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 51)" />
+				<class name="52" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 52)" />
+				<class name="53" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 53)" />
+				<class name="54" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 54)" />
+				<class name="55" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 55)" />
+				<class name="56" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 56)" />
+				<class name="57" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 57)" />
+				<class name="58" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 58)" />
+				<class name="59" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 59)" />
+				<class name="60" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 60)" />
+				<class name="61" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 61)" />
+				<class name="62" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 62)" />
+				<class name="63" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 63)" />
+				<class name="64" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 64)" />
+				<class name="65" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 65)" />
+				<class name="66" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 66)" />
+				<class name="67" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 67)" />
+				<class name="68" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 68)" />
+				<class name="69" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 69)" />
+				<class name="70" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 70)" />
+				<class name="71" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 71)" />
+				<class name="72" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 72)" />
+				<class name="73" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 73)" />
+				<class name="74" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 74)" />
+				<class name="75" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 75)" />
+				<class name="76" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 76)" />
+				<class name="77" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 77)" />
+				<class name="78" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 78)" />
+				<class name="79" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 79)" />
+				<class name="80" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 80)" />
+				<class name="81" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 81)" />
+				<class name="82" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 82)" />
+				<class name="83" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 83)" />
+				<class name="84" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 84)" />
+				<class name="85" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 85)" />
+				<class name="86" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 86)" />
+				<class name="87" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 87)" />
+				<class name="88" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 88)" />
+				<class name="89" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 89)" />
+				<class name="90" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 90)" />
+				<class name="91" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 91)" />
+				<class name="92" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 92)" />
+				<class name="93" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 93)" />
+				<class name="94" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 94)" />
+				<class name="95" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 95)" />
+				<class name="96" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 96)" />
+				<class name="97" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 97)" />
+				<class name="98" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 98)" />
+				<class name="99" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 99)" />
+				<class name="100" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 100)" />
+				<class name="101" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 101)" />
+				<class name="102" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 102)" />
+				<class name="103" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 103)" />
+				<class name="104" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 104)" />
+				<class name="105" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 105)" />
+				<class name="106" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 106)" />
+				<class name="107" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 107)" />
+				<class name="108" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 108)" />
+				<class name="109" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 109)" />
+				<class name="110" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 110)" />
+				<class name="111" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 111)" />
+				<class name="112" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 112)" />
+				<class name="113" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 113)" />
+				<class name="114" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 114)" />
+				<class name="115" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 115)" />
+				<class name="116" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 116)" />
+				<class name="117" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 117)" />
+				<class name="118" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 118)" />
+				<class name="119" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 119)" />
+				<class name="120" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 120)" />
+				<class name="121" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 121)" />
+				<class name="122" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 122)" />
+				<class name="123" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 123)" />
+				<class name="124" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 124)" />
+				<class name="125" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 125)" />
+				<class name="126" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 126)" />
+				<class name="127" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 127)" />
+				<class name="128" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 128)" />
+				<class name="129" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 129)" />
+				<class name="130" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 130)" />
+				<class name="131" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 131)" />
+				<class name="132" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 132)" />
+				<class name="133" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 133)" />
+				<class name="134" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 134)" />
+				<class name="135" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 135)" />
+				<class name="136" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 136)" />
+				<class name="137" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 137)" />
+				<class name="138" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 138)" />
+				<class name="139" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 139)" />
+				<class name="140" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 140)" />
+				<class name="141" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 141)" />
+				<class name="142" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 142)" />
+				<class name="143" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 143)" />
+				<class name="144" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 144)" />
+				<class name="145" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 145)" />
+				<class name="146" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 146)" />
+				<class name="147" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 147)" />
+				<class name="148" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 148)" />
+				<class name="149" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 149)" />
+				<class name="150" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 150)" />
+				<class name="151" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 151)" />
+				<class name="152" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 152)" />
+				<class name="153" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 153)" />
+				<class name="154" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 154)" />
+				<class name="155" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 155)" />
+				<class name="156" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 156)" />
+				<class name="157" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 157)" />
+				<class name="158" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 158)" />
+				<class name="159" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 159)" />
+				<class name="160" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 160)" />
+				<class name="161" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 161)" />
+				<class name="162" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 162)" />
+				<class name="163" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 163)" />
+				<class name="164" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 164)" />
+				<class name="165" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 165)" />
+				<class name="166" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 166)" />
+				<class name="167" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 167)" />
+				<class name="168" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 168)" />
+				<class name="169" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 169)" />
+				<class name="170" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 170)" />
+				<class name="171" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 171)" />
+				<class name="172" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 172)" />
+				<class name="173" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 173)" />
+				<class name="174" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 174)" />
+				<class name="175" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 175)" />
+				<class name="176" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 176)" />
+				<class name="177" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 177)" />
+				<class name="178" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 178)" />
+				<class name="179" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 179)" />
+				<class name="180" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 180)" />
+				<class name="181" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 181)" />
+				<class name="182" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 182)" />
+				<class name="183" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 183)" />
+				<class name="184" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 184)" />
+				<class name="185" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 185)" />
+				<class name="186" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 186)" />
+				<class name="187" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 187)" />
+				<class name="188" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 188)" />
+				<class name="189" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 189)" />
+				<class name="190" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 190)" />
+				<class name="191" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 191)" />
+				<class name="192" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 192)" />
+				<class name="193" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 193)" />
+				<class name="194" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 194)" />
+				<class name="195" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 195)" />
+				<class name="196" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 196)" />
+				<class name="197" type="player_item" var:address="{heap_items} + 0x6AC + (4 * 197)" />
+			</key_items>
+			<z_crystals>
+				<class name="0" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 10)" />
+				<class name="11" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 11)" />
+				<class name="12" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 12)" />
+				<class name="13" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 13)" />
+				<class name="14" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 14)" />
+				<class name="15" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 15)" />
+				<class name="16" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 16)" />
+				<class name="17" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 17)" />
+				<class name="18" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 18)" />
+				<class name="19" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 19)" />
+				<class name="20" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 20)" />
+				<class name="21" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 21)" />
+				<class name="22" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 22)" />
+				<class name="23" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 23)" />
+				<class name="24" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 24)" />
+				<class name="25" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 25)" />
+				<class name="26" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 26)" />
+				<class name="27" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 27)" />
+				<class name="28" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 28)" />
+				<class name="29" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 29)" />
+				<class name="30" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 30)" />
+				<class name="31" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 31)" />
+				<class name="32" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 32)" />
+				<class name="33" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 33)" />
+				<class name="34" type="player_item" var:address="{heap_items} + 0xD70 + (4 * 34)" />
+			</z_crystals>
+			<battle_items>
+				<class name="0" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 0)" />
+				<class name="1" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 1)" />
+				<class name="2" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 2)" />
+				<class name="3" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 3)" />
+				<class name="4" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 4)" />
+				<class name="5" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 5)" />
+				<class name="6" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 6)" />
+				<class name="7" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 7)" />
+				<class name="8" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 8)" />
+				<class name="9" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 9)" />
+				<class name="10" type="player_item" var:address="{heap_items} + 0xDFC + (4 * 10)" />
+			</battle_items>
+		</bag>
 		<battle>
-			<!-- Player's active Pokemon: confirmed base 0x30002774 (USUM, found via species=725+HP/ability/move scan) -->
-			<class name="player_active" type="battle_pokemon" var:address="0x30002774" />
-			<!-- Opponent's active Pokemon: confirmed base 0x30009928 (stride 0x69E8 from player base) -->
-			<class name="opponent_active" type="battle_pokemon" var:address="0x30009928" />
+			<property name="in_battle" type="bool" />
+			<property name="party_position" type="int" />
+			<other>
+				<property name="battle" type="int" />
+				<property name="battle_end" type="int" />
+				<property name="outcome" type="int" />
+				<property name="prize_money" type="int" />
+			</other>
+			<player>
+				<property name="party_position" type="int" />
+				<property name="team_count" type="int" />
+			</player>
+			<opponent>
+				<property name="id" type="int" />
+				<property name="trainer_class" type="int" />
+				<property name="team_count" type="int" />
+				<property name="party_position" type="int" />
+			</opponent>
+			<opponent_2>
+				<property name="id" type="int" />
+			</opponent_2>
+			<class name="player_active" type="battle_pokemon" var:address="{player_active}" />
+			<class name="opponent_active" type="battle_pokemon" var:address="{opponent_active}" />
+			<player_team>
+				<class name="0" type="battle_pokemon" var:address="0x30002774 + (0x330 * 0)" />
+				<class name="1" type="battle_pokemon" var:address="0x30002774 + (0x330 * 1)" />
+				<class name="2" type="battle_pokemon" var:address="0x30002774 + (0x330 * 2)" />
+				<class name="3" type="battle_pokemon" var:address="0x30002774 + (0x330 * 3)" />
+				<class name="4" type="battle_pokemon" var:address="0x30002774 + (0x330 * 4)" />
+				<class name="5" type="battle_pokemon" var:address="0x30002774 + (0x330 * 5)" />
+			</player_team>
+			<opponent_team>
+				<class name="0" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 0)" />
+				<class name="1" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 1)" />
+				<class name="2" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 2)" />
+				<class name="3" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 3)" />
+				<class name="4" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 4)" />
+				<class name="5" type="battle_pokemon" var:address="0x30004DB4 + (0x330 * 5)" />
+			</opponent_team>
 		</battle>
+		<overworld>
+			<property name="map_index" type="int" address="0x303A4568" length="4" />
+			<property name="map_name"  type="string" />
+		</overworld>
+		<game_time>
+			<property name="hours"   type="int" address="0x33F8127C" length="2" />
+			<property name="minutes" type="int" address="0x33F8127E" />
+			<property name="seconds" type="int" address="0x33F8127F" />
+		</game_time>
 		<meta>
 			<property name="generation"     type="int"    value="7" />
 			<property name="game_name"      type="string" value="Ultra Sun and Ultra Moon" />
 			<property name="game_type"      type="string" value="Sequel Versions" />
 			<property name="state"          type="string" />
 			<property name="state_enemy"    type="string" />
-			<!-- <property name="global_pointer" type="int" address="0x2101D2C" length="4"/> -->
-			<!-- <property name="enemy_pointer"  type="int" address="{global_pointer} + 0x352F4" length="4"/> -->
+			<property name="saves"          type="int" address="{save_block} + 0x69774" length="4" />
 		</meta>
-	</properties>
+		</properties>
 
 	<references>
 		<defaultCharacterMap>

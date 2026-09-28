@@ -64,14 +64,85 @@ const hidden_power_types = {
     15: "Dark",
 };
 
-function getGamestate() {
+const BATTLE_FLAG = 0x3417F98C;
+const BATTLE_OBJ_LO = 0x32580000;
+const BATTLE_OBJ_HI = 0x32584000;
+const BATTLE_PLAYER = 0x30002774;
+const BATTLE_ENEMY = 0x30004DB4;
+const BATTLE_SLOT = 0x330;
+const BATTLE_PLAYER_PTR = 0x30000404;
+const BATTLE_ENEMY_PTR = 0x30000420;
+const BATTLE_PLAYER_COUNT = 0x3000041C;
+const BATTLE_ENEMY_COUNT = 0x30000438;
+const BATTLE_OBJ_DELTA = 0xC;
+const ZONE_FALLBACK = 0x30372744;
+const ZONE_FOLLOW = 0x30372860;
+
+// Location name per zone: zonedata ParentMap looked up in the gen 7 location list.
+const ZONE_NAMES = [
+    "Route 1", "Route 1", "Route 3", "Route 2", "Kala’e Bay", "Melemele Sea", "Melemele Sea", "Hau’oli City",
+    "Hau’oli City", "Hau’oli City", "Iki Town", "Iki Town", "Iki Town", "Mahalo Trail", "Mahalo Trail", "Ruins of Conflict",
+    "Ruins of Conflict", "Ruins of Conflict", "Ten Carat Hill", "Ten Carat Hill", "Hau’oli Cemetery", "Melemele Meadow", "Seaward Cave", "Berry Fields",
+    "Verdant Cavern", "Verdant Cavern", "Route 1", "Route 1", "Route 1", "Route 1", "Iki Town", "Iki Town",
+    "Iki Town", "Iki Town", "Iki Town", "Iki Town", "Iki Town", "Route 1", "Route 1", "Hau’oli City",
+    "Route 2", "Route 2", "Hau’oli City", "Hau’oli City", "Hau’oli City", "Berry Fields", "Route 1", "Route 1",
+    "Route 1", "Route 1", "Route 1", "Route 1", "Route 1", "Route 1", "Hau’oli City", "Hau’oli City",
+    "Hau’oli City", "Hau’oli City", "Hau’oli City", "Hau’oli City", "Hau’oli City", "Hau’oli City", "Route 2", "Route 2",
+    "Hau’oli City", "Route 1", "Hau’oli City", "Route 2", "Route 4", "Route 5", "Route 6", "Route 7",
+    "Route 8", "Route 9", "Hano Grand Resort", "Hano Beach", "Paniola Town", "Heahea City", "Konikoni City", "Royal Avenue",
+    "Ruins of Life", "Ruins of Life", "Ruins of Life", "Memorial Hill", "Akala Outskirts", "Diglett’s Tunnel", "Wela Volcano Park", "Wela Volcano Park",
+    "Brooklet Hill", "Brooklet Hill", "Brooklet Hill", "Lush Jungle", "Lush Jungle", "Lush Jungle", "Lush Jungle", "Lush Jungle",
+    "Paniola Town", "Paniola Town", "Paniola Town", "Paniola Town", "Konikoni City", "Konikoni City", "Konikoni City", "Konikoni City",
+    "Konikoni City", "Konikoni City", "Konikoni City", "Konikoni City", "Konikoni City", "Heahea City", "Heahea City", "Heahea City",
+    "Heahea City", "Heahea City", "Heahea City", "Heahea City", "Heahea City", "Heahea City", "Heahea City", "Route 8",
+    "Hano Grand Resort", "Royal Avenue", "Route 8", "Route 8", "Royal Avenue", "Konikoni City", "Konikoni City", "Route 9",
+    "Battle Royal Dome", "Route 8", "Paniola Ranch", "Paniola Ranch", "Paniola Ranch", "Heahea City", "Heahea City", "Royal Avenue",
+    "Route 8", "Konikoni City", "Paniola Town", "Route 5", "Route 10", "Route 11", "Ula’ula Beach", "Route 13",
+    "Tapu Village", "Route 14", "Route 15", "Route 16", "Route 17", "Route 12", "Malie City", "Malie City",
+    "Po Town", "Haina Desert", "Haina Desert", "Haina Desert", "Haina Desert", "Haina Desert", "Haina Desert", "Haina Desert",
+    "Haina Desert", "Ula’ula Meadow", "Malie Garden", "Mount Hokulani", "Blush Mountain", "Ruins of Abundance", "Ruins of Abundance", "Ruins of Abundance",
+    "Lake of the Sunne", "Lake of the Sunne", "Lake of the Sunne", "Lake of the Sunne", "Lake of the Moone", "Lake of the Moone", "Lake of the Moone", "Lake of the Moone",
+    "Mount Lanakila", "Mount Lanakila", "Mount Lanakila", "Mount Lanakila", "Mount Lanakila", "Shady House", "Shady House", "Shady House",
+    "Shady House", "Shady House", "Shady House", "Shady House", "Shady House", "Shady House", "Shady House", "Shady House",
+    "Thrifty Megamart", "Thrifty Megamart", "Thrifty Megamart", "Malie City", "Malie City", "Malie City", "Malie City", "Malie City",
+    "Malie City", "Malie City", "Malie City", "Malie City", "Malie City", "Malie City", "Route 15", "Route 15",
+    "Route 15", "Route 13", "Route 13", "Route 17", "Route 16", "Hokulani Observatory", "Hokulani Observatory", "Hokulani Observatory",
+    "Blush Mountain", "Route 13", "Route 13", "Pokémon League", "Pokémon League", "Pokémon League", "Pokémon League", "Pokémon League",
+    "Pokémon League", "Malie City", "Tapu Village", "Po Town", "Route 16", "Mount Lanakila", "Mount Hokulani", "Poni Wilds",
+    "Ancient Poni Path", "Poni Breaker Coast", "Poni Grove", "Poni Plains", "Poni Coast", "Poni Gauntlet", "Seafolk Village", "Poni Meadow",
+    "Vast Poni Canyon", "Vast Poni Canyon", "Vast Poni Canyon", "Vast Poni Canyon", "Vast Poni Canyon", "Vast Poni Canyon", "Altar of the Sunne", "Altar of the Sunne",
+    "Altar of the Moone", "Altar of the Moone", "Ruins of Hope", "Ruins of Hope", "Ruins of Hope", "Resolution Cave", "Resolution Cave", "Exeggutor Island",
+    "Seafolk Village", "Seafolk Village", "Seafolk Village", "Seafolk Village", "Seafolk Village", "Ancient Poni Path", "Ancient Poni Path", "Seafolk Village",
+    "Battle Tree", "Battle Tree", "Battle Tree", "Battle Tree", "Aether Paradise", "Aether Paradise", "Aether Paradise", "Aether Paradise",
+    "Aether Paradise", "Aether Paradise", "Aether Paradise", "Aether Paradise", "Aether Paradise", "Aether Paradise", "Aether Paradise", "Aether Paradise",
+    "Aether Paradise", "Route 1", "Route 1", "Ultra Deep Sea", "Route 1", "Route 1", "Route 1", "Route 1",
+    "Route 1", "Route 1", "Route 1", "Route 1", "Route 1", "Route 1", "Route 1",
+];
+
+function readU32Addr(address) {
+    return memory.defaultNamespace.get_bytes(address, 4).get_uint32_le() >>> 0;
+}
+
+function readU16Addr(address) {
+    return memory.defaultNamespace.get_bytes(address, 2).get_uint16_le();
+}
+
+function readU8Addr(address) {
+    return memory.defaultNamespace.get_bytes(address, 1).get_byte(0);
+}
+
+function battleObject() {
     try {
-        const species = getValue("battle.opponent_active.species");
-        if (species) {
-            return "Battle";
+        const ptr = readU32Addr(BATTLE_FLAG);
+        if (ptr >= BATTLE_OBJ_LO && ptr < BATTLE_OBJ_HI) {
+            return ptr;
         }
     } catch (e) {}
-    return "Overworld";
+    return 0;
+}
+
+function getGamestate() {
+    return battleObject() ? "Battle" : "Overworld";
 }
 
 function getMetaEnemyState(state, battle_outcomes, enemyBarSyncedHp) {
@@ -227,6 +298,20 @@ function decryptLiveParty() {
     }
 }
 
+function countPartySlots() {
+    let count = 0;
+    for (let slotIndex = 0; slotIndex < 6; slotIndex++) {
+        try {
+            const startingAddress = PARTY_BASE + (SLOT_SIZE * slotIndex);
+            const ec = memory.defaultNamespace.get_bytes(startingAddress, 4).get_uint32_le();
+            if (ec !== 0) {
+                count++;
+            }
+        } catch (e) {}
+    }
+    return count;
+}
+
 function bindSaveDerived(found) {
     variables.save_block = found;
     variables.heap_money = found + MONEY_FROM_TID;
@@ -255,15 +340,10 @@ function resolveSaveBlock() {
     variables.reload_addresses = !previous || previous !== current || !money || !items;
 }
 
-const BATTLE_PLAYER = 0x30002774;
-const BATTLE_SLOT = 0x330;
-const BATTLE_ACTIVE_PTR = 0x30000404;
-const BATTLE_OBJ_DELTA = 0xC;
-
-function findPlayerFieldIndex() {
+function fieldIndex(ptrAddr, slotBase) {
     try {
-        const ptr = memory.defaultNamespace.get_bytes(BATTLE_ACTIVE_PTR, 4).get_uint32_le();
-        const rel = (ptr - (BATTLE_PLAYER - BATTLE_OBJ_DELTA)) >>> 0;
+        const ptr = readU32Addr(ptrAddr);
+        const rel = (ptr - (slotBase - BATTLE_OBJ_DELTA)) >>> 0;
         if (rel % BATTLE_SLOT === 0) {
             const idx = rel / BATTLE_SLOT;
             if (idx >= 0 && idx <= 5) {
@@ -274,17 +354,84 @@ function findPlayerFieldIndex() {
     return 0;
 }
 
-function resolvePlayerActive() {
-    const idx = findPlayerFieldIndex();
-    const addr = BATTLE_PLAYER + (idx * BATTLE_SLOT);
-    try { setValue("battle.party_position", idx); } catch (e) {}
-    if (variables.player_active !== addr) {
-        variables.player_active = addr;
+function bindActive(name, addr) {
+    if (variables[name] !== addr) {
+        variables[name] = addr;
         variables.reload_addresses = true;
     }
 }
 
+function resolveActiveBattlers() {
+    const pIdx = fieldIndex(BATTLE_PLAYER_PTR, BATTLE_PLAYER);
+    const eIdx = fieldIndex(BATTLE_ENEMY_PTR, BATTLE_ENEMY);
+    bindActive("player_active", BATTLE_PLAYER + (pIdx * BATTLE_SLOT));
+    bindActive("opponent_active", BATTLE_ENEMY + (eIdx * BATTLE_SLOT));
+    try { setValue("battle.party_position", pIdx); } catch (e) {}
+    try { setValue("battle.player.party_position", pIdx); } catch (e) {}
+    try { setValue("battle.opponent.party_position", eIdx); } catch (e) {}
+}
+
+function safeSet(path, value) {
+    try { setValue(path, value); } catch (e) {}
+}
+
+function resolveBattle() {
+    const obj = battleObject();
+    const inBattle = !!obj;
+    safeSet("battle.in_battle", inBattle);
+    safeSet("battle.other.battle", inBattle ? 1 : 0);
+    safeSet("meta.state", inBattle ? "Battle" : "Overworld");
+    safeSet("meta.state_enemy", inBattle ? "Battle" : null);
+    if (!inBattle) {
+        safeSet("battle.other.battle_end", 0);
+        safeSet("battle.other.outcome", 0);
+        safeSet("battle.other.prize_money", 0);
+        safeSet("battle.opponent.id", 0);
+        safeSet("battle.opponent.trainer_class", 0);
+        safeSet("battle.opponent.team_count", 0);
+        safeSet("battle.opponent_2.id", 0);
+        safeSet("battle.player.team_count", 0);
+        return;
+    }
+    try {
+        safeSet("battle.opponent.id", readU16Addr(obj + 0xB00));
+        safeSet("battle.opponent.trainer_class", readU16Addr(obj + 0xB02));
+        safeSet("battle.opponent_2.id", readU16Addr(obj + 0xB1C));
+        safeSet("battle.other.prize_money", readU32Addr(obj + 0xA68));
+        safeSet("battle.other.battle_end", readU32Addr(obj + 0xA50));
+        safeSet("battle.other.outcome", readU8Addr(obj + 0xA7C));
+    } catch (e) {}
+    try { safeSet("battle.player.team_count", readU32Addr(BATTLE_PLAYER_COUNT)); } catch (e) {}
+    try { safeSet("battle.opponent.team_count", readU32Addr(BATTLE_ENEMY_COUNT)); } catch (e) {}
+}
+
+function validZone(z) {
+    return z > 0 && z < ZONE_NAMES.length;
+}
+
+function resolveOverworld() {
+    if (battleObject()) {
+        return;
+    }
+    try {
+        const follow = readU32Addr(ZONE_FOLLOW);
+        const fallback = readU32Addr(ZONE_FALLBACK);
+        const zone = validZone(follow) ? follow : fallback;
+        if (!validZone(zone)) {
+            return;
+        }
+        safeSet("overworld.map_index", zone);
+        safeSet("overworld.map_name", ZONE_NAMES[zone]);
+    } catch (e) {}
+}
+
 function preprocessor() {
+    if (!variables.player_active) {
+        variables.player_active = BATTLE_PLAYER;
+    }
+    if (!variables.opponent_active) {
+        variables.opponent_active = BATTLE_ENEMY;
+    }
     try {
         decryptLiveParty();
     } catch (e) {
@@ -298,20 +445,15 @@ function preprocessor() {
         }
         variables.reload_addresses = false;
     }
-    resolvePlayerActive();
+    resolveActiveBattlers();
 }
 
 function postprocessor() {
     try {
-        const species = getValue("battle.opponent_active.species");
-        const inBattle = !!species;
-        setValue("battle.in_battle", inBattle);
-        setValue("meta.state", inBattle ? "Battle" : "Overworld");
-        setValue("meta.state_enemy", inBattle ? "Battle" : null);
-    } catch (e) {
-        try { setValue("battle.in_battle", false); } catch (err) {}
-        try { setValue("meta.state", "Overworld"); } catch (err) {}
-    }
+        setValue("player.team_count", countPartySlots());
+    } catch (e) {}
+    resolveBattle();
+    resolveOverworld();
 }
 
 export { getBattleMode, getBattleOutcome, getEncounterRate, getGamestate, getMetaEnemyState, preprocessor, postprocessor };
