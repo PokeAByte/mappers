@@ -7,12 +7,23 @@ It will not have the same level of functionality as the most up-to-date version:
 This one is provided so that users can continue to use software that was programmed using these property paths
 For all new software, please use the paths within 'pokemon_gold_silver.xml'
 -->
+<!-- NOTE (unfixed): this mapper id is also used by 'pokemon_crystal_deprecated.xml'. -->
 
-<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Gold and Silver - Deprecated Mapper" platform="GBC" version="1.1.1"
+<mapper id="38d10a42-f779-4b3c-9b51-79b1dbcdade4" name="Pokemon Gold and Silver - Deprecated Mapper" platform="GBC" version="1.2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
 
+  <memory>
+    <!-- Header                  <read start="0x0000" end="0x00FF" /> -->
+    <!-- VRAM                --> <read start="0x8000" end="0x9FFF" />
+    <!-- External RAM Bank 1     <read start="0xA000" end="0xAFFF" /> -->
+    <!-- External RAM Bank 2     <read start="0xB000" end="0xBFFF" /> -->
+    <!-- Work RAM Bank 0     --> <read start="0xC000" end="0xCFFF" />
+    <!-- Work RAM Bank 1     --> <read start="0xD000" end="0xDFFF" />
+    <!-- I/O Registers           <read start="0xFF00" end="0xFF7F" /> -->
+    <!-- High RAM            --> <read start="0xFF80" end="0xFFFE" />
+  </memory>
 <classes>
     <pokemonInParty>
       <property name="nickname"      address="{nicknameAddress}" type="string" reference="defaultCharacterMap" length="11" />
@@ -90,18 +101,24 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <property name="noteLength" address="{address} + 44" type="int" />
     </audioChannel>
     <roamer>
-      <property name="species"       offset="0" type="int" reference="pokemonSpecies" />
-      <property name="pokedexNumber" offset="0" type="int" reference="pokemonPokedexNumbers" />
-      <property name="level"     offset="1" type="int" />
-      <property name="mapGroup"  offset="2" type="int" reference="mapGroups" />
-      <property name="mapNumber" offset="3" type="int" />
-      <property name="hp"        offset="4" type="int" />
+      <property name="species"       address="{address} + 0" type="int" reference="pokemonSpecies" />
+      <property name="pokedexNumber" address="{address} + 0" type="int" reference="pokemonPokedexNumbers" />
+      <property name="level"     address="{address} + 1" type="int" length="1" />
+      <property name="mapGroup"  address="{address} + 2" type="int" length="1" reference="mapGroups" />
+      <property name="mapNumber" address="{address} + 3" type="int" length="1" />
+      <property name="hp"        address="{address} + 4" type="int" length="1" />
     </roamer>
   </classes>
   <properties>
+    <new_props>
+      <property name="wScriptRunning" type="int" address="0xD15F" />
+      <property name="hOAMUpdate" type="int" address="0xFFDA" />
+    </new_props>
     <player>
-      <property name="playerId" type="int" address="0xD1A1" length="2" description="The active player ID" />
-      <property name="name"     type="string" address="0xD1A3" length="11" />
+      <property name="playerId"  type="int" address="0xD1A1" length="2" description="The active player ID" />
+      <property name="name"      type="string" address="0xD1A3" length="11" />
+      <property name="gender"    type="string" value="Male" description="Gold and Silver only have a male player character" />
+      <property name="teamCount" type="int" address="0xDA22" />
       <team>
         <class name="0" type="pokemonInParty" var:address="0xDA2A" var:nicknameAddress="0xDB8C" />
         <class name="1" type="pokemonInParty" var:address="0xDA5A" var:nicknameAddress="0xDB97" />
@@ -110,100 +127,239 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
         <class name="4" type="pokemonInParty" var:address="0xDAEA" var:nicknameAddress="0xDBB8" />
         <class name="5" type="pokemonInParty" var:address="0xDB1A" var:nicknameAddress="0xDBC3" />
       </team>
+      <property name="itemCount" type="int" address="0xD5B7" />
+      <otNames>
+        <property name="0" type="string" address="0xDB4A" length="11" />
+        <property name="1" type="string" address="0xDB55" length="11" />
+        <property name="2" type="string" address="0xDB60" length="11" />
+        <property name="3" type="string" address="0xDB6B" length="11" />
+        <property name="4" type="string" address="0xDB76" length="11" />
+        <property name="5" type="string" address="0xDB81" length="11" />
+      </otNames>
+      <items>
+        <class name="0"  type="playerItem" var:address="0xD5B8" />
+        <class name="1"  type="playerItem" var:address="0xD5BA" />
+        <class name="2"  type="playerItem" var:address="0xD5BC" />
+        <class name="3"  type="playerItem" var:address="0xD5BE" />
+        <class name="4"  type="playerItem" var:address="0xD5C0" />
+        <class name="5"  type="playerItem" var:address="0xD5C2" />
+        <class name="6"  type="playerItem" var:address="0xD5C4" />
+        <class name="7"  type="playerItem" var:address="0xD5C6" />
+        <class name="8"  type="playerItem" var:address="0xD5C8" />
+        <class name="9"  type="playerItem" var:address="0xD5CA" />
+        <class name="10" type="playerItem" var:address="0xD5CC" />
+        <class name="11" type="playerItem" var:address="0xD5CE" />
+        <class name="12" type="playerItem" var:address="0xD5D0" />
+        <class name="13" type="playerItem" var:address="0xD5D2" />
+        <class name="14" type="playerItem" var:address="0xD5D4" />
+        <class name="15" type="playerItem" var:address="0xD5D6" />
+        <class name="16" type="playerItem" var:address="0xD5D8" />
+        <class name="17" type="playerItem" var:address="0xD5DA" />
+        <class name="18" type="playerItem" var:address="0xD5DC" />
+        <class name="19" type="playerItem" var:address="0xD5DE" />
+        <class name="20" type="playerItem" var:address="0xD5E0" />
+      </items>
+      <property name="pokeBallCount" type="int" address="0xD5FC" />
+      <pokeBalls>
+        <class name="0"  type="playerItem" var:address="0xD5FD" />
+        <class name="1"  type="playerItem" var:address="0xD5FF" />
+        <class name="2"  type="playerItem" var:address="0xD601" />
+        <class name="3"  type="playerItem" var:address="0xD603" />
+        <class name="4"  type="playerItem" var:address="0xD605" />
+        <class name="5"  type="playerItem" var:address="0xD607" />
+        <class name="6"  type="playerItem" var:address="0xD609" />
+        <class name="7"  type="playerItem" var:address="0xD60B" />
+        <class name="8"  type="playerItem" var:address="0xD60D" />
+        <class name="9"  type="playerItem" var:address="0xD60F" />
+        <class name="10" type="playerItem" var:address="0xD611" />
+        <class name="11" type="playerItem" var:address="0xD613" />
+      </pokeBalls>
       <property name="totalKeyItems" type="int" address="0xD5E1" />
+      <keyItems>
+        <property name="0"  type="int" address="0xD5E2" reference="items" />
+        <property name="1"  type="int" address="0xD5E3" reference="items" />
+        <property name="2"  type="int" address="0xD5E4" reference="items" />
+        <property name="3"  type="int" address="0xD5E5" reference="items" />
+        <property name="4"  type="int" address="0xD5E6" reference="items" />
+        <property name="5"  type="int" address="0xD5E7" reference="items" />
+        <property name="6"  type="int" address="0xD5E8" reference="items" />
+        <property name="7"  type="int" address="0xD5E9" reference="items" />
+        <property name="8"  type="int" address="0xD5EA" reference="items" />
+        <property name="9"  type="int" address="0xD5EB" reference="items" />
+        <property name="10" type="int" address="0xD5EC" reference="items" />
+        <property name="11" type="int" address="0xD5ED" reference="items" />
+        <property name="12" type="int" address="0xD5EE" reference="items" />
+        <property name="13" type="int" address="0xD5EF" reference="items" />
+        <property name="14" type="int" address="0xD5F0" reference="items" />
+        <property name="15" type="int" address="0xD5F1" reference="items" />
+        <property name="16" type="int" address="0xD5F2" reference="items" />
+        <property name="17" type="int" address="0xD5F3" reference="items" />
+        <property name="18" type="int" address="0xD5F4" reference="items" />
+        <property name="19" type="int" address="0xD5F5" reference="items" />
+        <property name="20" type="int" address="0xD5F6" reference="items" />
+        <property name="21" type="int" address="0xD5F7" reference="items" />
+        <property name="22" type="int" address="0xD5F8" reference="items" />
+        <property name="23" type="int" address="0xD5F9" reference="items" />
+        <property name="24" type="int" address="0xD5FA" reference="items" />
+        <property name="25" type="int" address="0xD5FB" reference="items" />
+      </keyItems>
       <tms>
-        <property name="TM01-DynamicPunch" type="int" address="0xD859" />
-        <property name="TM02-Headbutt"     type="int" address="0xD85A" />
-        <property name="TM03-Curse"        type="int" address="0xD85B" />
-        <property name="TM04-Rollout"      type="int" address="0xD85C" />
-        <property name="TM05-Roar"         type="int" address="0xD85D" />
-        <property name="TM06-Toxic"        type="int" address="0xD85E" />
-        <property name="TM07-Zap Cannon"   type="int" address="0xD85F" />
-        <property name="TM08-Rock Smash"   type="int" address="0xD860" />
-        <property name="TM09-Psych Up"     type="int" address="0xD861" />
-        <property name="TM10-Hidden Power" type="int" address="0xD862" />
-        <property name="TM11-Sunny Day"    type="int" address="0xD863" />
-        <property name="TM12-Sweet Scent"  type="int" address="0xD864" />
-        <property name="TM13-Snore"        type="int" address="0xD865" />
-        <property name="TM14-Blizzard"     type="int" address="0xD866" />
-        <property name="TM15-Hyper Beam"   type="int" address="0xD867" />
-        <property name="TM16-Icy Wind"     type="int" address="0xD868" />
-        <property name="TM17-Protect"      type="int" address="0xD869" />
-        <property name="TM18-Rain Dance"   type="int" address="0xD86A" />
-        <property name="TM19-Giga Drain"   type="int" address="0xD86B" />
-        <property name="TM20-Endure"       type="int" address="0xD86C" />
-        <property name="TM21-Frustration"  type="int" address="0xD86D" />
-        <property name="TM22-SolarBeam"    type="int" address="0xD86E" />
-        <property name="TM23-Iron Tail"    type="int" address="0xD86F" />
-        <property name="TM24-DragonBreath" type="int" address="0xD870" />
-        <property name="TM25-Thunder"      type="int" address="0xD871" />
-        <property name="TM26-Earthquake"   type="int" address="0xD872" />
-        <property name="TM27-Return"       type="int" address="0xD873" />
-        <property name="TM28-Dig"          type="int" address="0xD874" />
-        <property name="TM29-Psychic"      type="int" address="0xD875" />
-        <property name="TM30-Shadow Ball"  type="int" address="0xD876" />
-        <property name="TM31-Mud-Slap"     type="int" address="0xD877" />
-        <property name="TM32-Double Team"  type="int" address="0xD878" />
-        <property name="TM33-Ice Punch"    type="int" address="0xD879" />
-        <property name="TM34-Swagger"      type="int" address="0xD87A" />
-        <property name="TM35-Sleep Talk"   type="int" address="0xD87B" />
-        <property name="TM36-Sludge Bomb"  type="int" address="0xD87C" />
-        <property name="TM37-Sandstorm"    type="int" address="0xD87D" />
-        <property name="TM38-Fire Blast"   type="int" address="0xD87E" />
-        <property name="TM39-Swift"        type="int" address="0xD87F" />
-        <property name="TM40-Defense Curl" type="int" address="0xD880" />
-        <property name="TM41-ThunderPunch" type="int" address="0xD881" />
-        <property name="TM42-Dream Eater"  type="int" address="0xD882" />
-        <property name="TM43-Detect"       type="int" address="0xD883" />
-        <property name="TM44-Rest"         type="int" address="0xD884" />
-        <property name="TM45-Attract"      type="int" address="0xD885" />
-        <property name="TM46-Thief"        type="int" address="0xD886" />
-        <property name="TM47-Steel Wing"   type="int" address="0xD887" />
-        <property name="TM48-Fire Punch"   type="int" address="0xD888" />
-        <property name="TM49-Fury Cutter"  type="int" address="0xD889" />
-        <property name="TM50-Nightmare"    type="int" address="0xD88A" />
+        <property name="TM01-DynamicPunch" type="int" address="0xD57E" />
+        <property name="TM02-Headbutt"     type="int" address="0xD57F" />
+        <property name="TM03-Curse"        type="int" address="0xD580" />
+        <property name="TM04-Rollout"      type="int" address="0xD581" />
+        <property name="TM05-Roar"         type="int" address="0xD582" />
+        <property name="TM06-Toxic"        type="int" address="0xD583" />
+        <property name="TM07-Zap Cannon"   type="int" address="0xD584" />
+        <property name="TM08-Rock Smash"   type="int" address="0xD585" />
+        <property name="TM09-Psych Up"     type="int" address="0xD586" />
+        <property name="TM10-Hidden Power" type="int" address="0xD587" />
+        <property name="TM11-Sunny Day"    type="int" address="0xD588" />
+        <property name="TM12-Sweet Scent"  type="int" address="0xD589" />
+        <property name="TM13-Snore"        type="int" address="0xD58A" />
+        <property name="TM14-Blizzard"     type="int" address="0xD58B" />
+        <property name="TM15-Hyper Beam"   type="int" address="0xD58C" />
+        <property name="TM16-Icy Wind"     type="int" address="0xD58D" />
+        <property name="TM17-Protect"      type="int" address="0xD58E" />
+        <property name="TM18-Rain Dance"   type="int" address="0xD58F" />
+        <property name="TM19-Giga Drain"   type="int" address="0xD590" />
+        <property name="TM20-Endure"       type="int" address="0xD591" />
+        <property name="TM21-Frustration"  type="int" address="0xD592" />
+        <property name="TM22-SolarBeam"    type="int" address="0xD593" />
+        <property name="TM23-Iron Tail"    type="int" address="0xD594" />
+        <property name="TM24-DragonBreath" type="int" address="0xD595" />
+        <property name="TM25-Thunder"      type="int" address="0xD596" />
+        <property name="TM26-Earthquake"   type="int" address="0xD597" />
+        <property name="TM27-Return"       type="int" address="0xD598" />
+        <property name="TM28-Dig"          type="int" address="0xD599" />
+        <property name="TM29-Psychic"      type="int" address="0xD59A" />
+        <property name="TM30-Shadow Ball"  type="int" address="0xD59B" />
+        <property name="TM31-Mud-Slap"     type="int" address="0xD59C" />
+        <property name="TM32-Double Team"  type="int" address="0xD59D" />
+        <property name="TM33-Ice Punch"    type="int" address="0xD59E" />
+        <property name="TM34-Swagger"      type="int" address="0xD59F" />
+        <property name="TM35-Sleep Talk"   type="int" address="0xD5A0" />
+        <property name="TM36-Sludge Bomb"  type="int" address="0xD5A1" />
+        <property name="TM37-Sandstorm"    type="int" address="0xD5A2" />
+        <property name="TM38-Fire Blast"   type="int" address="0xD5A3" />
+        <property name="TM39-Swift"        type="int" address="0xD5A4" />
+        <property name="TM40-Defense Curl" type="int" address="0xD5A5" />
+        <property name="TM41-ThunderPunch" type="int" address="0xD5A6" />
+        <property name="TM42-Dream Eater"  type="int" address="0xD5A7" />
+        <property name="TM43-Detect"       type="int" address="0xD5A8" />
+        <property name="TM44-Rest"         type="int" address="0xD5A9" />
+        <property name="TM45-Attract"      type="int" address="0xD5AA" />
+        <property name="TM46-Thief"        type="int" address="0xD5AB" />
+        <property name="TM47-Steel Wing"   type="int" address="0xD5AC" />
+        <property name="TM48-Fire Punch"   type="int" address="0xD5AD" />
+        <property name="TM49-Fury Cutter"  type="int" address="0xD5AE" />
+        <property name="TM50-Nightmare"    type="int" address="0xD5AF" />
       </tms>
       <hms>
-        <property name="HM01-Cut"       type="bool" address="0xD88B" bits="1" />
-        <property name="HM02-Fly"       type="bool" address="0xD88C" bits="1" />
-        <property name="HM03-Surf"      type="bool" address="0xD88D" bits="1" />
-        <property name="HM04-Strength"  type="bool" address="0xD88E" bits="1" />
-        <property name="HM05-Flash"     type="bool" address="0xD88F" bits="1" />
-        <property name="HM06-Whirlpool" type="bool" address="0xD890" bits="1" />
-        <property name="HM07-Waterfall" type="bool" address="0xD891" bits="1" />
+        <!-- NOTE (unfixed): an owned HM's count byte is 1, which sets bit 0, but these read bits="1"
+             (mirrors the Crystal deprecated mapper). -->
+        <property name="HM01-Cut"       type="bool" address="0xD5B0" bits="1" />
+        <property name="HM02-Fly"       type="bool" address="0xD5B1" bits="1" />
+        <property name="HM03-Surf"      type="bool" address="0xD5B2" bits="1" />
+        <property name="HM04-Strength"  type="bool" address="0xD5B3" bits="1" />
+        <property name="HM05-Flash"     type="bool" address="0xD5B4" bits="1" />
+        <property name="HM06-Whirlpool" type="bool" address="0xD5B5" bits="1" />
+        <property name="HM07-Waterfall" type="bool" address="0xD5B6" bits="1" />
       </hms>
       <badges>
         <property name="badge1"  type="bool" address="0xD57C" bits="0" description="zephyrBadge" />
         <property name="badge2"  type="bool" address="0xD57C" bits="1" description="hiveBadge" />
-        <property name="badge3"  type="bool" address="0xD57C" bits="3" description="plainBadge" />
-        <property name="badge4"  type="bool" address="0xD57C" bits="4" description="fogBadge" />
-        <property name="badge5"  type="bool" address="0xD57C" bits="2" description="stormBadge" />
-        <property name="badge6"  type="bool" address="0xD57C" bits="5" description="mineralBadge" />
+        <property name="badge3"  type="bool" address="0xD57C" bits="2" description="plainBadge" />
+        <property name="badge4"  type="bool" address="0xD57C" bits="3" description="fogBadge" />
+        <property name="badge5"  type="bool" address="0xD57C" bits="5" description="stormBadge" />
+        <property name="badge6"  type="bool" address="0xD57C" bits="4" description="mineralBadge" />
         <property name="badge7"  type="bool" address="0xD57C" bits="6" description="glacierBadge" />
         <property name="badge8"  type="bool" address="0xD57C" bits="7" description="risingBadge" />
-        <property name="badge9"  type="bool" address="0xD57C" bits="0" description="boulderBadge" />
-        <property name="badge10" type="bool" address="0xD57C" bits="1" description="cascadeBadge" />
-        <property name="badge11" type="bool" address="0xD57C" bits="2" description="thunderBadge" />
-        <property name="badge12" type="bool" address="0xD57C" bits="3" description="rainbowBadge" />
-        <property name="badge13" type="bool" address="0xD57C" bits="4" description="soulBadge" />
-        <property name="badge14" type="bool" address="0xD57C" bits="5" description="marshBadge" />
-        <property name="badge15" type="bool" address="0xD57C" bits="6" description="volcanoBadge" />
-        <property name="badge16" type="bool" address="0xD57C" bits="7" description="earthBadge" />
+        <property name="badge9"  type="bool" address="0xD57D" bits="0" description="boulderBadge" />
+        <property name="badge10" type="bool" address="0xD57D" bits="1" description="cascadeBadge" />
+        <property name="badge11" type="bool" address="0xD57D" bits="2" description="thunderBadge" />
+        <property name="badge12" type="bool" address="0xD57D" bits="3" description="rainbowBadge" />
+        <property name="badge13" type="bool" address="0xD57D" bits="4" description="soulBadge" />
+        <property name="badge14" type="bool" address="0xD57D" bits="5" description="marshBadge" />
+        <property name="badge15" type="bool" address="0xD57D" bits="6" description="volcanoBadge" />
+        <property name="badge16" type="bool" address="0xD57D" bits="7" description="earthBadge" />
       </badges>
-      <property name="money"       type="int" address="0xD573" length="3" />
-      <property name="moneyMom"    type="int" address="0xD576" length="3" />
-      <property name="coins"       type="int" address="0xD57A" length="2" />
+      <pokegear>
+        <property name="mapCard"       type="bool" address="0xD67C" bits="0" />
+        <property name="radioCard"     type="bool" address="0xD67C" bits="1" />
+        <property name="phoneCard"     type="bool" address="0xD67C" bits="2" />
+        <property name="expansionCard" type="bool" address="0xD67C" bits="3" />
+        <property name="obtained"      type="bool" address="0xD67C" bits="7" />
+      </pokegear>
+      <property name="money"     type="int"  address="0xD573" length="3" />
+      <property name="moneyMom"  type="int"  address="0xD576" length="3" />
+      <property name="momSaving" type="bool" address="0xD579" bits="0" />
+      <property name="coins"     type="int"  address="0xD57A" length="2" />
       <property name="repelStepsLeft" type="int" address="0xD9EB" />
       <property name="bikeStatus"     type="int" address="0xD682" reference="bikeStatus" />
     </player>
     <overworld>
-      <property name="mapGroup"  type="int" address="0xDA00"  reference="mapGroups" />
+      <property name="mapGroup"  type="int" address="0xDA00" reference="mapGroups" />
+      <property name="mapGroupIndex"  type="int" address="0xDA00" />
       <property name="mapNumber" type="int" address="0xDA01" />
+      <property name="mapName"   type="int" address="0xDA00" length="2" reference="maps" />
+      <property name="mapIndex"  type="int" address="0xDA00" length="2" />
+      <property name="y" type="int" address="0xDA02" />
+      <property name="x" type="int" address="0xDA03" />
     </overworld>
+    <events>
+      <property name="beatChampion" type="bool" address="0xD86E" bits="4" />
+      <property name="beat_elite_four" type="bool" address="0xD7BF" bits="4" />
+      <property name="healed_moomoo" type="bool" address="0xD7BE" bits="5" />
+      <property name="rival_new_bark_town" type="bool" address="0xD88E" bits="5" />
+      <radio_tower>
+        <property name="elm_called_about_stolen_pokemon" type="bool" address="0xD7BF" bits="3" />
+        <property name="goldenrod_city_rocket_scout" type="bool" address="0xD890" bits="4" />
+        <property name="goldenrod_city_rocket_takeover" type="bool" address="0xD890" bits="5" />
+        <property name="radio_tower_rocket_takeover" type="bool" address="0xD890" bits="6" />
+        <property name="goldenrod_city_civilians" type="bool" address="0xD890" bits="7" />
+        <property name="radio_tower_civilians_after" type="bool" address="0xD891" bits="0" />
+        <property name="radio_tower_blackbelt_blocks_stairs" type="bool" address="0xD891" bits="1" />
+      </radio_tower>
+      <rare_candies>
+        <property name="olivine_lighthouse_5f_rare_candy" type="bool" address="0xD883" bits="5" />
+        <property name="lake_of_rage_hidden_rare_candy" type="bool" address="0xD7CD" bits="6" />
+        <property name="violet_city_rare_candy" type="bool" address="0xD87F" bits="4" />
+        <property name="route_34_hidden_rare_candy" type="bool" address="0xD7CB" bits="7" />
+        <property name="route_27_rare_candy" type="bool" address="0xD88C" bits="4" />
+        <property name="mount_mortar_2f_inside_rare_candy" type="bool" address="0xD887" bits="1" />
+        <property name="whirl_island_b1f_hidden_rare_candy" type="bool" address="0xD7C9" bits="7" />
+        <property name="listened_to_fan_club_president" type="bool" address="0xD7D1" bits="4" />
+        <property name="cinnabar_island_hidden_rare_candy" type="bool" address="0xD7D6" bits="6" />
+        <property name="route_28_hidden_rare_candy" type="bool" address="0xD7CB" bits="3" />
+        <property name="tin_tower_5f_rare_candy" type="bool" address="0xD880" bits="7" />
+      </rare_candies>
+    </events>
+    <roamers>
+      <class name="0" type="roamer" var:address="0xDD1A" />
+      <class name="1" type="roamer" var:address="0xDD21" />
+      <class name="2" type="roamer" var:address="0xDD28" />
+    </roamers>
+
+    <encounterRate>
+      <property name="disable_encounters" type="bool" address="0xD571" bits="5" />
+      <property name="morning" type="int" address="0xD145" />
+      <property name="day"     type="int" address="0xD146" />
+      <property name="night"   type="int" address="0xD147" />
+      <property name="water"   type="int" address="0xD148" />
+    </encounterRate>
+
     <battle>
-      <property name="mode" type="int" address="0xD116"  reference="battleModes" />
-      <property name="battleStart" type="int" address="0xC664" />
+      <property name="mode"   type="int" address="0xD116" reference="battleModes" />
+      <property name="type"   type="int" address="0xD119" reference="battleTypes" />
+      <property name="result" type="int" address="0xCFE9" reference="battleResults" />
+      <property name="textBuffer"  type="string" address="0xCF6B" length="11" />
+      <property name="battleStart" type="int" address="0xD150" />
       <trainer>
+        <property name="name"  type="string" address="0xDD40" length="11" />
+        <property name="class" type="int" address="0xD118" reference="trainerClasses" />
+        <property name="id"    type="int" address="0xD11B" />
+        <property name="totalPokemon" type="int" address="0xDD55" />
         <team>
           <class name="0" type="pokemonInParty" var:address="0xDD5D" var:nicknameAddress="0xDEBF" />
           <class name="1" type="pokemonInParty" var:address="0xDD8D" var:nicknameAddress="0xDECA" />
@@ -216,27 +372,30 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <yourPokemon>
         <property name="partyPos" type="int" address="0xCFC6" />
         <property name="heldItem"  type="int" address="0xCB0D" reference="items" />
+        <property name="species" type="int" address="0xCB0C" reference="pokemonSpecies" />
+        <property name="pokedexNumber" type="int" address="0xCB0C" reference="pokemonPokedexNumbers" />
         <property name="type1" type="int" address="0xCB2A" reference="types" />
         <property name="type2" type="int" address="0xCB2B" reference="types" />
-        <property name="modStageAttack"         type="int" address="0xC6CC" reference="stageModifiers" />
-        <property name="modStageDefense"        type="int" address="0xC6CD" reference="stageModifiers" />
-        <property name="modStageSpeed"          type="int" address="0xC6CE" reference="stageModifiers" />
-        <property name="modStageSpecialAttack"  type="int" address="0xC6CF" reference="stageModifiers" />
-        <property name="modStageSpecialDefense" type="int" address="0xC6D0" reference="stageModifiers" />
-        <property name="modStageAccuracy"       type="int" address="0xC6D1" reference="stageModifiers" />
-        <property name="modStageEvasion"        type="int" address="0xC6D2" reference="stageModifiers" />
-        <property name="hp" type="int" address="0xCB1C" length="2" />
-        <property name="maxHp"   type="int" address="0xCBBF" length="2" description="The Player's active Pokemon's max HP" />
-        <property name="attack"  type="int" address="0xCBC1" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="defense" type="int" address="0xCBC3" length="2" description="The Player's active Pokemon's Defense stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="speed"   type="int" address="0xCBC5" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="specialAttack" type="int" address="0xCBC7" length="2" description="The Player's active Pokemon's Special Attack stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="specialDefense" type="int" address="0xCBC9" length="2" description="The Player's active Pokemon's Special Defense stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="battleStatAttack"         type="int" address="0xCBC1" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="battleStatDefense"        type="int" address="0xCBC3" length="2" description="The Player's active Pokemon's Defense stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="battleStatSpecialAttack"  type="int" address="0xCBC7" length="2" description="The Player's active Pokemon's Special Attack stat as calculated in battle (badge boosts and stat modifications included" />
-        <property name="battleStatSpecialDefense" type="int" address="0xCBC9" length="2" description="The Player's active Pokemon's Special Defense stat as calculated in battle (badge boosts and stat modifications included"/>
-        <property name="battleStatSpeed"          type="int" address="0xCBC5" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="level" type="int" address="0xCB19" />
+        <property name="modStageAttack"         type="int" address="0xCBAA" reference="stageModifiers" />
+        <property name="modStageDefense"        type="int" address="0xCBAB" reference="stageModifiers" />
+        <property name="modStageSpeed"          type="int" address="0xCBAC" reference="stageModifiers" />
+        <property name="modStageSpecialAttack"  type="int" address="0xCBAD" reference="stageModifiers" />
+        <property name="modStageSpecialDefense" type="int" address="0xCBAE" reference="stageModifiers" />
+        <property name="modStageAccuracy"       type="int" address="0xCBAF" reference="stageModifiers" />
+        <property name="modStageEvasion"        type="int" address="0xCBB0" reference="stageModifiers" />
+        <property name="hp"      type="int" address="0xCB1C" length="2" />
+        <property name="maxHp"   type="int" address="0xCB1E" length="2" description="The Player's active Pokemon's max HP" />
+        <property name="attack"  type="int" address="0xCB20" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="defense" type="int" address="0xCB22" length="2" description="The Player's active Pokemon's Defense stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="speed"   type="int" address="0xCB24" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="specialAttack" type="int" address="0xCB26" length="2" description="The Player's active Pokemon's Special Attack stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="specialDefense" type="int" address="0xCB28" length="2" description="The Player's active Pokemon's Special Defense stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="battleStatAttack"         type="int" address="0xCB20" length="2" description="The Player's active Pokemon's Attack stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="battleStatDefense"        type="int" address="0xCB22" length="2" description="The Player's active Pokemon's Defense stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="battleStatSpecialAttack"  type="int" address="0xCB26" length="2" description="The Player's active Pokemon's Special Attack stat as calculated in battle (badge boosts and stat modifications included" />
+        <property name="battleStatSpecialDefense" type="int" address="0xCB28" length="2" description="The Player's active Pokemon's Special Defense stat as calculated in battle (badge boosts and stat modifications included"/>
+        <property name="battleStatSpeed"          type="int" address="0xCB24" length="2" description="The Player's active Pokemon's Speed stat as calculated in battle (badge boosts and stat modifications included" />
         <property name="move1" type="int" address="0xCB0E" reference="moves" />
         <property name="move2" type="int" address="0xCB0F" reference="moves" />
         <property name="move3" type="int" address="0xCB10" reference="moves" />
@@ -249,12 +408,58 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
         <property name="move2ppUp" type="int" address="0xCB15" after-read-value-expression="Math.floor(x / 64)" />
         <property name="move3ppUp" type="int" address="0xCB16" after-read-value-expression="Math.floor(x / 64)" />
         <property name="move4ppUp" type="int" address="0xCB17" after-read-value-expression="Math.floor(x / 64)" />
+        <counters>
+          <property name="rollout"    type="int" address="0xCB50" />
+          <property name="confuse"    type="int" address="0xCB51" />
+          <property name="toxic"      type="int" address="0xCB52" />
+          <property name="disable"    type="int" address="0xCB53" />
+          <property name="encore"     type="int" address="0xCB54" />
+          <property name="perish"     type="int" address="0xCB55" />
+          <property name="furyCutter" type="int" address="0xCB56" />
+          <property name="protect"    type="int" address="0xCB57" />
+        </counters>
+        <status>
+          <property name="nightmare"   type="bool" address="0xCB46" bits="0" />
+          <property name="curse"       type="bool" address="0xCB46" bits="1" />
+          <property name="protect"     type="bool" address="0xCB46" bits="2" />
+          <property name="identified"  type="bool" address="0xCB46" bits="3" />
+          <property name="perish"      type="bool" address="0xCB46" bits="4" />
+          <property name="endure"      type="bool" address="0xCB46" bits="5" />
+          <property name="rollout"     type="bool" address="0xCB46" bits="6" />
+          <property name="in_love"     type="bool" address="0xCB46" bits="7" />
+          <property name="curled"      type="bool" address="0xCB47" bits="0" />
+          <property name="bide"        type="bool" address="0xCB48" bits="0" />
+          <property name="rampage"     type="bool" address="0xCB48" bits="1" />
+          <property name="in_loop"     type="bool" address="0xCB48" bits="2" />
+          <property name="flinched"    type="bool" address="0xCB48" bits="3" />
+          <property name="charged"     type="bool" address="0xCB48" bits="4" />
+          <property name="underground" type="bool" address="0xCB48" bits="5" />
+          <property name="flying"      type="bool" address="0xCB48" bits="6" />
+          <property name="confused"    type="bool" address="0xCB48" bits="7" />
+          <property name="x_accuracy"  type="bool" address="0xCB49" bits="0" />
+          <property name="mist"        type="bool" address="0xCB49" bits="1" />
+          <property name="focus_energ" type="bool" address="0xCB49" bits="2" />
+          <property name="substitute"  type="bool" address="0xCB49" bits="4" />
+          <property name="recharge"    type="bool" address="0xCB49" bits="5" />
+          <property name="rage"        type="bool" address="0xCB49" bits="6" />
+          <property name="leech_seed"  type="bool" address="0xCB49" bits="7" />
+          <property name="toxic"       type="bool" address="0xCB4A" bits="0" />
+          <property name="transformed" type="bool" address="0xCB4A" bits="3" />
+          <property name="encored"     type="bool" address="0xCB4A" bits="4" />
+          <property name="lock_on"     type="bool" address="0xCB4A" bits="5" />
+          <property name="destiny_bon" type="bool" address="0xCB4A" bits="6" />
+          <property name="cant_run"    type="bool" address="0xCB4A" bits="7" />
+        </status>
       </yourPokemon>
       <enemyPokemon>
         <property name="partyPos" type="int" address="0xCB41" />
+        <property name="species" type="int" address="0xD0EF" reference="pokemonSpecies" />
+        <property name="pokedexNumber" type="int" address="0xD0EF" reference="pokemonPokedexNumbers" />
+        <property name="type1" type="int" address="0xD10D" reference="types" />
+        <property name="type2" type="int" address="0xD10E" reference="types" />
         <property name="heldItem" type="int" address="0xD0F0" reference="items" />
         <property name="level"    type="int" address="0xD0FC" />
-        <property name="statsCondition" type="int" address="0xD9FD" reference="statusConditions" />
+        <property name="statsCondition" type="int" address="0xD0FD" reference="statusConditions" />
         <property name="move1" type="int" address="0xD0F1" reference="moves" />
         <property name="move2" type="int" address="0xD0F2" reference="moves" />
         <property name="move3" type="int" address="0xD0F3" reference="moves" />
@@ -271,21 +476,89 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
         <property name="hp"             type="int" address="0xD0FF" length="2" />
         <property name="attack"         type="int" address="0xD103" length="2" />
         <property name="defense"        type="int" address="0xD105" length="2" />
-        <property name="speed"          type="int" address="0xD107" length="2" />
         <property name="specialAttack"  type="int" address="0xD109" length="2" />
         <property name="specialDefense" type="int" address="0xD10B" length="2" />
+        <property name="speed"          type="int" address="0xD107" length="2" />
+        <property name="modStageAttack"         type="int" address="0xCBB2" reference="stageModifiers" />
+        <property name="modStageDefense"        type="int" address="0xCBB3" reference="stageModifiers" />
+        <property name="modStageSpeed"          type="int" address="0xCBB4" reference="stageModifiers" />
+        <property name="modStageSpecialAttack"  type="int" address="0xCBB5" reference="stageModifiers" />
+        <property name="modStageSpecialDefense" type="int" address="0xCBB6" reference="stageModifiers" />
+        <property name="modStageAccuracy"       type="int" address="0xCBB7" reference="stageModifiers" />
+        <property name="modStageEvasion"        type="int" address="0xCBB8" reference="stageModifiers" />
+        <property name="enemyMonEnd" type="int" address="0xD116" />
         <property name="dvAttack"  type="int" address="0xD0F5" bits="4-7" />
         <property name="dvDefense" type="int" address="0xD0F5" bits="0-3" />
         <property name="dvSpeed"   type="int" address="0xD0F6" bits="4-7" />
         <property name="dvSpecial" type="int" address="0xD0F6" bits="0-3" />
+        <counters>
+          <property name="rollout"    type="int" address="0xCB58" />
+          <property name="confuse"    type="int" address="0xCB59" />
+          <property name="toxic"      type="int" address="0xCB5A" />
+          <property name="disable"    type="int" address="0xCB5B" />
+          <property name="encore"     type="int" address="0xCB5C" />
+          <property name="perish"     type="int" address="0xCB5D" />
+          <property name="furyCutter" type="int" address="0xCB5E" />
+          <property name="protect"    type="int" address="0xCB5F" />
+        </counters>
+        <status>
+          <property name="nightmare"   type="bool" address="0xCB4B" bits="0" />
+          <property name="curse"       type="bool" address="0xCB4B" bits="1" />
+          <property name="protect"     type="bool" address="0xCB4B" bits="2" />
+          <property name="identified"  type="bool" address="0xCB4B" bits="3" />
+          <property name="perish"      type="bool" address="0xCB4B" bits="4" />
+          <property name="endure"      type="bool" address="0xCB4B" bits="5" />
+          <property name="rollout"     type="bool" address="0xCB4B" bits="6" />
+          <property name="in_love"     type="bool" address="0xCB4B" bits="7" />
+          <property name="curled"      type="bool" address="0xCB4C" bits="0" />
+          <property name="bide"        type="bool" address="0xCB4D" bits="0" />
+          <property name="rampage"     type="bool" address="0xCB4D" bits="1" />
+          <property name="in_loop"     type="bool" address="0xCB4D" bits="2" />
+          <property name="flinched"    type="bool" address="0xCB4D" bits="3" />
+          <property name="charged"     type="bool" address="0xCB4D" bits="4" />
+          <property name="underground" type="bool" address="0xCB4D" bits="5" />
+          <property name="flying"      type="bool" address="0xCB4D" bits="6" />
+          <property name="confused"    type="bool" address="0xCB4D" bits="7" />
+          <property name="x_accuracy"  type="bool" address="0xCB4E" bits="0" />
+          <property name="mist"        type="bool" address="0xCB4E" bits="1" />
+          <property name="focus_energ" type="bool" address="0xCB4E" bits="2" />
+          <property name="substitute"  type="bool" address="0xCB4E" bits="4" />
+          <property name="recharge"    type="bool" address="0xCB4E" bits="5" />
+          <property name="rage"        type="bool" address="0xCB4E" bits="6" />
+          <property name="leech_seed"  type="bool" address="0xCB4E" bits="7" />
+          <property name="toxic"       type="bool" address="0xCB4F" bits="0" />
+          <property name="transformed" type="bool" address="0xCB4F" bits="3" />
+          <property name="encored"     type="bool" address="0xCB4F" bits="4" />
+          <property name="lock_on"     type="bool" address="0xCB4F" bits="5" />
+          <property name="destiny_bon" type="bool" address="0xCB4F" bits="6" />
+          <property name="cant_run"    type="bool" address="0xCB4F" bits="7" />
+        </status>
       </enemyPokemon>
       <info>
-        <property name="miss" type="int" address="0xcb45" length="1" />
-        <property name="turnEnded" type="int" address="0xcb92" length="1" />
-        <property name="playerTurnTaken" type="int" address="0xcbbb" length="1" />
-        <property name="enemyTurnTaken" type="int" address="0xcbba" length="1" />
+        <property name="currentDamage"  type="int" address="0xD141" length="2" />
+        <property name="lowHealthAlarm" type="int" address="0xCBDB" reference="lowHealthAlarm" />
+        <property name="miss"  type="int" address="0xCB45" length="1" />
+        <property name="turnEnded"  type="int" address="0xCB92" length="1" />
+        <property name="playerTurnTaken"  type="int" address="0xCBBB" length="1" />
+        <property name="enemyTurnTaken"  type="int" address="0xCBBA" length="1" />
       </info>
       <field>
+        <player>
+          <property name="statusSafeguard"    type="bool" address="0xCBDD" bits="2" />
+          <property name="statusReflect"      type="bool" address="0xCBDD" bits="4" />
+          <property name="statusLightScreen"  type="bool" address="0xCBDD" bits="3" />
+          <property name="safeguardCount"     type="int"  address="0xCBDF" />
+          <property name="lightScreenCount"   type="int"  address="0xCBE0" />
+          <property name="reflectCount"       type="int"  address="0xCBE1" />
+        </player>
+        <enemy>
+          <property name="statusSafeguard"    type="bool" address="0xCBDE" bits="2" />
+          <property name="statusReflect"      type="bool" address="0xCBDE" bits="4" />
+          <property name="statusLightScreen"  type="bool" address="0xCBDE" bits="3" />
+          <property name="safeguardCount"     type="int"  address="0xCBE3" />
+          <property name="lightScreenCount"   type="int"  address="0xCBE4" />
+          <property name="reflectCount"       type="int"  address="0xCBE5" />
+        </enemy>
         <playerScreens>
           <property name="statusSafeguard"   type="bool" address="0xCBDD" bits="2" />
           <property name="statusReflect"     type="bool" address="0xCBDD" bits="4" />
@@ -302,51 +575,179 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
           <property name="lightScreenCount"  type="int" address="0xCBE4" />
           <property name="reflectCount"      type="int" address="0xCBE5" />
         </enemyScreens>
+        <property name="weather"  type="int" address="0xCBE8" reference="weather" />
+        <property name="weatherCount" type="int" address="0xCBE9" />
       </field>
+      <weather>
+        <property name="weatherType"  type="int" address="0xCBE8" reference="weather" />
+        <property name="weatherTurnsRemaining" type="int" address="0xCBE9" />
+      </weather>
+      <property name="lowHealthAlarm" type="int" address="0xCBDB" reference="lowHealthAlarm" />
     </battle>
+
     <options>
-      <property name="textSpeed2"       type="bool" address="0xD199" bits="1" description="False+False = Fast, True+False = Mid, True+True = Slow" />
-      <property name="textSpeed3"       type="bool" address="0xD199" bits="2" description="False+False = Fast, True+False = Mid, True+True = Slow" />
-      <property name="sound"            type="bool" address="0xD199" bits="5" description="Mono = False, Stereo = True" />
-      <property name="battleStyle"      type="bool" address="0xD199" bits="6" description="Shift = False, Set = True"/>
-      <property name="battleAnimations" type="bool" address="0xD199" bits="7" description="On = False, Off = True" />
+      <property name="textSpeed"        type="int"  address="0xD199" bits="0-2" />
+      <property name="textSpeed2"       type="bool" address="0xD199" bits="1"   description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="textSpeed3"       type="bool" address="0xD199" bits="2"   description="False+False = Fast, True+False = Mid, True+True = Slow" />
+      <property name="noTextDelay"      type="bool" address="0xD199" bits="3" />
+      <wTextboxFlags>
+        <property name="FAST_TEXT_DELAY_F" type="bool" address="0xD19C" bits="0" />
+        <property name="NO_TEXT_DELAY_F"   type="bool" address="0xD19C" bits="1" />
+      </wTextboxFlags>
+      <property name="sound"            type="bool" address="0xD199" bits="5"   description="Mono = False, Stereo = True" />
+      <property name="battleStyle"      type="bool" address="0xD199" bits="6"   description="Shift = False, Set = True" />
+      <property name="battleAnimations" type="bool" address="0xD199" bits="7"   description="On = False, Off = True" />
     </options>
+
     <rival>
-      <property name="rivalName" type="string" address="0xD1BC" length="11" />
+      <property name="rivalName" type="string" address="0xD1B9" length="11" />
     </rival>
+
     <gameTime>
       <property name="hours"   type="int" address="0xD1EB" length="2" />
       <property name="minutes" type="int" address="0xD1ED" />
       <property name="seconds" type="int" address="0xD1EE" />
       <property name="frames"  type="int" address="0xD1EF" />
     </gameTime>
+
     <time>
       <current>
-        <property name="day"       type="int" address="0xd1f2" reference="dayNames" after-read-value-expression="x % 7" />
-        <property name="hour"      type="int" address="0xff96" />
-        <property name="minute"    type="int" address="0xff98" />
-        <property name="second"    type="int" address="0xff9a" />
-        <property name="dst"       type="bool" address="0xd1e8" bits="7" />
-        <property name="timeOfDay" type="int" address="0xd157" reference="timeOfDay" />
+        <property name="day"       type="int" address="0xD1F2" reference="dayNames" after-read-value-expression="x % 7" />
+        <property name="hour"      type="int" address="0xFF96" />
+        <property name="minute"    type="int" address="0xFF98" />
+        <property name="second"    type="int" address="0xFF9A" />
+        <property name="dst"       type="bool" address="0xD1E8" bits="7" />
+        <property name="timeOfDay" type="int" address="0xD157" reference="timeOfDay" />
       </current>
       <start>
-        <property name="day"    type="int" address="0xd1dc" reference="dayNames" />
-        <property name="hour"   type="int" address="0xd1dd" />
-        <property name="minute" type="int" address="0xd1de" />
-        <property name="second" type="int" address="0xd1df" />
+        <property name="day"       type="int" address="0xD1DC" reference="dayNames" />
+        <property name="hour"      type="int" address="0xD1DD" />
+        <property name="minute"    type="int" address="0xD1DE" />
+        <property name="second"    type="int" address="0xD1DF" />
       </start>
       <rtc>
-        <property name="day"    type="int" address="0xff8f" length="2" after-read-value-expression="(x % 512) % 7" />
-        <property name="hour"   type="int" address="0xff91" />
-        <property name="minute" type="int" address="0xff92" />
-        <property name="second" type="int" address="0xff93" />
+        <property name="day"       type="int" address="0xFF8F" length="2" after-read-value-expression="(x % 512) % 7" />
+        <property name="hour"      type="int" address="0xFF91" />
+        <property name="minute"    type="int" address="0xFF92" />
+        <property name="second"    type="int" address="0xFF93" />
       </rtc>
     </time>
+
+    <gameClock>
+      <property name="day" type="int" address="0xD1DC" reference="dayNames" />
+    </gameClock>
+
+    <audio>
+      <property name="mapMusic" type="int" address="0xC1C0" />
+      <property name="currentSound" type="int" address="0xC1BF" />
+      <property name="musicId" type="int" address="0xC19D" length="2" />
+      <property name="musicBank" type="int" address="0xC19F" />
+      <property name="channel1MusicID" type="int" address="0xC001" length="2" />
+      <property name="channel2MusicID" type="int" address="0xC033" length="2" />
+      <property name="channel3MusicID" type="int" address="0xC065" length="2" />
+      <property name="channel4MusicID" type="int" address="0xC097" length="2" />
+      <property name="channel5MusicID" type="int" address="0xC0C9" length="2" />
+      <property name="channel6MusicID" type="int" address="0xC0FB" length="2" />
+      <property name="channel7MusicID" type="int" address="0xC12D" length="2" />
+      <property name="channel8MusicID" type="int" address="0xC15F" length="2" />
+    </audio>
+    <screen>
+      <text>
+        <property name="prompt" type="string" address="0xC506" reference="textPrompt" />
+      </text>
+      <menu>
+        <!-- Same address as pokemon_gold_silver.xml; not verified against the G/S symbols -->
+        <property name="currentItem" type="int" address="0xCC26" />
+        <property name="wMenuFlags" type="int" address="0xCEB8" />
+        <property name="wMenuCursorPosition"           type="int" address="0xCEBF" />
+        <property name="wPCItemsCursor"                type="int" address="0xC1D7" />
+        <property name="wPartyMenuCursor"              type="int" address="0xCFC9" />
+        <property name="wItemsPocketCursor"            type="int" address="0xCFCA" />
+        <property name="wKeyItemsPocketCursor"         type="int" address="0xCFCB" />
+        <property name="wBallsPocketCursor"            type="int" address="0xCFCC" />
+        <property name="wTMHMPocketCursor"             type="int" address="0xCFCD" />
+        <property name="wPCItemsScrollPosition"        type="int" address="0xC1D8" />
+        <property name="wItemsPocketScrollPosition"    type="int" address="0xCFCF" />
+        <property name="wKeyItemsPocketScrollPosition" type="int" address="0xCFD0" />
+        <property name="wBallsPocketScrollPosition"    type="int" address="0xCFD1" />
+        <property name="wTMHMPocketScrollPosition"     type="int" address="0xCFD2" />
+      </menu>
+      <tiles>
+        <column1>
+          <property name="tile1" type="int" address="0x980C" />
+          <property name="tile2" type="int" address="0x982C" />
+          <property name="tile3" type="int" address="0x984C" />
+          <property name="tile4" type="int" address="0x986C" />
+          <property name="tile5" type="int" address="0x988C" />
+          <property name="tile6" type="int" address="0x98AC" />
+          <property name="tile7" type="int" address="0x98CC" />
+        </column1>
+      </tiles>
+      <vRamState>
+          <property name="text_box" type="bool" address="0xCFE5" bits="6"/>
+          <property name="surfing"  type="bool" address="0xCFE5" bits="7"/>
+      </vRamState>
+    </screen>
+
+    <!-- Squidgy Custom Properties -->
+    <squidgyExtras>
+      <property name="repelStepsRemaining" type="int" address="0xD9EB" />
+      <property name="walkingType"         type="int" address="0xD682" reference="walkingTypes" />
+      <property name="warpLocation"        type="int" address="0xD9FB" length="2" reference="mapLocations" />
+      <property name="mapLocation"         type="int" address="0xDA00" length="2" reference="mapLocations" />
+      <property name="bikeCall"            type="int" address="0xD9EC" length="2" />
+      <property name="poisonSteps"         type="int" address="0xD9BE" length="1" />
+      <property name="battleFriendship"    type="int" address="0xCB18" />
+      <battleDVs>
+          <property name="battleDVAttack"  type="int" address="0xCB12" bits="4-7" />
+          <property name="battleDVDefense" type="int" address="0xCB12" bits="0-3" />
+          <property name="battleDVSpeed"   type="int" address="0xCB13" bits="4-7" />
+          <property name="battleDVSpecial" type="int" address="0xCB13" bits="0-3" />
+      </battleDVs>
+      <enemyDVs>
+          <property name="enemyDVAttack"  type="int" address="0xD0F5" bits="4-7" />
+          <property name="enemyDVDefense" type="int" address="0xD0F5" bits="0-3" />
+          <property name="enemyDVSpeed"   type="int" address="0xD0F6" bits="4-7" />
+          <property name="enemyDVSpecial" type="int" address="0xD0F6" bits="0-3" />
+      </enemyDVs>
+      <property name="inBattleHeldItem" type="int" address="0xCB0D" reference="items" />
+      <property name="playerMinimized"  type="int" address="0xCBDC"/>
+      <property name="enemyMinimized"   type="int" address="0xCBD8"/>
+      <property name="hallOfFame"       type="bool" address="0xD571" bits="6" />
+      <property name="isFlash"          type="bool" address="0xD571" bits="2" />
+      <property name="wildEncounters"   type="bool" address="0xD571" bits="5" />
+      <property name="battleFlag64"     type="int" address="0xCB42" />
+      <property name="playerMoveUsed1"  type="int" address="0xCBF0" reference="moves" />
+      <property name="playerMoveUsed2"  type="int" address="0xCBF1" reference="moves" />
+      <property name="playerMoveUsed3"  type="int" address="0xCBF2" reference="moves" />
+      <property name="playerMoveUsed4"  type="int" address="0xCBF3" reference="moves" />
+      <eliteFourRooms>
+          <property name="willRoomID"  type="int" address="0xD6C4" />
+          <property name="kogaRoomID"  type="int" address="0xD6C5" />
+          <property name="brunoRoomID" type="int" address="0xD6C6" />
+          <property name="karenRoomID" type="int" address="0xD6C7" />
+          <property name="lanceRoomID" type="int" address="0xD6C8" />
+      </eliteFourRooms>
+      <enemyBaseStats>
+          <property name="enemyBaseHP"  type="int" address="0xD121" />
+          <property name="enemyBaseAtk" type="int" address="0xD122" />
+          <property name="enemyBaseDef" type="int" address="0xD123" />
+          <property name="enemyBaseSpA" type="int" address="0xD125" />
+          <property name="enemyBaseSpD" type="int" address="0xD126" />
+          <property name="enemyBaseSpe" type="int" address="0xD124" />
+      </enemyBaseStats>
+    </squidgyExtras>
+
+    <scripts>
+      <property name="wScriptRunning" type="int" address="0xD15F" />
+      <property name="hOAMUpdate" type="int" address="0xFFDA" />
+    </scripts>
     <meta>
-        <property name="generation" type="int" value="2" />
-        <property name="gameName"   type="string" value="Gold and Silver" />
-        <property name="gameType"   type="string" value="Originals" />
-        <property name="mapperType" type="string" value="Deprecated" />
+      <property name="generation" type="int" value="2" />
+      <property name="gameName"   type="string" value="Gold and Silver" />
+      <property name="gameType"   type="string" value="Originals" />
+      <property name="mapperType" type="string" value="Deprecated" />
+      <property name="state" type="string" />
     </meta>
   </properties>
   <references>
@@ -1968,220 +2369,114 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0x00" />
     </mapNumber>
     <maps>
-      <entry key="0x1801" value="{ group: 'NEW BARK', name: 'ROUTE 26' }" />
-      <entry key="0x1802" value="{ group: 'NEW BARK', name: 'ROUTE 27' }" />
-      <entry key="0x1803" value="{ group: 'NEW BARK', name: 'ROUTE 29' }" />
-      <entry key="0x1804" value="{ group: 'NEW BARK', name: 'NEW BARK TOWN' }" />
-      <entry key="0x1805" value="{ group: 'NEW BARK', name: 'ELM'S LAB' }" />
-      <entry key="0x1806" value="{ group: 'NEW BARK', name: 'PLAYER'S HOUSE 1F' }" />
-      <entry key="0x1807" value="{ group: 'NEW BARK', name: 'PLAYER'S HOUSE 2F' }" />
-      <entry key="0x1808" value="{ group: 'NEW BARK', name: 'PLAYER'S NEIGHBOR'S HOUSE' }" />
-      <entry key="0x1809" value="{ group: 'NEW BARK', name: 'ELM'S HOUSE' }" />
-      <entry key="0x180A" value="{ group: 'NEW BARK', name: 'ROUTE 26 HEAL HOUSE' }" />
-      <entry key="0x180B" value="{ group: 'NEW BARK', name: 'DAY OF WEEK SIBLINGS HOUSE' }" />
-      <entry key="0x180C" value="{ group: 'NEW BARK', name: 'ROUTE 27 SANDSTORM HOUSE' }" />
-      <entry key="0x180D" value="{ group: 'NEW BARK', name: 'ROUTE 29-ROUTE 46 GATE' }" />
-    </maps>
-    <mapLocations>
-      <entry key="0x1804" value="New Bark Town" />
-      <entry key="0x1805" value="New Bark Town" />
-      <entry key="0x1806" value="New Bark Town" />
-      <entry key="0x1808" value="New Bark Town" />
-      <entry key="0x1809" value="New Bark Town" />
-      <entry key="0x1803" value="Route 29" />
-      <entry key="0x180D" value="Route 29" />
-      <entry key="0x0509" value="Route 46" />
-      <entry key="0x1A03" value="Cherrygrove City" />
-      <entry key="0x1A05" value="Cherrygrove City" />
-      <entry key="0x1A08" value="Cherrygrove City" />
-      <entry key="0x1A07" value="Cherrygrove City" />
-      <entry key="0x1A04" value="Cherrygrove City" />
-      <entry key="0x1A01" value="Route 30" />
-      <entry key="0x1A09" value="Route 30" />
-      <entry key="0x1A0A" value="Route 30" />
-      <entry key="0x1A02" value="Route 31" />
-      <entry key="0x034E" value="Dark Cave"  />
-      <entry key="0x0A05" value="Violet City" />
-      <entry key="0x1A0B" value="Violet City" />
-      <entry key="0x0A0A" value="Violet City" />
-      <entry key="0x0A0B" value="Violet City" />
-      <entry key="0x0A08" value="Violet City" />
-      <entry key="0x0A07" value="Violet City" />
-      <entry key="0x0A06" value="Violet City" />
-      <entry key="0x0A09" value="Violet City" />
-      <entry key="0x0A0B" value="Violet City" />
-      <entry key="0x0301" value="Sprout Tower" />
-      <entry key="0x0302" value="Sprout Tower" />
-      <entry key="0x0303" value="Sprout Tower" />
-      <entry key="0x0A03" value="Route 36" />
-      <entry key="0x0A10" value="Ruins of Alph" />
-      <entry key="0x0316" value="Ruins of Alph" />
-      <entry key="0x031C" value="Ruins of Alph" />
-      <entry key="0x0318" value="Ruins of Alph" />
-      <entry key="0x031E" value="Ruins of Alph" />
-      <entry key="0x031B" value="Ruins of Alph" />
-      <entry key="0x0A0C" value="Ruins of Alph" />
-      <entry key="0x031A" value="Ruins of Alph" />
-      <entry key="0x0320" value="Ruins of Alph" />
-      <entry key="0x0319" value="Ruins of Alph" />
-      <entry key="0x031F" value="Ruins of Alph" />
-      <entry key="0x0319" value="Ruins of Alph" />
-      <entry key="0x0317" value="Ruins of Alph" />
-      <entry key="0x0A01" value="Route 32" />
-      <entry key="0x0A0D" value="Route 32" />
-      <entry key="0x0325" value="Union Cave" />
-      <entry key="0x0326" value="Union Cave" />
-      <entry key="0x0327" value="Union Cave" />
-      <entry key="0x0806" value="Route 33" />
-      <entry key="0x0329" value="Slowpoke Well" />
-      <entry key="0x0328" value="Slowpoke Well" />
-      <entry key="0x0807" value="Azalea Town" />
-      <entry key="0x0803" value="Azalea Town" />
-      <entry key="0x0801" value="Azalea Town" />
-      <entry key="0x0802" value="Azalea Town" />
-      <entry key="0x0805" value="Azalea Town" />
-      <entry key="0x0803" value="Azalea Town" />
-      <entry key="0x0804" value="Azalea Town" />
-      <entry key="0x0B16" value="Ilex Forest" />
-      <entry key="0x0334" value="Ilex Forest" />
-      <entry key="0x0B17" value="Ilex Forest" />
-      <entry key="0x0B01" value="Route 34" />
-      <entry key="0x0B18" value="Route 34" />
-      <entry key="0x0B02" value="Goldenrod City" />
-      <entry key="0x0B14" value="Goldenrod City" />
-      <entry key="0x0B02" value="Goldenrod City" />
-      <entry key="0x0B0B" value="Goldenrod City" />
-      <entry key="0x0B0C" value="Goldenrod City" />
-      <entry key="0x0B0D" value="Goldenrod City" />
-      <entry key="0x0B0E" value="Goldenrod City" />
-      <entry key="0x0B0F" value="Goldenrod City" />
-      <entry key="0x0B10" value="Goldenrod City" />
-      <entry key="0x0B11" value="Goldenrod City" />
-      <entry key="0x0B0C" value="Goldenrod City" />
-      <entry key="0x0B12" value="Goldenrod City" />
-      <entry key="0x0B05" value="Goldenrod City" />
-      <entry key="0x0B04" value="Goldenrod City" />
-      <entry key="0x0B03" value="Goldenrod City" />
-      <entry key="0x0B08" value="Goldenrod City" />
-      <entry key="0x0B09" value="Goldenrod City" />
-      <entry key="0x0B0A" value="Goldenrod City" />
-      <entry key="0x0B07" value="Goldenrod City" />
-      <entry key="0x0B0A" value="Goldenrod City" />
-      <entry key="0x0311" value="Radio Tower" />
-      <entry key="0x0312" value="Radio Tower" />
-      <entry key="0x0313" value="Radio Tower" />
-      <entry key="0x0314" value="Radio Tower" />
-      <entry key="0x0315" value="Radio Tower" />
-      <entry key="0x0B13" value="Goldenrod City" />
-      <entry key="0x0B06" value="Goldenrod City" />
-      <entry key="0x0B13" value="Goldenrod City" />
-      <entry key="0x0336" value="Goldenrod City" />
-      <entry key="0x0335" value="Goldenrod City" />
-      <entry key="0x0338" value="Goldenrod City" />
-      <entry key="0x0337" value="Goldenrod City" />
-      <entry key="0x0A0E" value="Goldenrod City" />
-      <entry key="0x0A02" value="Route 35" />
-      <entry key="0x0A0F" value="National Park" />
-      <entry key="0x030F" value="National Park" />
-      <entry key="0x0A11" value="National Park" />
-      <entry key="0x0A04" value="Route 37" />
-      <entry key="0x0401" value="Ecruteak City" />
-      <entry key="0x0402" value="Ecruteak City" />
-      <entry key="0x0409" value="Ecruteak City" />
-      <entry key="0x0405" value="Ecruteak City" />
-      <entry key="0x0408" value="Ecruteak City" />
-      <entry key="0x0403" value="Ecruteak City" />
-      <entry key="0x0406" value="Ecruteak City" />
-      <entry key="0x0404" value="Ecruteak City" />
-      <entry key="0x0406" value="Ecruteak City" />
-      <entry key="0x0407" value="Ecruteak City" />
-      <entry key="0x030D" value="Burned Tower" />
-      <entry key="0x030E" value="Burned Tower" />
-      <entry key="0x0204" value="Ecruteak City" />
-      <entry key="0x0109" value="Ecruteak City" />
-      <entry key="0x010C" value="Route 38" />
-      <entry key="0x010D" value="Route 39" />
-      <entry key="0x010A" value="Route 39" />
-      <entry key="0x010B" value="Route 39" />
-      <entry key="0x010E" value="Olivine City" />
-      <entry key="0x0102" value="Olivine City" />
-      <entry key="0x0106" value="Olivine City" />
-      <entry key="0x0108" value="Olivine City" />
-      <entry key="0x0101" value="Olivine City" />
-      <entry key="0x0107" value="Olivine City" />
-      <entry key="0x0103" value="Olivine City" />
-      <entry key="0x0F08" value="Olivine City" />
-      <entry key="0x0F01" value="Olivine City" />
-      <entry key="0x0105" value="Olivine Punishment House" />
-      <entry key="0x0F03" value="S.S. Aqua" />
-      <entry key="0x0F04" value="S.S. Aqua" />
-      <entry key="0x0F05" value="S.S. Aqua" />
-      <entry key="0x0F06" value="S.S. Aqua" />
-      <entry key="0x0F07" value="S.S. Aqua" />
-      <entry key="0x0F02" value="Vemilion City" />
-      <entry key="0x0F09" value="Vemilion City" />
-      <entry key="0x032A" value="Olivine City" />
-      <entry key="0x032B" value="Olivine City" />
-      <entry key="0x032C" value="Olivine City" />
-      <entry key="0x032D" value="Olivine City" />
-      <entry key="0x032E" value="Olivine City" />
-      <entry key="0x032F" value="Olivine City" />
-      <entry key="0x1601" value="Route 40" />
-      <entry key="0x2215" value="Route 40" />
-      <entry key="0x1610" value="Battle Tower" />
-      <entry key="0x160B" value="Battle Tower" />
-      <entry key="0x1602" value="Route 41" />
-      <entry key="0x1603" value="Cianwood City" />
-      <entry key="0x1604" value="Cianwood City" />
-      <entry key="0x1605" value="Cianwood City" />
-      <entry key="0x1606" value="Cianwood City" />
-      <entry key="0x1607" value="Cianwood City" />
-      <entry key="0x1608" value="Cianwood City" />
-      <entry key="0x1609" value="Cianwood City" />
-      <entry key="0x160A" value="Cianwood City" />
-      <entry key="0x0342" value="Whirl Islands" />
-      <entry key="0x0343" value="Whirl Islands" />
-      <entry key="0x0344" value="Whirl Islands" />
-      <entry key="0x0345" value="Whirl Islands" />
-      <entry key="0x0346" value="Whirl Islands" />
-      <entry key="0x0347" value="Whirl Islands" />
-      <entry key="0x0348" value="Whirl Islands" />
-      <entry key="0x0349" value="Whirl Islands" />
-      <entry key="0x0304" value="Tin Tower" />
-      <entry key="0x0305" value="Tin Tower" />
-      <entry key="0x0306" value="Tin Tower" />
-      <entry key="0x0307" value="Tin Tower" />
-      <entry key="0x0308" value="Tin Tower" />
-      <entry key="0x0309" value="Tin Tower" />
-      <entry key="0x030A" value="Tin Tower" />
-      <entry key="0x030B" value="Tin Tower" />
-      <entry key="0x030C" value="Tin Tower" />
-      <entry key="0x0F0C" value="Tin Tower" />
-      <entry key="0x0205" value="Route 42" />
-      <entry key="0x0339" value="Mt. Mortar" />
-      <entry key="0x033A" value="Mt. Mortar" />
-      <entry key="0x033B" value="Mt. Mortar" />
-      <entry key="0x033C" value="Mt. Mortar" />
-      <entry key="0x0905" value="Route 43" />
-      <entry key="0x0906" value="Lake of Rage"/>
-      <entry key="0x0901" value="Lake of Rage"/>
-      <entry key="0x0902" value="Lake of Rage"/>
-      <entry key="0x0903" value="Mahogany Town"/>
-      <entry key="0x0207" value="Mahogany Town"/>
+      <entry key="0x0101" value="Olivine City"/>
+      <entry key="0x0102" value="Olivine City"/>
+      <entry key="0x0103" value="Olivine City"/>
+      <entry key="0x0105" value="Olivine Punishment House"/>
+      <entry key="0x0106" value="Olivine City"/>
+      <entry key="0x0107" value="Olivine City"/>
+      <entry key="0x0108" value="Olivine City"/>
+      <entry key="0x0109" value="Ecruteak City"/>
+      <entry key="0x010A" value="Route 39"/>
+      <entry key="0x010B" value="Route 39"/>
+      <entry key="0x010C" value="Route 38"/>
+      <entry key="0x010D" value="Route 39"/>
+      <entry key="0x010E" value="Olivine City"/>
       <entry key="0x0201" value="Mahogany Town"/>
-      <entry key="0x0348" value="Mahogany Town"/>
-      <entry key="0x0203" value="Mahogany Town"/>
       <entry key="0x0202" value="Mahogany Town"/>
-      <entry key="0x0330" value="Mahogany Town"/>
-      <entry key="0x0331" value="Rocket Hideout"/>
-      <entry key="0x0332" value="Rocket Hideout"/>
-      <entry key="0x0333" value="Rocket Hideout"/>
+      <entry key="0x0203" value="Mahogany Town"/>
+      <entry key="0x0204" value="Ecruteak City"/>
+      <entry key="0x0205" value="Route 42"/>
       <entry key="0x0206" value="Route 46"/>
-      <entry key="0x033D" value="Ice Path"/>
-      <entry key="0x033E" value="Ice Path"/>
-      <entry key="0x033F" value="Ice Path"/>
-      <entry key="0x0340" value="Ice Path"/>
-      <entry key="0x0341" value="Ice Path"/>
+      <entry key="0x0207" value="Mahogany Town"/>
+      <entry key="0x0301" value="Sprout Tower"/>
+      <entry key="0x0302" value="Sprout Tower"/>
+      <entry key="0x0303" value="Sprout Tower"/>
+      <entry key="0x0304" value="Tin Tower"/>
+      <entry key="0x0305" value="Tin Tower"/>
+      <entry key="0x0306" value="Tin Tower"/>
+      <entry key="0x0307" value="Tin Tower"/>
+      <entry key="0x0308" value="Tin Tower"/>
+      <entry key="0x0309" value="Tin Tower"/>
+      <entry key="0x030A" value="Tin Tower"/>
+      <entry key="0x030B" value="Tin Tower"/>
+      <entry key="0x030C" value="Tin Tower"/>
+      <entry key="0x030D" value="Burned Tower"/>
+      <entry key="0x030E" value="Burned Tower"/>
+      <entry key="0x030F" value="National Park"/>
+      <entry key="0x0311" value="Radio Tower"/>
+      <entry key="0x0312" value="Radio Tower"/>
+      <entry key="0x0313" value="Radio Tower"/>
+      <entry key="0x0314" value="Radio Tower"/>
+      <entry key="0x0315" value="Radio Tower"/>
+      <entry key="0x0316" value="Ruins of Alph"/>
+      <entry key="0x0317" value="Ruins of Alph"/>
+      <entry key="0x0318" value="Ruins of Alph"/>
+      <entry key="0x0319" value="Ruins of Alph"/>
+      <entry key="0x031A" value="Ruins of Alph"/>
+      <entry key="0x031B" value="Ruins of Alph"/>
+      <entry key="0x031C" value="Ruins of Alph"/>
+      <entry key="0x031D" value="Union Cave"/>
+      <entry key="0x031E" value="Union Cave"/>
+      <entry key="0x031F" value="Union Cave"/>
+      <entry key="0x0320" value="Slowpoke Well"/>
+      <entry key="0x0321" value="Slowpoke Well"/>
+      <entry key="0x0322" value="Olivine City"/>
+      <entry key="0x0323" value="Olivine City"/>
+      <entry key="0x0324" value="Olivine City"/>
+      <entry key="0x0325" value="Olivine City"/>
+      <entry key="0x0326" value="Olivine City"/>
+      <entry key="0x0327" value="Olivine City"/>
+      <entry key="0x0328" value="Mahogany Town"/>
+      <entry key="0x0329" value="Rocket Hideout"/>
+      <entry key="0x032A" value="Rocket Hideout"/>
+      <entry key="0x032B" value="Rocket Hideout"/>
+      <entry key="0x032C" value="Ilex Forest"/>
+      <entry key="0x032D" value="Goldenrod City"/>
+      <entry key="0x032E" value="Goldenrod City"/>
+      <entry key="0x032F" value="Goldenrod City"/>
+      <entry key="0x0330" value="Goldenrod City"/>
+      <entry key="0x0331" value="Mt. Mortar"/>
+      <entry key="0x0332" value="Mt. Mortar"/>
+      <entry key="0x0333" value="Mt. Mortar"/>
+      <entry key="0x0334" value="Mt. Mortar"/>
+      <entry key="0x0335" value="Ice Path"/>
+      <entry key="0x0336" value="Ice Path"/>
+      <entry key="0x0337" value="Ice Path"/>
+      <entry key="0x0338" value="Ice Path"/>
+      <entry key="0x0339" value="Ice Path"/>
+      <entry key="0x033A" value="Whirl Islands"/>
+      <entry key="0x033B" value="Whirl Islands"/>
+      <entry key="0x033C" value="Whirl Islands"/>
+      <entry key="0x033D" value="Whirl Islands"/>
+      <entry key="0x033E" value="Whirl Islands"/>
+      <entry key="0x033F" value="Whirl Islands"/>
+      <entry key="0x0340" value="Whirl Islands"/>
+      <entry key="0x0341" value="Whirl Islands"/>
+      <entry key="0x0342" value="Silver Cave"/>
+      <entry key="0x0343" value="Silver Cave"/>
+      <entry key="0x0344" value="Silver Cave"/>
+      <entry key="0x0345" value="Silver Cave"/>
+      <entry key="0x0346" value="Dark Cave"/>
+      <entry key="0x0347" value="Dark Cave"/>
+      <entry key="0x0348" value="Dragon's Den"/>
+      <entry key="0x0349" value="Dragon's Den"/>
+      <entry key="0x034A" value="Tohjo Falls"/>
+      <entry key="0x034B" value="Diglett's Cave"/>
+      <entry key="0x034C" value="Mt. Moon"/>
+      <entry key="0x034D" value="Underground Path"/>
+      <entry key="0x034E" value="Rock Tunnel"/>
+      <entry key="0x034F" value="Rock Tunnel"/>
+      <entry key="0x0352" value="Victory Road"/>
+      <entry key="0x0401" value="Ecruteak City"/>
+      <entry key="0x0402" value="Ecruteak City"/>
+      <entry key="0x0403" value="Ecruteak City"/>
+      <entry key="0x0404" value="Ecruteak City"/>
+      <entry key="0x0405" value="Ecruteak City"/>
+      <entry key="0x0406" value="Ecruteak City"/>
+      <entry key="0x0407" value="Ecruteak City"/>
+      <entry key="0x0408" value="Ecruteak City"/>
+      <entry key="0x0409" value="Ecruteak City"/>
       <entry key="0x0501" value="Blackthorn City"/>
       <entry key="0x0502" value="Blackthorn City"/>
       <entry key="0x0503" value="Blackthorn City"/>
@@ -2189,170 +2484,583 @@ For all new software, please use the paths within 'pokemon_gold_silver.xml'
       <entry key="0x0505" value="Blackthorn City"/>
       <entry key="0x0506" value="Blackthorn City"/>
       <entry key="0x0507" value="Blackthorn City"/>
-      <entry key="0x050A" value="Blackthorn City"/>
       <entry key="0x0508" value="Route 45"/>
-      <entry key="0x034F" value="Dark Cave" />
-      <entry key="0x1802" value="Route 27"/>
-      <entry key="0x0353" value="Tohjo Falls" />
-      <entry key="0x180C" value="Route 27" />
-      <entry key="0x1801" value="Route 26" />
-      <entry key="0x180A" value="Route 26" />
-      <entry key="0x180B" value="Route 26" />
-      <entry key="0x170D" value="Route 26" />
-      <entry key="0x035B" value="Victory Road" />
-      <entry key="0x1001" value="Indigo Plateau" />
-      <entry key="0x1002" value="Pokémon League" />
-      <entry key="0x1003" value="Pokémon League" />
-      <entry key="0x1004" value="Pokémon League" />
-      <entry key="0x1005" value="Pokémon League" />
-      <entry key="0x1006" value="Pokémon League" />
-      <entry key="0x1007" value="Pokémon League" />
-      <entry key="0x1008" value="Hall of Fame"/>
-      <entry key="0x1401" value="Pokémon Center"/>
-      <entry key="0x0202" value="Mahogany Town"/>
-      <entry key="0x1702" value="Route 22"/>
-      <entry key="0x0D06" value="Pallet Town"/>
-      <entry key="0x0D05" value="Pallet Town"/>
-      <entry key="0x0D04" value="Pallet Town"/>
-      <entry key="0x0D03" value="Pallet Town"/>
-      <entry key="0x0D02" value="Pallet Town"/>
-      <entry key="0x0607" value="Route 21"/>
-      <entry key="0x0608" value="Cinnabar Island"/>
+      <entry key="0x0509" value="Route 46"/>
+      <entry key="0x050A" value="Blackthorn City"/>
       <entry key="0x0601" value="Cinnabar Island"/>
-      <entry key="0x0606" value="Route 20"/>
+      <entry key="0x0603" value="Fuchsia City"/>
       <entry key="0x0604" value="Seafoam Islands"/>
       <entry key="0x0605" value="Route 19"/>
+      <entry key="0x0606" value="Route 20"/>
+      <entry key="0x0607" value="Route 21"/>
       <entry key="0x0608" value="Cinnabar Island"/>
-      <entry key="0x0603" value="Fuchsia City"/>
-      <entry key="0x0D01" value="Route 1"/>
-      <entry key="0x1703" value="Viridian City"/>
-      <entry key="0x1709" value="Viridian City"/>
-      <entry key="0x1708" value="Viridian City"/>
-      <entry key="0x1703" value="Viridian City"/>
-      <entry key="0x1705" value="Viridian City"/>
-      <entry key="0x1704" value="Viridian City"/>
-      <entry key="0x1706" value="Viridian City"/>
-      <entry key="0x1707" value="Viridian City"/>
-      <entry key="0x1701" value="Route 2"/>
-      <entry key="0x170C" value="Route 2"/>
-      <entry key="0x170B" value="Route 2"/>
-      <entry key="0x0354" value="Diglett's Cave"/>
-      <entry key="0x0E02" value="Pewter City"/>
-      <entry key="0x0E08" value="Pewter City"/>
-      <entry key="0x0E06" value="Pewter City"/>
-      <entry key="0x0E05" value="Pewter City"    />
-      <entry key="0x0E03" value="Pewter City"/>
-      <entry key="0x0E04" value="Pewter City"/>
-      <entry key="0x0E01" value="Route 3"/>
-      <entry key="0x0355" value="Mt. Moon"/>
-      <entry key="0x0F0A" value="Mt. Moon"/>
-      <entry key="0x0F0B" value="Mt. Moon"/>
-      <entry key="0x070C" value="Route 4"/>
-      <entry key="0x0711" value="Cerulean City"/>
-      <entry key="0x0703" value="Cerulean City"/>
       <entry key="0x0701" value="Cerulean City"/>
       <entry key="0x0702" value="Cerulean City"/>
-      <entry key="0x0706" value="Cerulean City"/>
+      <entry key="0x0703" value="Cerulean City"/>
       <entry key="0x0704" value="Cerulean City"/>
+      <entry key="0x0706" value="Cerulean City"/>
       <entry key="0x0707" value="Cerulean City"/>
+      <entry key="0x0708" value="Route 10"/>
+      <entry key="0x070A" value="Power Plant"/>
+      <entry key="0x070C" value="Route 4"/>
+      <entry key="0x070D" value="Route 9"/>
+      <entry key="0x070E" value="Route 10"/>
       <entry key="0x070F" value="Route 24"/>
       <entry key="0x0710" value="Route 25"/>
       <entry key="0x0711" value="Cerulean City"/>
-      <entry key="0x070D" value="Route 9"/>
-      <entry key="0x070E" value="Route 10"/>
-      <entry key="0x0708" value="Route 10"/>
-      <entry key="0x070A" value="Power Plant"/>
-      <entry key="0x0357" value="Rock Tunnel"/>
-      <entry key="0x0358" value="Rock Tunnel"/>
+      <entry key="0x0801" value="Azalea Town"/>
+      <entry key="0x0802" value="Azalea Town"/>
+      <entry key="0x0803" value="Azalea Town"/>
+      <entry key="0x0804" value="Azalea Town"/>
+      <entry key="0x0805" value="Azalea Town"/>
+      <entry key="0x0806" value="Route 33"/>
+      <entry key="0x0807" value="Azalea Town"/>
+      <entry key="0x0901" value="Lake of Rage"/>
+      <entry key="0x0902" value="Lake of Rage"/>
+      <entry key="0x0903" value="Mahogany Town"/>
+      <entry key="0x0905" value="Route 43"/>
+      <entry key="0x0906" value="Lake of Rage"/>
+      <entry key="0x0A01" value="Route 32"/>
+      <entry key="0x0A02" value="Route 35"/>
+      <entry key="0x0A03" value="Route 36"/>
+      <entry key="0x0A04" value="Route 37"/>
+      <entry key="0x0A05" value="Violet City"/>
+      <entry key="0x0A06" value="Violet City"/>
+      <entry key="0x0A07" value="Violet City"/>
+      <entry key="0x0A08" value="Violet City"/>
+      <entry key="0x0A09" value="Violet City"/>
+      <entry key="0x0A0A" value="Violet City"/>
+      <entry key="0x0A0B" value="Violet City"/>
+      <entry key="0x0A0C" value="Ruins of Alph"/>
+      <entry key="0x0A0D" value="Route 32"/>
+      <entry key="0x0A0E" value="Goldenrod City"/>
+      <entry key="0x0A0F" value="National Park"/>
+      <entry key="0x0A10" value="Ruins of Alph"/>
+      <entry key="0x0A11" value="National Park"/>
+      <entry key="0x0B01" value="Route 34"/>
+      <entry key="0x0B02" value="Goldenrod City"/>
+      <entry key="0x0B03" value="Goldenrod City"/>
+      <entry key="0x0B04" value="Goldenrod City"/>
+      <entry key="0x0B05" value="Goldenrod City"/>
+      <entry key="0x0B06" value="Goldenrod City"/>
+      <entry key="0x0B07" value="Goldenrod City"/>
+      <entry key="0x0B08" value="Goldenrod City"/>
+      <entry key="0x0B09" value="Goldenrod City"/>
+      <entry key="0x0B0A" value="Goldenrod City"/>
+      <entry key="0x0B0B" value="Goldenrod City"/>
+      <entry key="0x0B0C" value="Goldenrod City"/>
+      <entry key="0x0B0D" value="Goldenrod City"/>
+      <entry key="0x0B0E" value="Goldenrod City"/>
+      <entry key="0x0B0F" value="Goldenrod City"/>
+      <entry key="0x0B10" value="Goldenrod City"/>
+      <entry key="0x0B11" value="Goldenrod City"/>
+      <entry key="0x0B12" value="Goldenrod City"/>
+      <entry key="0x0B13" value="Goldenrod City"/>
+      <entry key="0x0B14" value="Ilex Forest"/>
+      <entry key="0x0B15" value="Ilex Forest"/>
+      <entry key="0x0B16" value="Route 34"/>
+      <entry key="0x0C01" value="Route 6"/>
+      <entry key="0x0C02" value="Route 11"/>
+      <entry key="0x0C03" value="Vermilion City"/>
+      <entry key="0x0C04" value="Vermilion City"/>
+      <entry key="0x0C05" value="Vermilion City"/>
+      <entry key="0x0C07" value="Vermilion City"/>
+      <entry key="0x0C08" value="Vermilion City"/>
+      <entry key="0x0C09" value="Vermilion City"/>
+      <entry key="0x0C0A" value="Vermilion City"/>
+      <entry key="0x0C0B" value="Vermilion City"/>
+      <entry key="0x0C0C" value="Saffron City"/>
+      <entry key="0x0D01" value="Route 1"/>
+      <entry key="0x0D02" value="Pallet Town"/>
+      <entry key="0x0D03" value="Pallet Town"/>
+      <entry key="0x0D04" value="Pallet Town"/>
+      <entry key="0x0D05" value="Pallet Town"/>
+      <entry key="0x0D06" value="Pallet Town"/>
+      <entry key="0x0E01" value="Route 3"/>
+      <entry key="0x0E02" value="Pewter City"/>
+      <entry key="0x0E03" value="Pewter City"/>
+      <entry key="0x0E04" value="Pewter City"/>
+      <entry key="0x0E05" value="Pewter City"/>
+      <entry key="0x0E06" value="Pewter City"/>
+      <entry key="0x0E08" value="Pewter City"/>
+      <entry key="0x0F01" value="Olivine City"/>
+      <entry key="0x0F02" value="Vemilion City"/>
+      <entry key="0x0F03" value="S.S. Aqua"/>
+      <entry key="0x0F04" value="S.S. Aqua"/>
+      <entry key="0x0F05" value="S.S. Aqua"/>
+      <entry key="0x0F06" value="S.S. Aqua"/>
+      <entry key="0x0F07" value="S.S. Aqua"/>
+      <entry key="0x0F08" value="Olivine City"/>
+      <entry key="0x0F09" value="Vemilion City"/>
+      <entry key="0x0F0A" value="Mt. Moon"/>
+      <entry key="0x0F0B" value="Mt. Moon"/>
+      <entry key="0x0F0C" value="Tin Tower"/>
+      <entry key="0x1001" value="Indigo Plateau"/>
+      <entry key="0x1002" value="Pokémon League"/>
+      <entry key="0x1003" value="Pokémon League"/>
+      <entry key="0x1004" value="Pokémon League"/>
+      <entry key="0x1005" value="Pokémon League"/>
+      <entry key="0x1006" value="Pokémon League"/>
+      <entry key="0x1007" value="Pokémon League"/>
+      <entry key="0x1008" value="Hall of Fame"/>
+      <entry key="0x1101" value="Route 13"/>
+      <entry key="0x1102" value="Route 14"/>
+      <entry key="0x1103" value="Route 15"/>
+      <entry key="0x1104" value="Route 18"/>
+      <entry key="0x1105" value="Fuchsia City"/>
+      <entry key="0x1106" value="Fuchsia City"/>
+      <entry key="0x1107" value="Fuchsia City"/>
+      <entry key="0x1108" value="Fuchsia City"/>
+      <entry key="0x1109" value="Fuchsia City"/>
+      <entry key="0x110A" value="Fuchsia City"/>
+      <entry key="0x110C" value="Fuchsia City"/>
+      <entry key="0x110D" value="Fuchsia City"/>
+      <entry key="0x1201" value="Route 8"/>
+      <entry key="0x1202" value="Route 12"/>
       <entry key="0x1203" value="Route 10"/>
       <entry key="0x1204" value="Lavender Town"/>
-      <entry key="0x120A" value="Lavender Town"/>
       <entry key="0x1205" value="Lavender Town"/>
-      <entry key="0x120C" value="Lavender Town"/>
-      <entry key="0x120B" value="Lavender Town"/>
-      <entry key="0x1209" value="Lavender Town"/>
-      <entry key="0x1208" value="Lavender Town"/>
       <entry key="0x1207" value="Lavender Town"/>
-      <entry key="0x1201" value="Route 8"/>
+      <entry key="0x1208" value="Lavender Town"/>
+      <entry key="0x1209" value="Lavender Town"/>
+      <entry key="0x120A" value="Lavender Town"/>
+      <entry key="0x120B" value="Lavender Town"/>
+      <entry key="0x120C" value="Lavender Town"/>
       <entry key="0x120D" value="Saffron City"/>
-      <entry key="0x1902" value="Saffron City"/>
-      <entry key="0x1904" value="Saffron City"/>
-      <entry key="0x1903" value="Saffron City"/>
-      <entry key="0x190E" value="Saffron City"/>
-      <entry key="0x1909" value="Saffron City"/>
-      <entry key="0x190B" value="Saffron City"/>
-      <entry key="0x190C" value="Saffron City"/>
-      <entry key="0x190A" value="Saffron City"/>
-      <entry key="0x1905" value="Saffron City"/>
-      <entry key="0x1906" value="Saffron City"/>
-      <entry key="0x1908" value="Saffron City"/>
-      <entry key="0x1519" value="Saffron City"/>
-      <entry key="0x0C0C" value="Saffron City"/>
-      <entry key="0x0C01" value="Route 6"/>
-      <entry key="0x1213" value="Underground Path"/>
-      <entry key="0x0356" value="Underground Path"/>
-      <entry key="0x190D" value="Underground Path"/>
-      <entry key="0x1901" value="Route 5"/>
-      <entry key="0x190F" value="Route 5"/>
+      <entry key="0x120E" value="Route 12"/>
+      <entry key="0x1301" value="Route 28"/>
+      <entry key="0x1302" value="Silver Cave"/>
+      <entry key="0x1303" value="Silver Cave"/>
+      <entry key="0x1304" value="Route 28"/>
+      <entry key="0x1401" value="Pokémon Center"/>
       <entry key="0x1501" value="Route 7"/>
+      <entry key="0x1502" value="Route 16"/>
+      <entry key="0x1503" value="Route 17"/>
       <entry key="0x1504" value="Celadon City"/>
-      <entry key="0x150C" value="Celadon City"/>
-      <entry key="0x150D" value="Celadon City"/>
-      <entry key="0x150E" value="Celadon City"/>
-      <entry key="0x150F" value="Celadon City"/>
-      <entry key="0x1510" value="Celadon City"/>
-      <entry key="0x1511" value="Celadon City"/>
       <entry key="0x1505" value="Celadon City"/>
       <entry key="0x1507" value="Celadon City"/>
       <entry key="0x1508" value="Celadon City"/>
       <entry key="0x1509" value="Celadon City"/>
       <entry key="0x150A" value="Celadon City"/>
       <entry key="0x150B" value="Celadon City"/>
+      <entry key="0x150C" value="Celadon City"/>
+      <entry key="0x150D" value="Celadon City"/>
+      <entry key="0x150E" value="Celadon City"/>
+      <entry key="0x150F" value="Celadon City"/>
+      <entry key="0x1510" value="Celadon City"/>
+      <entry key="0x1511" value="Celadon City"/>
       <entry key="0x1513" value="Celadon City"/>
       <entry key="0x1514" value="Celadon City"/>
-      <entry key="0x1516" value="Celadon City"/>
       <entry key="0x1515" value="Celadon City"/>
-      <entry key="0x1502" value="Route 16"/>
+      <entry key="0x1516" value="Celadon City"/>
       <entry key="0x1517" value="Route 16"/>
       <entry key="0x1518" value="Route 16"/>
-      <entry key="0x1503" value="Route 17"/>
+      <entry key="0x1519" value="Saffron City"/>
       <entry key="0x151A" value="Route 18"/>
+      <entry key="0x1601" value="Route 40"/>
+      <entry key="0x1602" value="Route 41"/>
+      <entry key="0x1603" value="Cianwood City"/>
+      <entry key="0x1604" value="Cianwood City"/>
+      <entry key="0x1605" value="Cianwood City"/>
+      <entry key="0x1606" value="Cianwood City"/>
+      <entry key="0x1607" value="Cianwood City"/>
+      <entry key="0x1608" value="Cianwood City"/>
+      <entry key="0x1609" value="Cianwood City"/>
+      <entry key="0x1701" value="Route 2"/>
+      <entry key="0x1702" value="Route 22"/>
+      <entry key="0x1703" value="Viridian City"/>
+      <entry key="0x1704" value="Viridian City"/>
+      <entry key="0x1705" value="Viridian City"/>
+      <entry key="0x1706" value="Viridian City"/>
+      <entry key="0x1707" value="Viridian City"/>
+      <entry key="0x1708" value="Viridian City"/>
+      <entry key="0x1709" value="Viridian City"/>
+      <entry key="0x170B" value="Route 2"/>
+      <entry key="0x170C" value="Route 2"/>
+      <entry key="0x170D" value="Route 26"/>
+      <entry key="0x1801" value="Route 26"/>
+      <entry key="0x1802" value="Route 27"/>
+      <entry key="0x1803" value="Route 29"/>
+      <entry key="0x1804" value="New Bark Town"/>
+      <entry key="0x1805" value="New Bark Town"/>
+      <entry key="0x1806" value="New Bark Town"/>
+      <entry key="0x1808" value="New Bark Town"/>
+      <entry key="0x1809" value="New Bark Town"/>
+      <entry key="0x180A" value="Route 26"/>
+      <entry key="0x180B" value="Route 26"/>
+      <entry key="0x180C" value="Route 27"/>
+      <entry key="0x180D" value="Route 29"/>
+      <entry key="0x1901" value="Route 5"/>
+      <entry key="0x1902" value="Saffron City"/>
+      <entry key="0x1903" value="Saffron City"/>
+      <entry key="0x1904" value="Saffron City"/>
+      <entry key="0x1905" value="Saffron City"/>
+      <entry key="0x1906" value="Saffron City"/>
+      <entry key="0x1908" value="Saffron City"/>
+      <entry key="0x1909" value="Saffron City"/>
+      <entry key="0x190A" value="Saffron City"/>
+      <entry key="0x190B" value="Saffron City"/>
+      <entry key="0x190C" value="Saffron City"/>
+      <entry key="0x190D" value="Underground Path"/>
+      <entry key="0x190E" value="Saffron City"/>
+      <entry key="0x190F" value="Route 5"/>
+      <entry key="0x1A01" value="Route 30"/>
+      <entry key="0x1A02" value="Route 31"/>
+      <entry key="0x1A03" value="Cherrygrove City"/>
+      <entry key="0x1A04" value="Cherrygrove City"/>
+      <entry key="0x1A05" value="Cherrygrove City"/>
+      <entry key="0x1A07" value="Cherrygrove City"/>
+      <entry key="0x1A08" value="Cherrygrove City"/>
+      <entry key="0x1A09" value="Route 30"/>
+      <entry key="0x1A0A" value="Route 30"/>
+      <entry key="0x1A0B" value="Violet City"/>
+    </maps>
+    <mapLocations>
+      <entry key="0x0101" value="Olivine City"/>
+      <entry key="0x0102" value="Olivine City"/>
+      <entry key="0x0103" value="Olivine City"/>
+      <entry key="0x0105" value="Olivine Punishment House"/>
+      <entry key="0x0106" value="Olivine City"/>
+      <entry key="0x0107" value="Olivine City"/>
+      <entry key="0x0108" value="Olivine City"/>
+      <entry key="0x0109" value="Ecruteak City"/>
+      <entry key="0x010A" value="Route 39"/>
+      <entry key="0x010B" value="Route 39"/>
+      <entry key="0x010C" value="Route 38"/>
+      <entry key="0x010D" value="Route 39"/>
+      <entry key="0x010E" value="Olivine City"/>
+      <entry key="0x0201" value="Mahogany Town"/>
+      <entry key="0x0202" value="Mahogany Town"/>
+      <entry key="0x0203" value="Mahogany Town"/>
+      <entry key="0x0204" value="Ecruteak City"/>
+      <entry key="0x0205" value="Route 42"/>
+      <entry key="0x0206" value="Route 46"/>
+      <entry key="0x0207" value="Mahogany Town"/>
+      <entry key="0x0301" value="Sprout Tower"/>
+      <entry key="0x0302" value="Sprout Tower"/>
+      <entry key="0x0303" value="Sprout Tower"/>
+      <entry key="0x0304" value="Tin Tower"/>
+      <entry key="0x0305" value="Tin Tower"/>
+      <entry key="0x0306" value="Tin Tower"/>
+      <entry key="0x0307" value="Tin Tower"/>
+      <entry key="0x0308" value="Tin Tower"/>
+      <entry key="0x0309" value="Tin Tower"/>
+      <entry key="0x030A" value="Tin Tower"/>
+      <entry key="0x030B" value="Tin Tower"/>
+      <entry key="0x030C" value="Tin Tower"/>
+      <entry key="0x030D" value="Burned Tower"/>
+      <entry key="0x030E" value="Burned Tower"/>
+      <entry key="0x030F" value="National Park"/>
+      <entry key="0x0311" value="Radio Tower"/>
+      <entry key="0x0312" value="Radio Tower"/>
+      <entry key="0x0313" value="Radio Tower"/>
+      <entry key="0x0314" value="Radio Tower"/>
+      <entry key="0x0315" value="Radio Tower"/>
+      <entry key="0x0316" value="Ruins of Alph"/>
+      <entry key="0x0317" value="Ruins of Alph"/>
+      <entry key="0x0318" value="Ruins of Alph"/>
+      <entry key="0x0319" value="Ruins of Alph"/>
+      <entry key="0x031A" value="Ruins of Alph"/>
+      <entry key="0x031B" value="Ruins of Alph"/>
+      <entry key="0x031C" value="Ruins of Alph"/>
+      <entry key="0x031D" value="Union Cave"/>
+      <entry key="0x031E" value="Union Cave"/>
+      <entry key="0x031F" value="Union Cave"/>
+      <entry key="0x0320" value="Slowpoke Well"/>
+      <entry key="0x0321" value="Slowpoke Well"/>
+      <entry key="0x0322" value="Olivine City"/>
+      <entry key="0x0323" value="Olivine City"/>
+      <entry key="0x0324" value="Olivine City"/>
+      <entry key="0x0325" value="Olivine City"/>
+      <entry key="0x0326" value="Olivine City"/>
+      <entry key="0x0327" value="Olivine City"/>
+      <entry key="0x0328" value="Mahogany Town"/>
+      <entry key="0x0329" value="Rocket Hideout"/>
+      <entry key="0x032A" value="Rocket Hideout"/>
+      <entry key="0x032B" value="Rocket Hideout"/>
+      <entry key="0x032C" value="Ilex Forest"/>
+      <entry key="0x032D" value="Goldenrod City"/>
+      <entry key="0x032E" value="Goldenrod City"/>
+      <entry key="0x032F" value="Goldenrod City"/>
+      <entry key="0x0330" value="Goldenrod City"/>
+      <entry key="0x0331" value="Mt. Mortar"/>
+      <entry key="0x0332" value="Mt. Mortar"/>
+      <entry key="0x0333" value="Mt. Mortar"/>
+      <entry key="0x0334" value="Mt. Mortar"/>
+      <entry key="0x0335" value="Ice Path"/>
+      <entry key="0x0336" value="Ice Path"/>
+      <entry key="0x0337" value="Ice Path"/>
+      <entry key="0x0338" value="Ice Path"/>
+      <entry key="0x0339" value="Ice Path"/>
+      <entry key="0x033A" value="Whirl Islands"/>
+      <entry key="0x033B" value="Whirl Islands"/>
+      <entry key="0x033C" value="Whirl Islands"/>
+      <entry key="0x033D" value="Whirl Islands"/>
+      <entry key="0x033E" value="Whirl Islands"/>
+      <entry key="0x033F" value="Whirl Islands"/>
+      <entry key="0x0340" value="Whirl Islands"/>
+      <entry key="0x0341" value="Whirl Islands"/>
+      <entry key="0x0342" value="Silver Cave"/>
+      <entry key="0x0343" value="Silver Cave"/>
+      <entry key="0x0344" value="Silver Cave"/>
+      <entry key="0x0345" value="Silver Cave"/>
+      <entry key="0x0346" value="Dark Cave"/>
+      <entry key="0x0347" value="Dark Cave"/>
+      <entry key="0x0348" value="Dragon's Den"/>
+      <entry key="0x0349" value="Dragon's Den"/>
+      <entry key="0x034A" value="Tohjo Falls"/>
+      <entry key="0x034B" value="Diglett's Cave"/>
+      <entry key="0x034C" value="Mt. Moon"/>
+      <entry key="0x034D" value="Underground Path"/>
+      <entry key="0x034E" value="Rock Tunnel"/>
+      <entry key="0x034F" value="Rock Tunnel"/>
+      <entry key="0x0352" value="Victory Road"/>
+      <entry key="0x0401" value="Ecruteak City"/>
+      <entry key="0x0402" value="Ecruteak City"/>
+      <entry key="0x0403" value="Ecruteak City"/>
+      <entry key="0x0404" value="Ecruteak City"/>
+      <entry key="0x0405" value="Ecruteak City"/>
+      <entry key="0x0406" value="Ecruteak City"/>
+      <entry key="0x0407" value="Ecruteak City"/>
+      <entry key="0x0408" value="Ecruteak City"/>
+      <entry key="0x0409" value="Ecruteak City"/>
+      <entry key="0x0501" value="Blackthorn City"/>
+      <entry key="0x0502" value="Blackthorn City"/>
+      <entry key="0x0503" value="Blackthorn City"/>
+      <entry key="0x0504" value="Blackthorn City"/>
+      <entry key="0x0505" value="Blackthorn City"/>
+      <entry key="0x0506" value="Blackthorn City"/>
+      <entry key="0x0507" value="Blackthorn City"/>
+      <entry key="0x0508" value="Route 45"/>
+      <entry key="0x0509" value="Route 46"/>
+      <entry key="0x050A" value="Blackthorn City"/>
+      <entry key="0x0601" value="Cinnabar Island"/>
+      <entry key="0x0603" value="Fuchsia City"/>
+      <entry key="0x0604" value="Seafoam Islands"/>
+      <entry key="0x0605" value="Route 19"/>
+      <entry key="0x0606" value="Route 20"/>
+      <entry key="0x0607" value="Route 21"/>
+      <entry key="0x0608" value="Cinnabar Island"/>
+      <entry key="0x0701" value="Cerulean City"/>
+      <entry key="0x0702" value="Cerulean City"/>
+      <entry key="0x0703" value="Cerulean City"/>
+      <entry key="0x0704" value="Cerulean City"/>
+      <entry key="0x0706" value="Cerulean City"/>
+      <entry key="0x0707" value="Cerulean City"/>
+      <entry key="0x0708" value="Route 10"/>
+      <entry key="0x070A" value="Power Plant"/>
+      <entry key="0x070C" value="Route 4"/>
+      <entry key="0x070D" value="Route 9"/>
+      <entry key="0x070E" value="Route 10"/>
+      <entry key="0x070F" value="Route 24"/>
+      <entry key="0x0710" value="Route 25"/>
+      <entry key="0x0711" value="Cerulean City"/>
+      <entry key="0x0801" value="Azalea Town"/>
+      <entry key="0x0802" value="Azalea Town"/>
+      <entry key="0x0803" value="Azalea Town"/>
+      <entry key="0x0804" value="Azalea Town"/>
+      <entry key="0x0805" value="Azalea Town"/>
+      <entry key="0x0806" value="Route 33"/>
+      <entry key="0x0807" value="Azalea Town"/>
+      <entry key="0x0901" value="Lake of Rage"/>
+      <entry key="0x0902" value="Lake of Rage"/>
+      <entry key="0x0903" value="Mahogany Town"/>
+      <entry key="0x0905" value="Route 43"/>
+      <entry key="0x0906" value="Lake of Rage"/>
+      <entry key="0x0A01" value="Route 32"/>
+      <entry key="0x0A02" value="Route 35"/>
+      <entry key="0x0A03" value="Route 36"/>
+      <entry key="0x0A04" value="Route 37"/>
+      <entry key="0x0A05" value="Violet City"/>
+      <entry key="0x0A06" value="Violet City"/>
+      <entry key="0x0A07" value="Violet City"/>
+      <entry key="0x0A08" value="Violet City"/>
+      <entry key="0x0A09" value="Violet City"/>
+      <entry key="0x0A0A" value="Violet City"/>
+      <entry key="0x0A0B" value="Violet City"/>
+      <entry key="0x0A0C" value="Ruins of Alph"/>
+      <entry key="0x0A0D" value="Route 32"/>
+      <entry key="0x0A0E" value="Goldenrod City"/>
+      <entry key="0x0A0F" value="National Park"/>
+      <entry key="0x0A10" value="Ruins of Alph"/>
+      <entry key="0x0A11" value="National Park"/>
+      <entry key="0x0B01" value="Route 34"/>
+      <entry key="0x0B02" value="Goldenrod City"/>
+      <entry key="0x0B03" value="Goldenrod City"/>
+      <entry key="0x0B04" value="Goldenrod City"/>
+      <entry key="0x0B05" value="Goldenrod City"/>
+      <entry key="0x0B06" value="Goldenrod City"/>
+      <entry key="0x0B07" value="Goldenrod City"/>
+      <entry key="0x0B08" value="Goldenrod City"/>
+      <entry key="0x0B09" value="Goldenrod City"/>
+      <entry key="0x0B0A" value="Goldenrod City"/>
+      <entry key="0x0B0B" value="Goldenrod City"/>
+      <entry key="0x0B0C" value="Goldenrod City"/>
+      <entry key="0x0B0D" value="Goldenrod City"/>
+      <entry key="0x0B0E" value="Goldenrod City"/>
+      <entry key="0x0B0F" value="Goldenrod City"/>
+      <entry key="0x0B10" value="Goldenrod City"/>
+      <entry key="0x0B11" value="Goldenrod City"/>
+      <entry key="0x0B12" value="Goldenrod City"/>
+      <entry key="0x0B13" value="Goldenrod City"/>
+      <entry key="0x0B14" value="Ilex Forest"/>
+      <entry key="0x0B15" value="Ilex Forest"/>
+      <entry key="0x0B16" value="Route 34"/>
+      <entry key="0x0C01" value="Route 6"/>
+      <entry key="0x0C02" value="Route 11"/>
+      <entry key="0x0C03" value="Vermilion City"/>
+      <entry key="0x0C04" value="Vermilion City"/>
+      <entry key="0x0C05" value="Vermilion City"/>
+      <entry key="0x0C07" value="Vermilion City"/>
+      <entry key="0x0C08" value="Vermilion City"/>
+      <entry key="0x0C09" value="Vermilion City"/>
+      <entry key="0x0C0A" value="Vermilion City"/>
+      <entry key="0x0C0B" value="Vermilion City"/>
+      <entry key="0x0C0C" value="Saffron City"/>
+      <entry key="0x0D01" value="Route 1"/>
+      <entry key="0x0D02" value="Pallet Town"/>
+      <entry key="0x0D03" value="Pallet Town"/>
+      <entry key="0x0D04" value="Pallet Town"/>
+      <entry key="0x0D05" value="Pallet Town"/>
+      <entry key="0x0D06" value="Pallet Town"/>
+      <entry key="0x0E01" value="Route 3"/>
+      <entry key="0x0E02" value="Pewter City"/>
+      <entry key="0x0E03" value="Pewter City"/>
+      <entry key="0x0E04" value="Pewter City"/>
+      <entry key="0x0E05" value="Pewter City"/>
+      <entry key="0x0E06" value="Pewter City"/>
+      <entry key="0x0E08" value="Pewter City"/>
+      <entry key="0x0F01" value="Olivine City"/>
+      <entry key="0x0F02" value="Vemilion City"/>
+      <entry key="0x0F03" value="S.S. Aqua"/>
+      <entry key="0x0F04" value="S.S. Aqua"/>
+      <entry key="0x0F05" value="S.S. Aqua"/>
+      <entry key="0x0F06" value="S.S. Aqua"/>
+      <entry key="0x0F07" value="S.S. Aqua"/>
+      <entry key="0x0F08" value="Olivine City"/>
+      <entry key="0x0F09" value="Vemilion City"/>
+      <entry key="0x0F0A" value="Mt. Moon"/>
+      <entry key="0x0F0B" value="Mt. Moon"/>
+      <entry key="0x0F0C" value="Tin Tower"/>
+      <entry key="0x1001" value="Indigo Plateau"/>
+      <entry key="0x1002" value="Pokémon League"/>
+      <entry key="0x1003" value="Pokémon League"/>
+      <entry key="0x1004" value="Pokémon League"/>
+      <entry key="0x1005" value="Pokémon League"/>
+      <entry key="0x1006" value="Pokémon League"/>
+      <entry key="0x1007" value="Pokémon League"/>
+      <entry key="0x1008" value="Hall of Fame"/>
+      <entry key="0x1101" value="Route 13"/>
+      <entry key="0x1102" value="Route 14"/>
+      <entry key="0x1103" value="Route 15"/>
       <entry key="0x1104" value="Route 18"/>
       <entry key="0x1105" value="Fuchsia City"/>
+      <entry key="0x1106" value="Fuchsia City"/>
+      <entry key="0x1107" value="Fuchsia City"/>
       <entry key="0x1108" value="Fuchsia City"/>
       <entry key="0x1109" value="Fuchsia City"/>
       <entry key="0x110A" value="Fuchsia City"/>
-      <entry key="0x1105" value="Fuchsia City"/>
       <entry key="0x110C" value="Fuchsia City"/>
-      <entry key="0x1107" value="Fuchsia City"/>
-      <entry key="0x1106" value="Fuchsia City"/>
       <entry key="0x110D" value="Fuchsia City"/>
-      <entry key="0x1103" value="Route 15"/>
-      <entry key="0x1102" value="Route 14"/>
-      <entry key="0x1101" value="Route 13"/>
+      <entry key="0x1201" value="Route 8"/>
       <entry key="0x1202" value="Route 12"/>
+      <entry key="0x1203" value="Route 10"/>
+      <entry key="0x1204" value="Lavender Town"/>
+      <entry key="0x1205" value="Lavender Town"/>
+      <entry key="0x1207" value="Lavender Town"/>
+      <entry key="0x1208" value="Lavender Town"/>
+      <entry key="0x1209" value="Lavender Town"/>
+      <entry key="0x120A" value="Lavender Town"/>
+      <entry key="0x120B" value="Lavender Town"/>
+      <entry key="0x120C" value="Lavender Town"/>
+      <entry key="0x120D" value="Saffron City"/>
       <entry key="0x120E" value="Route 12"/>
-      <entry key="0x0C02" value="Route 11"/>
-      <entry key="0x0C03" value="Vermilion City"/>
-      <entry key="0x0C09" value="Vermilion City"/>
-      <entry key="0x0C0A" value="Vermilion City"/>
-      <entry key="0x0C04" value="Vermilion City"/>
-      <entry key="0x0C05" value="Vermilion City"/>
-      <entry key="0x0C08" value="Vermilion City"/>
-      <entry key="0x0C07" value="Vermilion City"/>
-      <entry key="0x0C0B" value="Vermilion City"/>
-      <entry key="0x1302" value="Silver Cave"/>
       <entry key="0x1301" value="Route 28"/>
+      <entry key="0x1302" value="Silver Cave"/>
+      <entry key="0x1303" value="Silver Cave"/>
       <entry key="0x1304" value="Route 28"/>
-      <entry key="0x1303" value="Silver Cave"/>
-      <entry key="0x1303" value="Silver Cave"/>
-      <entry key="0x034A" value="Silver Cave"/>
-      <entry key="0x034B" value="Silver Cave"/>
-      <entry key="0x034D" value="Silver Cave"/>
-      <entry key="0x034C" value="Silver Cave"/>
-      <entry key="0x0350" value="Dragon's Den"/>
-      <entry key="0x0351" value="Dragon's Den"/>
-      <entry key="0x0352" value="Dragon's Den"/>
+      <entry key="0x1401" value="Pokémon Center"/>
+      <entry key="0x1501" value="Route 7"/>
+      <entry key="0x1502" value="Route 16"/>
+      <entry key="0x1503" value="Route 17"/>
+      <entry key="0x1504" value="Celadon City"/>
+      <entry key="0x1505" value="Celadon City"/>
+      <entry key="0x1507" value="Celadon City"/>
+      <entry key="0x1508" value="Celadon City"/>
+      <entry key="0x1509" value="Celadon City"/>
+      <entry key="0x150A" value="Celadon City"/>
+      <entry key="0x150B" value="Celadon City"/>
+      <entry key="0x150C" value="Celadon City"/>
+      <entry key="0x150D" value="Celadon City"/>
+      <entry key="0x150E" value="Celadon City"/>
+      <entry key="0x150F" value="Celadon City"/>
+      <entry key="0x1510" value="Celadon City"/>
+      <entry key="0x1511" value="Celadon City"/>
+      <entry key="0x1513" value="Celadon City"/>
+      <entry key="0x1514" value="Celadon City"/>
+      <entry key="0x1515" value="Celadon City"/>
+      <entry key="0x1516" value="Celadon City"/>
+      <entry key="0x1517" value="Route 16"/>
+      <entry key="0x1518" value="Route 16"/>
+      <entry key="0x1519" value="Saffron City"/>
+      <entry key="0x151A" value="Route 18"/>
+      <entry key="0x1601" value="Route 40"/>
+      <entry key="0x1602" value="Route 41"/>
+      <entry key="0x1603" value="Cianwood City"/>
+      <entry key="0x1604" value="Cianwood City"/>
+      <entry key="0x1605" value="Cianwood City"/>
+      <entry key="0x1606" value="Cianwood City"/>
+      <entry key="0x1607" value="Cianwood City"/>
+      <entry key="0x1608" value="Cianwood City"/>
+      <entry key="0x1609" value="Cianwood City"/>
+      <entry key="0x1701" value="Route 2"/>
+      <entry key="0x1702" value="Route 22"/>
+      <entry key="0x1703" value="Viridian City"/>
+      <entry key="0x1704" value="Viridian City"/>
+      <entry key="0x1705" value="Viridian City"/>
+      <entry key="0x1706" value="Viridian City"/>
+      <entry key="0x1707" value="Viridian City"/>
+      <entry key="0x1708" value="Viridian City"/>
+      <entry key="0x1709" value="Viridian City"/>
+      <entry key="0x170B" value="Route 2"/>
+      <entry key="0x170C" value="Route 2"/>
+      <entry key="0x170D" value="Route 26"/>
+      <entry key="0x1801" value="Route 26"/>
+      <entry key="0x1802" value="Route 27"/>
+      <entry key="0x1803" value="Route 29"/>
+      <entry key="0x1804" value="New Bark Town"/>
+      <entry key="0x1805" value="New Bark Town"/>
+      <entry key="0x1806" value="New Bark Town"/>
+      <entry key="0x1808" value="New Bark Town"/>
+      <entry key="0x1809" value="New Bark Town"/>
+      <entry key="0x180A" value="Route 26"/>
+      <entry key="0x180B" value="Route 26"/>
+      <entry key="0x180C" value="Route 27"/>
+      <entry key="0x180D" value="Route 29"/>
+      <entry key="0x1901" value="Route 5"/>
+      <entry key="0x1902" value="Saffron City"/>
+      <entry key="0x1903" value="Saffron City"/>
+      <entry key="0x1904" value="Saffron City"/>
+      <entry key="0x1905" value="Saffron City"/>
+      <entry key="0x1906" value="Saffron City"/>
+      <entry key="0x1908" value="Saffron City"/>
+      <entry key="0x1909" value="Saffron City"/>
+      <entry key="0x190A" value="Saffron City"/>
+      <entry key="0x190B" value="Saffron City"/>
+      <entry key="0x190C" value="Saffron City"/>
+      <entry key="0x190D" value="Underground Path"/>
+      <entry key="0x190E" value="Saffron City"/>
+      <entry key="0x190F" value="Route 5"/>
+      <entry key="0x1A01" value="Route 30"/>
+      <entry key="0x1A02" value="Route 31"/>
+      <entry key="0x1A03" value="Cherrygrove City"/>
+      <entry key="0x1A04" value="Cherrygrove City"/>
+      <entry key="0x1A05" value="Cherrygrove City"/>
+      <entry key="0x1A07" value="Cherrygrove City"/>
+      <entry key="0x1A08" value="Cherrygrove City"/>
+      <entry key="0x1A09" value="Route 30"/>
+      <entry key="0x1A0A" value="Route 30"/>
+      <entry key="0x1A0B" value="Violet City"/>
     </mapLocations>
     <textPrompt>
       <entry key="0x58" value="▼" />

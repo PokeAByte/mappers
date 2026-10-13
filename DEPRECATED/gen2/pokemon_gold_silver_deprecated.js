@@ -1,0 +1,40 @@
+// @ts-ignore
+__variables;
+// @ts-ignore
+__state;
+// @ts-ignore
+__memory;
+// @ts-ignore
+const mapper = __mapper;
+// @ts-ignore
+__console;
+const getValue = mapper.get_property_value;
+const setValue = mapper.set_property_value;
+
+function preprocessor() {
+    // FSM FOR GAMESTATE TRACKING
+    // MAIN GAMESTATE: This tracks the three basic states the game can be in.
+    // 1. "No Pokemon": cartridge reset; player has not received a Pokemon
+    // 2. "Overworld": Pokemon in party, but not in battle
+    // 3. "Battle": In battle
+    if (getValue('player.team.0.level') === 0) {
+        setValue('meta.state', 'No Pokemon');
+    }
+    else if (getValue("battle.mode") === null) {
+        setValue('meta.state', 'Overworld');
+    }
+    else if (getValue("battle.yourPokemon.species") != null && getValue("battle.mode") != null) {
+        setValue('meta.state', 'Battle');
+    }
+    else if (getValue("battle.mode") != null && getValue("battle.info.lowHealthAlarm") === "Enabled") {
+        setValue('meta.state', 'To Battle');
+    }
+    else if (getValue("battle.info.lowHealthAlarm") === "Disabled") {
+        setValue('meta.state', 'From Battle');
+    }
+    else {
+        setValue('meta.state', 'Battle');
+    }
+}
+
+export { preprocessor };

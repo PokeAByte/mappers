@@ -8,10 +8,20 @@ This one is provided so that users can continue to use software that was program
 For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 -->
 
-<mapper id="fdd1d91c-5be7-497a-b420-a53e6132ff0a" name="Pokemon Red and Blue - Deprecated Mapper" platform="GB" version="1.1.6"
+<mapper id="fdd1d91c-5be7-497a-b420-a53e6132ff0a" name="Pokemon Red and Blue - Deprecated Mapper" platform="GB" version="1.2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
+	<memory>
+		<!-- "Header                  <read start="0x0000" end="0x00FF" /> --> 
+		<!-- "VRAM                --> <read start="0x8000" end="0x9FFF" />
+		<!-- "External RAM Part 1     <read start="0xA000" end="0xAFFF" /> --> 
+		<!-- "External RAM Part 2     <read start="0xB000" end="0xBFFF" /> --> 
+		<!-- "Work RAM Bank 0     --> <read start="0xC000" end="0xCFFF" />
+		<!-- "Work RAM Bank 1     --> <read start="0xD000" end="0xDFFF" />
+		<!-- "I/O Registers           <read start="0xFF00" end="0xFF7F" /> --> 
+		<!-- "High RAM            --> <read start="0xFF80" end="0xFFFE" />
+	</memory>
 
 	<classes>
 		<pokemonInParty>
@@ -186,29 +196,116 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 		</mapData>
 	</overworld>
 	<events>
-		<property name="wSaveFileStatus" type="int" address="0xd087" reference="saveFileStatus" />
+		<property name="wSaveFileStatus" type="int" address="0xD088" reference="saveFileStatus" />
 		<property name="beatChampion" type="bool" bits="1" address="0xd867" />
 		<property name="got_pokedex"  type="bool" address="0xD74B" bits="5" />
 		<property name="battled_rival_in_oaks_lab" type="bool" address="0xD74B" bits="3" />
+		<pokemon_league>
+			<property name="beat_lorelei"  type="bool" address="0xD863" bits="1" />
+			<property name="beat_bruno"    type="bool" address="0xD864" bits="1" />
+			<property name="beat_agatha"   type="bool" address="0xD865" bits="1" />
+			<property name="beat_lance"    type="bool" address="0xD866" bits="1" />
+			<property name="beat_champion" type="bool" address="0xD867" bits="1" />
+		</pokemon_league>
 		<overworldFlags>
-			<property name="countPlayTime" type="bool" address="0xD731" bits="0" description="play time being counted" />
-			<property name="debugMode"     type="bool" address="0xD731" bits="1" description="Only set by the debug build. If true: [detailed description omitted for brevity]" />
-			<property name="flyOrDungeon"  type="bool" address="0xD731" bits="2" description="the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)" />
-			<property name="flyWarp"       type="bool" address="0xD731" bits="3" />
-			<property name="dungeonWarp"   type="bool" address="0xD731" bits="4" />
-			<property name="forceBike"     type="bool" address="0xD731" bits="5" description="currently being forced to ride bike (cycling road)" />
-			<property name="destinationIsBlackout" type="bool" address="0xD731" bits="6" description="map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)" />
+			<property name="countPlayTime" type="bool" address="0xD732" bits="0" description="play time being counted" />
+			<property name="debugMode"     type="bool" address="0xD732" bits="1" description="Only set by the debug build. If true: [detailed description omitted for brevity]" />
+			<property name="flyOrDungeon"  type="bool" address="0xD732" bits="2" description="the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)" />
+			<property name="flyWarp"       type="bool" address="0xD732" bits="3" />
+			<property name="dungeonWarp"   type="bool" address="0xD732" bits="4" />
+			<property name="forceBike"     type="bool" address="0xD732" bits="5" description="currently being forced to ride bike (cycling road)" />
+			<property name="destinationIsBlackout" type="bool" address="0xD732" bits="6" description="map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)" />
 		</overworldFlags>
 		<property name="trashCanPuzzle" type="bool" address="0xD773" bits="0" description="Set value to 3 to solve the puzzle. Freezing this property breaks the gym trainers." />
 	</events>
+	<trainers>
+		<viridianForest>
+			<property name="bugcatcher1" type="bool" address="0xD7F3" bits="2" />
+			<property name="bugcatcher2" type="bool" address="0xD7F3" bits="3" />
+			<property name="bugcatcher3" type="bool" address="0xD7F3" bits="4" />
+		</viridianForest>
+		<pewterCityGym>
+			<property name="tmReceived" type="bool" address="0xD755" bits="6" />
+			<property name="leaderDefeated" type="bool" address="0xD755" bits="7" />
+			<property name="jrTrainerM1" type="bool" address="0xD755" bits="2" />
+		</pewterCityGym>
+		<ceruleanCityGym>
+			<property name="tmReceived" type="bool" address="0xD75E" bits="6" />
+			<property name="leaderDefeated" type="bool" address="0xD75E" bits="7" />
+			<property name="jrTrainerF1" type="bool" address="0xD75E" bits="2" />
+			<property name="swimmer1" type="bool" address="0xD75E" bits="3" />
+		</ceruleanCityGym>
+		<vermilionCityGym>
+			<property name="tmReceived" type="bool" address="0xD773" bits="6" />
+			<property name="leaderDefeated" type="bool" address="0xD773" bits="7" />
+			<property name="gentleman3" type="bool" address="0xD773" bits="2" />
+			<property name="rocker1" type="bool" address="0xD773" bits="3" />
+			<property name="sailor8" type="bool" address="0xD773" bits="4" />
+		</vermilionCityGym>
+		<celadonCityGym>
+			<property name="tmReceived" type="bool" address="0xD77C" bits="0" />
+			<property name="leaderDefeated" type="bool" address="0xD77C" bits="1" />
+			<property name="lass17" type="bool" address="0xD77C" bits="2" />
+			<property name="beauty1" type="bool" address="0xD77C" bits="3" />
+			<property name="jrTrainerF11" type="bool" address="0xD77C" bits="4" />
+			<property name="beauty2" type="bool" address="0xD77C" bits="5" />
+			<property name="lass18" type="bool" address="0xD77C" bits="6" />
+			<property name="beauty3" type="bool" address="0xD77C" bits="7" />
+			<property name="cooltrainerF1" type="bool" address="0xD77D" bits="0" />
+		</celadonCityGym>
+		<fucshiaCityGym>
+			<property name="tmReceived" type="bool" address="0xD792" bits="0" />
+			<property name="leaderDefeated" type="bool" address="0xD792" bits="1" />
+			<property name="juggler7" type="bool" address="0xD792" bits="2" />
+			<property name="juggler3" type="bool" address="0xD792" bits="3" />
+			<property name="juggler8" type="bool" address="0xD792" bits="4" />
+			<property name="tamer1" type="bool" address="0xD792" bits="5" />
+			<property name="tamer2" type="bool" address="0xD792" bits="6" />
+			<property name="juggler4" type="bool" address="0xD792" bits="7" />
+		</fucshiaCityGym>
+		<saffronCityGym>
+			<property name="tmReceived" type="bool" address="0xD7B3" bits="0" />
+			<property name="leaderDefeated" type="bool" address="0xD7B3" bits="1" />
+			<property name="channeler22" type="bool" address="0xD7B3" bits="2" />
+			<property name="psychic1" type="bool" address="0xD7B3" bits="3" />
+			<property name="channeler23" type="bool" address="0xD7B3" bits="4" />
+			<property name="psychic2" type="bool" address="0xD7B3" bits="5" />
+			<property name="channeler24" type="bool" address="0xD7B3" bits="6" />
+			<property name="psychic3" type="bool" address="0xD7B3" bits="7" />
+			<property name="psychic4" type="bool" address="0xD7B4" bits="0" />
+		</saffronCityGym>
+		<cinnabarIslandGym>
+			<property name="tmReceived" type="bool" address="0xD79A" bits="0" />
+			<property name="leaderDefeated" type="bool" address="0xD79A" bits="1" />
+			<property name="superNerd9" type="bool" address="0xD79A" bits="2" />
+			<property name="burglar4" type="bool" address="0xD79A" bits="3" />
+			<property name="superNerd10" type="bool" address="0xD79A" bits="4" />
+			<property name="burglar5" type="bool" address="0xD79A" bits="5" />
+			<property name="superNerd11" type="bool" address="0xD79A" bits="6" />
+			<property name="burglar6" type="bool" address="0xD79A" bits="7" />
+			<property name="superNerd12" type="bool" address="0xD79B" bits="0" />
+		</cinnabarIslandGym>
+		<viridianCityGym>
+			<property name="tmReceived" type="bool" address="0xD751" bits="0" />
+			<property name="leaderDefeated" type="bool" address="0xD751" bits="1" />
+			<property name="cooltrainerM9" type="bool" address="0xD751" bits="2" />
+			<property name="blackbelt6" type="bool" address="0xD751" bits="3" />
+			<property name="tamer3" type="bool" address="0xD751" bits="4" />
+			<property name="blackbelt7" type="bool" address="0xD751" bits="5" />
+			<property name="cooltrainerM10" type="bool" address="0xD751" bits="6" />
+			<property name="blackbelt8" type="bool" address="0xD751" bits="7" />
+			<property name="tamer4" type="bool" address="0xD752" bits="0" />
+			<property name="coolTrainerM" type="bool" address="0xD752" bits="1" />
+		</viridianCityGym>
+	</trainers>
     <battle>
       <property name="type"           type="int" address="0xD057" reference="battleTypes" />
-      <property name="animationTurn"  type="int" address="0xFFF4" reference="battleTurn" description="This dictates which direction battle animations are played. (Enemy attacking player, or player attacking enemy.)" />
+      <property name="animationTurn"  type="int" address="0xFFF3" reference="battleTurn" description="This dictates which direction battle animations are played. (Enemy attacking player, or player attacking enemy.)" />
       <property name="specialType"    type="int" address="0xD05A" reference="specialBattleTypes" />
       <property name="lowHealthAlarm" type="int" address="0xCCF6" reference="lowHealthAlarm" description="This is set to 0 at the start of battle and 1 when the opponent has lost" />
       <property name="attackDamage"   type="int" address="0xD0D8" description="Amount of damage attack is about to do. Max possible damage may appear one frame before actual damage." />
       <trainer>
-        <property name="name"         type="string" address="0xD04A" size="11" />
+        <property name="name"         type="string" address="0xD04A" length="11" />
         <property name="class"        type="int" address="0xD031" reference="trainerClasses" />
         <property name="number"       type="int" address="0xD05D" />
         <property name="gymLeader"    type="int" address="0xD05C" />
@@ -350,6 +447,8 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
         </counters>
       </enemyPokemon>
       <playerMove>
+        <property name="wPlayerSelectedMove" type="int" address="0xCCDC" reference="moves" />
+        <property name="wPlayerLastUsedMove" type="int" address="0xCCF1" reference="moves" />
         <property name="move"     type="int" address="0xCFD2" reference="moves" />
         <property name="effect"   type="int" address="0xCFD3" />
         <property name="power"    type="int" address="0xCFD4" />
@@ -358,6 +457,8 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
         <property name="maxPP"    type="int" address="0xCFD7" />
       </playerMove>
       <enemyMove>
+        <property name="wEnemySelectedMove" type="int" address="0xCCDD" reference="moves" />
+        <property name="wEnemyLastUsedMove" type="int" address="0xCCF2" reference="moves" />
         <property name="move"     type="int" address="0xCFCC" reference="moves" />
         <property name="effect"   type="int" address="0xCFCD" />
         <property name="power"    type="int" address="0xCFCE" />
@@ -389,36 +490,46 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 	</pokemart>
     <rival>
       <property name="name"      type="string" address="0xD34A" length="8" description="The rival's name." />
+      <!-- NOTE (unfixed): finalTeam is a Pokemon Yellow concept copied over from that mapper. In Red/Blue, 0xD714 is
+           wPlayerJumpingYScreenCoordsIndex; the rival's team is decided by wRivalStarter (rival.starter). -->
       <property name="finalTeam" type="int" address="0xD714" reference="finalTeam" /> 
 	  <property name="starter"   type="int" address="0xd715" reference="pokemonSpecies"/>
+      <flags>
+        <property name="battled_rival_in_oaks_lab" type="bool" address="0xD74B" bits="3" />
+        <property name="beat_cerulean_rival" type="bool" address="0xD75A" bits="0" />
+        <property name="beat_pokemon_tower_rival" type="bool" address="0xD765" bits="1" />
+        <property name="beat_silph_co_rival" type="bool" address="0xD82F" bits="0" />
+        <property name="beat_route22_rival_2nd_battle" type="bool" address="0xD7EB" bits="6" />
+        <property name="beat_champion_rival" type="bool" address="0xD867" bits="1" />
+      </flags>
     </rival>
 	<audio>
-		<property name="channel1" type="int" address="0xC027" description="When 1, the opponent has lost" />
-		<property name="channel2" type="int" address="0xC028" description="When 1, the opponent has lost" />
-		<property name="channel3" type="int" address="0xC029" description="When 1, the opponent has lost" />
-		<property name="channel4" type="int" address="0xC02A" description="When 1, the opponent has lost" />
-		<property name="channel5" type="int" address="0xC02B" description="When 1, the opponent has lost" />
-		<property name="channel6" type="int" address="0xC02C" description="When 1, the opponent has lost" />
-		<property name="channel7" type="int" address="0xC02D" description="When 1, the opponent has lost" />
-		<property name="channel8" type="int" address="0xC02E" description="When 1, the opponent has lost" />
-		<property name="currentSound" type="int" address="0xC002" />
-		<property name="newSoundId"   type="int" address="0xC0EF" description="When 1, the opponent has lost" />
-		<property name="audioBank"    type="int" address="0xC0F0" />
-		<property name="overworldTrackCurrentMap" type="int" address="0xD359" reference="audioTrack" />
-		<property name="audioBankCurrentMap"      type="int" address="0xD35A" description="When 1, the opponent has lost" />
+		<property name="channel1" type="int" address="0xC026" description="When 1, the opponent has lost" />
+		<property name="channel2" type="int" address="0xC027" description="When 1, the opponent has lost" />
+		<property name="channel3" type="int" address="0xC028" description="When 1, the opponent has lost" />
+		<property name="channel4" type="int" address="0xC029" description="When 1, the opponent has lost" />
+		<property name="channel5" type="int" address="0xC02A" description="When 1, the opponent has lost" />
+		<property name="channel6" type="int" address="0xC02B" description="When 1, the opponent has lost" />
+		<property name="channel7" type="int" address="0xC02C" description="When 1, the opponent has lost" />
+		<property name="channel8" type="int" address="0xC02D" description="When 1, the opponent has lost" />
+		<property name="currentSound" type="int" address="0xC001" />
+		<property name="newSoundId"   type="int" address="0xC0EE" description="When 1, the opponent has lost" />
+		<property name="audioBank"    type="int" address="0xC0EF" />
+		<property name="overworldTrackCurrentMap" type="int" address="0xD35B" reference="audioTrack" />
+		<property name="audioBankCurrentMap"      type="int" address="0xD35C" description="When 1, the opponent has lost" />
 		<volume>
-			<property name="channel1" type="int" address="0xC0DF" />
-			<property name="channel2" type="int" address="0xC0E0" />
-			<property name="channel3" type="int" address="0xC0E1" />
-			<property name="channel4" type="int" address="0xC0E2" />
-			<property name="channel5" type="int" address="0xC0E3" />
-			<property name="channel6" type="int" address="0xC0E4" />
-			<property name="channel7" type="int" address="0xC0E5" />
-			<property name="channel8" type="int" address="0xC0E6" />
+			<property name="channel1" type="int" address="0xC0DE" />
+			<property name="channel2" type="int" address="0xC0DF" />
+			<property name="channel3" type="int" address="0xC0E0" />
+			<property name="channel4" type="int" address="0xC0E1" />
+			<property name="channel5" type="int" address="0xC0E2" />
+			<property name="channel6" type="int" address="0xC0E3" />
+			<property name="channel7" type="int" address="0xC0E4" />
+			<property name="channel8" type="int" address="0xC0E5" />
 		</volume>
 		<tempo>
-			<property name="music" type="int" address="0xC0E9" length="2" />
-			<property name="sfx"   type="int" address="0xC0EB" length="2" />
+			<property name="music" type="int" address="0xC0E8" length="2" />
+			<property name="sfx"   type="int" address="0xC0EA" length="2" />
 		</tempo>
 	</audio>
     <pc>
@@ -596,6 +707,7 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 			<property name="EVENT_BEAT_OAK_2" type="bool" address="0xD748" bits="3" />
 		</custom_trainers>
 		<time>
+			<!-- NOTE (unfixed): frameCount has the same address as introsFrameCount. Yellow uses 0xdbdf here (0xdbdf + 1 for Red/Blue). -->
 			<property name="frameCount"       type="int" length="4" address="0xdbef + 1" />
 			<property name="oWFrameCount"     type="int" length="4" address="0xdbe3 + 1" />
 			<property name="battleFrameCount" type="int" length="4" address="0xdbe7 + 1" />
@@ -658,6 +770,8 @@ For all new software, please use the paths within 'pokemon_red_and_blue.xml'
 				<property name="oHKOsTaken"         type="int" length="2" address="0xdc73 + 1" />
 			</hits>
 			<status>
+				<!-- NOTE (unfixed): from enemyBecameConfused to enemyFellAsleep, each player/enemy pair is in the opposite order to Yellow
+				     (Yellow puts the player counter first). Check against the Red/Blue patch. -->
 				<property name="enemyBecameConfused"        type="int" length="2" address="0xdc75 + 1" />
 				<property name="wasConfused"                type="int" length="2" address="0xdc77 + 1" />
 				<property name="enemyWasParalyzed"          type="int" length="2" address="0xdc79 + 1" />
