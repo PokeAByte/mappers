@@ -7,12 +7,12 @@
   {
     "display_name": "pokemon_red_blue_deprecated.xml",
     "path": "DEPRECATED/gen1/pokemon_red_blue_deprecated.xml",
-    "version": "1.1.5"
+    "version": "1.1.6"
   },
   {
     "display_name": "pokemon_yellow_deprecated.xml",
     "path": "DEPRECATED/gen1/pokemon_yellow_deprecated.xml",
-    "version": "1.2.8"
+    "version": "1.2.9"
   },
   {
     "display_name": "pokemon_crystal_deprecated.xml",
@@ -153,5 +153,20 @@
     "display_name": "pokemon_white_2.xml",
     "path": "STANDARD/gen5/pokemon_white_2.xml",
     "version": "0.9.4"
+  },
+  {
+    "display_name": "pokemon_emerald_ne.xml",
+    "path": "ST/gen3/pokemon_emerald_ne.xml",
+    "version": "1.6.0"
+  },
+  {
+    "display_name": "pokemon_emerald_deprecated_ne_new.xml",
+    "path": "ST/gen3/pokemon_emerald_deprecated_ne_new.xml",
+    "version": "1.6.0"
+  },
+  {
+    "display_name": "pokemon_firered_leafgreen_ne.xml",
+    "path": "ST/gen3/pokemon_firered_leafgreen_ne.xml",
+    "version": "1.6.0"
   }
 ]
