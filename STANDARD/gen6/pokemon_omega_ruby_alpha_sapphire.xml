@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="51aacc87-2f0c-446c-b6e5-aaa7cc5b1804" name="Pokemon Omega Ruby and Alpha Sapphire" platform="N3DS" version="0.0.1"
+<mapper id="51aacc87-2f0c-446c-b6e5-aaa7cc5b1804" name="Pokemon Omega Ruby and Alpha Sapphire" platform="3DS" version="0.0.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">

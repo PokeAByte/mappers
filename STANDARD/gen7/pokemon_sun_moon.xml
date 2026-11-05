@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="2cffbbd7-0f60-4c33-b13b-8add9b49984d" name="Pokemon Sun and Moon" platform="N3DS" version="0.0.1"
+<mapper id="2cffbbd7-0f60-4c33-b13b-8add9b49984d" name="Pokemon Sun and Moon" platform="3DS" version="0.0.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="b508407b-0c0b-4988-ab84-f8e35cf9f157" name="Pokemon X and Y" platform="N3DS" version="0.0.1"
+<mapper id="b508407b-0c0b-4988-ab84-f8e35cf9f157" name="Pokemon X and Y" platform="3DS" version="0.0.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">

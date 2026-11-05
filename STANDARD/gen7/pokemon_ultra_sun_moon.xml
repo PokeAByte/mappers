@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mapper id="d8946dca-d851-478a-98b0-6e6e742910f0" name="Pokemon Ultra Sun and Ultra Moon" platform="N3DS" version="0.0.1"
+<mapper id="d8946dca-d851-478a-98b0-6e6e742910f0" name="Pokemon Ultra Sun and Ultra Moon" platform="3DS" version="0.0.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://schemas.pokeabyte.io/mapper https://schemas.pokeabyte.io/mapper.xsd"
     xmlns:var="https://schemas.pokeabyte.io/attributes/var">
